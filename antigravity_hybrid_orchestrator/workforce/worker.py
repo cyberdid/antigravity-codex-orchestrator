@@ -6,6 +6,7 @@ Provides:
 - AutonomousWorker: ReAct loop executing subtasks via WorkspaceToolSuite with single-concurrency lock.
 """
 
+from contextlib import contextmanager
 from dataclasses import dataclass, field
 import json
 import hashlib
@@ -368,8 +369,25 @@ class AutonomousWorker:
         return WorkforceClient(
             base_url=self.host,
             model=self.model_name,
-            timeout=idle_timeout if idle_timeout > 0 else None,
+            timeout=idle_timeout,
         )
+
+    @contextmanager
+    def _inference_slot(self, deadline=None):
+        while True:
+            stop = self.execution_control.check()
+            reason = stop.reason if stop.stopped else ""
+            if not reason and deadline is not None and time.monotonic() >= deadline:
+                reason = "subtask_time_limit"
+            if reason:
+                yield reason
+                return
+            if self._inference_lock.acquire(timeout=.05):
+                break
+        try:
+            yield ""
+        finally:
+            self._inference_lock.release()
 
     def execute_subtask(
         self,
@@ -381,7 +399,7 @@ class AutonomousWorker:
         """Executes a SubTask, preferring native tool-calling over legacy ReAct.
 
         ``deadline`` is a ``time.monotonic()`` instant after which the attempt stops
-        between turns, so one attempt cannot outlast the subtask time limit.
+        or during a native HTTP call, so a blocked model cannot evade the limit.
         """
         if self._is_native_capable():
             return self._execute_native(subtask, tool_suite, feedback_context, deadline)
@@ -398,7 +416,13 @@ class AutonomousWorker:
 
         Serialized across threads via class-level _inference_lock to preserve RTX 4060 VRAM.
         """
-        with self._inference_lock:
+        with self._inference_slot(deadline) as stop_reason:
+            if stop_reason:
+                return SubtaskResult(
+                    subtask_id=subtask.id, success=False, turns=0,
+                    error=f"Execution paused: {stop_reason}",
+                    metadata={"paused": True, "stop_reason": stop_reason},
+                )
             self._emit(
                 "subtask_start",
                 subtask.id,
@@ -483,7 +507,12 @@ class AutonomousWorker:
                         )
                     inference_started = time.monotonic()
                     compact_messages(messages)
-                    resp = client.chat(messages, tools=tools)
+                    from antigravity_hybrid_orchestrator.workforce.ollama_client import WorkforceClient
+                    if isinstance(client, WorkforceClient):
+                        resp = client.chat(messages, tools=tools, deadline=deadline,
+                                           execution_control=self.execution_control)
+                    else:
+                        resp = client.chat(messages, tools=tools)
                     prompt_tokens = int(resp.get("input_tokens", 0))
                     eval_tokens = int(resp.get("output_tokens", 0))
                     in_tokens += prompt_tokens
@@ -642,6 +671,22 @@ class AutonomousWorker:
                         })
 
             except Exception as exc:
+                stop = self.execution_control.check()
+                if stop.stopped:
+                    return SubtaskResult(
+                        subtask_id=subtask.id, success=False, turns=turn,
+                        tool_calls_count=tool_calls_count,
+                        error=f"Execution paused: {stop.reason}",
+                        metadata={"paused": True, "stop_reason": stop.reason,
+                                  "backend": "ollama_native_tools"},
+                    )
+                if deadline is not None and time.monotonic() >= deadline:
+                    return SubtaskResult(
+                        subtask_id=subtask.id, success=False, turns=turn,
+                        tool_calls_count=tool_calls_count,
+                        error="Attempt stopped: subtask time limit reached",
+                        metadata={"limit_reached": True, "backend": "ollama_native_tools"},
+                    )
                 err_msg = f"Workforce inference error: {exc}"
                 self._emit(
                     "subtask_failed",
@@ -668,7 +713,13 @@ class AutonomousWorker:
 
         Serialized across threads via class-level _inference_lock to preserve RTX 4060 VRAM.
         """
-        with self._inference_lock:
+        with self._inference_slot() as stop_reason:
+            if stop_reason:
+                return SubtaskResult(
+                    subtask_id=subtask.id, success=False, turns=0,
+                    error=f"Execution paused: {stop_reason}",
+                    metadata={"paused": True, "stop_reason": stop_reason},
+                )
             self._emit(
                 "subtask_start",
                 subtask.id,

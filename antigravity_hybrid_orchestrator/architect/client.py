@@ -194,49 +194,66 @@ class CloudArchitectClient:
             if self.execution_control is not None else 0
         )
         stop_reason = ""
-        with selectors.DefaultSelector() as selector:
-            assert process.stdout is not None and process.stderr is not None
-            selector.register(process.stdout, selectors.EVENT_READ, stdout_chunks)
-            selector.register(process.stderr, selectors.EVENT_READ, stderr_chunks)
-            while selector.get_map() or process.poll() is None:
-                now = time.monotonic()
-                if self.timeout is not None and now - started >= self.timeout:
-                    stop_reason = f"timed out after {self.timeout}s"
-                    break
-                if self.execution_control is not None:
-                    decision = self.execution_control.check()
-                    if decision.stopped:
-                        stop_reason = f"stopped: {decision.reason}"
-                        break
-                if idle_timeout > 0 and now - last_activity >= idle_timeout:
-                    stop_reason = f"inactive for {idle_timeout}s"
-                    break
-                for key, _ in selector.select(timeout=0.2):
-                    chunk = os.read(key.fileobj.fileno(), 65536)
-                    if chunk:
-                        key.data.append(chunk)
-                        last_activity = time.monotonic()
-                    else:
-                        selector.unregister(key.fileobj)
-                        key.fileobj.close()
-
-        if stop_reason:
+        def terminate_tree():
+            # SIGKILL the session even if its leader has already exited: descendants
+            # may ignore SIGTERM or retain the output pipes.
             try:
-                if os.name == "posix":
-                    os.killpg(process.pid, signal.SIGTERM)
-                else:
-                    process.terminate()
-                process.wait(timeout=2)
-            except (ProcessLookupError, subprocess.TimeoutExpired):
+                try:
+                    if os.name == "posix":
+                        os.killpg(process.pid, signal.SIGTERM)
+                    elif process.poll() is None:
+                        process.terminate()
+                except ProcessLookupError:
+                    pass
+                try:
+                    process.wait(timeout=.2)
+                except subprocess.TimeoutExpired:
+                    pass
+            finally:
                 try:
                     if os.name == "posix":
                         os.killpg(process.pid, signal.SIGKILL)
-                    else:
+                    elif process.poll() is None:
                         process.kill()
                 except ProcessLookupError:
                     pass
                 process.wait()
-            raise CloudArchitectError(f"Cloud Architect ({label}) {stop_reason}")
+
+        try:
+            with selectors.DefaultSelector() as selector:
+                assert process.stdout is not None and process.stderr is not None
+                selector.register(process.stdout, selectors.EVENT_READ, stdout_chunks)
+                selector.register(process.stderr, selectors.EVENT_READ, stderr_chunks)
+                while selector.get_map() or process.poll() is None:
+                    now = time.monotonic()
+                    if self.timeout is not None and now - started >= self.timeout:
+                        stop_reason = f"timed out after {self.timeout}s"
+                        break
+                    if self.execution_control is not None:
+                        decision = self.execution_control.check()
+                        if decision.stopped:
+                            stop_reason = f"stopped: {decision.reason}"
+                            break
+                    if idle_timeout > 0 and now - last_activity >= idle_timeout:
+                        stop_reason = f"inactive for {idle_timeout}s"
+                        break
+                    for key, _ in selector.select(timeout=0.2):
+                        chunk = os.read(key.fileobj.fileno(), 65536)
+                        if chunk:
+                            key.data.append(chunk)
+                            last_activity = time.monotonic()
+                        else:
+                            selector.unregister(key.fileobj)
+                            key.fileobj.close()
+            if stop_reason:
+                raise CloudArchitectError(f"Cloud Architect ({label}) {stop_reason}")
+        except BaseException:
+            terminate_tree()
+            raise
+        finally:
+            for stream in (process.stdout, process.stderr):
+                if stream is not None:
+                    stream.close()
 
         return_code = process.wait()
         stdout_text = b"".join(stdout_chunks).decode("utf-8", errors="replace")

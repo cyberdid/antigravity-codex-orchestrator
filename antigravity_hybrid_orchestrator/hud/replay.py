@@ -82,7 +82,10 @@ def replay_run(path: str, speed: float = 8.0, no_hud: bool = False) -> RDDashboa
                 hud.update_telemetry(_summary_from_snap(rec.get("summary", {}) or {}))
             elif kind == "footer":
                 hud.set_privacy_verified(bool(rec.get("privacy_verified", True)))
-                hud.set_pipeline_status("COMPLETE")
+                status = str(rec.get("status", "")).upper()
+                if status in ("COMPLETED", "COMPLETE", ""):
+                    status = "COMPLETE" if rec.get("success") is True else "FAILED"
+                hud.set_pipeline_status(status)
             if delay:
                 time.sleep(delay)
     finally:

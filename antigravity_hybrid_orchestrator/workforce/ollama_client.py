@@ -1,5 +1,7 @@
 """Ollama HTTP streaming client for on-device Gemma 4 12B model."""
 
+import asyncio
+import contextlib
 import json
 import os
 import time
@@ -14,7 +16,7 @@ except ImportError:
 import urllib.error
 import urllib.request
 
-from antigravity_hybrid_orchestrator.workforce.context import chat_num_predict, num_ctx, ollama_timeout_s
+from antigravity_hybrid_orchestrator.workforce.context import chat_num_predict, compact_messages, num_ctx, ollama_timeout_s
 
 
 class OllamaConnectionError(Exception):
@@ -36,7 +38,7 @@ class WorkforceClient:
     ) -> None:
         self.base_url = base_url.rstrip("/")
         self.model = (model or os.environ.get("OLLAMA_MODEL", "")).strip() or self.DEFAULT_MODEL
-        self.timeout = timeout if timeout is not None else ollama_timeout_s()
+        self.timeout = (timeout if timeout > 0 else None) if timeout is not None else ollama_timeout_s()
 
 
     def check_health(self) -> bool:
@@ -226,8 +228,41 @@ class WorkforceClient:
             except Exception as e:
                 raise OllamaConnectionError(f"Ollama streaming generation error: {e}") from e
 
-    def _post_json(self, url: str, payload: Dict[str, Any]) -> Dict[str, Any]:
-        """POST a JSON payload and return the parsed JSON response (non-streaming)."""
+    async def _guarded_post(self, url, payload, deadline, execution_control):
+        # An asyncio cancellation interrupts the socket operation itself: no abandoned
+        # background inference thread survives a timeout or Ctrl+C.
+        async with httpx.AsyncClient(timeout=self.timeout) as client:
+            pending = asyncio.create_task(client.post(url, json=payload))
+            try:
+                while not pending.done():
+                    if deadline is not None and time.monotonic() >= deadline:
+                        raise OllamaConnectionError("Ollama call deadline exceeded")
+                    if execution_control is not None:
+                        stop = execution_control.check()
+                        if stop.stopped:
+                            raise OllamaConnectionError(f"Ollama call stopped: {stop.reason}")
+                    wait = .05 if deadline is None else max(.001, min(.05, deadline - time.monotonic()))
+                    await asyncio.wait({pending}, timeout=wait)
+                response = await pending
+                response.raise_for_status()
+                return response.json()
+            finally:
+                if not pending.done():
+                    pending.cancel()
+                with contextlib.suppress(asyncio.CancelledError, Exception):
+                    await pending
+
+    def _post_json(self, url: str, payload: Dict[str, Any], *, deadline=None, execution_control=None) -> Dict[str, Any]:
+        """POST JSON, enforcing a whole-call deadline when execution is bounded."""
+        if deadline is not None or execution_control is not None:
+            if not HAS_HTTPX:
+                raise OllamaConnectionError("httpx is required for cancellable model calls")
+            try:
+                return asyncio.run(self._guarded_post(url, payload, deadline, execution_control))
+            except OllamaConnectionError:
+                raise
+            except Exception as exc:
+                raise OllamaConnectionError(f"Ollama request error: {exc}") from exc
         if HAS_HTTPX:
             try:
                 with httpx.Client(timeout=self.timeout) as client:
@@ -266,6 +301,9 @@ class WorkforceClient:
         messages: List[Dict[str, Any]],
         tools: Optional[List[Dict[str, Any]]] = None,
         temperature: float = 0.2,
+        *,
+        deadline: Optional[float] = None,
+        execution_control: Any = None,
     ) -> Dict[str, Any]:
         """Non-streaming `/api/chat` call with native Ollama tool-calling support.
 
@@ -286,13 +324,21 @@ class WorkforceClient:
             "options": {
                 "temperature": temperature,
                 "num_ctx": num_ctx(),
-                "num_predict": chat_num_predict(),
+                "num_predict": min(chat_num_predict(), num_ctx() // 2),
             },
         }
         if tools:
             payload["tools"] = tools
 
-        raw = self._post_json(url, payload)
+        # Budget tool schemas as well as history; one UTF-8 byte per token is a
+        # deliberately conservative estimate in the absence of a model tokenizer.
+        reserve = min(chat_num_predict(), num_ctx() // 2)
+        overhead = len(json.dumps({k: v for k, v in payload.items() if k != "messages"}, ensure_ascii=False).encode())
+        compact_messages(messages, max_bytes=max(1, num_ctx() - reserve - overhead))
+        if deadline is not None or execution_control is not None:
+            raw = self._post_json(url, payload, deadline=deadline, execution_control=execution_control)
+        else:
+            raw = self._post_json(url, payload)
         message = raw.get("message", {}) or {}
         content = message.get("content", "") or ""
 

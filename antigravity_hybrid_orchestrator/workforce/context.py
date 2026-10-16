@@ -16,6 +16,7 @@ Three levers keep long R&D runs inside a small, fixed context window:
 
 from __future__ import annotations
 
+import json
 import os
 from typing import Any, Dict, List
 
@@ -107,17 +108,75 @@ def compact_messages(
     summary_chars: int = DEFAULT_SUMMARY_CHARS,
     assistant_chars: int = DEFAULT_ASSISTANT_CHARS,
     max_arg_chars: int = DEFAULT_MAX_CHARS,
+    max_bytes: int | None = None,
+    reserved_tokens: int | None = None,
 ) -> int:
     """Compacts old history in place and returns how many messages changed.
 
     The system prompt and the first user message (the task) are never touched.
-    The ``keep_recent_tools`` newest tool results stay verbatim so the model can
-    act on current evidence; older ones keep only their tool name and opening text.
+    Recent tool results retain their contents while they fit. Older results are
+    summarized, then entire exchanges are evicted to meet the UTF-8 byte budget.
+    System messages and the original task are preserved; an irreducible prompt
+    raises ValueError before inference.
     Already-executed ``tool_calls`` arguments exceeding ``max_arg_chars`` are also
     compacted immediately so a single huge ``write_file`` payload cannot trigger
     CUDA OOM on subsequent turns.
     """
-    protected = {0, 1} if len(messages) > 1 else {0}
+    # Conservative UTF-8 byte estimate (one byte per token) leaves room for output.
+    reserve = min(chat_num_predict(), num_ctx() // 2) if reserved_tokens is None else reserved_tokens
+    limit = max_bytes if max_bytes is not None else max(1, num_ctx() - reserve)
+    protected = {i for i, m in enumerate(messages) if m.get("role") == "system"}
+    first_user = next((i for i, m in enumerate(messages) if m.get("role") == "user"), None)
+    if first_user is not None:
+        protected.add(first_user)
+
+    def size(items):
+        return len(json.dumps(items, ensure_ascii=False).encode("utf-8"))
+
+    if size([m for i, m in enumerate(messages) if i in protected]) > limit:
+        raise ValueError("Required system/task prompt exceeds context budget")
+
+    def shorten_arguments(value):
+        if isinstance(value, str):
+            return f"[compacted {len(value)} chars] {_short(value, assistant_chars)}" if len(value) > max_arg_chars else value
+        if isinstance(value, dict):
+            return {k: shorten_arguments(v) for k, v in value.items()}
+        if isinstance(value, list):
+            if size(value) > max_arg_chars:
+                return [f"[compacted {len(value)} argument items]"]
+            return [shorten_arguments(v) for v in value]
+        return value
+
+    def enforce_budget():
+        nonlocal changed
+        # Delete entire old turns, never leave a tool response without its call.
+        while size(messages) > limit:
+            removable = next((i for i in range(len(messages)) if i not in protected), None)
+            if removable is None:
+                raise ValueError("Required prompt exceeds context budget")
+            end = removable + 1
+            while end < len(messages) and messages[end].get("role") == "tool":
+                end += 1
+            if end == len(messages):
+                # Preserve the newest complete exchange; compress its evidence if needed.
+                for msg in messages[removable:end]:
+                    if "content" in msg:
+                        msg["content"] = _short(msg.get("content", ""), summary_chars)
+                    if msg.get("tool_calls"):
+                        for call in msg["tool_calls"]:
+                            fn = call.get("function", {})
+                            if size(fn.get("arguments", {})) > summary_chars:
+                                fn["arguments"] = {"_summary": "[compacted executed arguments]"}
+                if size(messages) > limit:
+                    raise ValueError("Newest complete tool exchange exceeds context budget")
+                changed += 1
+                break
+            del messages[removable:end]
+            shift = end - removable
+            protected_copy = {i if i < removable else i - shift for i in protected}
+            protected.clear()
+            protected.update(protected_copy)
+            changed += shift
     changed = 0
 
     for i, msg in enumerate(messages):
@@ -130,6 +189,11 @@ def compact_messages(
         for tc in tcalls:
             fn = tc.get("function") if isinstance(tc, dict) else None
             args = fn.get("arguments") if isinstance(fn, dict) else None
+            if isinstance(fn, dict):
+                compacted_args = shorten_arguments(args)
+                if compacted_args != args:
+                    fn["arguments"] = compacted_args
+                    msg_changed = True
             if not isinstance(args, dict):
                 continue
             for k, v in list(args.items()):
@@ -141,9 +205,11 @@ def compact_messages(
 
     tool_idx = [i for i, m in enumerate(messages) if m.get("role") == "tool"]
     if len(tool_idx) <= keep_recent_tools:
+        enforce_budget()
         return changed
 
-    boundary = tool_idx[-keep_recent_tools]  # first message inside the verbatim window
+    # First result inside the recent evidence window.
+    boundary = tool_idx[-keep_recent_tools] if keep_recent_tools > 0 else len(messages)
 
     for i in tool_idx:
         if i >= boundary or i in protected:
@@ -177,4 +243,5 @@ def compact_messages(
         if msg_changed:
             changed += 1
 
+    enforce_budget()
     return changed
