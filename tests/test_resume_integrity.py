@@ -49,6 +49,7 @@ def test_later_save_does_not_bless_changed_completion(tmp_path):
 def test_legacy_completions_require_revalidation(tmp_path):
     path, _ = setup_state(tmp_path)
     state = json.loads(path.read_text())
+    RunStateStore.trusted_path_for(path).unlink()
     state['version'] = 1
     state['dag']['metadata'].pop('task_fingerprints', None)
     path.write_text(json.dumps(state))
@@ -76,10 +77,9 @@ def test_fresh_verification_can_replace_previous_binding(tmp_path):
 
 
 def test_changed_task_contract_invalidates_completion(tmp_path):
-    path, _ = setup_state(tmp_path)
-    state = json.loads(path.read_text())
-    state['dag']['tasks'][0]['verification_command'] = 'true'
-    path.write_text(json.dumps(state))
+    path, dag = setup_state(tmp_path)
+    dag['a'].verification_command = 'true'
+    RunStateStore.save(path, goal='g', workspace=str(tmp_path), dag=dag)
     assert statuses(path)['a'] == 'pending'
 
 
@@ -112,3 +112,73 @@ def test_invalidated_tasks_drop_accepted_integrity_metadata(tmp_path):
     (tmp_path / 'source').write_text('changed')
     restored = RunStateStore.load(path)
     assert restored['dag']['metadata']['integrity_by_task'] == {'c': {'outcome': 'ACCEPTED'}}
+
+
+def test_forged_sidecar_cannot_replace_controller_fingerprints_or_contract(tmp_path, monkeypatch):
+    monkeypatch.setenv('ANTIGRAVITY_STATE_HOME', str(tmp_path.parent / (tmp_path.name + '-trusted')))
+    path, dag = setup_state(tmp_path)
+    dag.metadata['integrity_contract'] = 'orion-study-v1'
+    dag.metadata['evidence_directory'] = '/controller/evidence'
+    RunStateStore.save(path, goal='g', workspace=str(tmp_path), dag=dag)
+    (tmp_path / 'source').write_text('candidate changed code')
+    forged = json.loads(path.read_text())
+    forged['dag']['metadata']['task_fingerprints']['a'] = RunStateStore.bind_task(str(tmp_path), dag['a'])
+    forged['dag']['metadata'].pop('integrity_contract')
+    forged['dag']['metadata']['evidence_directory'] = '/candidate/evidence'
+    forged['dag']['tasks'][0]['status'] = 'completed'
+    path.write_text(json.dumps(forged))
+    restored = RunStateStore.load(path)
+    assert restored['untrusted_state_modified'] is True
+    assert restored['dag']['metadata']['integrity_contract'] == 'orion-study-v1'
+    assert restored['dag']['metadata']['evidence_directory'] == '/controller/evidence'
+    assert {t['id']: t['status'] for t in restored['dag']['tasks']} == {'a': 'pending', 'b': 'pending', 'c': 'completed'}
+
+
+def test_unmapped_version_two_state_cannot_assert_completion(tmp_path, monkeypatch):
+    monkeypatch.setenv('ANTIGRAVITY_STATE_HOME', str(tmp_path.parent / (tmp_path.name + '-trusted')))
+    path, _ = setup_state(tmp_path)
+    # A candidate can create a plausible copy at a different local path, without
+    # gaining a controller mirror for that new run identity.
+    forged_path = tmp_path / 'candidate-authored.state.json'
+    forged_path.write_bytes(path.read_bytes())
+    restored = RunStateStore.load(forged_path)
+    assert {t['status'] for t in restored['dag']['tasks']} == {'pending'}
+
+
+def test_controller_mirror_is_external_atomic_and_owner_only(tmp_path, monkeypatch):
+    import hashlib
+    import os
+    home = tmp_path.parent / (tmp_path.name + '-trusted')
+    monkeypatch.setenv('ANTIGRAVITY_STATE_HOME', str(home))
+    path, _ = setup_state(tmp_path)
+    key = hashlib.sha256(str(path.resolve()).encode()).hexdigest()
+    mirror = home / 'run-states' / (key + '.json')
+    assert mirror.is_file()
+    assert json.loads(mirror.read_text()) == json.loads(path.read_text())
+    assert os.stat(mirror).st_mode & 0o777 == 0o600
+    assert os.stat(mirror.parent).st_mode & 0o777 == 0o700
+    assert not list(mirror.parent.glob('*.tmp'))
+
+
+def test_controller_state_home_inside_candidate_is_rejected(tmp_path, monkeypatch):
+    monkeypatch.setenv('ANTIGRAVITY_STATE_HOME', str(tmp_path / 'controller'))
+    with pytest.raises(ValueError, match='outside candidate workspace'):
+        setup_state(tmp_path)
+
+
+@pytest.mark.parametrize('damage', ['invalid_json', 'missing', 'symlink'])
+def test_trusted_mirror_survives_unreadable_or_replaced_sidecar(tmp_path, monkeypatch, damage):
+    monkeypatch.setenv('ANTIGRAVITY_STATE_HOME', str(tmp_path.parent / (tmp_path.name + '-trusted')))
+    path, _ = setup_state(tmp_path)
+    if damage == 'invalid_json':
+        path.write_text('candidate removed JSON')
+    else:
+        path.unlink()
+        if damage == 'symlink':
+            fake = tmp_path / 'fake'
+            fake.write_text('{}')
+            path.symlink_to(fake)
+    restored = RunStateStore.load(path)
+    assert restored['untrusted_state_modified'] is True
+    assert {t['status'] for t in restored['dag']['tasks']} == {'completed'}
+    assert restored['trusted_state_available'] is True

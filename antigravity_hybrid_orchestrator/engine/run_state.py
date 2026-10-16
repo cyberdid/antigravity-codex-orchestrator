@@ -82,6 +82,47 @@ class RunStateStore:
         return Path(run_log).with_suffix(".state.json")
 
     @staticmethod
+    def trusted_path_for(path: Path, workspace: Optional[str] = None) -> Path:
+        """Identify a controller mirror without following a mutable sidecar symlink."""
+        path = Path(path)
+        canonical = path.parent.resolve() / path.name
+        base = Path(os.environ.get(
+            "ANTIGRAVITY_STATE_HOME", Path.home() / ".local/state/antigravity"
+        )).expanduser().resolve()
+        directory = base / "run-states"
+        if workspace is not None and directory.resolve().is_relative_to(Path(workspace).resolve()):
+            raise ValueError("Controller run state must be outside candidate workspace")
+        key = hashlib.sha256(str(canonical).encode()).hexdigest()
+        return directory / f"{key}.json"
+
+    @staticmethod
+    def _atomic_write(path: Path, payload: Dict[str, Any], *, controller: bool = False) -> None:
+        path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+        if controller:
+            os.chmod(path.parent, 0o700)
+        temp = path.with_name(f".{path.name}.{uuid4().hex}.tmp")
+        fd = os.open(temp, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+        try:
+            with os.fdopen(fd, "w", encoding="utf-8") as stream:
+                json.dump(payload, stream, ensure_ascii=False, indent=2, allow_nan=False)
+                stream.flush()
+                os.fsync(stream.fileno())
+            os.replace(temp, path)
+        finally:
+            temp.unlink(missing_ok=True)
+
+    @staticmethod
+    def _read_state(path: Path) -> Dict[str, Any]:
+        fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+        try:
+            if not stat.S_ISREG(os.fstat(fd).st_mode):
+                raise ValueError("Run state must be a regular file")
+            with os.fdopen(fd, "r", encoding="utf-8", closefd=False) as stream:
+                return json.load(stream)
+        finally:
+            os.close(fd)
+
+    @staticmethod
     def save(
         path: Path,
         *,
@@ -93,8 +134,7 @@ class RunStateStore:
         elapsed_s: float = 0.0,
     ) -> None:
         path = Path(path)
-        path.parent.mkdir(parents=True, exist_ok=True)
-        temp = path.with_name(f".{path.name}.{uuid4().hex}.tmp")
+        mirror = RunStateStore.trusted_path_for(path, workspace)
         bindings = dag.metadata.setdefault("task_fingerprints", {})
         for task in dag.tasks.values():
             if task.status == "completed" and task.id not in bindings:
@@ -109,27 +149,28 @@ class RunStateStore:
             "remote_tokens": max(0, int(remote_tokens)),
             "elapsed_s": max(0.0, float(elapsed_s)),
         }
-        fd = os.open(temp, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
-        try:
-            with os.fdopen(fd, "w", encoding="utf-8") as stream:
-                json.dump(payload, stream, ensure_ascii=False, indent=2)
-                stream.flush()
-                os.fsync(stream.fileno())
-            os.replace(temp, path)
-            os.chmod(path, 0o600)
-        finally:
-            try:
-                temp.unlink()
-            except FileNotFoundError:
-                pass
+        # The candidate can rewrite its local sidecar. Persist the authoritative
+        # copy first, so a partial save never promotes candidate-authored state.
+        RunStateStore._atomic_write(mirror, payload, controller=True)
+        RunStateStore._atomic_write(path, payload)
 
     @staticmethod
     def load(path: Path) -> Dict[str, Any]:
         path = Path(path)
-        with path.open("r", encoding="utf-8") as stream:
-            state = json.load(stream)
+        mirror = RunStateStore.trusted_path_for(path)
+        trusted = mirror.exists()
+        modified = False
+        if trusted:
+            state = RunStateStore._read_state(mirror)
+            try:
+                modified = RunStateStore._read_state(path) != state
+            except (OSError, ValueError, UnicodeError):
+                modified = True
+        else:
+            state = RunStateStore._read_state(path)
         if not isinstance(state, dict) or state.get("version") not in (1, 2):
             raise ValueError(f"Unsupported or invalid run state: {path}")
+        RunStateStore.trusted_path_for(path, state["workspace"])
         dag = ExecutionPlanDAG.from_dict(state.get("dag", {}))
         dag.validate()
         bindings = dag.metadata.get("task_fingerprints", {})
@@ -137,7 +178,7 @@ class RunStateStore:
         for task in dag.get_execution_order():
             bound = bindings.get(task.id)
             stale = task.status == "completed" and (
-                state.get("version") == 1 or not isinstance(bound, dict)
+                not trusted or state.get("version") == 1 or not isinstance(bound, dict)
                 or not bound.get("valid")
                 or bound != RunStateStore.bind_task(state["workspace"], task)
             )
@@ -149,6 +190,8 @@ class RunStateStore:
                 integrity = dag.metadata.get("integrity_by_task", {})
                 if isinstance(integrity, dict):
                     integrity.pop(task.id, None)
+        state["untrusted_state_modified"] = modified
+        state["trusted_state_available"] = trusted
         state["invalidated_tasks"] = sorted(invalid)
         state["dag"] = dag.to_dict()
         return state
