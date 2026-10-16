@@ -9,6 +9,7 @@ Provides:
 from dataclasses import dataclass, field
 import os
 import selectors
+import shlex
 from pathlib import Path
 import re
 import signal
@@ -18,6 +19,7 @@ import time
 from typing import Any, Dict, List, Optional, Union
 
 from antigravity_hybrid_orchestrator.engine.control import ExecutionControl
+from antigravity_hybrid_orchestrator.runtime.sandbox import DockerSandbox
 
 
 @dataclass
@@ -61,6 +63,7 @@ class ToolResult:
 
 
 READ_DEFAULT_LINE_LIMIT = 400
+COMMAND_OUTPUT_LIMIT_BYTES = 16 * 1024 * 1024
 
 
 class WorkspaceToolSuite:
@@ -87,7 +90,13 @@ class WorkspaceToolSuite:
         default_command_timeout: Optional[float] = None,
         default_idle_timeout: Optional[float] = 300,
         execution_control: Optional[ExecutionControl] = None,
+        sandbox_backend: str = "host",
+        sandbox_image: str = "antigravity-orion:local",
     ) -> None:
+        if sandbox_backend not in {"host", "docker"}:
+            raise ValueError("sandbox_backend must be host or docker")
+        self.sandbox_backend = sandbox_backend
+        self.sandbox_image = sandbox_image
         self.workspace_root = Path(workspace_root).resolve()
         self.default_command_timeout = default_command_timeout
         self.default_idle_timeout = default_idle_timeout
@@ -594,12 +603,30 @@ class WorkspaceToolSuite:
         proc = None
         stdout = ""
         stderr = ""
+        output_truncated = False
 
+        sandbox = None
+        sandbox_metadata = {"sandbox_backend": self.sandbox_backend}
+        if self.sandbox_backend == "docker":
+            sandbox_metadata["sandbox_image"] = self.sandbox_image
+        cleanup_error = None
+        selector = None
         try:
+            stop = self.execution_control.check()
+            if stop.stopped:
+                return ToolResult(False, error=f"Execution paused: {stop.reason}", metadata=sandbox_metadata)
+            executable_command = command
+            if self.sandbox_backend == "docker":
+                sandbox = DockerSandbox(self.workspace_root, self.sandbox_image)
+                sandbox_metadata["container_name"] = sandbox.container_name
+                executable_command = sandbox.build_command(
+                    command, cwd_relative=str(effective_cwd.relative_to(self.workspace_root))
+                )
+                env = sandbox.client_environment()
             proc = subprocess.Popen(
-                command,
-                shell=True,
-                executable=shell_exec,
+                executable_command,
+                shell=sandbox is None,
+                executable=shell_exec if sandbox is None else None,
                 cwd=str(effective_cwd),
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
@@ -623,6 +650,11 @@ class WorkspaceToolSuite:
                     self._kill_process_group(proc)
                     break
                 now = time.monotonic()
+                if deadline is not None and now >= deadline:
+                    timeout_reason = f"Command timed out after {timeout} seconds."
+                    timed_out = True
+                    self._kill_process_group(proc)
+                    break
                 remaining = []
                 if deadline is not None:
                     remaining.append(max(0.0, deadline - now))
@@ -651,7 +683,11 @@ class WorkspaceToolSuite:
                 for key, _ in ready:
                     chunk = os.read(key.fileobj.fileno(), 65536)
                     if chunk:
-                        key.data.extend(chunk)
+                        # Continue draining after the cap: blocking a full pipe
+                        # would deadlock the child and defeat timeout handling.
+                        available = max(0, COMMAND_OUTPUT_LIMIT_BYTES - len(key.data))
+                        key.data.extend(chunk[:available])
+                        output_truncated = output_truncated or len(chunk) > available
                         last_activity = time.monotonic()
                     else:
                         selector.unregister(key.fileobj)
@@ -672,12 +708,25 @@ class WorkspaceToolSuite:
                     pass
             raise
         except Exception as exc:
+            if proc:
+                self._kill_process_group(proc)
             return ToolResult(
                 success=False,
                 output="",
                 error=f"Command execution error: {exc}",
-                metadata={"command": command, "cwd": str(effective_cwd)},
+                metadata={"command": command, "cwd": str(effective_cwd), **sandbox_metadata},
             )
+        finally:
+            if selector is not None:
+                for key in list(selector.get_map().values()) if selector.get_map() else []:
+                    key.fileobj.close()
+                selector.close()
+            if sandbox is not None:
+                try:
+                    sandbox.cleanup()
+                except Exception as exc:
+                    cleanup_error = str(exc)
+                    sandbox_metadata["cleanup_error"] = cleanup_error
 
         duration = time.perf_counter() - start_time
         exit_code = -1 if timed_out else (proc.returncode if proc else -1)
@@ -689,7 +738,12 @@ class WorkspaceToolSuite:
             "timed_out": timed_out,
             "duration_s": round(duration, 3),
             "stderr": stderr,
+            "output_truncated": output_truncated,
+            **sandbox_metadata,
         }
+
+        if cleanup_error:
+            return ToolResult(False, output=stdout, error=cleanup_error, metadata=metadata)
 
         if timed_out:
             return ToolResult(
@@ -720,18 +774,24 @@ class WorkspaceToolSuite:
         """Returns True if the workspace root contains a .git directory."""
         return (self.workspace_root / ".git").exists()
 
+    def _run_git(self, command: List[str]) -> subprocess.CompletedProcess:
+        """Keep Git config hooks and external drivers inside the selected sandbox."""
+        if self.sandbox_backend == "docker":
+            result = self.run_command(shlex.join(command), timeout=15)
+            return subprocess.CompletedProcess(
+                command, 0 if result.success else (result.metadata.get("exit_code") or -1),
+                stdout=result.output,
+                stderr=result.metadata.get("stderr") or result.error or "",
+            )
+        return subprocess.run(
+            command, cwd=str(self.workspace_root), capture_output=True,
+            text=True, encoding="utf-8", errors="replace", timeout=15,
+        )
+
     def git_status(self) -> ToolResult:
         """Runs 'git status --porcelain', gracefully handling non-git workspaces."""
         try:
-            res = subprocess.run(
-                ["git", "status", "--porcelain"],
-                cwd=str(self.workspace_root),
-                capture_output=True,
-                text=True,
-                encoding="utf-8",
-                errors="replace",
-                timeout=15,
-            )
+            res = self._run_git(["git", "status", "--porcelain"])
         except FileNotFoundError:
             return ToolResult(
                 success=False,
@@ -789,15 +849,7 @@ class WorkspaceToolSuite:
         """Runs 'git diff' (or 'git diff --staged'), gracefully handling non-git workspaces."""
         cmd = ["git", "diff", "--staged"] if staged else ["git", "diff"]
         try:
-            res = subprocess.run(
-                cmd,
-                cwd=str(self.workspace_root),
-                capture_output=True,
-                text=True,
-                encoding="utf-8",
-                errors="replace",
-                timeout=15,
-            )
+            res = self._run_git(cmd)
         except FileNotFoundError:
             return ToolResult(
                 success=False,
