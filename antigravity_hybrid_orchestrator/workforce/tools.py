@@ -92,9 +92,13 @@ class WorkspaceToolSuite:
         execution_control: Optional[ExecutionControl] = None,
         sandbox_backend: str = "host",
         sandbox_image: str = "antigravity-orion:local",
+        max_file_size_bytes: int = 16 * 1024 * 1024,
     ) -> None:
         if sandbox_backend not in {"host", "docker"}:
             raise ValueError("sandbox_backend must be host or docker")
+        if isinstance(max_file_size_bytes, bool) or not isinstance(max_file_size_bytes, int) or max_file_size_bytes <= 0:
+            raise ValueError("max_file_size_bytes must be a positive integer")
+        self.max_file_size_bytes = max_file_size_bytes
         self.sandbox_backend = sandbox_backend
         self.sandbox_image = sandbox_image
         self.workspace_root = Path(workspace_root).resolve()
@@ -617,7 +621,10 @@ class WorkspaceToolSuite:
                 return ToolResult(False, error=f"Execution paused: {stop.reason}", metadata=sandbox_metadata)
             executable_command = command
             if self.sandbox_backend == "docker":
-                sandbox = DockerSandbox(self.workspace_root, self.sandbox_image)
+                sandbox = DockerSandbox(
+                    self.workspace_root, self.sandbox_image,
+                    max_file_size_bytes=self.max_file_size_bytes,
+                )
                 sandbox_metadata["container_name"] = sandbox.container_name
                 executable_command = sandbox.build_command(
                     command, cwd_relative=str(effective_cwd.relative_to(self.workspace_root))

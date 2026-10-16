@@ -21,7 +21,9 @@ class DockerSandbox:
 
     ``build_command`` returns argv, suitable for ``Popen(shell=False)``. Always
     call ``cleanup`` in a finally block, including when the client is terminated.
-    Use one instance per command. The image must already exist locally; runtime
+    ``max_file_size_bytes`` is an operator-owned per-file output limit; it is
+    never supplied by candidate tool arguments. Use one instance per command.
+    The image must already exist locally; runtime
     commands never pull images or fall back to host execution.
     """
 
@@ -31,7 +33,11 @@ class DockerSandbox:
         image: str = "antigravity-orion:local",
         *,
         output_directory: str | Path | None = None,
+        max_file_size_bytes: int = 16 * 1024 * 1024,
     ) -> None:
+        if isinstance(max_file_size_bytes, bool) or not isinstance(max_file_size_bytes, int) or max_file_size_bytes <= 0:
+            raise ValueError("max_file_size_bytes must be a positive integer")
+        self.max_file_size_bytes = max_file_size_bytes
         self.workspace_root = Path(workspace_root).resolve(strict=True)
         if not self.workspace_root.is_dir():
             raise ValueError("Workspace must be a directory")
@@ -88,7 +94,8 @@ class DockerSandbox:
             "--network=none", "--read-only", "--cap-drop=ALL",
             "--security-opt=no-new-privileges", "--user", f"{self.uid}:{self.gid}",
             "--cpus=2", "--memory=4g", "--memory-swap=4g", "--pids-limit=256",
-            "--ulimit=nofile=1024:1024", "--ulimit=fsize=16777216:16777216",
+            "--ulimit=nofile=1024:1024",
+            f"--ulimit=fsize={self.max_file_size_bytes}:{self.max_file_size_bytes}",
             "--log-driver=none", "--init", "--stop-timeout=1",
             "--tmpfs", "/tmp:rw,nosuid,nodev,size=256m,mode=1777",
             "--shm-size=64m", "--mount", mount, "--workdir", container_cwd,

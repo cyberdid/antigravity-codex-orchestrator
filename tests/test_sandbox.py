@@ -254,3 +254,23 @@ def test_runtime_supports_offline_package_install_in_ephemeral_directory(tmp_pat
     finally:
         sandbox.cleanup()
     assert result.returncode == 0, result.stderr.decode()
+
+
+@pytest.mark.parametrize('limit', [0, -1, True, 1.5])
+def test_file_size_limit_must_be_positive_integer(tmp_path, limit):
+    from antigravity_hybrid_orchestrator.runtime.sandbox import DockerSandbox
+    with pytest.raises(ValueError, match='max_file_size_bytes'):
+        DockerSandbox(tmp_path, max_file_size_bytes=limit)
+    with pytest.raises(ValueError, match='max_file_size_bytes'):
+        WorkspaceToolSuite(tmp_path, max_file_size_bytes=limit)
+
+
+@real_docker
+def test_explicit_operator_file_size_limit_permits_larger_scientific_artifact(tmp_path):
+    result = WorkspaceToolSuite(
+        tmp_path, sandbox_backend='docker', max_file_size_bytes=64 * 1024**2
+    ).run_command(
+        "python -c \"open('large-artifact', 'wb').write(b'x' * (32 * 1024**2))\"", timeout=10
+    )
+    assert result.success, result.error
+    assert (tmp_path / 'large-artifact').stat().st_size == 32 * 1024**2
