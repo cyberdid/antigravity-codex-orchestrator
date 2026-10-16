@@ -96,6 +96,7 @@ class SelfCorrectionLoop:
         event_listener: Optional[Callable[[str, str, Dict[str, Any]], None]] = None,
         execution_control: Optional[ExecutionControl] = None,
         replanner: Optional[Callable[[SubTask, List[Dict[str, Any]]], Optional[SubTask]]] = None,
+        acceptance_gate: Optional[Callable[[SubTask], Dict[str, Any]]] = None,
     ) -> None:
         """Initializes the self-correction loop.
 
@@ -114,8 +115,24 @@ class SelfCorrectionLoop:
         self.retry_budget = max(0, int(retry_budget))
         self.execution_control = execution_control or ExecutionControl()
         self.replanner = replanner
+        self.acceptance_gate = acceptance_gate
         self.checkpoint_git = checkpoint_git
         self.event_listener = event_listener
+
+    def _verify(self, subtask: SubTask) -> VerificationResult:
+        result = self.verifier.run_verification(subtask)
+        if result.success and self.acceptance_gate is not None:
+            try:
+                decision = self.acceptance_gate(subtask)
+            except Exception as exc:
+                decision = {"status": "INCONCLUSIVE", "feedback": str(exc)}
+            result.metadata["integrity"] = decision
+            if decision.get("status") != "ACCEPTED":
+                result.success = False
+                result.exit_code = 1
+                result.failure_reason = "Trusted promotion gate: " + str(decision.get("feedback") or decision.get("status"))
+            self._emit("integrity_decision", subtask.id, decision)
+        return result
 
     def _emit(self, event_type: str, subtask_id: str, payload: Optional[Dict[str, Any]] = None) -> None:
         """Dispatches an execution event to the registered HUD listener."""
@@ -228,7 +245,7 @@ class SelfCorrectionLoop:
                 limit_reason = f"time limit reached ({time_limit_s:.0f}s)"
             if limit_reason:
                 if attempt > 0 and subtask.verification_command:
-                    verif_probe = self.verifier.run_verification(subtask)
+                    verif_probe = self._verify(subtask)
                     if verif_probe.success:
                         subtask.status = SubtaskExecutionState.COMPLETED.value
                         self._emit("subtask_complete", subtask.id, {
@@ -245,7 +262,8 @@ class SelfCorrectionLoop:
                             tool_calls_count=total_tool_calls,
                             summary=f"Subtask '{subtask.id}' passed verification before aborting on {limit_reason}.",
                             artifacts=last_worker_res.artifacts if last_worker_res else list(subtask.outputs),
-                            metadata={"attempts": attempt, "elapsed_s": round(elapsed, 1)},
+                            metadata={"attempts": attempt, "elapsed_s": round(elapsed, 1),
+                                      "verification": verif_probe.to_dict()},
                         )
                 subtask.status = SubtaskExecutionState.FAILED.value
                 self._emit("subtask_failed", subtask.id, {
@@ -336,7 +354,7 @@ class SelfCorrectionLoop:
             ):
                 # If the worker finished writing/compiling files on a prior tool call
                 # right before the subtask timer or Ollama HTTP request timed out, verify before discarding its work.
-                verif_probe = self.verifier.run_verification(subtask)
+                verif_probe = self._verify(subtask)
                 if verif_probe.success:
                     worker_res.success = True
                     worker_res.error = None
@@ -380,7 +398,7 @@ class SelfCorrectionLoop:
             subtask.status = SubtaskExecutionState.VERIFYING.value
             self._emit("verifying", subtask.id, {"command": subtask.verification_command})
 
-            verif_res = self.verifier.run_verification(subtask)
+            verif_res = self._verify(subtask)
             last_verif_res = verif_res
 
             if verif_res.success:
@@ -568,7 +586,8 @@ class SelfCorrectionLoop:
         if not self.tool_suite.is_git_repo:
             return
         self.tool_suite.run_command("git add -A -- . ':(exclude).antigravity_runs/**'")
-        self.tool_suite.run_command(f'git commit -m "{message}" --allow-empty')
+        import shlex
+        self.tool_suite.run_command(f'git commit -m {shlex.quote(message)} --allow-empty')
 
     def _rollback_uncommitted(self, subtask_id: str = "") -> None:
         """Discards uncommitted workspace modifications via git checkout."""

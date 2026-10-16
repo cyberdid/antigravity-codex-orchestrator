@@ -77,6 +77,12 @@ class HybridCoordinator:
         architect_backend: str = "haiku",
         architect_model: Optional[str] = None,
         worker_model: Optional[str] = None,
+        sandbox_backend: str = "docker",
+        sandbox_image: str = "antigravity-orion:local",
+        integrity_contract: Optional[str] = None,
+        evidence_directory: Optional[str] = None,
+        sandbox_max_file_mb: int = 16,
+        study_profile: str = "full",
     ) -> None:
         self.mode = mode.lower()
         self.target = target
@@ -98,6 +104,13 @@ class HybridCoordinator:
         self.architect_backend = architect_backend
         self.architect_model = architect_model
         self.worker_model = worker_model
+        self.sandbox_backend = "host" if self.mode == "mock" else sandbox_backend
+        self.sandbox_image = sandbox_image
+        self.integrity_contract = integrity_contract
+        self.evidence_directory = evidence_directory
+        self.sandbox_max_file_mb = sandbox_max_file_mb
+        self.study_profile = study_profile
+        self.integrity_evaluator = None
         self.resume_run = resume_run
         self._run_state_path: Optional[Path] = None
         self._current_dag = None
@@ -499,7 +512,9 @@ class HybridCoordinator:
                     if is_valid_candidate(other_code, target_name):
                         winning_code = other_code
                     else:
-                        winning_code = get_secure(target_name)
+                        self.hud.update_test_results(target_name, "FAIL", "FAIL")
+                        self.hud.console.print(f"[red]{target_name}: both model candidates failed validation; no patch deployed.[/]")
+                        continue
 
                 self._atomic_write(target_path, winning_code)
 
@@ -567,9 +582,10 @@ class HybridCoordinator:
 
         resume_state = None
         if self.resume_run:
-            resume_log = Path(self.resume_run).resolve()
+            from antigravity_hybrid_orchestrator.integrity.policy import safe_run_path
+            resume_log = safe_run_path(self.resume_run)
             self._run_state_path = RunStateStore.sidecar_for(resume_log)
-            if not self._run_state_path.is_file():
+            if not self._run_state_path.is_file() and not RunStateStore.trusted_path_for(self._run_state_path).is_file():
                 raise FileNotFoundError(f"Run state sidecar not found: {self._run_state_path}")
             resume_state = RunStateStore.load(self._run_state_path)
             self.execution_control.restore_usage(
@@ -583,6 +599,19 @@ class HybridCoordinator:
                 raise ValueError("--goal does not match the goal recorded for this run")
             self.workspace = str(saved_workspace)
             self.goal = str(resume_state.get("goal", ""))
+            from antigravity_hybrid_orchestrator.integrity.policy import RunPolicyStore
+            policy = RunPolicyStore.load(resume_log)
+            if policy:
+                if str(saved_workspace) != policy['workspace'] or self.goal != policy['goal']:
+                    raise ValueError('Candidate resume state disagrees with trusted controller policy')
+                if self.integrity_contract and self.integrity_contract != policy.get('integrity_contract'):
+                    raise ValueError('Resume cannot change the trusted integrity contract')
+                for key in ('integrity_contract', 'evidence_directory', 'sandbox_backend',
+                            'sandbox_image', 'sandbox_max_file_mb', 'study_profile'):
+                    if key in policy:
+                        setattr(self,key,policy[key])
+            elif resume_state.get('dag',{}).get('metadata',{}).get('integrity_contract') and not self.integrity_contract:
+                raise ValueError('Scientific resume lacks trusted controller policy; specify the integrity contract to revalidate')
 
         # Resolve the target workspace (defaults to the current directory).
         workspace_path = Path(self.workspace).resolve() if self.workspace else Path.cwd()
@@ -612,6 +641,8 @@ class HybridCoordinator:
         dag = None
         dag_result = None
         interrupted = False
+        fatal_error = False
+        scientific_decision = None
 
         try:
             outline = None
@@ -661,6 +692,37 @@ class HybridCoordinator:
                 )
 
             self._current_dag = dag
+            if resume_state is None:
+                for key in ('integrity_contract', 'evidence_directory', 'task_fingerprints', 'integrity_by_task', 'final_integrity'):
+                    dag.metadata.pop(key, None)
+                for task in dag.tasks.values():
+                    task.status = 'pending'
+                    task.retry_count = 0
+            if self.integrity_contract:
+                from antigravity_hybrid_orchestrator.integrity.evaluator import ResearchIntegrityEvaluator
+                self.evidence_directory = self.evidence_directory or str(
+                    Path.home() / ".local/state/antigravity/evidence" / __import__('hashlib').sha256(str(workspace_path).encode()).hexdigest()[:16]
+                )
+                self.integrity_evaluator = ResearchIntegrityEvaluator(
+                    workspace_path, self.evidence_directory, image=self.sandbox_image,
+                    execution_control=self.execution_control,
+                    study_profile=self.study_profile,
+                )
+                dag.metadata.update(integrity_contract=self.integrity_contract,
+                                    evidence_directory=self.evidence_directory)
+            dag.metadata["sandbox_backend"] = self.sandbox_backend
+            if self.recorder and self.recorder.path and (self.integrity_contract or self.mode != 'mock'):
+                from antigravity_hybrid_orchestrator.integrity.policy import RunPolicyStore
+                RunPolicyStore.save(self.recorder.path, {
+                    'workspace':str(workspace_path), 'goal':self.goal or '',
+                    **{key:getattr(self,key) for key in ('integrity_contract','evidence_directory',
+                       'sandbox_backend','sandbox_image','sandbox_max_file_mb','study_profile')},
+                })
+            self._rd_event_listener("execution_policy", "", {"sandbox": self.sandbox_backend,
+                                    "integrity_contract": self.integrity_contract,
+                                    "evidence_directory": self.evidence_directory})
+            if self.sandbox_backend == "host" and self.mode != "mock":
+                self.rd_hud.console.print("[yellow]Execution policy: host shell explicitly selected; filesystem/network isolation disabled.[/]")
             if self._run_state_path is not None:
                 RunStateStore.save(
                     self._run_state_path,
@@ -710,6 +772,9 @@ class HybridCoordinator:
                 default_command_timeout=None,
                 default_idle_timeout=tool_idle_timeout if tool_idle_timeout > 0 else None,
                 execution_control=self.execution_control,
+                sandbox_backend=self.sandbox_backend,
+                sandbox_image=self.sandbox_image,
+                max_file_size_bytes=self.sandbox_max_file_mb * 1024 * 1024,
             )
             loop = SelfCorrectionLoop(
                 tool_suite=tool_suite,
@@ -719,11 +784,18 @@ class HybridCoordinator:
                 event_listener=self._rd_event_listener,
                 execution_control=self.execution_control,
                 replanner=self._replan_rd_subtask,
+                acceptance_gate=(lambda task: self.integrity_evaluator.evaluate_subtask(task, self.integrity_contract)) if self.integrity_evaluator else None,
             )
 
             # Step 4: Execute the full DAG in topological order.
             self.rd_hud.set_pipeline_status("EXECUTING")
             dag_result = loop.execute_dag(dag)
+            if dag_result.success and self.integrity_evaluator:
+                scientific_decision = self.integrity_evaluator.evaluate(self.integrity_contract)
+                self._rd_event_listener("final_integrity_decision", "", scientific_decision.to_dict())
+                if not scientific_decision.accepted:
+                    dag_result.success = False
+                    dag_result.metadata["integrity_failure"] = scientific_decision.to_dict()
 
             # Mock workers have no model usage counters; live Ollama turns
             # emit exact token counts incrementally through model_usage events.
@@ -747,6 +819,7 @@ class HybridCoordinator:
                 self.rd_hud.console.print(f"[yellow]R&D run paused: {stop.reason} ({e})[/]")
                 self._rd_event_listener("paused", "", {"reason": stop.reason, "error": str(e)})
             else:
+                fatal_error = True
                 self.rd_hud.set_pipeline_status("ERROR")
                 if not self.no_hud:
                     self.rd_hud.console.print(f"[bold red]R&D Pipeline Fatal Error: {e}[/]")
@@ -754,7 +827,8 @@ class HybridCoordinator:
         finally:
             elapsed = time.time() - start_time
             stop = self.execution_control.check()
-            final_status = "INTERRUPTED" if interrupted else ("PAUSED" if stop.stopped else "COMPLETE")
+            final_status = "INTERRUPTED" if interrupted else ("PAUSED" if stop.stopped else (
+                "ERROR" if fatal_error else ("COMPLETE" if dag_result is not None and dag_result.success else "FAILED")))
             self.rd_hud.set_pipeline_status(final_status)
             self.rd_hud.set_privacy_verified(privacy_passed)
             self._drain_planner_usage()
@@ -806,6 +880,13 @@ class HybridCoordinator:
             except Exception:
                 pass
         self._last_run_event = {"type": event_type, "subtask_id": subtask_id, "payload": payload}
+        if self._current_dag is not None:
+            if event_type == "integrity_decision":
+                self._current_dag.metadata.setdefault("integrity_by_task", {})[subtask_id] = payload
+            elif event_type == "final_integrity_decision":
+                self._current_dag.metadata["final_integrity"] = payload
+            elif event_type == "subtask_complete" and subtask_id in self._current_dag.tasks:
+                RunStateStore.record_completed(str(Path(self.workspace or Path.cwd()).resolve()), self._current_dag, subtask_id)
         if self._run_state_path is not None and self._current_dag is not None:
             try:
                 RunStateStore.save(

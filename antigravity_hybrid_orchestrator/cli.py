@@ -86,6 +86,14 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help="Local Ollama workforce model override (default: OLLAMA_MODEL env var or gemma4:12b)",
     )
+    parser.add_argument("--sandbox", choices=["docker", "host"], default="docker",
+                        help="Live workspace execution boundary (host is an explicit unsafe opt-out)")
+    parser.add_argument("--sandbox-image", default="antigravity-orion:local")
+    parser.add_argument("--sandbox-max-file-mb", type=int, default=16,
+                        help="Per-file limit; use 512 for large Orion numeric artifacts")
+    parser.add_argument("--study-profile", choices=['smoke','full'], default='full')
+    parser.add_argument("--integrity-contract", choices=["metrics-v1", "retrieval-v1", "orion-core-v1", "orion-study-v1"])
+    parser.add_argument("--evidence-dir", help="Trusted evidence directory outside candidate workspace")
     parser.add_argument("--max-runtime", type=float, default=None,
                         help="Optional run-wide time budget in seconds (default: unlimited)")
     parser.add_argument("--max-remote-tokens", type=int, default=None,
@@ -199,6 +207,9 @@ def main(argv: Optional[List[str]] = None) -> int:
     if args.retry_budget < 0:
         sys.stderr.write("error: --retry-budget must be non-negative\n")
         return 2
+    if args.sandbox_max_file_mb <= 0:
+        sys.stderr.write('error: --sandbox-max-file-mb must be positive\n')
+        return 2
     if args.replay_speed < 0:
         sys.stderr.write("error: --replay-speed must be non-negative\n")
         return 2
@@ -246,6 +257,12 @@ def main(argv: Optional[List[str]] = None) -> int:
         "tool_idle_timeout_s": args.tool_idle_timeout,
         "resume_run": args.resume,
         "record": not args.no_record,
+        "sandbox_backend": args.sandbox,
+        "sandbox_image": args.sandbox_image,
+        "integrity_contract": args.integrity_contract,
+        "evidence_directory": args.evidence_dir,
+        "sandbox_max_file_mb": args.sandbox_max_file_mb,
+        "study_profile": args.study_profile,
     }
 
 
