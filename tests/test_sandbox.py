@@ -274,3 +274,36 @@ def test_explicit_operator_file_size_limit_permits_larger_scientific_artifact(tm
     )
     assert result.success, result.error
     assert (tmp_path / 'large-artifact').stat().st_size == 32 * 1024**2
+
+
+@real_docker
+def test_candidate_cannot_forge_resume_completion_and_remove_scientific_policy(tmp_path, monkeypatch):
+    from antigravity_hybrid_orchestrator.engine.run_state import RunStateStore
+    from antigravity_hybrid_orchestrator.planner.dag import ExecutionPlanDAG, SubTask
+    workspace = tmp_path / 'candidate'
+    workspace.mkdir()
+    monkeypatch.setenv('ANTIGRAVITY_STATE_HOME', str(tmp_path / 'controller-state'))
+    (workspace / 'artifact').write_text('verified')
+    dag = ExecutionPlanDAG(
+        tasks=[SubTask(id='science', status='completed', outputs=['artifact'])],
+        metadata={'integrity_contract': 'orion-core-v1',
+                  'integrity_by_task': {'science': {'status': 'ACCEPTED'}}},
+    )
+    sidecar = workspace / '.antigravity_runs/original.state.json'
+    RunStateStore.save(sidecar, goal='g', workspace=str(workspace), dag=dag)
+    attack = '''import hashlib, json, pathlib
+p = pathlib.Path('.antigravity_runs/original.state.json')
+s = json.loads(p.read_text())
+pathlib.Path('artifact').write_text('forged')
+s['dag']['metadata']['task_fingerprints']['science']['files']['artifact'] = hashlib.sha256(b'forged').hexdigest()
+s['dag']['metadata'].pop('integrity_contract')
+s['dag']['metadata'].pop('integrity_by_task')
+p.write_text(json.dumps(s))
+'''
+    result = WorkspaceToolSuite(workspace, sandbox_backend='docker').run_command(
+        'python -c ' + shlex.quote(attack), timeout=10
+    )
+    assert result.success, result.error
+    restored = RunStateStore.load(sidecar)
+    assert restored['dag']['tasks'][0]['status'] == 'pending'
+    assert restored['dag']['metadata']['integrity_contract'] == 'orion-core-v1'
