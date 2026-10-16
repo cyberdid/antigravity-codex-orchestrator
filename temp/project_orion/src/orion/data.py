@@ -1,144 +1,63 @@
-"""
-Module for handling data generation and processing for the Orion project.
-"""
-from typing import List, Tuple, Optional, Any, Union
+"""Locally seeded synthetic unit vectors with known identities/domain/outliers."""
 from dataclasses import dataclass
 import numpy as np
-from .config import Difficulty
+from .config import SyntheticConfig
 
 @dataclass
 class DatasetResult:
     embeddings: np.ndarray
     labels: np.ndarray
-
-    def __iter__(self):
-        return iter((self.embeddings, self.labels))
-
-    def __getitem__(self, idx):
-        return (self.embeddings, self.labels)[idx]
-
-    def __len__(self):
-        return 2
+    outlier_mask: np.ndarray
+    domains: np.ndarray
+    def __iter__(self): return iter((self.embeddings,self.labels))
+    def __getitem__(self,idx): return (self.embeddings,self.labels)[idx]
+    def __len__(self): return 2
 
 class hybridmethod:
-    def __init__(self, func):
-        self.func = func
-    def __get__(self, instance, owner=None):
-        if instance is None:
-            return lambda *args, **kwargs: self.func(owner, *args, **kwargs)
-        return lambda *args, **kwargs: self.func(instance, *args, **kwargs)
+    def __init__(self,func): self.func=func
+    def __get__(self,instance,owner):
+        return lambda *args,**kwargs:self.func(owner if instance is None else instance,*args,**kwargs)
 
-class SyntheticEmbeddingGenerator:
-    """
-    A deterministic synthetic data generator for normalized 192-dimensional embeddings.
-    
-    Note: These are synthetic embeddings and do not represent validated properties 
-    of real speaker embeddings.
-    """
-    def __init__(
-        self,
-        num_entities: int = 10,
-        observations_per_entity: int = 100,
-        embedding_dim: int = 192,
-        variance: float = 0.1,
-        inter_entity_similarity: float = 0.5,
-        noise_level: float = 0.05,
-        unequal_populations: bool = False,
-        outliers_ratio: float = 0.05,
-        difficulty: Difficulty = Difficulty.MEDIUM,
-        seed: int = 42
-    ):
-        self.num_entities = num_entities
-        self.observations_per_entity = observations_per_entity
-        self.embedding_dim = embedding_dim
-        self.variance = variance
-        self.inter_entity_similarity = inter_entity_similarity
-        self.noise_level = noise_level
-        self.unequal_populations = unequal_populations
-        self.outliers_ratio = outliers_ratio
-        self.difficulty = difficulty
-        self.seed = seed
-        
-        np.random.seed(self.seed)
+def normalize(x):
+    x=np.asarray(x,dtype=float)
+    return x / np.maximum(np.linalg.norm(x,axis=1,keepdims=True),1e-15)
 
-    def _generate_base_embeddings(self) -> np.ndarray:
-        """Generate base embeddings for each entity."""
-        embeddings = np.random.randn(self.num_entities, self.embedding_dim)
-        
-        if self.inter_entity_similarity < 1.0:
-            mean_embedding = np.mean(embeddings, axis=0)
-            blend_factor = (1.0 - self.inter_entity_similarity)
-            embeddings = (1 - blend_factor) * embeddings + blend_factor * mean_embedding
-            
-        return embeddings
-
-    def _generate_data(self) -> Tuple[np.ndarray, np.ndarray]:
-        base_embeddings = self._generate_base_embeddings()
-        
-        difficulty_multipliers = {
-            Difficulty.EASY: 1.5,
-            Difficulty.MEDIUM: 1.0,
-            Difficulty.HARD: 0.7,
-            Difficulty.EXTREME: 0.4
-        }
-        
-        current_variance = self.variance * difficulty_multipliers.get(self.difficulty, 1.0)
-        
-        total_observations = 0
-        embeddings_list = []
-        labels_list = []
-        
-        population_weights = np.array([1.0] * self.num_entities)
-        if self.unequal_populations:
-            population_weights = np.random.dirichlet(np.ones(self.num_entities))
-
-        for i in range(self.num_entities):
-            count = self.observations_per_entity
-            if self.unequal_populations:
-                count = int(count * population_weights[i])
-            
-            if count == 0:
-                continue
-                
-            base = base_embeddings[i]
-            noise = np.random.randn(count, self.embedding_dim) * self.noise_level
-            variance_noise = np.random.randn(count, self.embedding_dim) * current_variance
-            
-            obs = base + noise + variance_noise
-            
-            norms = np.linalg.norm(obs, axis=1, keepdims=True)
-            norms = np.maximum(norms, 1e-12)
-            obs = obs / norms
-            
-            embeddings_list.append(obs)
-            labels_list.append(np.full(count, i))
-            total_observations += count
-
-        all_embeddings = np.vstack(embeddings_list)
-        all_labels = np.concatenate(labels_list)
-        
-        num_outliers = int(len(all_embeddings) * self.outliers_ratio)
-        if num_outliers > 0:
-            outlier_indices = np.random.choice(len(all_embeddings), num_outliers, replace=False)
-            outliers = np.random.randn(num_outliers, self.embedding_dim)
-            outliers /= np.maximum(np.linalg.norm(outliers, axis=1, keepdims=True), 1e-12)
-            all_embeddings[outlier_indices] = outliers
-            
-        return all_embeddings, all_labels
+class SyntheticEmbeddingGenerator(SyntheticConfig):
+    def _generate_data(self):
+        c=self
+        if min(c.num_entities,c.observations_per_entity,c.embedding_dim)<1:
+            raise ValueError('positive entity, observation and dimension counts required')
+        if not 0<=c.outliers_ratio<=1 or not 0<=c.inter_entity_similarity<=1:
+            raise ValueError('ratios must be in [0,1]')
+        if min(c.variance,c.noise_level,c.domain_shift)<0:
+            raise ValueError('noise and domain shift must be nonnegative')
+        rng=np.random.default_rng(c.seed)
+        means=normalize(rng.normal(size=(c.num_entities,c.embedding_dim)))
+        common=normalize(rng.normal(size=(1,c.embedding_dim)))
+        means=normalize(np.sqrt(1-c.inter_entity_similarity)*means+np.sqrt(c.inter_entity_similarity)*common)
+        n=c.num_entities*c.observations_per_entity
+        counts=np.full(c.num_entities,c.observations_per_entity)
+        if c.unequal_populations:
+            counts=1+rng.multinomial(n-c.num_entities,rng.dirichlet(np.ones(c.num_entities)))
+        labels=np.repeat(np.arange(c.num_entities),counts)
+        params=c.get_adjusted_params()
+        noise=rng.normal(size=(n,c.embedding_dim))
+        residual=rng.normal(size=(n,c.embedding_dim))
+        x=means[labels]+(params['variance']*noise+params['noise_level']*residual)/np.sqrt(c.embedding_dim)
+        domains=rng.integers(0,2,size=n)
+        shift=normalize(rng.normal(size=(1,c.embedding_dim)))[0]
+        x[domains==1]+=c.domain_shift*shift
+        x=normalize(x)
+        outlier_mask=np.zeros(n,dtype=bool)
+        outlier_mask[rng.choice(n,int(n*c.outliers_ratio),replace=False)]=True
+        labels[outlier_mask]=-1
+        x[outlier_mask]=normalize(rng.normal(size=(int(outlier_mask.sum()),c.embedding_dim)))
+        return DatasetResult(x,labels,outlier_mask,domains)
 
     @hybridmethod
-    def generate(self_or_cls, *args, **kwargs) -> DatasetResult:
-        """
-        Generate synthetic embeddings and labels.
-        Can be called as an instance method: gen.generate()
-        or as a class method: SyntheticEmbeddingGenerator.generate(seed=..., dimension=...)
-        """
-        if isinstance(self_or_cls, type):
-            seed = kwargs.pop("seed", 42)
-            dim = kwargs.pop("dimension", kwargs.pop("embedding_dim", 192))
-            instance = self_or_cls(seed=seed, embedding_dim=dim, **kwargs)
-            embs, labs = instance._generate_data()
-            return DatasetResult(embeddings=embs, labels=labs)
-        else:
-            embs, labs = self_or_cls._generate_data()
-            return DatasetResult(embeddings=embs, labels=labs)
+    def generate(self_or_cls,**kwargs):
+        if isinstance(self_or_cls,type):
+            if 'dimension' in kwargs: kwargs['embedding_dim']=kwargs.pop('dimension')
+            return self_or_cls(**kwargs)._generate_data()
+        if kwargs: raise TypeError('instance generate accepts no overrides')
+        return self_or_cls._generate_data()

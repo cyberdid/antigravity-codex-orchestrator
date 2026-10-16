@@ -1,37 +1,19 @@
 {
-  "development": {
-    "seeds": [1, 42, 1024],
-    "difficulty_coverage": [
-      "easy",
-      "medium",
-      "hard"
-    ],
-    "data_factors": [
-      "context_length",
-      "instruction_complexity",
-      "domain_specificity"
-    ],
-    "methods": [
-      "greedy",
-      "beam_search",
-      "mcts"
-    ],
-    "tuning_parameters": {
-      "beam_size": {
-        "range": [1, 10],
-        "type": "integer"
-      },
-      "temperature": {
-        "range": [0.1, 1.0],
-        "type": "float"
-      },
-      "top_p": {
-        "range": [0.8, 0.95],
-        "type": "float"
-      }
-    },
-    "selection_strategy": {
-      "contamination_vs_coverage": "Prioritize coverage over contamination in development to ensure robust performance across all difficulty levels before final evaluation."
-    }
+  "development_seeds": [1, 42, 1024],
+  "evaluation_seeds": [55, 99, 2048],
+  "generator": {
+    "embedding_dim": 192, "num_entities": 10, "observations_per_entity": 30,
+    "variance": 0.5, "noise_level": 0.15, "inter_entity_similarity": 0.55,
+    "difficulty": "hard", "unequal_populations": true
+  },
+  "scenarios": [
+    {"outliers_ratio": 0.05, "domain_shift": 0.0},
+    {"outliers_ratio": 0.2, "domain_shift": 0.35}
+  ],
+  "threshold_grid": [0.25, 0.4, 0.6, 0.8],
+  "maximum_development_fdp": 0.01,
+  "sensitivity_grid": {
+    "merge_threshold": [0.25, 0.5, 0.8],
+    "domain_shift": [0.0, 0.25, 0.5]
   }
 }

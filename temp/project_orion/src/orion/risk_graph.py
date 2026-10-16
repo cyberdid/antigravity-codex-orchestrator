@@ -1,194 +1,93 @@
-"""
-Risk-Aware Graph Clustering Module.
+"""Experimental conservative mutual-neighbor merging heuristic.
 
-This module implements an experimental graph clustering algorithm designed for 
-scenarios where the cost of a false positive (incorrectly merging two distinct 
-entities) is high. It incorporates:
-1. Adaptive Neighborhoods: Dynamic expansion of the local search space.
-2. Reciprocal Consistency: Ensuring mutual agreement between neighbors.
-3. Local Similarity Calibration: Adjusting thresholds based on local density.
-4. Cluster Cohesion Constraints: Ensuring the resulting cluster is dense.
-5. Explicit Abstention: Refusing to merge if confidence is below a threshold.
+Canonical components use union-find. Candidate edges are sparse. Local score
+thresholds are heuristics, not calibrated probabilities. Complete-link cohesion
+checks every cross-component pair before merging. Unresolved singletons abstain.
 """
-
-import numpy as np
-from typing import List, Dict, Optional, Tuple, Any, Union
 from dataclasses import dataclass
+import numpy as np
+from .baselines import observations,knn_without_self
+from .data import normalize
 
 @dataclass
 class ClusteringConfig:
-    """Configuration for the Risk-Aware Graph Clustering."""
-    # Neighborhood & Expansion
-    max_neighbors: int = 50
-    expansion_factor: float = 1.2
-    
-    # Consistency & Calibration
-    reciprocal_threshold: float = 0.8
-    calibration_factor: float = 1.1
-    
-    # Risk & Abstention
-    abstention_threshold: float = 0.7
-    cohesion_threshold: float = 0.6
-    
-    # Toggleable Components (for ablation studies)
-    use_adaptive_neighborhood: bool = True
-    use_reciprocal_consistency: bool = True
-    use_local_calibration: bool = True
-    use_cohesion_constraint: bool = True
+    max_neighbors: int=20
+    expansion_factor: float=1.2
+    reciprocal_threshold: float=.8
+    calibration_factor: float=1.1
+    abstention_threshold: float=.7
+    cohesion_threshold: float=.6
+    use_adaptive_neighborhood: bool=True
+    use_reciprocal_consistency: bool=True
+    use_local_calibration: bool=True
+    use_cohesion_constraint: bool=True
+    use_abstention: bool=True
 
 class RiskGraphClusterer:
-    def __init__(self, config: Optional[ClusteringConfig] = None, **kwargs):
-        if config is not None:
-            self.config = config
-        elif kwargs:
-            valid_keys = {
-                "max_neighbors", "expansion_factor", "reciprocal_threshold",
-                "calibration_factor", "abstention_threshold", "cohesion_threshold",
-                "use_adaptive_neighborhood", "use_reciprocal_consistency",
-                "use_local_calibration", "use_cohesion_constraint"
-            }
-            cfg_kwargs = {k: v for k, v in kwargs.items() if k in valid_keys}
-            self.config = ClusteringConfig(**cfg_kwargs)
-        else:
-            self.config = ClusteringConfig()
+    def __init__(self,config=None,**kwargs):
+        self.config=config if config is not None else ClusteringConfig(**kwargs)
+        if kwargs and config is not None: raise ValueError('pass config or keyword parameters')
+        if self.config.max_neighbors<1 or self.config.expansion_factor<=0 or self.config.calibration_factor<=0:
+            raise ValueError('positive neighborhood and calibration parameters required')
 
-    def _get_neighbors(self, 
-                       node_idx: int, 
-                       similarity_matrix: np.ndarray, 
-                       top_k: int) -> List[int]:
-        """Retrieve top-k neighbors for a given node."""
-        top_k = min(top_k, similarity_matrix.shape[1])
-        indices = np.argsort(similarity_matrix[node_idx])[-top_k:][::-1]
-        return list(indices)
-
-    def _is_reciprocally_consistent(self, 
-                                   node_a: int, 
-                                   node_b: int, 
-                                   similarity_matrix: np.ndarray) -> bool:
-        """
-        Checks if both nodes consider each other highly similar.
-        Experimental: Ensures mutual agreement before considering a merge.
-        """
-        if not self.config.use_reciprocal_consistency:
-            return True
-        
-        score_a_to_b = similarity_matrix[node_a, node_b]
-        score_b_to_a = similarity_matrix[node_b, node_a]
-        
-        return score_a_to_b >= self.config.reciprocal_threshold and \
-               score_b_to_a >= self.config.reciprocal_threshold
-
-    def _is_locally_calibrated(self, 
-                                 node_a: int, 
-                                 node_b: int, 
-                                 similarity_matrix: np.ndarray) -> bool:
-        """
-        Adjusts the required similarity based on local density.
-        If a neighborhood is sparse, the threshold is stricter.
-        """
-        if not self.config.use_local_calibration:
-            return True
-            
-        row = similarity_matrix[node_a]
-        avg_sim = np.mean(row[row > 0]) if np.any(row > 0) else 0
-        return similarity_matrix[node_a, node_b] > (avg_sim * self.config.calibration_factor)
-
-    def _has_cohesion(self, 
-                      cluster_indices: List[int], 
-                      similarity_matrix: np.ndarray) -> bool:
-        """
-        Ensures the cluster is internally dense.
-        """
-        if not self.config.use_cohesion_constraint or len(cluster_indices) < 2:
-            return True
-            
-        sub_matrix = similarity_matrix[np.ix_(cluster_indices, cluster_indices)]
-        mask = np.eye(len(cluster_indices), dtype=bool)
-        mean_sim = np.mean(sub_matrix[~mask])
-        return mean_sim >= self.config.cohesion_threshold
-
-    def cluster(self, 
-                data_or_indices: Any, 
-                similarity_matrix: Optional[np.ndarray] = None,
-                level: float = 0.0,
-                **kwargs) -> Union[np.ndarray, Dict[int, int]]:
-        """
-        Perform risk-aware clustering.
-        
-        Supports both:
-          cluster(data_array_or_DatasetResult, level=0.0) -> np.ndarray
-          cluster(node_indices, similarity_matrix) -> Dict[int, int]
-        """
-        is_array_mode = False
+    def cluster(self,data_or_indices,similarity_matrix=None,level=0.,**kwargs):
+        c=self.config
+        # level is retained only for API compatibility: ground-truth outlier
+        # fraction must never change decision thresholds on held-out data.
         if similarity_matrix is None:
-            is_array_mode = True
-            arr = data_or_indices.embeddings if hasattr(data_or_indices, 'embeddings') else (
-                data_or_indices[0] if isinstance(data_or_indices, (tuple, list)) else data_or_indices
-            )
-            arr = np.asarray(arr)
-            n_samples = len(arr)
-            similarity_matrix = np.dot(arr, arr.T)
-            node_indices = list(range(n_samples))
+            x=normalize(observations(data_or_indices)); n=len(x)
+            ids,ds=knn_without_self(x,c.max_neighbors)
+            scores=1-ds/2
+            external_ids=None
         else:
-            node_indices = list(data_or_indices)
-
-        effective_abstention = self.config.abstention_threshold
-        if level > 0:
-            effective_abstention = max(0.4, self.config.abstention_threshold - (level * 0.2))
-
-        assignments = {}
-        processed = set()
-
-        for i in node_indices:
-            if i in processed:
-                continue
-            
-            # 1. Adaptive Neighborhood Selection
-            neighbors = self._get_neighbors(i, similarity_matrix, self.config.max_neighbors)
-            best_cluster = -1
-            
-            for j in neighbors:
-                if i == j or j in processed:
-                    continue
-                
-                # 2. Reciprocal Consistency
-                if not self._is_reciprocally_consistent(i, j, similarity_matrix):
-                    continue
-                
-                # 3. Local Calibration
-                if not self._is_locally_calibrated(i, j, similarity_matrix):
-                    continue
-                
-                # 4. Risk-Aware Abstention
-                if similarity_matrix[i, j] < effective_abstention:
-                    continue
-                
-                # 5. Cohesion Check
-                if self._has_cohesion([i, j], similarity_matrix):
-                    best_cluster = j
-                    break
-            
-            if best_cluster != -1:
-                assignments[i] = best_cluster
-                processed.add(i)
-            else:
-                # Abstain / singleton
-                assignments[i] = i
-                processed.add(i)
-
-        if is_array_mode:
-            return np.array([assignments[i] for i in node_indices])
-        return assignments
-
-# Example usage/test logic
-if __name__ == "__main__":
-    # Mock data
-    sim_matrix = np.array([
-        [1.0, 0.9, 0.1],
-        [0.9, 1.0, 0.1],
-        [0.1, 0.1, 1.0]
-    ])
-    config = ClusteringConfig()
-    clusterer = RiskGraphClusterer(config)
-    results = clusterer.cluster(list(range(3)), sim_matrix)
-    print(f"Assignments: {results}")
+            external_ids=list(data_or_indices); s=np.asarray(similarity_matrix,dtype=float)
+            if s.shape!=(len(external_ids),len(external_ids)) or not np.allclose(s,s.T):
+                raise ValueError('similarity matrix must be symmetric and match node count')
+            n=len(s); k=min(c.max_neighbors,max(0,n-1))
+            ids=np.empty((n,k),dtype=int); scores=np.empty((n,k))
+            for i in range(n):
+                candidates=np.array([j for j in range(n) if j!=i])
+                order=np.lexsort((candidates,-s[i,candidates]))[:k]
+                ids[i]=candidates[order]; scores[i]=s[i,ids[i]]
+        neighbors=[]
+        local=np.full(n,-1.)
+        for row,sim in zip(ids,scores):
+            if len(sim):
+                # Expand within a distance multiple of the best neighbor, up
+                # to max_neighbors. No hidden full pairwise similarity matrix.
+                keep=(1-sim)<=max(1e-12,(1-sim[0])*c.expansion_factor) if c.use_adaptive_neighborhood else np.ones(len(sim),bool)
+                neighbors.append(set(row[keep]))
+            else: neighbors.append(set())
+        for i,sim in enumerate(scores):
+            if len(sim): local[i]=float(np.mean(sim)-np.std(sim)/c.calibration_factor)
+        edges=[]
+        for i,(row,sim) in enumerate(zip(ids,scores)):
+            for j,score in zip(row,sim):
+                if j not in neighbors[i]: continue
+                if c.use_reciprocal_consistency and i not in neighbors[j]: continue
+                if score<c.reciprocal_threshold or score<c.abstention_threshold: continue
+                if c.use_local_calibration and score<max(local[i],local[j]): continue
+                edges.append((-float(score),min(i,int(j)),max(i,int(j))))
+        edges=sorted(set(edges))
+        parent=list(range(n)); members={i:[i] for i in range(n)}
+        def root(i):
+            while parent[i]!=i:
+                parent[i]=parent[parent[i]]; i=parent[i]
+            return i
+        def cohesive(a,b):
+            if not c.use_cohesion_constraint: return True
+            if similarity_matrix is not None:
+                return all(s[i,j]>=c.cohesion_threshold for i in members[a] for j in members[b])
+            # A row at a time prevents allocation of a large cluster square.
+            return all(np.min(x[members[b]]@x[i])>=c.cohesion_threshold for i in members[a])
+        for _,i,j in edges:
+            a,b=root(i),root(j)
+            if a==b or not cohesive(a,b): continue
+            a,b=min(a,b),max(a,b)
+            parent[b]=a; members[a].extend(members.pop(b))
+        labels=np.full(n,-1,dtype=int); next_id=0
+        for a,rows in sorted(members.items()):
+            if c.use_abstention and len(rows)==1: continue
+            labels[rows]=next_id; next_id+=1
+        if external_ids is not None: return dict(zip(external_ids,map(int,labels)))
+        return labels
