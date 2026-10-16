@@ -1,0 +1,272 @@
+[
+  {
+    "seed": 1,
+    "difficulty": "easy",
+    "method": "greedy",
+    "success": true,
+    "error_message": null,
+    "latency": 0.758384796150766,
+    "score": 0.9237168684686163,
+    "timestamp": 1792154570.7028136
+  },
+  {
+    "seed": 1,
+    "difficulty": "easy",
+    "method": "beam_search",
+    "success": true,
+    "error_message": null,
+    "latency": 3.842495632985409,
+    "score": 0.6275345128697108,
+    "timestamp": 1792154570.7028215
+  },
+  {
+    "seed": 1,
+    "difficulty": "easy",
+    "method": "mcts",
+    "success": true,
+    "error_message": null,
+    "latency": 2.527631926750511,
+    "score": 0.724745532394369,
+    "timestamp": 1792154570.7028267
+  },
+  {
+    "seed": 1,
+    "difficulty": "medium",
+    "method": "greedy",
+    "success": true,
+    "error_message": null,
+    "latency": 3.292805566341539,
+    "score": 0.8943616755677566,
+    "timestamp": 1792154570.7028286
+  },
+  {
+    "seed": 1,
+    "difficulty": "medium",
+    "method": "beam_search",
+    "success": true,
+    "error_message": null,
+    "latency": 0.559911975193751,
+    "score": 0.5141737382610032,
+    "timestamp": 1792154570.7028298
+  },
+  {
+    "seed": 1,
+    "difficulty": "medium",
+    "method": "mcts",
+    "success": true,
+    "error_message": null,
+    "latency": 4.1952490092073615,
+    "score": 0.7163835339525266,
+    "timestamp": 1792154570.7028313
+  },
+  {
+    "seed": 1,
+    "difficulty": "hard",
+    "method": "greedy",
+    "success": false,
+    "error_message": "Timeout during greedy search on hard task",
+    "latency": 0.0,
+    "score": 0.0,
+    "timestamp": 1792154570.7028332
+  },
+  {
+    "seed": 1,
+    "difficulty": "hard",
+    "method": "beam_search",
+    "success": true,
+    "error_message": null,
+    "latency": 3.835172404043916,
+    "score": 0.5010530266755553,
+    "timestamp": 1792154570.7028346
+  },
+  {
+    "seed": 1,
+    "difficulty": "hard",
+    "method": "mcts",
+    "success": true,
+    "error_message": null,
+    "latency": 2.2823972508685273,
+    "score": 0.8607700161703913,
+    "timestamp": 1792154570.7028358
+  },
+  {
+    "seed": 42,
+    "difficulty": "easy",
+    "method": "greedy",
+    "success": true,
+    "error_message": null,
+    "latency": 3.2331913124436307,
+    "score": 0.5125053776113335,
+    "timestamp": 1792154570.7028458
+  },
+  {
+    "seed": 42,
+    "difficulty": "easy",
+    "method": "beam_search",
+    "success": true,
+    "error_message": null,
+    "latency": 1.4476436600086846,
+    "score": 0.6116053690744114,
+    "timestamp": 1792154570.7028468
+  },
+  {
+    "seed": 42,
+    "difficulty": "easy",
+    "method": "mcts",
+    "success": true,
+    "error_message": null,
+    "latency": 3.708708949403661,
+    "score": 0.8383497437114557,
+    "timestamp": 1792154570.7028475
+  },
+  {
+    "seed": 42,
+    "difficulty": "medium",
+    "method": "greedy",
+    "success": true,
+    "error_message": null,
+    "latency": 4.471679881753743,
+    "score": 0.543469416314708,
+    "timestamp": 1792154570.7028484
+  },
+  {
+    "seed": 42,
+    "difficulty": "medium",
+    "method": "beam_search",
+    "success": true,
+    "error_message": null,
+    "latency": 2.1674169164578254,
+    "score": 0.5148986097190351,
+    "timestamp": 1792154570.7028494
+  },
+  {
+    "seed": 42,
+    "difficulty": "medium",
+    "method": "mcts",
+    "success": true,
+    "error_message": null,
+    "latency": 1.1713260765376567,
+    "score": 0.7526776440516811,
+    "timestamp": 1792154570.70285
+  },
+  {
+    "seed": 42,
+    "difficulty": "hard",
+    "method": "greedy",
+    "success": true,
+    "error_message": null,
+    "latency": 0.23002625145093178,
+    "score": 0.5994188253433242,
+    "timestamp": 1792154570.7028513
+  },
+  {
+    "seed": 42,
+    "difficulty": "hard",
+    "method": "beam_search",
+    "success": true,
+    "error_message": null,
+    "latency": 3.284433745119664,
+    "score": 0.7724707403016083,
+    "timestamp": 1792154570.702852
+  },
+  {
+    "seed": 42,
+    "difficulty": "hard",
+    "method": "mcts",
+    "success": true,
+    "error_message": null,
+    "latency": 1.180159047999414,
+    "score": 0.7946328419379544,
+    "timestamp": 1792154570.7028532
+  },
+  {
+    "seed": 1024,
+    "difficulty": "easy",
+    "method": "greedy",
+    "success": true,
+    "error_message": null,
+    "latency": 4.005552700115418,
+    "score": 0.741749435103978,
+    "timestamp": 1792154570.702862
+  },
+  {
+    "seed": 1024,
+    "difficulty": "easy",
+    "method": "beam_search",
+    "success": true,
+    "error_message": null,
+    "latency": 2.0081962852459982,
+    "score": 0.9147049441658992,
+    "timestamp": 1792154570.7028635
+  },
+  {
+    "seed": 1024,
+    "difficulty": "easy",
+    "method": "mcts",
+    "success": true,
+    "error_message": null,
+    "latency": 4.365123740188271,
+    "score": 0.5502175481808214,
+    "timestamp": 1792154570.7028642
+  },
+  {
+    "seed": 1024,
+    "difficulty": "medium",
+    "method": "greedy",
+    "success": true,
+    "error_message": null,
+    "latency": 2.6131086788542595,
+    "score": 0.9783535331784616,
+    "timestamp": 1792154570.7028682
+  },
+  {
+    "seed": 1024,
+    "difficulty": "medium",
+    "method": "beam_search",
+    "success": true,
+    "error_message": null,
+    "latency": 3.636915786970812,
+    "score": 0.8579844808907292,
+    "timestamp": 1792154570.7028692
+  },
+  {
+    "seed": 1024,
+    "difficulty": "medium",
+    "method": "mcts",
+    "success": true,
+    "error_message": null,
+    "latency": 2.003156540474604,
+    "score": 0.9910771813095252,
+    "timestamp": 1792154570.7028701
+  },
+  {
+    "seed": 1024,
+    "difficulty": "hard",
+    "method": "greedy",
+    "success": true,
+    "error_message": null,
+    "latency": 3.5860499154764933,
+    "score": 0.9368491550540703,
+    "timestamp": 1792154570.702871
+  },
+  {
+    "seed": 1024,
+    "difficulty": "hard",
+    "method": "beam_search",
+    "success": true,
+    "error_message": null,
+    "latency": 4.008489368175505,
+    "score": 0.5511453017951161,
+    "timestamp": 1792154570.702872
+  },
+  {
+    "seed": 1024,
+    "difficulty": "hard",
+    "method": "mcts",
+    "success": true,
+    "error_message": null,
+    "latency": 0.8598180050956005,
+    "score": 0.7369754144780895,
+    "timestamp": 1792154570.7028728
+  }
+]

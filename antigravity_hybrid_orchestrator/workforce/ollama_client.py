@@ -1,6 +1,7 @@
 """Ollama HTTP streaming client for on-device Gemma 4 12B model."""
 
 import json
+import os
 import time
 from typing import Any, Dict, Generator, List, Optional, Tuple
 
@@ -30,12 +31,13 @@ class WorkforceClient:
     def __init__(
         self,
         base_url: str = DEFAULT_BASE_URL,
-        model: str = DEFAULT_MODEL,
+        model: Optional[str] = None,
         timeout: Optional[float] = None,
     ) -> None:
         self.base_url = base_url.rstrip("/")
-        self.model = model
+        self.model = (model or os.environ.get("OLLAMA_MODEL", "")).strip() or self.DEFAULT_MODEL
         self.timeout = timeout if timeout is not None else ollama_timeout_s()
+
 
     def check_health(self) -> bool:
         """Check if local Ollama daemon is reachable."""

@@ -75,6 +75,8 @@ class HybridCoordinator:
         tool_idle_timeout_s: float = 300,
         resume_run: Optional[str] = None,
         architect_backend: str = "haiku",
+        architect_model: Optional[str] = None,
+        worker_model: Optional[str] = None,
     ) -> None:
         self.mode = mode.lower()
         self.target = target
@@ -94,6 +96,8 @@ class HybridCoordinator:
         ))
         self.record = record
         self.architect_backend = architect_backend
+        self.architect_model = architect_model
+        self.worker_model = worker_model
         self.resume_run = resume_run
         self._run_state_path: Optional[Path] = None
         self._current_dag = None
@@ -142,8 +146,9 @@ class HybridCoordinator:
                 timeout=runtime_budget,
                 execution_control=self.execution_control,
                 backend=self.architect_backend,
+                model=self.architect_model,
             )
-            self.workforce_client = WorkforceClient()
+            self.workforce_client = WorkforceClient(model=self.worker_model)
             self.builder_a = BuilderAAgent(self.workforce_client)
             self.builder_b = BuilderBAgent(self.workforce_client)
             self.blind_critic = BlindCriticAgent(self.workforce_client)
@@ -169,11 +174,14 @@ class HybridCoordinator:
                 timeout=runtime_budget,
                 execution_control=self.execution_control,
                 backend=self.architect_backend,
+                model=self.architect_model,
             )
             self.worker = AutonomousWorker(
+                model_name=self.worker_model,
                 event_callback=self._on_worker_event,
                 execution_control=self.execution_control,
             )
+
 
     def _on_worker_event(self, event_type: str, subtask_id: str, payload: Dict) -> None:
         """Forwards low-level worker tool/thought events to the R&D HUD and recorder.

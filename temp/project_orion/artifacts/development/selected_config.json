@@ -1,0 +1,5 @@
+{
+  "best_method": "mcts",
+  "selection_criteria": "Highest average score among successful runs",
+  "raw_results_count": 27
+}

@@ -1,0 +1,33 @@
+[toolchain]
+language = "python"
+python-version = ">=3.10"
+
+[project]
+name = "synthetic-data-framework"
+version = "0.1.0"
+description = "A framework for generating and analyzing synthetic datasets."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy",
+    "scipy",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.pytest.coverage]
+report = "term"
+```toml
+# Configuration Metadata
+[metadata]
+project_name = "synthetic-data-framework"
+version = "0.1.0"
+author = "Autonomous R&D"
+license = "MIT"
+
+[runtime]
+deterministic_seed = true
+max_memory_mb = 8192
+allow_gpu = false
+```

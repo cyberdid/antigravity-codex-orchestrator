@@ -387,6 +387,153 @@ class WorkspaceToolSuite:
             },
         )
 
+    def list_dir(self, path: str = ".") -> ToolResult:
+        """Lists entries in a directory within the workspace."""
+        try:
+            target = self._resolve_path(path)
+        except (PermissionError, ValueError) as exc:
+            return ToolResult(
+                success=False,
+                output="",
+                error=f"Permission denied: {exc}" if isinstance(exc, PermissionError) else f"Invalid path: {exc}",
+                metadata={"path": str(path)},
+            )
+
+        if not target.exists():
+            return ToolResult(
+                success=False,
+                output="",
+                error=f"Directory not found: '{path}'",
+                metadata={"path": str(path)},
+            )
+        if not target.is_dir():
+            return ToolResult(
+                success=False,
+                output="",
+                error=f"Path is not a directory: '{path}'",
+                metadata={"path": str(path)},
+            )
+
+        try:
+            items = sorted(target.iterdir(), key=lambda p: (not p.is_dir(), p.name.lower()))
+            entries = [f"{item.name}/" if item.is_dir() else item.name for item in items]
+        except OSError as exc:
+            return ToolResult(
+                success=False,
+                output="",
+                error=f"Failed to list directory '{path}': {exc}",
+                metadata={"path": str(path)},
+            )
+
+        output = "\n".join(entries) if entries else "(empty directory)"
+        return ToolResult(
+            success=True,
+            output=output,
+            error=None,
+            metadata={
+                "path": str(path),
+                "entries": entries,
+                "count": len(entries),
+            },
+        )
+
+    def patch_file(
+        self,
+        path: str,
+        target_content: str,
+        replacement_content: str,
+        allow_multiple: bool = False,
+    ) -> ToolResult:
+        """Atomically replaces target_content with replacement_content in an existing workspace file."""
+        try:
+            target = self._resolve_path(path)
+        except (PermissionError, ValueError) as exc:
+            return ToolResult(
+                success=False,
+                output="",
+                error=f"Permission denied: {exc}" if isinstance(exc, PermissionError) else f"Invalid path: {exc}",
+                metadata={"path": str(path)},
+            )
+
+        try:
+            rel_parts = target.relative_to(self.workspace_root).parts
+            if any(p == ".git" or p.startswith(".git") for p in rel_parts):
+                return ToolResult(
+                    success=False,
+                    output="",
+                    error=f"Permission denied: Writing to .git directory is prohibited: '{path}'",
+                    metadata={"path": str(path)},
+                )
+        except ValueError:
+            return ToolResult(
+                success=False,
+                output="",
+                error="Path traversal check failed.",
+                metadata={"path": str(path)},
+            )
+
+        if not target_content:
+            return ToolResult(
+                success=False,
+                output="",
+                error="target_content cannot be empty.",
+                metadata={"path": str(path)},
+            )
+
+        read_res = self.read_file(path, start_line=1, end_line=10_000_000)
+        if not read_res.success:
+            return read_res
+
+        try:
+            full_text = target.read_text(encoding="utf-8")
+        except Exception as exc:
+            return ToolResult(
+                success=False,
+                output="",
+                error=f"Failed to read file '{path}' for patching: {exc}",
+                metadata={"path": str(path)},
+            )
+
+        occurrences = full_text.count(target_content)
+        if occurrences == 0:
+            return ToolResult(
+                success=False,
+                output="",
+                error=f"Target content not found in '{path}'.",
+                metadata={"path": str(path), "occurrences": 0},
+            )
+        if occurrences > 1 and not allow_multiple:
+            return ToolResult(
+                success=False,
+                output="",
+                error=(
+                    f"Target content matched {occurrences} times in '{path}'; "
+                    "set allow_multiple=True or provide more surrounding context."
+                ),
+                metadata={"path": str(path), "occurrences": occurrences},
+            )
+
+        replaced_count = occurrences if allow_multiple else 1
+        new_text = (
+            full_text.replace(target_content, replacement_content)
+            if allow_multiple
+            else full_text.replace(target_content, replacement_content, 1)
+        )
+        write_res = self.write_file(path, new_text)
+        if not write_res.success:
+            return write_res
+
+        return ToolResult(
+            success=True,
+            output=f"Successfully patched {replaced_count} occurrence(s) in '{path}'",
+            error=None,
+            metadata={
+                "path": str(path),
+                "replacements": replaced_count,
+                "bytes_written": write_res.metadata.get("bytes_written", 0),
+            },
+        )
+
     def run_command(
         self,
         command: str,
@@ -739,6 +886,46 @@ class WorkspaceToolSuite:
                 },
             },
             {
+                "name": "patch_file",
+                "description": "Replace an exact substring in an existing file without rewriting the entire file.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "path": {
+                            "type": "string",
+                            "description": "Relative path of the existing file to patch within the workspace.",
+                        },
+                        "target_content": {
+                            "type": "string",
+                            "description": "Exact existing text to search for and replace.",
+                        },
+                        "replacement_content": {
+                            "type": "string",
+                            "description": "New text to replace target_content with.",
+                        },
+                        "allow_multiple": {
+                            "type": "boolean",
+                            "description": "If true, replace all occurrences; if false (default), require a unique match.",
+                        },
+                    },
+                    "required": ["path", "target_content", "replacement_content"],
+                },
+            },
+            {
+                "name": "list_dir",
+                "description": "List immediate files and subdirectories inside a workspace directory.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "path": {
+                            "type": "string",
+                            "description": "Relative directory path within the workspace (defaults to '.').",
+                        },
+                    },
+                    "required": [],
+                },
+            },
+            {
                 "name": "run_command",
                 "description": "Execute a bash shell command inside the workspace within a process group.",
                 "parameters": {
@@ -807,6 +994,8 @@ class WorkspaceToolSuite:
         tool_map = {
             "read_file": self.read_file,
             "write_file": self.write_file,
+            "patch_file": self.patch_file,
+            "list_dir": self.list_dir,
             "run_command": self.run_command,
             "git_status": self.git_status,
             "git_diff": self.git_diff,

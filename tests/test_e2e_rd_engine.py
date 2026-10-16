@@ -252,3 +252,43 @@ def test_rd_engine_workspace_created_if_missing(tmp_path: Path):
     rc = coord.run()
     assert rc == 0
     assert target.exists()
+
+
+@pytest.mark.parametrize("goal_id", [
+    "E01-matrix",
+    "E02-cli-flags",
+    "E03-lru-cache",
+    "E04-token-verify",
+    "E05-sqlite-repo",
+    "E06-inventory-cli",
+])
+def test_eval_suite_goals_pass_ground_truth_in_mock_mode(tmp_path: Path, goal_id: str):
+    """All 6 eval_suite goals produce passing ground-truth implementations in mock mode."""
+    import subprocess
+    import sys
+    from tools.eval_suite import GOALS
+
+    spec = GOALS[goal_id]
+    ws = tmp_path / goal_id
+    ws.mkdir()
+
+    coord = HybridCoordinator(
+        mode="mock",
+        goal=spec["goal"],
+        workspace=str(ws),
+        no_hud=True,
+    )
+    rc = coord.run()
+    assert rc == 0
+
+    truth_path = ws / "_ground_truth_check.py"
+    truth_path.write_text(spec["truth"], encoding="utf-8")
+    truth_proc = subprocess.run(
+        [sys.executable, str(truth_path)],
+        cwd=str(ws),
+        capture_output=True,
+        text=True,
+        timeout=30,
+    )
+    assert truth_proc.returncode == 0, f"{goal_id} failed: {truth_proc.stdout}\n{truth_proc.stderr}"
+

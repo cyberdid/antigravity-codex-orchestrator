@@ -451,3 +451,109 @@ def test_path_sanitizer_null_bytes_and_empty_paths(workspace: WorkspaceToolSuite
     read_null = workspace.read_file("file\0.txt")
     assert read_null.success is False
     assert "Invalid path" in (read_null.error or "")
+
+
+# ==============================================================================
+# TIER 3: LIST_DIR AND PATCH_FILE TOOLS
+# ==============================================================================
+
+def test_list_dir_lists_files_and_directories(workspace: WorkspaceToolSuite, tmp_path: Path):
+    """Lists directory entries with trailing slash for subdirectories."""
+    (tmp_path / "alpha.py").write_text("x = 1\n", encoding="utf-8")
+    (tmp_path / "subdir").mkdir()
+    (tmp_path / "subdir" / "nested.txt").write_text("hello", encoding="utf-8")
+
+    res = workspace.list_dir(".")
+    assert res.success is True
+    assert "alpha.py" in res.metadata["entries"]
+    assert "subdir/" in res.metadata["entries"]
+    assert "alpha.py" in res.output
+    assert "subdir/" in res.output
+
+    sub_res = workspace.list_dir("subdir")
+    assert sub_res.success is True
+    assert sub_res.metadata["entries"] == ["nested.txt"]
+
+
+def test_list_dir_rejects_escape_and_non_directory(workspace: WorkspaceToolSuite, tmp_path: Path):
+    """Blocks path traversal and reports error when path is a file or missing."""
+    (tmp_path / "file.txt").write_text("hi", encoding="utf-8")
+
+    escape_res = workspace.list_dir("../..")
+    assert escape_res.success is False
+    assert "Permission denied" in (escape_res.error or "")
+
+    file_res = workspace.list_dir("file.txt")
+    assert file_res.success is False
+    assert "not a directory" in (file_res.error or "").lower()
+
+    missing_res = workspace.list_dir("no_such_dir")
+    assert missing_res.success is False
+    assert "not found" in (missing_res.error or "").lower()
+
+
+def test_patch_file_replaces_unique_target(workspace: WorkspaceToolSuite, tmp_path: Path):
+    """Atomically patches an exact substring in an existing file."""
+    target = tmp_path / "app.py"
+    target.write_text("def greet():\n    return 'hello'\n", encoding="utf-8")
+
+    res = workspace.patch_file(
+        "app.py",
+        target_content="return 'hello'",
+        replacement_content="return 'world'",
+    )
+    assert res.success is True
+    assert target.read_text(encoding="utf-8") == "def greet():\n    return 'world'\n"
+    assert res.metadata["replacements"] == 1
+
+
+def test_patch_file_rejects_missing_or_ambiguous_target_and_git_dir(
+    workspace: WorkspaceToolSuite, tmp_path: Path
+):
+    """Rejects missing target, ambiguous multi-match when allow_multiple=False, and .git edits."""
+    target = tmp_path / "dup.py"
+    target.write_text("x = 1\nx = 1\n", encoding="utf-8")
+
+    missing = workspace.patch_file("dup.py", target_content="x = 2", replacement_content="x = 3")
+    assert missing.success is False
+    assert "not found" in (missing.error or "").lower()
+
+    ambiguous = workspace.patch_file("dup.py", target_content="x = 1", replacement_content="x = 9")
+    assert ambiguous.success is False
+    assert "2 times" in (ambiguous.error or "")
+
+    multi_ok = workspace.patch_file(
+        "dup.py", target_content="x = 1", replacement_content="x = 9", allow_multiple=True
+    )
+    assert multi_ok.success is True
+    assert target.read_text(encoding="utf-8") == "x = 9\nx = 9\n"
+
+    git_dir = tmp_path / ".git"
+    git_dir.mkdir()
+    (git_dir / "config").write_text("core", encoding="utf-8")
+    git_res = workspace.patch_file(".git/config", target_content="core", replacement_content="hack")
+    assert git_res.success is False
+    assert "Writing to .git directory is prohibited" in (git_res.error or "")
+
+
+def test_tool_definitions_and_execute_expose_list_dir_and_patch_file(
+    workspace: WorkspaceToolSuite, tmp_path: Path
+):
+    """Ensures get_tool_definitions and execute() include list_dir and patch_file."""
+    defs = workspace.get_tool_definitions()
+    names = {d["name"] for d in defs}
+    assert "list_dir" in names
+    assert "patch_file" in names
+
+    (tmp_path / "mod.py").write_text("VAL = 10\n", encoding="utf-8")
+    patch_res = workspace.execute(
+        "patch_file",
+        path="mod.py",
+        target_content="VAL = 10",
+        replacement_content="VAL = 20",
+    )
+    assert patch_res.success is True
+    list_res = workspace.execute("list_dir", path=".")
+    assert list_res.success is True
+    assert "mod.py" in list_res.output
+

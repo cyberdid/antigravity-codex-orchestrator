@@ -245,6 +245,7 @@ uv pip install -e .
 | :--- | :--- | :--- |
 | `--mode {live,mock}` | `live` | Режим роботи: `live` (реальні моделі) або `mock` (тестові фікстури) |
 | `--architect {haiku,luna,agy}` | `haiku` | Хмарний планувальник: `haiku` (`claude`), `luna` (`codex exec`), `agy` (`Antigravity`) |
+| `--worker-model MODEL` | `gemma4:12b` | Локальна модель Ollama для воркера (напр. `gemma4:12b`, `qwen3.5:27b-q4_K_M`) |
 | `--goal TEXT` | `None` | Опис R&D-задачі для побудови та виконання DAG |
 | `--workspace PATH` | поточна тека | Робоча директорія проєкту |
 | `--interactive` | `False` | Інтерактивний REPL-режим для виконання серії задач підряд |
@@ -264,6 +265,7 @@ uv pip install -e .
 ### Змінні середовища
 | Змінна | За замовчуванням | Призначення |
 | :--- | :--- | :--- |
+| `OLLAMA_MODEL` | `gemma4:12b` | Ідентифікатор локальної моделі Ollama (перевизначається `--worker-model`) |
 | `OLLAMA_NUM_CTX` | `16384` (мін. `2048`) | Розмір контекстного вікна, що явно передається в кожному запиті до Ollama |
 | `OLLAMA_TIMEOUT_S` | `900` | Таймаут HTTP-звернення до локального сервера Ollama |
 | `RD_MAX_REPAIR_ATTEMPTS` | `6` | Максимальна кількість спроб виправлення однієї підзадачі |
@@ -273,7 +275,7 @@ uv pip install -e .
 
 ## 8. Тестування та незалежна оцінка (`eval_suite.py`)
 
-Повний набір модульних та інтеграційних тестів (**693 тести**):
+Повний набір модульних та інтеграційних тестів (**712 тестів**):
 ```bash
 .venv/bin/pytest -q
 ```
@@ -282,4 +284,5 @@ uv pip install -e .
 ```bash
 .venv/bin/python tools/eval_suite.py --mode mock
 ```
+
 

@@ -1,0 +1,16 @@
+{
+  "evaluation": {
+    "seeds": [55, 99, 2048],
+    "fixed_parameters": {
+      "beam_size": 5,
+      "temperature": 0.7,
+      "top_p": 0.9
+    },
+    "analysis_metrics": {
+      "contamination_levels": [0.01, 0.05, 0.1, 0.2, 0.5],
+      "coverage_curve_reporting": true,
+      "h1_assessment": "Evaluate the impact of contamination on coverage across different difficulty levels using the fixed parameters."
+    },
+    "notes": "No parameter tuning is performed on this split. All parameters are fixed based on results from the development phase."
+  }
+}

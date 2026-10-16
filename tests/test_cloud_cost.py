@@ -66,3 +66,17 @@ def test_replan_and_failed_calls_reach_telemetry(tmp_path):
     assert arch.usage_ledger == []  # drained exactly once
     coord._drain_planner_usage()    # a second drain adds nothing
     assert coord.telemetry.get_summary().cloud_tokens == summary.cloud_tokens
+
+
+def test_reset_clears_reported_and_unreported_cloud_cost():
+    t = TelemetryTracker()
+    t.add_cloud(input_tokens=1000, output_tokens=500, reported_cost_usd=0.05)
+    t.add_cloud(input_tokens=1_000_000, output_tokens=500_000)
+    t.reset()
+    summary = t.get_summary()
+    assert summary.cloud_tokens == 0
+    assert summary.cloud_cost_usd == 0.0
+    assert t.reported_cloud_cost_usd == 0.0
+    assert t.unreported_cloud_input_tokens == 0
+    assert t.unreported_cloud_output_tokens == 0
+

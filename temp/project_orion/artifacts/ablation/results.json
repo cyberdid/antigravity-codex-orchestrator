@@ -1,0 +1,2457 @@
+{
+  "ablation_study": {
+    "variants": [
+      "full_system",
+      "without_reciprocal_consistency",
+      "without_local_calibration",
+      "without_cohesion_constraint",
+      "without_abstention",
+      "without_adaptive_neighborhood"
+    ],
+    "seeds": [
+      55,
+      99,
+      2048
+    ],
+    "contamination_levels": [
+      0.01,
+      0.05,
+      0.1,
+      0.2,
+      0.5
+    ],
+    "total_runs": 90
+  },
+  "results": [
+    {
+      "variant": "full_system",
+      "seed": 55,
+      "contamination_level": 0.01,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.09248979591836734,
+        "b_cubed_precision": 0.5223880597014925,
+        "b_cubed_recall": 0.09248979591836735,
+        "adjusted_rand_index": 0.15527441940356168,
+        "v_measure": 0.6346454522780832,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.016835451126098633,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "full_system",
+      "seed": 55,
+      "contamination_level": 0.05,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.08710204081632653,
+        "b_cubed_precision": 0.49056603773584906,
+        "b_cubed_recall": 0.08710204081632653,
+        "adjusted_rand_index": 0.14682101092297561,
+        "v_measure": 0.6298867334664896,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.020697593688964844,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "full_system",
+      "seed": 55,
+      "contamination_level": 0.1,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.07959183673469387,
+        "b_cubed_precision": 0.42290748898678415,
+        "b_cubed_recall": 0.07959183673469387,
+        "adjusted_rand_index": 0.1349226789263076,
+        "v_measure": 0.6246121733218973,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.020591020584106445,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "full_system",
+      "seed": 55,
+      "contamination_level": 0.2,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.06873469387755102,
+        "b_cubed_precision": 0.3346456692913386,
+        "b_cubed_recall": 0.06873469387755102,
+        "adjusted_rand_index": 0.11748123214837176,
+        "v_measure": 0.6147484251042816,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.019374608993530273,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "full_system",
+      "seed": 55,
+      "contamination_level": 0.5,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.023428571428571427,
+        "b_cubed_precision": 0.1634349030470914,
+        "b_cubed_recall": 0.02342857142857143,
+        "adjusted_rand_index": 0.04147507393016227,
+        "v_measure": 0.5751096363152792,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.02006220817565918,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "full_system",
+      "seed": 99,
+      "contamination_level": 0.01,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.0746938775510204,
+        "b_cubed_precision": 0.5416666666666666,
+        "b_cubed_recall": 0.0746938775510204,
+        "adjusted_rand_index": 0.12708990356754554,
+        "v_measure": 0.6345640633411289,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.019469738006591797,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "full_system",
+      "seed": 99,
+      "contamination_level": 0.05,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.06742857142857143,
+        "b_cubed_precision": 0.49029126213592233,
+        "b_cubed_recall": 0.06742857142857142,
+        "adjusted_rand_index": 0.11536355815105456,
+        "v_measure": 0.6280204643863156,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.020463228225708008,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "full_system",
+      "seed": 99,
+      "contamination_level": 0.1,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.06546938775510204,
+        "b_cubed_precision": 0.4318181818181818,
+        "b_cubed_recall": 0.06546938775510204,
+        "adjusted_rand_index": 0.11217912852762796,
+        "v_measure": 0.6236811591264255,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.0200655460357666,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "full_system",
+      "seed": 99,
+      "contamination_level": 0.2,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.05616326530612245,
+        "b_cubed_precision": 0.3492063492063492,
+        "b_cubed_recall": 0.056163265306122444,
+        "adjusted_rand_index": 0.0969220669569946,
+        "v_measure": 0.6122630168207447,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.020222187042236328,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "full_system",
+      "seed": 99,
+      "contamination_level": 0.5,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.03191836734693877,
+        "b_cubed_precision": 0.16138328530259366,
+        "b_cubed_recall": 0.03191836734693877,
+        "adjusted_rand_index": 0.05612851084313828,
+        "v_measure": 0.5814916116839025,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.0195314884185791,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "full_system",
+      "seed": 2048,
+      "contamination_level": 0.01,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.06628571428571428,
+        "b_cubed_precision": 0.5314009661835749,
+        "b_cubed_recall": 0.06628571428571428,
+        "adjusted_rand_index": 0.11350713116162155,
+        "v_measure": 0.6263551586418765,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.02153182029724121,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "full_system",
+      "seed": 2048,
+      "contamination_level": 0.05,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.0636734693877551,
+        "b_cubed_precision": 0.4840182648401826,
+        "b_cubed_recall": 0.0636734693877551,
+        "adjusted_rand_index": 0.1092516881875892,
+        "v_measure": 0.6222791841688107,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.020422697067260742,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "full_system",
+      "seed": 2048,
+      "contamination_level": 0.1,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.0626938775510204,
+        "b_cubed_precision": 0.45414847161572053,
+        "b_cubed_recall": 0.0626938775510204,
+        "adjusted_rand_index": 0.10765151187141375,
+        "v_measure": 0.6193509295434132,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.021139144897460938,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "full_system",
+      "seed": 2048,
+      "contamination_level": 0.2,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.05126530612244898,
+        "b_cubed_precision": 0.367816091954023,
+        "b_cubed_recall": 0.051265306122448985,
+        "adjusted_rand_index": 0.08880400240204457,
+        "v_measure": 0.6071515063375377,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.021496295928955078,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "full_system",
+      "seed": 2048,
+      "contamination_level": 0.5,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.027510204081632652,
+        "b_cubed_precision": 0.16574585635359115,
+        "b_cubed_recall": 0.027510204081632655,
+        "adjusted_rand_index": 0.04854441189477338,
+        "v_measure": 0.5762755651730832,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.019850969314575195,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_reciprocal_consistency",
+      "seed": 55,
+      "contamination_level": 0.01,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.09248979591836734,
+        "b_cubed_precision": 0.5223880597014925,
+        "b_cubed_recall": 0.09248979591836735,
+        "adjusted_rand_index": 0.15527441940356168,
+        "v_measure": 0.6346454522780832,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.020599842071533203,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": false,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_reciprocal_consistency",
+      "seed": 55,
+      "contamination_level": 0.05,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.08710204081632653,
+        "b_cubed_precision": 0.49056603773584906,
+        "b_cubed_recall": 0.08710204081632653,
+        "adjusted_rand_index": 0.14682101092297561,
+        "v_measure": 0.6298867334664896,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.027232646942138672,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": false,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_reciprocal_consistency",
+      "seed": 55,
+      "contamination_level": 0.1,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.07959183673469387,
+        "b_cubed_precision": 0.42290748898678415,
+        "b_cubed_recall": 0.07959183673469387,
+        "adjusted_rand_index": 0.1349226789263076,
+        "v_measure": 0.6246121733218973,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.0332186222076416,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": false,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_reciprocal_consistency",
+      "seed": 55,
+      "contamination_level": 0.2,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.06873469387755102,
+        "b_cubed_precision": 0.3346456692913386,
+        "b_cubed_recall": 0.06873469387755102,
+        "adjusted_rand_index": 0.11748123214837176,
+        "v_measure": 0.6147484251042816,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.04513239860534668,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": false,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_reciprocal_consistency",
+      "seed": 55,
+      "contamination_level": 0.5,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.023428571428571427,
+        "b_cubed_precision": 0.1634349030470914,
+        "b_cubed_recall": 0.02342857142857143,
+        "adjusted_rand_index": 0.04147507393016227,
+        "v_measure": 0.5751096363152792,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.09266304969787598,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": false,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_reciprocal_consistency",
+      "seed": 99,
+      "contamination_level": 0.01,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.0746938775510204,
+        "b_cubed_precision": 0.5416666666666666,
+        "b_cubed_recall": 0.0746938775510204,
+        "adjusted_rand_index": 0.12708990356754554,
+        "v_measure": 0.6345640633411289,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.0200347900390625,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": false,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_reciprocal_consistency",
+      "seed": 99,
+      "contamination_level": 0.05,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.06742857142857143,
+        "b_cubed_precision": 0.49029126213592233,
+        "b_cubed_recall": 0.06742857142857142,
+        "adjusted_rand_index": 0.11536355815105456,
+        "v_measure": 0.6280204643863156,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.02609109878540039,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": false,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_reciprocal_consistency",
+      "seed": 99,
+      "contamination_level": 0.1,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.06546938775510204,
+        "b_cubed_precision": 0.4318181818181818,
+        "b_cubed_recall": 0.06546938775510204,
+        "adjusted_rand_index": 0.11217912852762796,
+        "v_measure": 0.6236811591264255,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.03168010711669922,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": false,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_reciprocal_consistency",
+      "seed": 99,
+      "contamination_level": 0.2,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.05616326530612245,
+        "b_cubed_precision": 0.3492063492063492,
+        "b_cubed_recall": 0.056163265306122444,
+        "adjusted_rand_index": 0.0969220669569946,
+        "v_measure": 0.6122630168207447,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.048247337341308594,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": false,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_reciprocal_consistency",
+      "seed": 99,
+      "contamination_level": 0.5,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.03191836734693877,
+        "b_cubed_precision": 0.16138328530259366,
+        "b_cubed_recall": 0.03191836734693877,
+        "adjusted_rand_index": 0.05612851084313828,
+        "v_measure": 0.5814916116839025,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.09066510200500488,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": false,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_reciprocal_consistency",
+      "seed": 2048,
+      "contamination_level": 0.01,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.06628571428571428,
+        "b_cubed_precision": 0.5314009661835749,
+        "b_cubed_recall": 0.06628571428571428,
+        "adjusted_rand_index": 0.11350713116162155,
+        "v_measure": 0.6263551586418765,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.019774913787841797,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": false,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_reciprocal_consistency",
+      "seed": 2048,
+      "contamination_level": 0.05,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.0636734693877551,
+        "b_cubed_precision": 0.4840182648401826,
+        "b_cubed_recall": 0.0636734693877551,
+        "adjusted_rand_index": 0.1092516881875892,
+        "v_measure": 0.6222791841688107,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.027130126953125,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": false,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_reciprocal_consistency",
+      "seed": 2048,
+      "contamination_level": 0.1,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.0626938775510204,
+        "b_cubed_precision": 0.45414847161572053,
+        "b_cubed_recall": 0.0626938775510204,
+        "adjusted_rand_index": 0.10765151187141375,
+        "v_measure": 0.6193509295434132,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.03478574752807617,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": false,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_reciprocal_consistency",
+      "seed": 2048,
+      "contamination_level": 0.2,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.05126530612244898,
+        "b_cubed_precision": 0.367816091954023,
+        "b_cubed_recall": 0.051265306122448985,
+        "adjusted_rand_index": 0.08880400240204457,
+        "v_measure": 0.6071515063375377,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.049521446228027344,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": false,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_reciprocal_consistency",
+      "seed": 2048,
+      "contamination_level": 0.5,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.027510204081632652,
+        "b_cubed_precision": 0.16574585635359115,
+        "b_cubed_recall": 0.027510204081632655,
+        "adjusted_rand_index": 0.04854441189477338,
+        "v_measure": 0.5762755651730832,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.09786176681518555,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": false,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_local_calibration",
+      "seed": 55,
+      "contamination_level": 0.01,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.09248979591836734,
+        "b_cubed_precision": 0.5223880597014925,
+        "b_cubed_recall": 0.09248979591836735,
+        "adjusted_rand_index": 0.15527441940356168,
+        "v_measure": 0.6346454522780832,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.012697219848632812,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": false,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_local_calibration",
+      "seed": 55,
+      "contamination_level": 0.05,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.08710204081632653,
+        "b_cubed_precision": 0.49056603773584906,
+        "b_cubed_recall": 0.08710204081632653,
+        "adjusted_rand_index": 0.14682101092297561,
+        "v_measure": 0.6298867334664896,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.01587820053100586,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": false,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_local_calibration",
+      "seed": 55,
+      "contamination_level": 0.1,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.07959183673469387,
+        "b_cubed_precision": 0.42290748898678415,
+        "b_cubed_recall": 0.07959183673469387,
+        "adjusted_rand_index": 0.1349226789263076,
+        "v_measure": 0.6246121733218973,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.014959335327148438,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": false,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_local_calibration",
+      "seed": 55,
+      "contamination_level": 0.2,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.06873469387755102,
+        "b_cubed_precision": 0.3346456692913386,
+        "b_cubed_recall": 0.06873469387755102,
+        "adjusted_rand_index": 0.11748123214837176,
+        "v_measure": 0.6147484251042816,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.014960050582885742,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": false,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_local_calibration",
+      "seed": 55,
+      "contamination_level": 0.5,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.023428571428571427,
+        "b_cubed_precision": 0.1634349030470914,
+        "b_cubed_recall": 0.02342857142857143,
+        "adjusted_rand_index": 0.04147507393016227,
+        "v_measure": 0.5751096363152792,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.016008377075195312,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": false,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_local_calibration",
+      "seed": 99,
+      "contamination_level": 0.01,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.0746938775510204,
+        "b_cubed_precision": 0.5416666666666666,
+        "b_cubed_recall": 0.0746938775510204,
+        "adjusted_rand_index": 0.12708990356754554,
+        "v_measure": 0.6345640633411289,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.015265226364135742,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": false,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_local_calibration",
+      "seed": 99,
+      "contamination_level": 0.05,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.06742857142857143,
+        "b_cubed_precision": 0.49029126213592233,
+        "b_cubed_recall": 0.06742857142857142,
+        "adjusted_rand_index": 0.11536355815105456,
+        "v_measure": 0.6280204643863156,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.014980077743530273,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": false,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_local_calibration",
+      "seed": 99,
+      "contamination_level": 0.1,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.06546938775510204,
+        "b_cubed_precision": 0.4318181818181818,
+        "b_cubed_recall": 0.06546938775510204,
+        "adjusted_rand_index": 0.11217912852762796,
+        "v_measure": 0.6236811591264255,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.015202045440673828,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": false,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_local_calibration",
+      "seed": 99,
+      "contamination_level": 0.2,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.05616326530612245,
+        "b_cubed_precision": 0.3492063492063492,
+        "b_cubed_recall": 0.056163265306122444,
+        "adjusted_rand_index": 0.0969220669569946,
+        "v_measure": 0.6122630168207447,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.015972614288330078,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": false,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_local_calibration",
+      "seed": 99,
+      "contamination_level": 0.5,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.03191836734693877,
+        "b_cubed_precision": 0.16138328530259366,
+        "b_cubed_recall": 0.03191836734693877,
+        "adjusted_rand_index": 0.05612851084313828,
+        "v_measure": 0.5814916116839025,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.01689743995666504,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": false,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_local_calibration",
+      "seed": 2048,
+      "contamination_level": 0.01,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.06628571428571428,
+        "b_cubed_precision": 0.5314009661835749,
+        "b_cubed_recall": 0.06628571428571428,
+        "adjusted_rand_index": 0.11350713116162155,
+        "v_measure": 0.6263551586418765,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.015169620513916016,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": false,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_local_calibration",
+      "seed": 2048,
+      "contamination_level": 0.05,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.0636734693877551,
+        "b_cubed_precision": 0.4840182648401826,
+        "b_cubed_recall": 0.0636734693877551,
+        "adjusted_rand_index": 0.1092516881875892,
+        "v_measure": 0.6222791841688107,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.015831470489501953,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": false,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_local_calibration",
+      "seed": 2048,
+      "contamination_level": 0.1,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.0626938775510204,
+        "b_cubed_precision": 0.45414847161572053,
+        "b_cubed_recall": 0.0626938775510204,
+        "adjusted_rand_index": 0.10765151187141375,
+        "v_measure": 0.6193509295434132,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.015458106994628906,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": false,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_local_calibration",
+      "seed": 2048,
+      "contamination_level": 0.2,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.05126530612244898,
+        "b_cubed_precision": 0.367816091954023,
+        "b_cubed_recall": 0.051265306122448985,
+        "adjusted_rand_index": 0.08880400240204457,
+        "v_measure": 0.6071515063375377,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.015350103378295898,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": false,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_local_calibration",
+      "seed": 2048,
+      "contamination_level": 0.5,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.027510204081632652,
+        "b_cubed_precision": 0.16574585635359115,
+        "b_cubed_recall": 0.027510204081632655,
+        "adjusted_rand_index": 0.04854441189477338,
+        "v_measure": 0.5762755651730832,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.01601123809814453,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": false,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_cohesion_constraint",
+      "seed": 55,
+      "contamination_level": 0.01,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.09248979591836734,
+        "b_cubed_precision": 0.5223880597014925,
+        "b_cubed_recall": 0.09248979591836735,
+        "adjusted_rand_index": 0.15527441940356168,
+        "v_measure": 0.6346454522780832,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.01338052749633789,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": false,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_cohesion_constraint",
+      "seed": 55,
+      "contamination_level": 0.05,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.08710204081632653,
+        "b_cubed_precision": 0.49056603773584906,
+        "b_cubed_recall": 0.08710204081632653,
+        "adjusted_rand_index": 0.14682101092297561,
+        "v_measure": 0.6298867334664896,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.014692544937133789,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": false,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_cohesion_constraint",
+      "seed": 55,
+      "contamination_level": 0.1,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.07959183673469387,
+        "b_cubed_precision": 0.42290748898678415,
+        "b_cubed_recall": 0.07959183673469387,
+        "adjusted_rand_index": 0.1349226789263076,
+        "v_measure": 0.6246121733218973,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.01401972770690918,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": false,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_cohesion_constraint",
+      "seed": 55,
+      "contamination_level": 0.2,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.06873469387755102,
+        "b_cubed_precision": 0.3346456692913386,
+        "b_cubed_recall": 0.06873469387755102,
+        "adjusted_rand_index": 0.11748123214837176,
+        "v_measure": 0.6147484251042816,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.014747858047485352,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": false,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_cohesion_constraint",
+      "seed": 55,
+      "contamination_level": 0.5,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.023428571428571427,
+        "b_cubed_precision": 0.1634349030470914,
+        "b_cubed_recall": 0.02342857142857143,
+        "adjusted_rand_index": 0.04147507393016227,
+        "v_measure": 0.5751096363152792,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.01553964614868164,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": false,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_cohesion_constraint",
+      "seed": 99,
+      "contamination_level": 0.01,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.0746938775510204,
+        "b_cubed_precision": 0.5416666666666666,
+        "b_cubed_recall": 0.0746938775510204,
+        "adjusted_rand_index": 0.12708990356754554,
+        "v_measure": 0.6345640633411289,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.014409303665161133,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": false,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_cohesion_constraint",
+      "seed": 99,
+      "contamination_level": 0.05,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.06742857142857143,
+        "b_cubed_precision": 0.49029126213592233,
+        "b_cubed_recall": 0.06742857142857142,
+        "adjusted_rand_index": 0.11536355815105456,
+        "v_measure": 0.6280204643863156,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.014441251754760742,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": false,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_cohesion_constraint",
+      "seed": 99,
+      "contamination_level": 0.1,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.06546938775510204,
+        "b_cubed_precision": 0.4318181818181818,
+        "b_cubed_recall": 0.06546938775510204,
+        "adjusted_rand_index": 0.11217912852762796,
+        "v_measure": 0.6236811591264255,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.014305353164672852,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": false,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_cohesion_constraint",
+      "seed": 99,
+      "contamination_level": 0.2,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.05616326530612245,
+        "b_cubed_precision": 0.3492063492063492,
+        "b_cubed_recall": 0.056163265306122444,
+        "adjusted_rand_index": 0.0969220669569946,
+        "v_measure": 0.6122630168207447,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.01521444320678711,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": false,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_cohesion_constraint",
+      "seed": 99,
+      "contamination_level": 0.5,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.03191836734693877,
+        "b_cubed_precision": 0.16138328530259366,
+        "b_cubed_recall": 0.03191836734693877,
+        "adjusted_rand_index": 0.05612851084313828,
+        "v_measure": 0.5814916116839025,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.0167696475982666,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": false,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_cohesion_constraint",
+      "seed": 2048,
+      "contamination_level": 0.01,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.06628571428571428,
+        "b_cubed_precision": 0.5314009661835749,
+        "b_cubed_recall": 0.06628571428571428,
+        "adjusted_rand_index": 0.11350713116162155,
+        "v_measure": 0.6263551586418765,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.013705015182495117,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": false,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_cohesion_constraint",
+      "seed": 2048,
+      "contamination_level": 0.05,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.0636734693877551,
+        "b_cubed_precision": 0.4840182648401826,
+        "b_cubed_recall": 0.0636734693877551,
+        "adjusted_rand_index": 0.1092516881875892,
+        "v_measure": 0.6222791841688107,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.014444828033447266,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": false,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_cohesion_constraint",
+      "seed": 2048,
+      "contamination_level": 0.1,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.0626938775510204,
+        "b_cubed_precision": 0.45414847161572053,
+        "b_cubed_recall": 0.0626938775510204,
+        "adjusted_rand_index": 0.10765151187141375,
+        "v_measure": 0.6193509295434132,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.014492273330688477,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": false,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_cohesion_constraint",
+      "seed": 2048,
+      "contamination_level": 0.2,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.05126530612244898,
+        "b_cubed_precision": 0.367816091954023,
+        "b_cubed_recall": 0.051265306122448985,
+        "adjusted_rand_index": 0.08880400240204457,
+        "v_measure": 0.6071515063375377,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.014895439147949219,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": false,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_cohesion_constraint",
+      "seed": 2048,
+      "contamination_level": 0.5,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.027510204081632652,
+        "b_cubed_precision": 0.16574585635359115,
+        "b_cubed_recall": 0.027510204081632655,
+        "adjusted_rand_index": 0.04854441189477338,
+        "v_measure": 0.5762755651730832,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.017077207565307617,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": false,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_abstention",
+      "seed": 55,
+      "contamination_level": 0.01,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.09248979591836734,
+        "b_cubed_precision": 0.5223880597014925,
+        "b_cubed_recall": 0.09248979591836735,
+        "adjusted_rand_index": 0.15527441940356168,
+        "v_measure": 0.6346454522780832,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.02014017105102539,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.0
+      }
+    },
+    {
+      "variant": "without_abstention",
+      "seed": 55,
+      "contamination_level": 0.05,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.08710204081632653,
+        "b_cubed_precision": 0.49056603773584906,
+        "b_cubed_recall": 0.08710204081632653,
+        "adjusted_rand_index": 0.14682101092297561,
+        "v_measure": 0.6298867334664896,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.02014017105102539,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.0
+      }
+    },
+    {
+      "variant": "without_abstention",
+      "seed": 55,
+      "contamination_level": 0.1,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.07959183673469387,
+        "b_cubed_precision": 0.42290748898678415,
+        "b_cubed_recall": 0.07959183673469387,
+        "adjusted_rand_index": 0.1349226789263076,
+        "v_measure": 0.6246121733218973,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.031241416931152344,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.0
+      }
+    },
+    {
+      "variant": "without_abstention",
+      "seed": 55,
+      "contamination_level": 0.2,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.06873469387755102,
+        "b_cubed_precision": 0.3346456692913386,
+        "b_cubed_recall": 0.06873469387755102,
+        "adjusted_rand_index": 0.11748123214837176,
+        "v_measure": 0.6147484251042816,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.019292831420898438,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.0
+      }
+    },
+    {
+      "variant": "without_abstention",
+      "seed": 55,
+      "contamination_level": 0.5,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.023428571428571427,
+        "b_cubed_precision": 0.1634349030470914,
+        "b_cubed_recall": 0.02342857142857143,
+        "adjusted_rand_index": 0.04147507393016227,
+        "v_measure": 0.5751096363152792,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.018932104110717773,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.0
+      }
+    },
+    {
+      "variant": "without_abstention",
+      "seed": 99,
+      "contamination_level": 0.01,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.0746938775510204,
+        "b_cubed_precision": 0.5416666666666666,
+        "b_cubed_recall": 0.0746938775510204,
+        "adjusted_rand_index": 0.12708990356754554,
+        "v_measure": 0.6345640633411289,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.019816875457763672,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.0
+      }
+    },
+    {
+      "variant": "without_abstention",
+      "seed": 99,
+      "contamination_level": 0.05,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.06742857142857143,
+        "b_cubed_precision": 0.49029126213592233,
+        "b_cubed_recall": 0.06742857142857142,
+        "adjusted_rand_index": 0.11536355815105456,
+        "v_measure": 0.6280204643863156,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.020490169525146484,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.0
+      }
+    },
+    {
+      "variant": "without_abstention",
+      "seed": 99,
+      "contamination_level": 0.1,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.06546938775510204,
+        "b_cubed_precision": 0.4318181818181818,
+        "b_cubed_recall": 0.06546938775510204,
+        "adjusted_rand_index": 0.11217912852762796,
+        "v_measure": 0.6236811591264255,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.019773006439208984,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.0
+      }
+    },
+    {
+      "variant": "without_abstention",
+      "seed": 99,
+      "contamination_level": 0.2,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.05616326530612245,
+        "b_cubed_precision": 0.3492063492063492,
+        "b_cubed_recall": 0.056163265306122444,
+        "adjusted_rand_index": 0.0969220669569946,
+        "v_measure": 0.6122630168207447,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.020299673080444336,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.0
+      }
+    },
+    {
+      "variant": "without_abstention",
+      "seed": 99,
+      "contamination_level": 0.5,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.03191836734693877,
+        "b_cubed_precision": 0.16138328530259366,
+        "b_cubed_recall": 0.03191836734693877,
+        "adjusted_rand_index": 0.05612851084313828,
+        "v_measure": 0.5814916116839025,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.01862502098083496,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.0
+      }
+    },
+    {
+      "variant": "without_abstention",
+      "seed": 2048,
+      "contamination_level": 0.01,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.06628571428571428,
+        "b_cubed_precision": 0.5314009661835749,
+        "b_cubed_recall": 0.06628571428571428,
+        "adjusted_rand_index": 0.11350713116162155,
+        "v_measure": 0.6263551586418765,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.02071356773376465,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.0
+      }
+    },
+    {
+      "variant": "without_abstention",
+      "seed": 2048,
+      "contamination_level": 0.05,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.0636734693877551,
+        "b_cubed_precision": 0.4840182648401826,
+        "b_cubed_recall": 0.0636734693877551,
+        "adjusted_rand_index": 0.1092516881875892,
+        "v_measure": 0.6222791841688107,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.0211184024810791,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.0
+      }
+    },
+    {
+      "variant": "without_abstention",
+      "seed": 2048,
+      "contamination_level": 0.1,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.0626938775510204,
+        "b_cubed_precision": 0.45414847161572053,
+        "b_cubed_recall": 0.0626938775510204,
+        "adjusted_rand_index": 0.10765151187141375,
+        "v_measure": 0.6193509295434132,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.020259618759155273,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.0
+      }
+    },
+    {
+      "variant": "without_abstention",
+      "seed": 2048,
+      "contamination_level": 0.2,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.05126530612244898,
+        "b_cubed_precision": 0.367816091954023,
+        "b_cubed_recall": 0.051265306122448985,
+        "adjusted_rand_index": 0.08880400240204457,
+        "v_measure": 0.6071515063375377,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.020258426666259766,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.0
+      }
+    },
+    {
+      "variant": "without_abstention",
+      "seed": 2048,
+      "contamination_level": 0.5,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.027510204081632652,
+        "b_cubed_precision": 0.16574585635359115,
+        "b_cubed_recall": 0.027510204081632655,
+        "adjusted_rand_index": 0.04854441189477338,
+        "v_measure": 0.5762755651730832,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.01947951316833496,
+      "config": {
+        "use_adaptive_neighborhood": true,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.0
+      }
+    },
+    {
+      "variant": "without_adaptive_neighborhood",
+      "seed": 55,
+      "contamination_level": 0.01,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.08326530612244898,
+        "b_cubed_precision": 0.5135135135135135,
+        "b_cubed_recall": 0.08326530612244899,
+        "adjusted_rand_index": 0.14075933373915364,
+        "v_measure": 0.6242009157187759,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.016919374465942383,
+      "config": {
+        "use_adaptive_neighborhood": false,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_adaptive_neighborhood",
+      "seed": 55,
+      "contamination_level": 0.05,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.07942857142857143,
+        "b_cubed_precision": 0.4827586206896552,
+        "b_cubed_recall": 0.07942857142857143,
+        "adjusted_rand_index": 0.1346625202235979,
+        "v_measure": 0.6206769571415179,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.01710963249206543,
+      "config": {
+        "use_adaptive_neighborhood": false,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_adaptive_neighborhood",
+      "seed": 55,
+      "contamination_level": 0.1,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.07077551020408163,
+        "b_cubed_precision": 0.41700404858299595,
+        "b_cubed_recall": 0.07077551020408164,
+        "adjusted_rand_index": 0.120781677096076,
+        "v_measure": 0.615097460594266,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.016750812530517578,
+      "config": {
+        "use_adaptive_neighborhood": false,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_adaptive_neighborhood",
+      "seed": 55,
+      "contamination_level": 0.2,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.061632653061224486,
+        "b_cubed_precision": 0.35185185185185186,
+        "b_cubed_recall": 0.061632653061224486,
+        "adjusted_rand_index": 0.10591527868811575,
+        "v_measure": 0.6069130078996655,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.015358448028564453,
+      "config": {
+        "use_adaptive_neighborhood": false,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_adaptive_neighborhood",
+      "seed": 55,
+      "contamination_level": 0.5,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.021959183673469388,
+        "b_cubed_precision": 0.16393442622950818,
+        "b_cubed_recall": 0.02195918367346939,
+        "adjusted_rand_index": 0.03891895645754868,
+        "v_measure": 0.5733715269287971,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.00912165641784668,
+      "config": {
+        "use_adaptive_neighborhood": false,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_adaptive_neighborhood",
+      "seed": 99,
+      "contamination_level": 0.01,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.05853061224489796,
+        "b_cubed_precision": 0.5023474178403756,
+        "b_cubed_recall": 0.05853061224489797,
+        "adjusted_rand_index": 0.10082391875213956,
+        "v_measure": 0.6224776364560907,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.015127182006835938,
+      "config": {
+        "use_adaptive_neighborhood": false,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_adaptive_neighborhood",
+      "seed": 99,
+      "contamination_level": 0.05,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.05510204081632653,
+        "b_cubed_precision": 0.4690265486725664,
+        "b_cubed_recall": 0.055102040816326525,
+        "adjusted_rand_index": 0.09516834614646526,
+        "v_measure": 0.617567415265628,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.012753963470458984,
+      "config": {
+        "use_adaptive_neighborhood": false,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_adaptive_neighborhood",
+      "seed": 99,
+      "contamination_level": 0.1,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.052489795918367346,
+        "b_cubed_precision": 0.40329218106995884,
+        "b_cubed_recall": 0.052489795918367346,
+        "adjusted_rand_index": 0.09083926723932921,
+        "v_measure": 0.6123642229860042,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.01409769058227539,
+      "config": {
+        "use_adaptive_neighborhood": false,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_adaptive_neighborhood",
+      "seed": 99,
+      "contamination_level": 0.2,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.0476734693877551,
+        "b_cubed_precision": 0.32342007434944237,
+        "b_cubed_recall": 0.047673469387755095,
+        "adjusted_rand_index": 0.08281163787113589,
+        "v_measure": 0.6045868003548026,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.014219522476196289,
+      "config": {
+        "use_adaptive_neighborhood": false,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_adaptive_neighborhood",
+      "seed": 99,
+      "contamination_level": 0.5,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.028816326530612245,
+        "b_cubed_precision": 0.15363128491620112,
+        "b_cubed_recall": 0.028816326530612245,
+        "adjusted_rand_index": 0.0507970272626702,
+        "v_measure": 0.5778659882908965,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.013279914855957031,
+      "config": {
+        "use_adaptive_neighborhood": false,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_adaptive_neighborhood",
+      "seed": 2048,
+      "contamination_level": 0.01,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.05640816326530612,
+        "b_cubed_precision": 0.4782608695652174,
+        "b_cubed_recall": 0.056408163265306135,
+        "adjusted_rand_index": 0.09732636539782445,
+        "v_measure": 0.6160214461105147,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.015363931655883789,
+      "config": {
+        "use_adaptive_neighborhood": false,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_adaptive_neighborhood",
+      "seed": 2048,
+      "contamination_level": 0.05,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.05461224489795918,
+        "b_cubed_precision": 0.44398340248962653,
+        "b_cubed_recall": 0.05461224489795918,
+        "adjusted_rand_index": 0.09435797009850622,
+        "v_measure": 0.6125637958745147,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.014917373657226562,
+      "config": {
+        "use_adaptive_neighborhood": false,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_adaptive_neighborhood",
+      "seed": 2048,
+      "contamination_level": 0.1,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.05363265306122449,
+        "b_cubed_precision": 0.408,
+        "b_cubed_recall": 0.053632653061224486,
+        "adjusted_rand_index": 0.09273538327723677,
+        "v_measure": 0.6102513400380175,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.020255565643310547,
+      "config": {
+        "use_adaptive_neighborhood": false,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_adaptive_neighborhood",
+      "seed": 2048,
+      "contamination_level": 0.2,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.046122448979591835,
+        "b_cubed_precision": 0.3129496402877698,
+        "b_cubed_recall": 0.046122448979591835,
+        "adjusted_rand_index": 0.08021371394227925,
+        "v_measure": 0.6014046700423381,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.012794971466064453,
+      "config": {
+        "use_adaptive_neighborhood": false,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    },
+    {
+      "variant": "without_adaptive_neighborhood",
+      "seed": 2048,
+      "contamination_level": 0.5,
+      "metrics": {
+        "pairwise_precision": 1.0,
+        "pairwise_recall": 0.022122448979591838,
+        "b_cubed_precision": 0.1693548387096774,
+        "b_cubed_recall": 0.022122448979591834,
+        "adjusted_rand_index": 0.03920326240580729,
+        "v_measure": 0.5718365797478626,
+        "cluster_contamination": 0.0,
+        "fragmentation": 1.0,
+        "coverage": 0.0,
+        "false_match_rate": 0.0,
+        "false_discovery_proportion": 0.0,
+        "cluster_level_contamination": 0.0
+      },
+      "runtime_sec": 0.01177835464477539,
+      "config": {
+        "use_adaptive_neighborhood": false,
+        "use_reciprocal_consistency": true,
+        "use_local_calibration": true,
+        "use_cohesion_constraint": true,
+        "abstention_threshold": 0.7
+      }
+    }
+  ]
+}

@@ -5,7 +5,8 @@ __pycache__/
 .pytest_cache/
 .ruff_cache/
 .antigravity_runs/
-temp/
+temp/*
+!temp/project_orion/
 dist/
 build/
 .env

@@ -209,9 +209,26 @@ class MockCloudArchitectClient:
                 test_command = f"pytest {test_files[0]} -v"
 
         if not affected_files:
-            affected_files = ["src/solution.py", "tests/test_solution.py"]
+            import re
+
+            goal_py_files = list(
+                dict.fromkeys(re.findall(r"\b[a-zA-Z0-9_/\-]+?\.py\b", goal))
+            )
+            if goal_py_files:
+                affected_files = goal_py_files
+                goal_tests = [
+                    f for f in goal_py_files
+                    if Path(f).name.startswith("test_") or "test" in f.lower()
+                ]
+                if goal_tests:
+                    test_command = f"python3 -m unittest {goal_tests[0]}"
+            else:
+                affected_files = ["src/solution.py", "tests/test_solution.py"]
 
         # 7. Topology synthesis based on goal keywords
+        import re
+
+        goal_words = set(re.findall(r"\b\w+\b", goal_lower))
         dag = ExecutionPlanDAG()
 
         if any(k in goal_lower for k in ("fibonacci", "sieve", "algorithm")):
@@ -248,7 +265,7 @@ class MockCloudArchitectClient:
                     verification_command="python src/benchmark.py",
                 )
             )
-        elif any(k in goal_lower for k in ("bug", "fix", "reproduce", "patch")):
+        elif any(k in goal_words for k in ("bug", "bugfix", "fix", "reproduce", "patch")):
             dag.add_task(
                 SubTask(
                     id="task_1_reproduce",

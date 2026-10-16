@@ -74,6 +74,18 @@ def build_parser() -> argparse.ArgumentParser:
             "luna (codex, gpt-6-luna), or agy (Antigravity CLI)"
         ),
     )
+    parser.add_argument(
+        "--architect-model",
+        type=str,
+        default=None,
+        help="Cloud Architect model override (e.g. gemini-3.8-flash-high for agy)",
+    )
+    parser.add_argument(
+        "--worker-model",
+        type=str,
+        default=None,
+        help="Local Ollama workforce model override (default: OLLAMA_MODEL env var or gemma4:12b)",
+    )
     parser.add_argument("--max-runtime", type=float, default=None,
                         help="Optional run-wide time budget in seconds (default: unlimited)")
     parser.add_argument("--max-remote-tokens", type=int, default=None,
@@ -229,10 +241,13 @@ def main(argv: Optional[List[str]] = None) -> int:
         "max_remote_tokens": args.max_remote_tokens,
         "model_idle_timeout_s": args.model_idle_timeout,
         "architect_backend": args.architect,
+        "architect_model": args.architect_model,
+        "worker_model": args.worker_model,
         "tool_idle_timeout_s": args.tool_idle_timeout,
         "resume_run": args.resume,
         "record": not args.no_record,
     }
+
 
     if args.interactive:
         return run_interactive(init_kwargs)

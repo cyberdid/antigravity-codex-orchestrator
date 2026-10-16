@@ -1,0 +1,104 @@
+{
+  "project": "PROJECT ORION: Risk-Constrained Clustering Algorithms",
+  "timestamp": "2026-10-16T16:39:00Z",
+  "environment": {
+    "os": "Linux 6.8.0-45-generic x86_64",
+    "python_version": "3.12.3",
+    "python_executable": "/home/cyberdid/Projects/llm/antigravity-codex-orchestrator/.venv/bin/python3",
+    "installed_libraries": {
+      "numpy": "2.5.4",
+      "scipy": "1.18.1",
+      "scikit-learn": "1.9.1",
+      "psutil": "7.2.2",
+      "memory_profiler": "0.61.0"
+    }
+  },
+  "deliverables": {
+    "readme": {
+      "path": "README.md",
+      "verified": true
+    },
+    "architecture_doc": {
+      "path": "docs/architecture.md",
+      "verified": true
+    },
+    "synthetic_generator": {
+      "path": "src/orion/data.py",
+      "deterministic": true,
+      "verified": true
+    },
+    "baselines": {
+      "path": "src/orion/baselines.py",
+      "methods": ["threshold_graph", "agglomerative", "rr_graph"],
+      "verified": true
+    },
+    "proposed_algorithm": {
+      "path": "src/orion/risk_graph.py",
+      "class": "RiskGraphClusterer",
+      "abstention_support": true,
+      "verified": true
+    },
+    "evaluation_runner": {
+      "path": "src/orion/runner.py",
+      "runs_completed": 60,
+      "verified": true
+    },
+    "sensitivity_runner": {
+      "path": "src/orion/sensitivity.py",
+      "runs_completed": 24,
+      "verified": true
+    },
+    "ablation_runner": {
+      "path": "scripts/run_ablation.py",
+      "runs_completed": 90,
+      "verified": true
+    },
+    "scalability_benchmark": {
+      "path": "scripts/benchmark_scalability.py",
+      "max_size_evaluated": 200000,
+      "verified": true
+    },
+    "research_report": {
+      "path": "reports/research_report.md",
+      "h1_evaluated": true,
+      "h1_verdict": "REJECTED",
+      "verified": true
+    }
+  },
+  "artifacts": {
+    "development_results": "artifacts/development/results.json",
+    "selected_config": "artifacts/development/selected_config.json",
+    "evaluation_results": "artifacts/evaluation/results.json",
+    "ablation_results": "artifacts/ablation/results.json",
+    "sensitivity_results": "artifacts/sensitivity/results.json",
+    "scalability_results": "artifacts/scalability/results.json",
+    "reproduction_manifest": "artifacts/reproduction_manifest.json"
+  },
+  "reproduction_commands": [
+    {
+      "command": "python3 -m unittest discover -s tests",
+      "description": "Run unit and reproduction integration tests",
+      "status": "PASSED"
+    },
+    {
+      "command": "python3 src/orion/runner.py",
+      "description": "Run held-out baseline and proposed method evaluation across seeds 55, 99, 2048",
+      "status": "PASSED"
+    },
+    {
+      "command": "python3 scripts/run_ablation.py",
+      "description": "Run controlled ablation studies across all 5 risk filter toggles",
+      "status": "PASSED"
+    },
+    {
+      "command": "python3 src/orion/sensitivity.py --output artifacts/sensitivity/results.json",
+      "description": "Run parameter sensitivity sweeps across 8 data and model parameters",
+      "status": "PASSED"
+    },
+    {
+      "command": "python3 scripts/benchmark_scalability.py",
+      "description": "Run scalability benchmarks up to 200,000 vectors with bounded memory",
+      "status": "PASSED"
+    }
+  ]
+}

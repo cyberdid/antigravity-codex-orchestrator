@@ -204,3 +204,55 @@ def test_coordinator_passes_backend_to_live_architect(tmp_path):
     )
     assert coord.architect.backend == "haiku"
     assert coord.architect.model == "claude-haiku-5-5"
+
+
+def test_workforce_client_uses_ollama_model_env_var(monkeypatch):
+    from antigravity_hybrid_orchestrator.workforce.ollama_client import WorkforceClient
+
+    monkeypatch.setenv("OLLAMA_MODEL", "qwen3.5:27b-q4_K_M")
+    client = WorkforceClient()
+    assert client.model == "qwen3.5:27b-q4_K_M"
+
+
+def test_cli_worker_model_flag_passed_to_coordinator_and_worker(tmp_path):
+    from antigravity_hybrid_orchestrator.coordinator import HybridCoordinator
+
+    parser = build_parser()
+    args = parser.parse_args(["--worker-model", "qwen3.8:27b-q4_K_M"])
+    assert args.worker_model == "qwen3.8:27b-q4_K_M"
+
+    coord = HybridCoordinator(
+        mode="live",
+        goal="implement x",
+        workspace=str(tmp_path),
+        no_hud=True,
+        worker_model="qwen3.8:27b-q4_K_M",
+    )
+    assert coord.worker.model_name == "qwen3.8:27b-q4_K_M"
+
+
+def test_agy_passes_model_flag_when_architect_model_specified(tmp_path):
+    from antigravity_hybrid_orchestrator.coordinator import HybridCoordinator
+
+    parser = build_parser()
+    args = parser.parse_args(["--architect", "agy", "--architect-model", "gemini-3.8-flash-high"])
+    assert args.architect == "agy"
+    assert args.architect_model == "gemini-3.8-flash-high"
+
+    coord = HybridCoordinator(
+        mode="live",
+        goal="implement x",
+        workspace=str(tmp_path),
+        no_hud=True,
+        architect_backend="agy",
+        architect_model="gemini-3.8-flash-high",
+    )
+    assert coord.architect.backend == "agy"
+    assert coord.architect.model == "gemini-3.8-flash-high"
+    payload = json.dumps({"response": '{"ok":1}', "usage": {"input_tokens": 5, "output_tokens": 2}})
+    calls = _capture(coord.architect, stdout=payload)
+    coord.architect._invoke_agy("PLAN")
+    cmd, _ = calls[0]
+    assert "--model" in cmd
+    assert cmd[cmd.index("--model") + 1] == "gemini-3.8-flash-high"
+

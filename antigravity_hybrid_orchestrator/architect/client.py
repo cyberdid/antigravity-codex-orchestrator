@@ -89,7 +89,11 @@ class CloudArchitectClient:
         else:
             self.cli_path = self.codex_path
         self.timeout = timeout
-        self.model = model or self.DEFAULT_MODELS[backend]
+        self.model = (
+            model
+            or os.environ.get("ARCHITECT_MODEL", "").strip()
+            or self.DEFAULT_MODELS[backend]
+        )
         self.last_input_tokens: int = 0
         self.last_output_tokens: int = 0
         # Cost reported by the CLI for the most recent call (None when the CLI reports none).
@@ -353,6 +357,8 @@ class CloudArchitectClient:
     def _invoke_agy(self, prompt: str) -> Tuple[str, int, int]:
         """Calls the Antigravity CLI (`agy -p`) for the agy backend."""
         cmd = [self.cli_path, "-p", prompt, "--output-format", "json"]
+        if self.model:
+            cmd += ["--model", self.model]
         return_code, stdout_text, stderr_text = self._run_subprocess(cmd, "agy")
         if return_code != 0:
             raise CloudArchitectError(
@@ -367,7 +373,12 @@ class CloudArchitectClient:
                 f"Failed to parse JSON output from agy: {e}. Output was: {stdout_text[:200]}"
             ) from e
 
-        raw_response = payload.get("response", "")
+        raw_response = str(
+            payload.get("response")
+            or payload.get("result")
+            or payload.get("content")
+            or ""
+        )
         usage = payload.get("usage", {}) or {}
         return (
             raw_response,

@@ -106,20 +106,44 @@ def compact_messages(
     keep_recent_tools: int = DEFAULT_KEEP_RECENT_TOOLS,
     summary_chars: int = DEFAULT_SUMMARY_CHARS,
     assistant_chars: int = DEFAULT_ASSISTANT_CHARS,
+    max_arg_chars: int = DEFAULT_MAX_CHARS,
 ) -> int:
     """Compacts old history in place and returns how many messages changed.
 
     The system prompt and the first user message (the task) are never touched.
     The ``keep_recent_tools`` newest tool results stay verbatim so the model can
     act on current evidence; older ones keep only their tool name and opening text.
+    Already-executed ``tool_calls`` arguments exceeding ``max_arg_chars`` are also
+    compacted immediately so a single huge ``write_file`` payload cannot trigger
+    CUDA OOM on subsequent turns.
     """
-    tool_idx = [i for i, m in enumerate(messages) if m.get("role") == "tool"]
-    if len(tool_idx) <= keep_recent_tools:
-        return 0
-
-    boundary = tool_idx[-keep_recent_tools]  # first message inside the verbatim window
     protected = {0, 1} if len(messages) > 1 else {0}
     changed = 0
+
+    for i, msg in enumerate(messages):
+        if i in protected or msg.get("role") != "assistant":
+            continue
+        tcalls = msg.get("tool_calls")
+        if not isinstance(tcalls, list):
+            continue
+        msg_changed = False
+        for tc in tcalls:
+            fn = tc.get("function") if isinstance(tc, dict) else None
+            args = fn.get("arguments") if isinstance(fn, dict) else None
+            if not isinstance(args, dict):
+                continue
+            for k, v in list(args.items()):
+                if isinstance(v, str) and len(v) > max_arg_chars:
+                    args[k] = f"[compacted {len(v)} chars] {_short(v, assistant_chars)}"
+                    msg_changed = True
+        if msg_changed:
+            changed += 1
+
+    tool_idx = [i for i, m in enumerate(messages) if m.get("role") == "tool"]
+    if len(tool_idx) <= keep_recent_tools:
+        return changed
+
+    boundary = tool_idx[-keep_recent_tools]  # first message inside the verbatim window
 
     for i in tool_idx:
         if i >= boundary or i in protected:
@@ -135,8 +159,22 @@ def compact_messages(
         if i in protected or messages[i].get("role") != "assistant":
             continue
         content = str(messages[i].get("content", "") or "")
+        msg_changed = False
         if len(content) > assistant_chars:
             messages[i]["content"] = _short(content, assistant_chars)
+            msg_changed = True
+        tcalls = messages[i].get("tool_calls")
+        if isinstance(tcalls, list):
+            for tc in tcalls:
+                fn = tc.get("function") if isinstance(tc, dict) else None
+                args = fn.get("arguments") if isinstance(fn, dict) else None
+                if not isinstance(args, dict):
+                    continue
+                for k, v in list(args.items()):
+                    if isinstance(v, str) and len(v) > assistant_chars:
+                        args[k] = _short(v, assistant_chars)
+                        msg_changed = True
+        if msg_changed:
             changed += 1
 
     return changed

@@ -227,6 +227,26 @@ class SelfCorrectionLoop:
             elif time_limit_s and elapsed >= time_limit_s:
                 limit_reason = f"time limit reached ({time_limit_s:.0f}s)"
             if limit_reason:
+                if attempt > 0 and subtask.verification_command:
+                    verif_probe = self.verifier.run_verification(subtask)
+                    if verif_probe.success:
+                        subtask.status = SubtaskExecutionState.COMPLETED.value
+                        self._emit("subtask_complete", subtask.id, {
+                            "subtask_id": subtask.id,
+                            "turns": total_turns,
+                            "tool_calls": total_tool_calls,
+                            "verification": verif_probe.to_dict(),
+                            "attempts": attempt,
+                        })
+                        return SubtaskResult(
+                            subtask_id=subtask.id,
+                            success=True,
+                            turns=total_turns,
+                            tool_calls_count=total_tool_calls,
+                            summary=f"Subtask '{subtask.id}' passed verification before aborting on {limit_reason}.",
+                            artifacts=last_worker_res.artifacts if last_worker_res else list(subtask.outputs),
+                            metadata={"attempts": attempt, "elapsed_s": round(elapsed, 1)},
+                        )
                 subtask.status = SubtaskExecutionState.FAILED.value
                 self._emit("subtask_failed", subtask.id, {
                     "subtask_id": subtask.id, "error": limit_reason, "attempts": attempt,
@@ -302,6 +322,24 @@ class SelfCorrectionLoop:
                 "error": worker_res.error,
                 "workspace_fingerprint": workspace_fingerprint,
             })
+
+            if (
+                not worker_res.success
+                and (
+                    worker_res.metadata.get("limit_reached")
+                    or (
+                        worker_res.tool_calls_count > 0
+                        and "timed out" in (worker_res.error or "").lower()
+                    )
+                )
+                and subtask.verification_command
+            ):
+                # If the worker finished writing/compiling files on a prior tool call
+                # right before the subtask timer or Ollama HTTP request timed out, verify before discarding its work.
+                verif_probe = self.verifier.run_verification(subtask)
+                if verif_probe.success:
+                    worker_res.success = True
+                    worker_res.error = None
 
             if not worker_res.success:
                 failure_fingerprint = f"{worker_res.error or 'worker_failed'}:{workspace_fingerprint}"

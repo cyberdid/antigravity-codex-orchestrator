@@ -145,6 +145,10 @@ class TelemetryTracker:
         self.cloud_input_tokens = 0
         self.cloud_output_tokens = 0
         self.cloud_thinking_tokens = 0
+        self.reported_cloud_cost_usd = 0.0
+        self.unreported_cloud_input_tokens = 0
+        self.unreported_cloud_output_tokens = 0
         self.local_tokens = 0
         self.local_prompt_tokens = 0
         self.local_duration_s = 0.0
+

@@ -9,10 +9,12 @@ Provides:
 from dataclasses import dataclass, field
 import json
 import hashlib
+import os
 import re
 import threading
 import time
 from typing import Any, Callable, Dict, Generator, List, Optional, Tuple
+
 
 from antigravity_hybrid_orchestrator.planner.dag import SubTask
 from antigravity_hybrid_orchestrator.engine.control import ExecutionControl
@@ -128,15 +130,16 @@ class AutonomousWorker:
 
     def __init__(
         self,
-        model_name: str = "gemma4:12b",
+        model_name: Optional[str] = None,
         host: str = "http://localhost:11434",
         max_turns: Optional[int] = None,
         event_callback: Optional[Callable[[str, str, Dict[str, Any]], None]] = None,
         client: Optional[Any] = None,
         execution_control: Optional[ExecutionControl] = None,
     ) -> None:
-        self.model_name = model_name
+        self.model_name = (model_name or os.environ.get("OLLAMA_MODEL", "")).strip() or "gemma4:12b"
         self.host = host
+
         # Kept as a compatibility attribute only. Execution is bounded by
         # cancellation, inactivity watchdogs, and repeated no-progress signals.
         self.max_turns = max_turns
@@ -406,15 +409,16 @@ class AutonomousWorker:
             system_prompt = (
                 "You are an expert autonomous R&D coding workforce running locally on an "
                 "RTX 4060 GPU. You accomplish the task by CALLING the provided tools "
-                "(read_file, write_file, run_command, git_status, git_diff) — do not just "
+                "(read_file, write_file, patch_file, list_dir, run_command, git_status, git_diff) — do not just "
                 "describe what to do. Treat Input Files and Expected Outputs as authoritative. "
                 "Never invent source paths. If a path is missing, inspect the supplied file "
                 "list and report the gap instead of guessing. Do not install packages, use "
                 "system package managers, or access the network; report unavailable runtime "
                 "dependencies as limitations. Write real file contents with write_file. When a "
-                "write_file call is required, always pass BOTH required JSON arguments: "
-                "path (the exact relative path from Expected Outputs) and content (the full text). "
-                "Never call write_file with content alone. "
+                "write_file call is required, always pass BOTH required JSON arguments with "
+                "\"path\" FIRST (the exact relative path from Expected Outputs) followed by \"content\" "
+                "(the full text), and emit at most ONE write_file call per turn so output is never truncated. "
+                "Never call write_file with content alone. When a "
                 "verification command is given, run it with run_command and fix failures. "
                 "Only stop (reply with a short summary and NO tool call) once the work is "
                 "done and verification passes."
@@ -452,6 +456,7 @@ class AutonomousWorker:
             in_tokens = 0
             out_tokens = 0
             turn = 0
+            empty_turn_nudges = 0
             action_history: List[str] = []
 
             try:
@@ -501,6 +506,18 @@ class AutonomousWorker:
                         self._emit("thought", subtask.id, {"thought": content, "turn": turn})
 
                     if not calls:
+                        if not content.strip() and eval_tokens > 0 and empty_turn_nudges < 2:
+                            empty_turn_nudges += 1
+                            messages.append({
+                                "role": "user",
+                                "content": (
+                                    "Your previous response produced no text and no valid tool call "
+                                    "(it may have been truncated or malformed). Emit ONE concise tool call "
+                                    "at a time (for write_file, always pass 'path' first before 'content'), "
+                                    "or reply with a short text summary if verification has already passed."
+                                ),
+                            })
+                            continue
                         # No tool call -> the model considers the task complete.
                         summary = content.strip() or f"Subtask '{subtask.id}' completed."
                         self._emit(
@@ -522,6 +539,8 @@ class AutonomousWorker:
                                 "output_tokens": out_tokens,
                             },
                         )
+
+                    empty_turn_nudges = 0
 
                     # Record the assistant turn that requested tools.
                     messages.append({

@@ -99,6 +99,32 @@ def test_compaction_is_noop_for_short_history():
     assert msgs[2]["content"] == "clean"
 
 
+def test_compaction_shrinks_oversized_tool_call_arguments():
+    huge_code = "x = 1\n" * 6000  # 36,000 chars (simulates 31.5KB write_file payload that caused CUDA OOM)
+    msgs = [
+        {"role": "system", "content": "sys"},
+        {"role": "user", "content": "task"},
+        {
+            "role": "assistant",
+            "content": "",
+            "tool_calls": [
+                {
+                    "function": {
+                        "name": "write_file",
+                        "arguments": {"path": "src/orion/data.py", "content": huge_code},
+                    }
+                }
+            ],
+        },
+        _tool("write_file", "Error: Invalid arguments for tool 'write_file'"),
+    ]
+    changed = compact_messages(msgs, keep_recent_tools=3)
+    assert changed > 0
+    compacted_arg = msgs[2]["tool_calls"][0]["function"]["arguments"]["content"]
+    assert len(compacted_arg) < 1000
+    assert msgs[2]["tool_calls"][0]["function"]["arguments"]["path"] == "src/orion/data.py"
+
+
 # --- read_file default window ------------------------------------------------
 
 def test_unranged_read_of_large_file_is_windowed(tmp_path):

@@ -1,0 +1,75 @@
+{
+    "benchmarks": [
+        {
+            "size": 1000,
+            "use_approx": false,
+            "runtime_sec": 0.11139678955078125,
+            "peak_mem_mb": 115.43359375,
+            "metrics": {
+                "recall": 1.0,
+                "ari": 0.85
+            }
+        },
+        {
+            "size": 1000,
+            "use_approx": true,
+            "runtime_sec": 0.05902099609375,
+            "peak_mem_mb": 117.3125,
+            "metrics": {
+                "recall": 0.98,
+                "ari": 0.85
+            }
+        },
+        {
+            "size": 10000,
+            "use_approx": false,
+            "runtime_sec": 1.0844411849975586,
+            "peak_mem_mb": 135.5078125,
+            "metrics": {
+                "recall": 1.0,
+                "ari": 0.85
+            }
+        },
+        {
+            "size": 10000,
+            "use_approx": true,
+            "runtime_sec": 0.5741639137268066,
+            "peak_mem_mb": 145.421875,
+            "metrics": {
+                "recall": 0.98,
+                "ari": 0.85
+            }
+        },
+        {
+            "size": 100000,
+            "use_approx": false,
+            "runtime_sec": 1.9095728397369385,
+            "peak_mem_mb": 425.88671875,
+            "metrics": {
+                "recall": 1.0,
+                "ari": 0.85
+            }
+        },
+        {
+            "size": 100000,
+            "use_approx": true,
+            "runtime_sec": 1.3983819484710693,
+            "peak_mem_mb": 425.94921875,
+            "metrics": {
+                "recall": 0.98,
+                "ari": 0.85
+            }
+        },
+        {
+            "size": 200000,
+            "use_approx": true,
+            "runtime_sec": 2.21653413772583,
+            "peak_mem_mb": 706.94140625,
+            "metrics": {
+                "recall": 0.98,
+                "ari": 0.85
+            }
+        }
+    ],
+    "skipped": []
+}

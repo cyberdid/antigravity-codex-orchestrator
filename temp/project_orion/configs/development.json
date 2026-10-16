@@ -1,0 +1,37 @@
+{
+  "development": {
+    "seeds": [1, 42, 1024],
+    "difficulty_coverage": [
+      "easy",
+      "medium",
+      "hard"
+    ],
+    "data_factors": [
+      "context_length",
+      "instruction_complexity",
+      "domain_specificity"
+    ],
+    "methods": [
+      "greedy",
+      "beam_search",
+      "mcts"
+    ],
+    "tuning_parameters": {
+      "beam_size": {
+        "range": [1, 10],
+        "type": "integer"
+      },
+      "temperature": {
+        "range": [0.1, 1.0],
+        "type": "float"
+      },
+      "top_p": {
+        "range": [0.8, 0.95],
+        "type": "float"
+      }
+    },
+    "selection_strategy": {
+      "contamination_vs_coverage": "Prioritize coverage over contamination in development to ensure robust performance across all difficulty levels before final evaluation."
+    }
+  }
+}
