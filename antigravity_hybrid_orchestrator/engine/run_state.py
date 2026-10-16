@@ -83,9 +83,8 @@ class RunStateStore:
 
     @staticmethod
     def trusted_path_for(path: Path, workspace: Optional[str] = None) -> Path:
-        """Identify a controller mirror without following a mutable sidecar symlink."""
-        path = Path(path)
-        canonical = path.parent.resolve() / path.name
+        """Bind to the lexical run identity, independent of candidate symlinks."""
+        canonical = Path(os.path.abspath(os.path.expanduser(os.fspath(path))))
         base = Path(os.environ.get(
             "ANTIGRAVITY_STATE_HOME", Path.home() / ".local/state/antigravity"
         )).expanduser().resolve()
@@ -94,6 +93,11 @@ class RunStateStore:
             raise ValueError("Controller run state must be outside candidate workspace")
         key = hashlib.sha256(str(canonical).encode()).hexdigest()
         return directory / f"{key}.json"
+
+    @staticmethod
+    def _has_symlink_parent(path: Path) -> bool:
+        lexical = Path(os.path.abspath(os.path.expanduser(os.fspath(path))))
+        return any(parent.is_symlink() for parent in lexical.parents)
 
     @staticmethod
     def _atomic_write(path: Path, payload: Dict[str, Any], *, controller: bool = False) -> None:
@@ -134,6 +138,8 @@ class RunStateStore:
         elapsed_s: float = 0.0,
     ) -> None:
         path = Path(path)
+        if RunStateStore._has_symlink_parent(path):
+            raise ValueError("Run state parent directories must not contain symlinks")
         mirror = RunStateStore.trusted_path_for(path, workspace)
         bindings = dag.metadata.setdefault("task_fingerprints", {})
         for task in dag.tasks.values():
@@ -159,14 +165,18 @@ class RunStateStore:
         path = Path(path)
         mirror = RunStateStore.trusted_path_for(path)
         trusted = mirror.exists()
-        modified = False
+        symlink_parent = RunStateStore._has_symlink_parent(path)
+        modified = symlink_parent
         if trusted:
             state = RunStateStore._read_state(mirror)
-            try:
-                modified = RunStateStore._read_state(path) != state
-            except (OSError, ValueError, UnicodeError):
-                modified = True
+            if not symlink_parent:
+                try:
+                    modified = RunStateStore._read_state(path) != state
+                except (OSError, ValueError, UnicodeError):
+                    modified = True
         else:
+            if symlink_parent:
+                raise ValueError("Untrusted run state parent directories contain symlinks")
             state = RunStateStore._read_state(path)
         if not isinstance(state, dict) or state.get("version") not in (1, 2):
             raise ValueError(f"Unsupported or invalid run state: {path}")

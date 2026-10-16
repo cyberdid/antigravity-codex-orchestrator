@@ -182,3 +182,49 @@ def test_trusted_mirror_survives_unreadable_or_replaced_sidecar(tmp_path, monkey
     assert restored['untrusted_state_modified'] is True
     assert {t['status'] for t in restored['dag']['tasks']} == {'completed'}
     assert restored['trusted_state_available'] is True
+
+
+def test_parent_directory_symlink_cannot_change_controller_state_identity(tmp_path, monkeypatch):
+    monkeypatch.setenv('ANTIGRAVITY_STATE_HOME', str(tmp_path / 'controller'))
+    workspace = tmp_path / 'candidate'
+    workspace.mkdir()
+    (workspace / 'artifact').write_text('verified')
+    dag = ExecutionPlanDAG(tasks=[SubTask(id='science', status='completed', outputs=['artifact'])],
+                           metadata={'integrity_contract': 'orion-study-v1'})
+    path = workspace / '.antigravity_runs' / 'run.state.json'
+    RunStateStore.save(path, goal='g', workspace=str(workspace), dag=dag)
+    original_mirror = RunStateStore.trusted_path_for(path)
+    forged = json.loads(path.read_text())
+    (workspace / 'artifact').write_text('forged')
+    forged['dag']['metadata'].pop('integrity_contract')
+    forged['dag']['metadata']['task_fingerprints']['science'] = RunStateStore.bind_task(str(workspace), dag['science'])
+    path.parent.rename(workspace / '.old-runs')
+    replacement = workspace / '.evil'
+    replacement.mkdir()
+    (replacement / path.name).write_text(json.dumps(forged))
+    path.parent.symlink_to(replacement, target_is_directory=True)
+    assert RunStateStore.trusted_path_for(path) == original_mirror
+    read_state = RunStateStore._read_state
+    def controller_only_read(target):
+        assert target == original_mirror, 'Do not open a candidate path through symlinked parents'
+        return read_state(target)
+    monkeypatch.setattr(RunStateStore, '_read_state', controller_only_read)
+    restored = RunStateStore.load(path)
+    assert restored['untrusted_state_modified'] is True
+    assert restored['dag']['metadata']['integrity_contract'] == 'orion-study-v1'
+    assert restored['dag']['tasks'][0]['status'] == 'pending'
+
+
+def test_save_rejects_symlink_parents_before_writing_controller_or_local_state(tmp_path, monkeypatch):
+    monkeypatch.setenv('ANTIGRAVITY_STATE_HOME', str(tmp_path / 'controller'))
+    workspace = tmp_path / 'candidate'
+    workspace.mkdir()
+    outside = tmp_path / 'outside'
+    outside.mkdir()
+    (workspace / 'runs').symlink_to(outside, target_is_directory=True)
+    sidecar = workspace / 'runs' / 'run.state.json'
+    mirror = RunStateStore.trusted_path_for(sidecar)
+    with pytest.raises(ValueError, match='symlink'):
+        RunStateStore.save(sidecar, goal='g', workspace=str(workspace), dag=ExecutionPlanDAG())
+    assert not mirror.exists()
+    assert not (outside / sidecar.name).exists()
