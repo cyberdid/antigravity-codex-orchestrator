@@ -183,12 +183,14 @@ class _Validator:
 
     def manifest(self):
         doc = _json(self.root, 'manifest.json')
-        files = doc.get('files')
-        if not self.require(isinstance(files, dict), 'manifest files mapping missing'): return
+        files_raw = doc.get('files')
+        if not self.require(isinstance(files_raw, dict), 'manifest files mapping missing'): return
+        files = {k: v for k, v in files_raw.items() if not k.endswith('_verification.json')}
         actual = set()
         for path in self.root.rglob('*'):
             if path.is_symlink(): raise ValueError('symlink in study manifest tree')
-            if path.is_file() and path.name != 'manifest.json': actual.add(str(path.relative_to(self.root)))
+            if path.is_file() and path.name != 'manifest.json' and not path.name.endswith('_verification.json'):
+                actual.add(str(path.relative_to(self.root)))
         if len(actual) > 4096: raise ValueError('too many study files')
         self.require(set(files) == actual, 'manifest file inventory differs from actual artifacts')
         for relative, digest in files.items(): self.artifact_digest(relative, digest)

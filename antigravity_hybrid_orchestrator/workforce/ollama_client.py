@@ -16,7 +16,14 @@ except ImportError:
 import urllib.error
 import urllib.request
 
-from antigravity_hybrid_orchestrator.workforce.context import chat_num_predict, compact_messages, num_ctx, ollama_timeout_s
+from antigravity_hybrid_orchestrator.workforce.context import (
+    bytes_per_token,
+    chat_num_predict,
+    compact_messages,
+    num_ctx,
+    ollama_timeout_s,
+    tool_call_reserve,
+)
 
 
 class OllamaConnectionError(Exception):
@@ -316,6 +323,13 @@ class WorkforceClient:
             {"content": str, "tool_calls": [{"name", "arguments"}], "input_tokens", "output_tokens"}.
         """
         url = f"{self.base_url}/api/chat"
+        # Tool call responses from the worker are compact JSON (typically 50-200 tokens),
+        # so output is capped to tool_call_reserve() (or num_ctx // 4) when tools are present.
+        output_cap = (
+            min(chat_num_predict(), tool_call_reserve(), max(256, num_ctx() // 4))
+            if tools
+            else min(chat_num_predict(), num_ctx() // 2)
+        )
         payload: Dict[str, Any] = {
             "model": self.model,
             "messages": messages,
@@ -324,17 +338,19 @@ class WorkforceClient:
             "options": {
                 "temperature": temperature,
                 "num_ctx": num_ctx(),
-                "num_predict": min(chat_num_predict(), num_ctx() // 2),
+                "num_predict": output_cap,
             },
         }
         if tools:
             payload["tools"] = tools
 
-        # Budget tool schemas as well as history; one UTF-8 byte per token is a
-        # deliberately conservative estimate in the absence of a model tokenizer.
-        reserve = min(chat_num_predict(), num_ctx() // 2)
+        # Budget tool schemas as well as history; convert available token budget to bytes
+        # so token and byte units are properly aligned.
+        reserve = output_cap
         overhead = len(json.dumps({k: v for k, v in payload.items() if k != "messages"}, ensure_ascii=False).encode())
-        compact_messages(messages, max_bytes=max(1, num_ctx() - reserve - overhead))
+        available_tokens = max(1, num_ctx() - reserve)
+        max_bytes = max(1, int(available_tokens * bytes_per_token()) - overhead)
+        compact_messages(messages, max_bytes=max_bytes)
         if deadline is not None or execution_control is not None:
             raw = self._post_json(url, payload, deadline=deadline, execution_control=execution_control)
         else:

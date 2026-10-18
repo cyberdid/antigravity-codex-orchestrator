@@ -27,6 +27,8 @@ DEFAULT_MAX_CHARS = 4000
 DEFAULT_KEEP_RECENT_TOOLS = 3
 DEFAULT_SUMMARY_CHARS = 160
 DEFAULT_ASSISTANT_CHARS = 300
+DEFAULT_BYTES_PER_TOKEN = 3.0
+DEFAULT_TOOL_CALL_RESERVE = 2048
 
 
 def num_ctx() -> int:
@@ -37,6 +39,26 @@ def num_ctx() -> int:
     except ValueError:
         return DEFAULT_NUM_CTX
     return max(2048, value)
+
+
+def bytes_per_token() -> float:
+    """Bytes-per-token ratio for context budget estimation (``OLLAMA_BYTES_PER_TOKEN``, default 3.0)."""
+    raw = os.environ.get("OLLAMA_BYTES_PER_TOKEN", "").strip()
+    try:
+        val = float(raw) if raw else DEFAULT_BYTES_PER_TOKEN
+    except ValueError:
+        return DEFAULT_BYTES_PER_TOKEN
+    return max(1.0, val)
+
+
+def tool_call_reserve() -> int:
+    """Output-token reserve when tools are provided (``OLLAMA_TOOL_RESERVE``, default 2048)."""
+    raw = os.environ.get("OLLAMA_TOOL_RESERVE", "").strip()
+    try:
+        val = int(raw) if raw else DEFAULT_TOOL_CALL_RESERVE
+    except ValueError:
+        return DEFAULT_TOOL_CALL_RESERVE
+    return max(128, val)
 
 
 def ollama_timeout_s() -> float:
@@ -110,6 +132,7 @@ def compact_messages(
     max_arg_chars: int = DEFAULT_MAX_CHARS,
     max_bytes: int | None = None,
     reserved_tokens: int | None = None,
+    bytes_per_token_ratio: float | None = None,
 ) -> int:
     """Compacts old history in place and returns how many messages changed.
 
@@ -122,9 +145,13 @@ def compact_messages(
     compacted immediately so a single huge ``write_file`` payload cannot trigger
     CUDA OOM on subsequent turns.
     """
-    # Conservative UTF-8 byte estimate (one byte per token) leaves room for output.
-    reserve = min(chat_num_predict(), num_ctx() // 2) if reserved_tokens is None else reserved_tokens
-    limit = max_bytes if max_bytes is not None else max(1, num_ctx() - reserve)
+    bpt = bytes_per_token() if bytes_per_token_ratio is None else max(1.0, float(bytes_per_token_ratio))
+    reserve = (
+        min(chat_num_predict(), tool_call_reserve(), max(256, num_ctx() // 4))
+        if reserved_tokens is None
+        else reserved_tokens
+    )
+    limit = max_bytes if max_bytes is not None else max(1, int((num_ctx() - reserve) * bpt))
     protected = {i for i, m in enumerate(messages) if m.get("role") == "system"}
     first_user = next((i for i, m in enumerate(messages) if m.get("role") == "user"), None)
     if first_user is not None:
