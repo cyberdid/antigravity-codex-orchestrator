@@ -171,7 +171,7 @@ class CloudArchitectClient:
             return self._invoke_claude(prompt)
         return self._invoke_codex(prompt)
 
-    def _run_subprocess(self, cmd: List[str], label: str) -> Tuple[int, str, str]:
+    def _run_subprocess(self, cmd: List[str], label: str, cwd: Optional[str] = None) -> Tuple[int, str, str]:
         """Runs a backend CLI under the execution budget, idle and wall-clock guards.
 
         Returns (return_code, stdout_text, stderr_text). Raises CloudArchitectError
@@ -180,6 +180,7 @@ class CloudArchitectClient:
         try:
             process = subprocess.Popen(
                 cmd,
+                cwd=cwd,
                 stdin=subprocess.DEVNULL,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
@@ -293,7 +294,7 @@ class CloudArchitectClient:
                 cmd += ["-m", self.model]
             cmd += ["--", prompt]
 
-            return_code, stdout_text, stderr_text = self._run_subprocess(cmd, "codex")
+            return_code, stdout_text, stderr_text = self._run_subprocess(cmd, "codex", **self._cwd_kwargs())
             if return_code != 0:
                 raise CloudArchitectError(
                     f"Cloud Architect (codex) returned non-zero exit code "
@@ -342,7 +343,7 @@ class CloudArchitectClient:
             "--permission-mode", "plan",
             "--", prompt,
         ]
-        return_code, stdout_text, stderr_text = self._run_subprocess(cmd, "claude")
+        return_code, stdout_text, stderr_text = self._run_subprocess(cmd, "claude", **self._cwd_kwargs())
         if return_code != 0:
             raise CloudArchitectError(
                 f"Cloud Architect (claude) returned non-zero exit code "
@@ -382,7 +383,7 @@ class CloudArchitectClient:
         cmd = [self.cli_path, "-p", prompt, "--output-format", "json"]
         if self.model:
             cmd += ["--model", self.model]
-        return_code, stdout_text, stderr_text = self._run_subprocess(cmd, "agy")
+        return_code, stdout_text, stderr_text = self._run_subprocess(cmd, "agy", **self._cwd_kwargs())
         if return_code != 0:
             raise CloudArchitectError(
                 f"Cloud Architect (agy) returned non-zero exit code "
@@ -718,9 +719,25 @@ class CloudArchitectClient:
 
         return dag
 
+    _isolated_cwd: Optional[str] = None
+
+    def _cwd_kwargs(self) -> Dict[str, str]:
+        return {"cwd": self._isolated_cwd} if self._isolated_cwd else {}
+
+    def _invoke_isolated(self, prompt: str) -> Tuple[str, int, int]:
+        """Free-form calls run in a fresh empty directory: agent CLIs such as agy can
+        read files from their working directory, which must never be the repository
+        or the candidate workspace."""
+        with tempfile.TemporaryDirectory(prefix="architect-call-") as empty:
+            self._isolated_cwd = empty
+            try:
+                return self._invoke_cloud(prompt)
+            finally:
+                self._isolated_cwd = None
+
     def complete(self, prompt: str) -> Tuple[str, int, int]:
         """One free-form cloud call (recorded in ``usage_ledger``); used by the harness editor."""
-        raw, in_tokens, out_tokens = self._invoke_cloud(prompt)
+        raw, in_tokens, out_tokens = self._invoke_isolated(prompt)
         return str(raw or ""), in_tokens, out_tokens
 
     ASSIST_RESPONSE_CHARS = 4000
@@ -739,7 +756,7 @@ class CloudArchitectClient:
             "satisfying the docstrings and the failing tests. Do NOT write complete code, "
             "whole functions or files.\n" + NO_TOOLS + "\n\n" + payload
         )
-        raw, in_tokens, out_tokens = self._invoke_cloud(prompt)
+        raw, in_tokens, out_tokens = self._invoke_isolated(prompt)
         return str(raw or "").strip()[: self.ASSIST_RESPONSE_CHARS], in_tokens, out_tokens
 
     def plan_rd_task(

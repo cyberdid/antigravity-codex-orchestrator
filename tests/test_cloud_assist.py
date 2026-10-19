@@ -114,7 +114,7 @@ def test_agy_empty_reply_with_denied_tools_is_an_error(monkeypatch):
     client = CloudArchitectClient(backend="agy")
     reply = {"status": "SUCCESS", "response": "", "usage": {"input_tokens": 2588, "output_tokens": 616},
              "denied_actions": [{"action": "command", "display_name": "RunCommand"}]}
-    monkeypatch.setattr(client, "_run_subprocess", lambda cmd, label: (0, _json.dumps(reply), "no output produced"))
+    monkeypatch.setattr(client, "_run_subprocess", lambda cmd, label, **kw: (0, _json.dumps(reply), "no output produced"))
     with _pytest.raises(CloudArchitectError, match="RunCommand"):
         client.complete("hello")
 
@@ -127,3 +127,25 @@ def test_cloud_prompts_forbid_tool_use(monkeypatch):
     monkeypatch.setattr(client, "_invoke_cloud", lambda prompt: (sent.append(prompt) or "1. step", 1, 1))
     client.assist_subtask("payload")
     assert "Do not use any tools" in sent[0]
+
+
+def test_free_form_cloud_calls_run_in_an_empty_directory(monkeypatch, tmp_path):
+    """agy is an agent: it must not be able to read the repository or workspace."""
+    import json as _json
+    import os as _os
+    from antigravity_hybrid_orchestrator.architect.client import CloudArchitectClient
+
+    seen = []
+
+    client = CloudArchitectClient(backend="agy")
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "secret_holdout.py").write_text("x = 1")
+    monkeypatch.setattr(client, "_run_subprocess",
+                        lambda cmd, label, cwd=None: (seen.append((cwd, sorted(_os.listdir(cwd)) if cwd else None))
+                                                      or (0, _json.dumps({"response": "1. step", "usage": {}}), "")))
+    client.complete("p")
+    client.assist_subtask("p")
+    assert len(seen) == 2
+    for cwd, listing in seen:
+        assert cwd is not None and Path(cwd).resolve() != tmp_path.resolve()
+        assert listing == []
