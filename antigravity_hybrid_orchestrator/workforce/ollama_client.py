@@ -356,6 +356,7 @@ class WorkforceClient:
         response_format: Optional[Any] = None,
         deadline: Optional[float] = None,
         execution_control: Any = None,
+        num_predict: Optional[int] = None,
     ) -> Dict[str, Any]:
         """Non-streaming `/api/chat` call with native Ollama tool-calling and Thinking support.
 
@@ -366,6 +367,7 @@ class WorkforceClient:
             think: Optional per-call Thinking Mode override (defaults to ``OLLAMA_THINK``).
             seed: Optional deterministic RNG seed (defaults to ``OLLAMA_SEED`` if set).
             response_format: Optional JSON schema or ``"json"`` format constraint.
+            num_predict: Optional per-call generation limit replacing the computed cap.
 
         Returns:
             Dict with ``content``, ``thinking``, ``tool_calls``, token/duration telemetry,
@@ -373,7 +375,11 @@ class WorkforceClient:
         """
         url = f"{self.base_url}/api/chat"
         ctx_limit = num_ctx()
-        output_cap = effective_num_predict(has_tools=bool(tools), num_ctx_val=ctx_limit)
+        output_cap = (
+            int(num_predict)
+            if num_predict is not None
+            else effective_num_predict(has_tools=bool(tools), num_ctx_val=ctx_limit)
+        )
         think_flag = self._effective_think(think)
         effective_seed = seed
         if effective_seed is None:

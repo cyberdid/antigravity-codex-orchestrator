@@ -95,6 +95,24 @@ def ollama_think() -> bool:
     return raw in ("1", "true", "yes", "on")
 
 
+def adaptive_num_predict_enabled() -> bool:
+    """Whether a truncated tool-call turn is retried once with ``num_predict_max()``
+    (``OLLAMA_ADAPTIVE_NUM_PREDICT``, default on)."""
+    raw = os.environ.get("OLLAMA_ADAPTIVE_NUM_PREDICT", "").strip().lower()
+    return raw not in ("0", "false", "no", "off")
+
+
+def num_predict_max() -> int:
+    """Escalated generation limit (``OLLAMA_NUM_PREDICT_MAX``, default 4096),
+    never below the default tool-turn limit."""
+    raw = os.environ.get("OLLAMA_NUM_PREDICT_MAX", "").strip()
+    try:
+        value = int(raw) if raw else 4096
+    except ValueError:
+        value = 4096
+    return max(value, effective_num_predict(has_tools=True))
+
+
 def effective_num_predict(has_tools: bool = False, num_ctx_val: int | None = None) -> int:
     """Computes the effective ``num_predict`` cap for ``/api/chat``.
 

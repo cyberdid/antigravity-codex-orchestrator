@@ -21,10 +21,13 @@ from antigravity_hybrid_orchestrator.planner.dag import SubTask
 from antigravity_hybrid_orchestrator.engine.control import ExecutionControl
 from antigravity_hybrid_orchestrator.workforce.tools import ToolResult, WorkspaceToolSuite
 from antigravity_hybrid_orchestrator.workforce.context import (
+    adaptive_num_predict_enabled,
     compact_messages,
     effective_num_predict,
     num_ctx,
+    num_predict_max,
     ollama_think,
+    preflight_context_budget,
     prune_tool_output,
     strip_completed_thinking,
 )
@@ -537,6 +540,9 @@ class AutonomousWorker:
             )
             active_num_ctx = num_ctx()
             active_num_predict = effective_num_predict(has_tools=bool(tools), num_ctx_val=active_num_ctx)
+            budget_escalations = 0
+            discarded_truncated_tool_calls = 0
+            escalate_next_turn = False
 
             def _build_telemetry_meta(extra: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
                 unique_reads = len(set(files_read_list))
@@ -566,6 +572,8 @@ class AutonomousWorker:
                     "invalid_tool_arguments": invalid_tool_arguments,
                     "context_overflows": context_overflows,
                     "truncated_generations": truncated_generations,
+                    "budget_escalations": budget_escalations,
+                    "discarded_truncated_tool_calls": discarded_truncated_tool_calls,
                     "compacted_messages": compacted_messages_total,
                     "successful_verifications": recovery_controller.successful_verifications,
                     **recovery_controller.telemetry_summary(),
@@ -596,11 +604,17 @@ class AutonomousWorker:
                             metadata=_build_telemetry_meta({"paused": True, "stop_reason": stop.reason}),
                         )
                     inference_started = time.monotonic()
-                    compacted_messages_total += compact_messages(messages, reserved_tokens=active_num_predict)
+                    # A truncated tool-call turn is re-requested once with a larger limit.
+                    request_num_predict = num_predict_max() if escalate_next_turn else None
+                    escalate_next_turn = False
+                    compacted_messages_total += compact_messages(
+                        messages, reserved_tokens=request_num_predict or active_num_predict
+                    )
                     from antigravity_hybrid_orchestrator.workforce.ollama_client import WorkforceClient
                     if isinstance(client, WorkforceClient):
                         resp = client.chat(messages, tools=tools, deadline=deadline,
-                                           execution_control=self.execution_control)
+                                           execution_control=self.execution_control,
+                                           num_predict=request_num_predict)
                     else:
                         resp = client.chat(messages, tools=tools)
                     prompt_tokens = int(resp.get("input_tokens", 0))
@@ -612,7 +626,7 @@ class AutonomousWorker:
                     invalid_tool_arguments += int(resp.get("malformed_tool_calls", 0))
                     if "num_ctx" in resp:
                         active_num_ctx = int(resp["num_ctx"])
-                    if "num_predict" in resp:
+                    if "num_predict" in resp and request_num_predict is None:
                         active_num_predict = int(resp["num_predict"])
                     if "think_enabled" in resp:
                         think_cfg = bool(resp["think_enabled"])
@@ -656,6 +670,8 @@ class AutonomousWorker:
                         "thinking_chars": len(thinking),
                         "done_reason": str(resp.get("done_reason", "") or ""),
                         "truncated": is_truncated,
+                        "num_predict": request_num_predict or active_num_predict,
+                        "budget_escalated": request_num_predict is not None,
                         "tool_calls": [],
                     }
                     turn_trajectory.append(turn_entry)
@@ -663,6 +679,25 @@ class AutonomousWorker:
                     # Thinking content is deliberately NOT emitted to HUD by default.
                     if content.strip():
                         self._emit("thought", subtask.id, {"thought": content, "turn": turn})
+
+                    # Never execute a tool call cut off at the generation limit: its
+                    # arguments may be missing or partial even when they parse.
+                    if is_truncated and calls and adaptive_num_predict_enabled():
+                        discarded_truncated_tool_calls += len(calls)
+                        turn_entry["discarded_tool_calls"] = [str(c.get("name", "")) for c in calls]
+                        calls = []
+                        if request_num_predict is not None:
+                            turn_entry["budget_escalation_skipped"] = "already_escalated"
+                        elif not isinstance(client, WorkforceClient):
+                            turn_entry["budget_escalation_skipped"] = "client"
+                        elif not preflight_context_budget(
+                            messages, tools, num_ctx_val=active_num_ctx, num_predict_val=num_predict_max()
+                        )["within_budget"]:
+                            turn_entry["budget_escalation_skipped"] = "context"
+                        else:
+                            budget_escalations += 1
+                            escalate_next_turn = True
+                            continue
 
                     if not calls:
                         should_continue, recovery_prompt, terminal_err = (
