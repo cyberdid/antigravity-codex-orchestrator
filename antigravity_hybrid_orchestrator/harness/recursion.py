@@ -69,8 +69,10 @@ def standard_choice(step: TaskStep) -> Tuple[HarnessTree, str]:
 
 def gated_choice(step: TaskStep, epsilon: float = EPSILON) -> Tuple[HarnessTree, str]:
     """H3: trusted verification gate, then the deterministic utility, else KEEP_BASE."""
-    accepted = [(label, tree, r) for label, tree, r in step.candidates()
-                if r.gate_accepted and tree != step.base_tree]
+    edited = [(label, tree, r) for label, tree, r in step.candidates() if tree != step.base_tree]
+    if not edited:
+        return step.base_tree, "KEEP_BASE (no candidate proposed edits)"
+    accepted = [(label, tree, r) for label, tree, r in edited if r.gate_accepted]
     if not accepted:
         return step.base_tree, "KEEP_BASE (no candidate passed trusted verification)"
     label, tree, best = max(accepted, key=lambda item: utility(item[2]))

@@ -305,3 +305,10 @@ def test_experiment_script_end_to_end_with_fakes(tmp_path, monkeypatch):
 def test_proposer_prompt_forbids_tool_use():
     prompt = HarnessProposer(lambda p: ("", 0, 0)).build_prompt("INV", DEFAULT_TREE, "e", [])
     assert "Do not use any tools" in prompt
+
+
+def test_h3_reports_no_edits_when_every_role_kept_base():
+    rs = {"base": _rollout("base")}
+    step, _, _ = _step(rs, trees={})
+    tree, decision = gated_choice(step)
+    assert tree == DEFAULT_TREE and decision == "KEEP_BASE (no candidate proposed edits)"
