@@ -1,7 +1,7 @@
 """Deterministic mock for Cloud Architect client used in testing and offline mode."""
 
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 from antigravity_hybrid_orchestrator.architect import StrategyResult
 from antigravity_hybrid_orchestrator.planner.dag import (
@@ -111,6 +111,15 @@ class MockCloudArchitectClient:
 
     # Backward-compatible alias
     generate_strategic_plan = generate_strategy
+
+    def assist_subtask(self, payload: str) -> Tuple[str, int, int]:
+        """Deterministic guidance for offline runs and tests."""
+        guidance = (
+            "1. Re-read the docstring of each affected function and list every rule it states.\n"
+            "2. For each failing test, find the rule it checks and change only that behaviour.\n"
+            "3. Re-run the verification command and fix the next failing rule."
+        )
+        return guidance, len(payload) // 4, 50
 
     def plan_rd_task(
         self,

@@ -705,6 +705,25 @@ class CloudArchitectClient:
 
         return dag
 
+    ASSIST_RESPONSE_CHARS = 4000
+
+    def assist_subtask(self, payload: str) -> Tuple[str, int, int]:
+        """Ask for step-by-step guidance on a subtask the local worker keeps failing.
+
+        ``payload`` was built and privacy-checked by ``CloudAssist``. The answer is
+        steps or pseudocode for the local worker to implement, never complete code.
+        """
+        prompt = (
+            "You are the planning architect of a hybrid coding system. A small local model "
+            "keeps failing the subtask below. You see only signatures, docstrings and the "
+            "failing tests' messages; the local model will write the code.\n"
+            "Reply with at most 12 numbered steps or short pseudocode that lead to a fix "
+            "satisfying the docstrings and the failing tests. Do NOT write complete code, "
+            "whole functions or files.\n\n" + payload
+        )
+        raw, in_tokens, out_tokens = self._invoke_cloud(prompt)
+        return str(raw or "").strip()[: self.ASSIST_RESPONSE_CHARS], in_tokens, out_tokens
+
     def plan_rd_task(
         self,
         goal: str,
