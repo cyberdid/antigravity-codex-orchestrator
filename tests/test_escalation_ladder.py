@@ -177,3 +177,68 @@ def test_worker_think_override_reaches_chat(monkeypatch, tmp_path):
     _, sent = _run(monkeypatch, tmp_path, [_text("Done.")], think=True)
     assert sent[0]["think"] is True
     assert sent[0]["num_predict"] == 4096
+
+
+# --- Task 5: cloud guidance in the loop ---------------------------------------
+
+ASSERT_CHECK = "python3 -c \"import pathlib; assert pathlib.Path('ok').exists(), 'ok file missing'\""
+
+
+class FakeAssist:
+    def __init__(self, guidance: str = "1. Use fullmatch.") -> None:
+        self.guidance = guidance
+        self.calls: List[Dict[str, Any]] = []
+
+    def request(self, subtask, failure_excerpt):
+        self.calls.append({"subtask": subtask.id, "excerpt": failure_excerpt})
+        return self.guidance
+
+
+def _assert_subtask() -> SubTask:
+    return SubTask(id="loop", title="Create ok", input_files=[], affected_files=["ok"],
+                   verification_command=ASSERT_CHECK)
+
+
+def test_assist_called_before_due_attempt_with_failure_excerpt(tmp_path):
+    from antigravity_hybrid_orchestrator.engine.escalation import EscalationLadder
+
+    worker, assist = RecordingWorker(), FakeAssist()
+    result = _make_loop(tmp_path, worker, EscalationLadder(cloud_assist=assist)).execute_subtask_with_retry(
+        _assert_subtask())
+
+    assert len(assist.calls) == 1
+    assert "AssertionError: ok file missing" in assist.calls[0]["excerpt"]
+    second_feedback = worker.calls[1]["feedback_context"]
+    assert "Guidance from the cloud architect (steps, not code):" in second_feedback
+    assert "1. Use fullmatch." in second_feedback
+    assert worker.calls[0]["feedback_context"] is None
+
+
+def test_assist_not_called_without_ladder_assist(tmp_path):
+    from antigravity_hybrid_orchestrator.engine.escalation import EscalationLadder
+
+    result = _make_loop(tmp_path, RecordingWorker(), EscalationLadder()).execute_subtask_with_retry(
+        _assert_subtask())
+    assert result.metadata["solved_with_cloud_assist"] is False
+    assert result.metadata["cloud_assist_calls"] == 0
+
+
+def test_assisted_success_is_labelled(tmp_path):
+    from antigravity_hybrid_orchestrator.engine.escalation import EscalationLadder
+
+    result = _make_loop(tmp_path, RecordingWorker(), EscalationLadder(cloud_assist=FakeAssist())
+                        ).execute_subtask_with_retry(_assert_subtask())
+    assert result.success is True
+    assert result.metadata["solved_with_cloud_assist"] is True
+    assert result.metadata["cloud_assist_calls"] == 1
+    assert "cloud_assist" in result.metadata["ladder_steps_used"]
+
+
+def test_assist_returning_none_adds_no_guidance(tmp_path):
+    from antigravity_hybrid_orchestrator.engine.escalation import EscalationLadder
+
+    worker = RecordingWorker()
+    result = _make_loop(tmp_path, worker, EscalationLadder(cloud_assist=FakeAssist(guidance=None))
+                        ).execute_subtask_with_retry(_assert_subtask())
+    assert "Guidance from the cloud architect" not in (worker.calls[1]["feedback_context"] or "")
+    assert result.metadata["solved_with_cloud_assist"] is False

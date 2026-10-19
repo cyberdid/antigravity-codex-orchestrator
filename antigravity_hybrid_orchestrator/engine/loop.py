@@ -16,6 +16,7 @@ from antigravity_hybrid_orchestrator.engine.verifier import (
 )
 from antigravity_hybrid_orchestrator.engine.control import ExecutionControl
 from antigravity_hybrid_orchestrator.engine.escalation import EscalationLadder
+from antigravity_hybrid_orchestrator.workforce.recovery_controller import failure_excerpt
 from antigravity_hybrid_orchestrator.planner.dag import ExecutionPlanDAG, SubTask
 from antigravity_hybrid_orchestrator.workforce.mock_worker import MockAutonomousWorker
 from antigravity_hybrid_orchestrator.workforce.tools import WorkspaceToolSuite
@@ -224,11 +225,35 @@ class SelfCorrectionLoop:
         self._ladder_steps: List[str] = []
         result = self._execute_subtask_attempts(subtask)
         result.metadata = dict(result.metadata or {})
+        assisted = "cloud_assist" in self._ladder_steps
         result.metadata.update(
             think_retry_used="think_retry" in self._ladder_steps,
             ladder_steps_used=list(self._ladder_steps),
+            cloud_assist_calls=int(assisted),
+            solved_with_cloud_assist=bool(result.success and assisted),
         )
         return result
+
+    def _with_cloud_guidance(
+        self,
+        subtask: SubTask,
+        feedback_context: Optional[str],
+        last_verif_res: Optional[VerificationResult],
+        last_worker_res: Optional[SubtaskResult],
+    ) -> Optional[str]:
+        """Append owner-approved cloud guidance, if the cloud gives any, to the feedback."""
+        if last_verif_res is not None:
+            evidence = f"{last_verif_res.stderr}\n{last_verif_res.stdout}"
+        else:
+            evidence = (last_worker_res.error if last_worker_res else "") or ""
+        guidance = self.ladder.cloud_assist.request(subtask, failure_excerpt(evidence, 600))
+        if not guidance:
+            return feedback_context
+        self._use_ladder_step("cloud_assist")
+        return (
+            f"{feedback_context or ''}\n\n"
+            f"Guidance from the cloud architect (steps, not code):\n{guidance}"
+        ).strip()
 
     def _use_ladder_step(self, step: str) -> None:
         if step not in self._ladder_steps:
@@ -334,6 +359,9 @@ class SelfCorrectionLoop:
             })
 
             # 1. Execute subtask with worker
+            if self.ladder is not None and self.ladder.assist_due(attempt):
+                feedback_context = self._with_cloud_guidance(
+                    subtask, feedback_context, last_verif_res, last_worker_res)
             think = self.ladder.think_for_attempt(attempt) if self.ladder else None
             # Workers that predate the ladder do not accept ``think``; pass it only when set.
             ladder_kwargs: Dict[str, Any] = {}
