@@ -1,0 +1,1997 @@
+{
+  "experiment": "GEMMA-ORION Phase 2B Recovery Controller Ablation (P0 vs P1_REACTIVE vs P1_STAGE vs P1)",
+  "timestamp_utc": "2026-10-19T13:30:29Z",
+  "git_commit": "9ae29e2",
+  "git_head": "9ae29e2",
+  "git_dirty": false,
+  "working_tree_diff_sha256": "clean",
+  "seeds": [
+    303,
+    404
+  ],
+  "task_deadline_s": 300.0,
+  "counterbalanced_seed_order": true,
+  "policies": {
+    "P0": {
+      "label": "P0 (Baseline G0: think=false, predict=2048, basic recovery)",
+      "env": {
+        "OLLAMA_THINK": "false",
+        "OLLAMA_NUM_CTX": "16384",
+        "OLLAMA_NUM_PREDICT": "2048",
+        "OLLAMA_RECOVERY_POLICY": "P0"
+      },
+      "seed_runs": [
+        {
+          "seed": 303,
+          "tasks": [
+            {
+              "task_id": "H5_merge_intervals_multi_defect_fix",
+              "policy_id": "P0",
+              "seed": 303,
+              "worker_reported_success": true,
+              "independently_verified": true,
+              "pipeline_verified": true,
+              "llm_native_completion": true,
+              "fallback_used": false,
+              "turns": 6,
+              "tool_calls_count": 5,
+              "tool_call_efficiency": 1.0,
+              "wall_clock_s": 65.7774,
+              "peak_vram_mib": 7820,
+              "error": null,
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 10562,
+                "output_tokens": 909,
+                "prompt_eval_cached_tokens": 5395,
+                "eval_duration_s": 56.6182,
+                "prompt_eval_duration_s": 7.2247,
+                "wall_clock_s": 65.7773,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 5,
+                "read_file_calls": 2,
+                "unique_files_read": 2,
+                "repeated_file_reads": 0,
+                "total_repeated_file_reads": 0,
+                "edit_calls": 1,
+                "test_command_calls": 2,
+                "invalid_tool_arguments": 0,
+                "context_overflows": 0,
+                "truncated_generations": 0,
+                "compacted_messages": 6,
+                "successful_verifications": 1,
+                "recovery_policy": "P0",
+                "reactive_recovery_enabled": false,
+                "stage_hints_enabled": false,
+                "recovery_attempts": 0,
+                "stage_hints_emitted": 0,
+                "repeated_unchanged_reads": 0,
+                "recovery_events": [],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1028,
+                    "output_tokens": 17,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 0.9653,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "intervals.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1253,
+                    "output_tokens": 23,
+                    "prompt_eval_cached_tokens": 1023,
+                    "eval_duration_s": 1.3935,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_intervals.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1451,
+                    "output_tokens": 30,
+                    "prompt_eval_cached_tokens": 1253,
+                    "eval_duration_s": 1.7585,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_intervals.py",
+                        "success": false,
+                        "error": " differ: [(5, 6)] != [(1, 4), (5, 6)]\n\nFirst differing element 0:\n(5, 6)\n(1, 4)\n\nSecond list contains 1 additional elements.\nFirst extra element 1:\n(5, 6)\n\n- [(5, 6)]\n+ [(1, 4), (5, 6)]\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nFAILED (failures=3)"
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 2152,
+                    "output_tokens": 361,
+                    "prompt_eval_cached_tokens": 1451,
+                    "eval_duration_s": 22.9011,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "write_file",
+                        "target": "intervals.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 2377,
+                    "output_tokens": 30,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.8307,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_intervals.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 6,
+                    "input_tokens": 2301,
+                    "output_tokens": 448,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 27.7691,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": []
+                  }
+                ],
+                "seed": 303,
+                "policy_id": "P0",
+                "visible_tests_passed": true,
+                "holdout_tests_passed": true,
+                "pipeline_verified": true,
+                "llm_native_completion": true,
+                "fallback_used": false,
+                "tool_call_efficiency": 1.0,
+                "initial_workspace_sha256": "ce8a5ebe171bd2c1853df9bcd10495f7a4d54d1db59b8d6f2fcd24bf6634d506",
+                "final_workspace_sha256": "7f50236ce585e81a576f5703d000147ff8cafe3aba93e892c9f587b25a16d709",
+                "workspace_modified": true,
+                "workspace_diff": "--- a/intervals.py\n+++ b/intervals.py\n@@ -9,10 +9,26 @@\n     that touch (next start == current end) are merged. Raise ValueError if any\n     interval has start > end.\n     \"\"\"\n+    # Validate all intervals first\n+    for start, end in intervals:\n+        if start > end:\n+            raise ValueError(f\"Interval ({start}, {end}) has start > end.\")\n+\n+    # Sort a copy of the intervals by start time\n+    sorted_intervals = sorted(intervals, key=lambda x: x[0])\n+    \n+    if not sorted_intervals:\n+        return []\n+\n     result: List[Tuple[float, float]] = []\n-    for start, end in intervals:\n-        if result and start < result[-1][1]:\n-            result[-1] = (result[-1][0], max(result[-1][1], end))\n+    for start, end in sorted_intervals:\n+        if not result:\n+            result.append((start, end))\n         else:\n-            result.append((start, end))\n+            prev_start, prev_end = result[-1]\n+            # If current interval overlaps or touches the previous one\n+            if start <= prev_end:\n+                result[-1] = (prev_start, max(prev_end, end))\n+            else:\n+                result.append((start, end))\n     return result\n"
+              }
+            },
+            {
+              "task_id": "H6_parse_duration_multi_defect_fix",
+              "policy_id": "P0",
+              "seed": 303,
+              "worker_reported_success": false,
+              "independently_verified": false,
+              "pipeline_verified": false,
+              "llm_native_completion": false,
+              "fallback_used": false,
+              "turns": 16,
+              "tool_calls_count": 16,
+              "tool_call_efficiency": 0.5625,
+              "wall_clock_s": 57.4325,
+              "peak_vram_mib": 7820,
+              "error": "Execution stalled: a tool-action cycle repeated without new evidence (cycle length 1)",
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 32068,
+                "output_tokens": 483,
+                "prompt_eval_cached_tokens": 10972,
+                "eval_duration_s": 29.4277,
+                "prompt_eval_duration_s": 26.0825,
+                "wall_clock_s": 57.4324,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 16,
+                "read_file_calls": 10,
+                "unique_files_read": 2,
+                "repeated_file_reads": 7,
+                "total_repeated_file_reads": 8,
+                "edit_calls": 0,
+                "test_command_calls": 6,
+                "invalid_tool_arguments": 0,
+                "context_overflows": 0,
+                "truncated_generations": 0,
+                "compacted_messages": 134,
+                "successful_verifications": 0,
+                "recovery_policy": "P0",
+                "reactive_recovery_enabled": false,
+                "stage_hints_enabled": false,
+                "recovery_attempts": 0,
+                "stage_hints_emitted": 0,
+                "repeated_unchanged_reads": 7,
+                "recovery_events": [],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1034,
+                    "output_tokens": 18,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.1183,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1270,
+                    "output_tokens": 24,
+                    "prompt_eval_cached_tokens": 1030,
+                    "eval_duration_s": 1.4709,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1444,
+                    "output_tokens": 31,
+                    "prompt_eval_cached_tokens": 1270,
+                    "eval_duration_s": 1.8102,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_durations.py",
+                        "success": false,
+                        "error": "ix_pcmu67og/test_durations.py\", line 13, in test_invalid_text_raises\n    with self.assertRaises(ValueError):\n         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nFAILED (failures=2)"
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 1800,
+                    "output_tokens": 35,
+                    "prompt_eval_cached_tokens": 1444,
+                    "eval_duration_s": 2.2437,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_durations.py",
+                        "success": false,
+                        "error": "ix_pcmu67og/test_durations.py\", line 13, in test_invalid_text_raises\n    with self.assertRaises(ValueError):\n         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nFAILED (failures=2)"
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 2008,
+                    "output_tokens": 22,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.3149,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 6,
+                    "input_tokens": 2152,
+                    "output_tokens": 28,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.8586,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 7,
+                    "input_tokens": 2040,
+                    "output_tokens": 61,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 4.014,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -c \"import re; text='1h30m'; print(re.findall(r'(\\d+)([hms])', text))\"",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 8,
+                    "input_tokens": 1852,
+                    "output_tokens": 43,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 2.5153,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -c \"from durations import parse_duration; print(parse_duration('1h30m'))\"",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 9,
+                    "input_tokens": 1773,
+                    "output_tokens": 22,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.2962,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 10,
+                    "input_tokens": 1933,
+                    "output_tokens": 31,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.8414,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_durations.py",
+                        "success": false,
+                        "error": "ix_pcmu67og/test_durations.py\", line 13, in test_invalid_text_raises\n    with self.assertRaises(ValueError):\n         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nFAILED (failures=2)"
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 11,
+                    "input_tokens": 2286,
+                    "output_tokens": 24,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.427,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 12,
+                    "input_tokens": 2473,
+                    "output_tokens": 26,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.5577,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 13,
+                    "input_tokens": 2571,
+                    "output_tokens": 48,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 2.8949,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -c \"import math; print(1 * 3600 + 30 * 60)\"",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 14,
+                    "input_tokens": 2353,
+                    "output_tokens": 26,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.5161,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 15,
+                    "input_tokens": 2486,
+                    "output_tokens": 22,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.2679,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 16,
+                    "input_tokens": 2593,
+                    "output_tokens": 22,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.2806,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  }
+                ],
+                "stalled": true,
+                "seed": 303,
+                "policy_id": "P0",
+                "visible_tests_passed": false,
+                "holdout_tests_passed": false,
+                "pipeline_verified": false,
+                "llm_native_completion": false,
+                "fallback_used": false,
+                "tool_call_efficiency": 0.5625,
+                "initial_workspace_sha256": "4194549173ebdf6e48ce360849f8381a0868a430901b1c60a3ce00455107e141",
+                "final_workspace_sha256": "4194549173ebdf6e48ce360849f8381a0868a430901b1c60a3ce00455107e141",
+                "workspace_modified": false,
+                "workspace_diff": ""
+              }
+            }
+          ],
+          "aggregate": {
+            "tasks_total": 2,
+            "pipeline_verified_count": 1,
+            "pipeline_verified_rate": 0.5,
+            "llm_native_completion_count": 1,
+            "llm_native_completion_rate": 0.5,
+            "fallback_used_count": 0,
+            "total_input_tokens": 42630,
+            "total_output_tokens": 1392,
+            "total_tokens": 44022,
+            "total_wall_clock_s": 123.2099,
+            "truncated_generations": 0,
+            "recovery_attempts": 0,
+            "stage_hints_emitted": 0,
+            "repeated_file_reads": 7,
+            "peak_vram_mib": 7820
+          }
+        },
+        {
+          "seed": 404,
+          "tasks": [
+            {
+              "task_id": "H5_merge_intervals_multi_defect_fix",
+              "policy_id": "P0",
+              "seed": 404,
+              "worker_reported_success": true,
+              "independently_verified": true,
+              "pipeline_verified": true,
+              "llm_native_completion": true,
+              "fallback_used": false,
+              "turns": 6,
+              "tool_calls_count": 5,
+              "tool_call_efficiency": 1.0,
+              "wall_clock_s": 61.6013,
+              "peak_vram_mib": 6949,
+              "error": null,
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 10550,
+                "output_tokens": 885,
+                "prompt_eval_cached_tokens": 5395,
+                "eval_duration_s": 52.5861,
+                "prompt_eval_duration_s": 7.0582,
+                "wall_clock_s": 61.6012,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 5,
+                "read_file_calls": 2,
+                "unique_files_read": 2,
+                "repeated_file_reads": 0,
+                "total_repeated_file_reads": 0,
+                "edit_calls": 1,
+                "test_command_calls": 2,
+                "invalid_tool_arguments": 0,
+                "context_overflows": 0,
+                "truncated_generations": 0,
+                "compacted_messages": 6,
+                "successful_verifications": 1,
+                "recovery_policy": "P0",
+                "reactive_recovery_enabled": false,
+                "stage_hints_enabled": false,
+                "recovery_attempts": 0,
+                "stage_hints_emitted": 0,
+                "repeated_unchanged_reads": 0,
+                "recovery_events": [],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1028,
+                    "output_tokens": 17,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 0.8346,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "intervals.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1253,
+                    "output_tokens": 23,
+                    "prompt_eval_cached_tokens": 1023,
+                    "eval_duration_s": 1.1486,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_intervals.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1451,
+                    "output_tokens": 30,
+                    "prompt_eval_cached_tokens": 1253,
+                    "eval_duration_s": 1.615,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_intervals.py",
+                        "success": false,
+                        "error": " differ: [(5, 6)] != [(1, 4), (5, 6)]\n\nFirst differing element 0:\n(5, 6)\n(1, 4)\n\nSecond list contains 1 additional elements.\nFirst extra element 1:\n(5, 6)\n\n- [(5, 6)]\n+ [(1, 4), (5, 6)]\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nFAILED (failures=3)"
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 2146,
+                    "output_tokens": 360,
+                    "prompt_eval_cached_tokens": 1451,
+                    "eval_duration_s": 21.6234,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "write_file",
+                        "target": "intervals.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 2374,
+                    "output_tokens": 30,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.782,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_intervals.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 6,
+                    "input_tokens": 2298,
+                    "output_tokens": 425,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 25.5825,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": []
+                  }
+                ],
+                "seed": 404,
+                "policy_id": "P0",
+                "visible_tests_passed": true,
+                "holdout_tests_passed": true,
+                "pipeline_verified": true,
+                "llm_native_completion": true,
+                "fallback_used": false,
+                "tool_call_efficiency": 1.0,
+                "initial_workspace_sha256": "ce8a5ebe171bd2c1853df9bcd10495f7a4d54d1db59b8d6f2fcd24bf6634d506",
+                "final_workspace_sha256": "698300c8713bfca9914f3018c7cb2a4b3b77d48677792f0de0f2b209f5864227",
+                "workspace_modified": true,
+                "workspace_diff": "--- a/intervals.py\n+++ b/intervals.py\n@@ -9,10 +9,26 @@\n     that touch (next start == current end) are merged. Raise ValueError if any\n     interval has start > end.\n     \"\"\"\n+    # Validate all intervals first\n+    for start, end in intervals:\n+        if start > end:\n+            raise ValueError(f\"Interval ({start}, {end}) has start > end\")\n+\n+    # Sort by start time to handle unsorted input and simplify merging\n+    sorted_intervals = sorted(intervals, key=lambda x: x[0])\n+    \n+    if not sorted_intervals:\n+        return []\n+\n     result: List[Tuple[float, float]] = []\n-    for start, end in intervals:\n-        if result and start < result[-1][1]:\n-            result[-1] = (result[-1][0], max(result[-1][1], end))\n+    for start, end in sorted_intervals:\n+        if not result:\n+            result.append((start, end))\n         else:\n-            result.append((start, end))\n+            prev_start, prev_end = result[-1]\n+            # If current interval overlaps or touches the previous one\n+            if start <= prev_end:\n+                result[-1] = (prev_start, max(prev_end, end))\n+            else:\n+                result.append((start, end))\n     return result\n"
+              }
+            },
+            {
+              "task_id": "H6_parse_duration_multi_defect_fix",
+              "policy_id": "P0",
+              "seed": 404,
+              "worker_reported_success": false,
+              "independently_verified": true,
+              "pipeline_verified": true,
+              "llm_native_completion": false,
+              "fallback_used": false,
+              "turns": 10,
+              "tool_calls_count": 8,
+              "tool_call_efficiency": 0.75,
+              "wall_clock_s": 300.0025,
+              "peak_vram_mib": 6949,
+              "error": "Attempt stopped: subtask time limit reached",
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 16838,
+                "output_tokens": 3948,
+                "prompt_eval_cached_tokens": 7080,
+                "eval_duration_s": 237.7752,
+                "prompt_eval_duration_s": 13.0453,
+                "wall_clock_s": 300.0025,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 8,
+                "read_file_calls": 4,
+                "unique_files_read": 2,
+                "repeated_file_reads": 2,
+                "total_repeated_file_reads": 2,
+                "edit_calls": 2,
+                "test_command_calls": 2,
+                "invalid_tool_arguments": 0,
+                "context_overflows": 0,
+                "truncated_generations": 1,
+                "compacted_messages": 29,
+                "successful_verifications": 0,
+                "recovery_policy": "P0",
+                "reactive_recovery_enabled": false,
+                "stage_hints_enabled": false,
+                "recovery_attempts": 1,
+                "stage_hints_emitted": 0,
+                "repeated_unchanged_reads": 2,
+                "recovery_events": [
+                  {
+                    "turn": 6,
+                    "attempt": 1,
+                    "reason": "p0_truncated_or_empty_nudge",
+                    "detail": "Your previous response hit the num_predict (2048 tokens) generation limit and was truncated before completing a tool call or final answer.",
+                    "action_recommended": "generic_nudge",
+                    "files_in_context": [
+                      "durations.py",
+                      "test_durations.py"
+                    ],
+                    "edits_applied": [],
+                    "verification_passed": false
+                  }
+                ],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1034,
+                    "output_tokens": 18,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 0.9986,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1270,
+                    "output_tokens": 24,
+                    "prompt_eval_cached_tokens": 1030,
+                    "eval_duration_s": 1.3695,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1444,
+                    "output_tokens": 31,
+                    "prompt_eval_cached_tokens": 1270,
+                    "eval_duration_s": 1.8316,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_durations.py",
+                        "success": false,
+                        "error": "ix_vt8h9275/test_durations.py\", line 13, in test_invalid_text_raises\n    with self.assertRaises(ValueError):\n         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nFAILED (failures=2)"
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 1804,
+                    "output_tokens": 35,
+                    "prompt_eval_cached_tokens": 1444,
+                    "eval_duration_s": 2.0587,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_durations.py",
+                        "success": false,
+                        "error": "ix_vt8h9275/test_durations.py\", line 13, in test_invalid_text_raises\n    with self.assertRaises(ValueError):\n         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nFAILED (failures=2)"
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 2016,
+                    "output_tokens": 22,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.2879,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 6,
+                    "input_tokens": 2160,
+                    "output_tokens": 2048,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 122.5508,
+                    "thinking_chars": 0,
+                    "done_reason": "length",
+                    "truncated": true,
+                    "tool_calls": [],
+                    "recovery_triggered": true,
+                    "recovery_reason": "p0_truncated_or_empty_nudge"
+                  },
+                  {
+                    "turn": 7,
+                    "input_tokens": 2235,
+                    "output_tokens": 24,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.4076,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 8,
+                    "input_tokens": 2138,
+                    "output_tokens": 846,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 51.654,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "write_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 9,
+                    "input_tokens": 2737,
+                    "output_tokens": 900,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 54.6164,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "write_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  }
+                ],
+                "limit_reached": true,
+                "seed": 404,
+                "policy_id": "P0",
+                "visible_tests_passed": true,
+                "holdout_tests_passed": true,
+                "pipeline_verified": true,
+                "llm_native_completion": false,
+                "fallback_used": false,
+                "tool_call_efficiency": 0.75,
+                "initial_workspace_sha256": "4194549173ebdf6e48ce360849f8381a0868a430901b1c60a3ce00455107e141",
+                "final_workspace_sha256": "dae324bdcd5a1833abca8c4a17964c12d76d8136ff00edfb4a6889bce1175b27",
+                "workspace_modified": true,
+                "workspace_diff": "--- a/durations.py\n+++ b/durations.py\n@@ -1,7 +1,7 @@\n \"\"\"Human-readable duration parsing.\"\"\"\n import re\n \n-UNITS = {'h': 60, 'm': 60, 's': 1}\n+UNITS = {'h': 3600, 'm': 60, 's': 1}\n \n def parse_duration(text: str) -> int:\n     \"\"\"Parse a duration such as \"1h30m\", \"45s\" or \"2h5s\" into total seconds.\n@@ -11,7 +11,56 @@\n     ValueError for an empty string, an unknown unit, a number without a unit, or\n     any other text that does not follow this format.\n     \"\"\"\n+    text = text.strip()\n+    if not text:\n+        raise ValueError(\"Empty string\")\n+\n+    # The regex ensures that the string consists only of optional h, m, s components.\n+    # Each component must have a number followed by a unit.\n+    # Example: \"1h30m\" matches, \"1h\" matches, \"30m\" matches, \"10s\" matches.\n+    # \"10\" (no unit) will not match the full string if we require at least one unit.\n+    \n+    # We use a regex that matches the entire string.\n+    # It allows 0 or more of the components, but at least one must be present.\n+    # Since the docstring says \"Each unit appears at most once and units appear in the order h, m, s\",\n+    # we can use a regex that specifically looks for those.\n+    \n+    # First, check if the string contains any characters other than digits and h, m, s.\n+    if not re.fullmatch(r'[0-9hms]*', text):\n+        raise ValueError(\"Invalid characters\")\n+\n+    # Now, we need to ensure that every number is followed by a unit.\n+    # And that there are no \"orphaned\" units or extra text.\n+    # A simple way is to find all matches of (number)(unit) and see if they cover the whole string.\n+    \n+    matches = re.findall(r'(\\d+)([hms])', text)\n+    if not matches:\n+        raise ValueError(\"No valid units found\")\n+    \n+    # Check if the total length of the matches equals the length of the string.\n+    # This ensures no \"10\" (no unit) or \"10x\" or \"1h 30m\" (space) or \"1h30m \" (trailing space)\n+    # Wait, \"1h30m\" is 5 chars. \"1h\" is 2.\n+    # If we strip() first, \"1h30m\" is 5.\n+    \n+    # Let's use a more strict regex for the whole string.\n+    # It must be: (number h)? (number m)? (number s)?\n+    # But it must not be empty.\n+    \n+    # Let's try:\n+    pattern = r'^(\\d+h)?(\\d+m)?(\\d+s)?$'\n+    if not re.match(pattern, text) or text == \"\":\n+        raise ValueError(\"Invalid format\")\n+    \n+    # If it matches the pattern, we need to make sure it's not just an empty match\n+    # (which would happen if all three groups are empty).\n+    # Actually, if it's \"10\", it won't match because \"10\" doesn't have a unit.\n+    # If it's \"10m\", it matches.\n+    \n+    # Let's check if any units were actually provided.\n+    if not any(m for m in matches):\n+        raise ValueError(\"No units provided\")\n+\n     total = 0\n-    for value, unit in re.findall(r'(\\d+)([hms])', text):\n+    for value, unit in matches:\n         total += int(value) * UNITS[unit]\n     return total\n"
+              }
+            }
+          ],
+          "aggregate": {
+            "tasks_total": 2,
+            "pipeline_verified_count": 2,
+            "pipeline_verified_rate": 1.0,
+            "llm_native_completion_count": 1,
+            "llm_native_completion_rate": 0.5,
+            "fallback_used_count": 0,
+            "total_input_tokens": 27388,
+            "total_output_tokens": 4833,
+            "total_tokens": 32221,
+            "total_wall_clock_s": 361.6038,
+            "truncated_generations": 1,
+            "recovery_attempts": 1,
+            "stage_hints_emitted": 0,
+            "repeated_file_reads": 2,
+            "peak_vram_mib": 6949
+          }
+        }
+      ],
+      "summary_across_seeds": {
+        "pipeline_verified_rate": {
+          "mean": 0.75,
+          "pstdev": 0.25,
+          "sample_stdev": 0.3536,
+          "min": 0.5,
+          "max": 1.0
+        },
+        "llm_native_completion_rate": {
+          "mean": 0.5,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 0.5,
+          "max": 0.5
+        },
+        "total_wall_clock_s": {
+          "mean": 242.4068,
+          "pstdev": 119.1969,
+          "sample_stdev": 168.5699,
+          "min": 123.2099,
+          "max": 361.6038
+        },
+        "total_tokens": {
+          "mean": 38121.5,
+          "pstdev": 5900.5,
+          "sample_stdev": 8344.5671,
+          "min": 32221.0,
+          "max": 44022.0
+        },
+        "truncated_generations": {
+          "mean": 0.5,
+          "pstdev": 0.5,
+          "sample_stdev": 0.7071,
+          "min": 0.0,
+          "max": 1.0
+        },
+        "recovery_attempts": {
+          "mean": 0.5,
+          "pstdev": 0.5,
+          "sample_stdev": 0.7071,
+          "min": 0.0,
+          "max": 1.0
+        },
+        "stage_hints_emitted": {
+          "mean": 0.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "repeated_file_reads": {
+          "mean": 4.5,
+          "pstdev": 2.5,
+          "sample_stdev": 3.5355,
+          "min": 2.0,
+          "max": 7.0
+        }
+      }
+    },
+    "P1_STAGE": {
+      "label": "P1_STAGE (Proactive [STAGE STATE] tool annotations only, P0 recovery)",
+      "env": {
+        "OLLAMA_THINK": "false",
+        "OLLAMA_NUM_CTX": "16384",
+        "OLLAMA_NUM_PREDICT": "2048",
+        "OLLAMA_RECOVERY_POLICY": "P1_STAGE"
+      },
+      "seed_runs": [
+        {
+          "seed": 303,
+          "tasks": [
+            {
+              "task_id": "H5_merge_intervals_multi_defect_fix",
+              "policy_id": "P1_STAGE",
+              "seed": 303,
+              "worker_reported_success": true,
+              "independently_verified": true,
+              "pipeline_verified": true,
+              "llm_native_completion": true,
+              "fallback_used": false,
+              "turns": 6,
+              "tool_calls_count": 5,
+              "tool_call_efficiency": 1.0,
+              "wall_clock_s": 39.8456,
+              "peak_vram_mib": 6949,
+              "error": null,
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 11290,
+                "output_tokens": 517,
+                "prompt_eval_cached_tokens": 5503,
+                "eval_duration_s": 30.0395,
+                "prompt_eval_duration_s": 7.9231,
+                "wall_clock_s": 39.8455,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 5,
+                "read_file_calls": 2,
+                "unique_files_read": 2,
+                "repeated_file_reads": 0,
+                "total_repeated_file_reads": 0,
+                "edit_calls": 1,
+                "test_command_calls": 2,
+                "invalid_tool_arguments": 0,
+                "context_overflows": 0,
+                "truncated_generations": 0,
+                "compacted_messages": 6,
+                "successful_verifications": 1,
+                "recovery_policy": "P1_STAGE",
+                "reactive_recovery_enabled": false,
+                "stage_hints_enabled": true,
+                "recovery_attempts": 0,
+                "stage_hints_emitted": 5,
+                "repeated_unchanged_reads": 0,
+                "recovery_events": [],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1028,
+                    "output_tokens": 17,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 0.9531,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "intervals.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1278,
+                    "output_tokens": 23,
+                    "prompt_eval_cached_tokens": 1023,
+                    "eval_duration_s": 1.3372,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_intervals.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1534,
+                    "output_tokens": 30,
+                    "prompt_eval_cached_tokens": 1278,
+                    "eval_duration_s": 1.7573,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_intervals.py",
+                        "success": false,
+                        "error": " differ: [(5, 6)] != [(1, 4), (5, 6)]\n\nFirst differing element 0:\n(5, 6)\n(1, 4)\n\nSecond list contains 1 additional elements.\nFirst extra element 1:\n(5, 6)\n\n- [(5, 6)]\n+ [(1, 4), (5, 6)]\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nFAILED (failures=3)"
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 2297,
+                    "output_tokens": 353,
+                    "prompt_eval_cached_tokens": 1534,
+                    "eval_duration_s": 20.5001,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "write_file",
+                        "target": "intervals.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 2626,
+                    "output_tokens": 30,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.7245,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_intervals.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 6,
+                    "input_tokens": 2527,
+                    "output_tokens": 64,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 3.7674,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": []
+                  }
+                ],
+                "seed": 303,
+                "policy_id": "P1_STAGE",
+                "visible_tests_passed": true,
+                "holdout_tests_passed": true,
+                "pipeline_verified": true,
+                "llm_native_completion": true,
+                "fallback_used": false,
+                "tool_call_efficiency": 1.0,
+                "initial_workspace_sha256": "ce8a5ebe171bd2c1853df9bcd10495f7a4d54d1db59b8d6f2fcd24bf6634d506",
+                "final_workspace_sha256": "66e9f01c3cd5ab96e5887cd39112d00026efc89ab9579cab4d0ecad099a34dc3",
+                "workspace_modified": true,
+                "workspace_diff": "--- a/intervals.py\n+++ b/intervals.py\n@@ -9,10 +9,26 @@\n     that touch (next start == current end) are merged. Raise ValueError if any\n     interval has start > end.\n     \"\"\"\n+    # Validate all intervals first\n+    for start, end in intervals:\n+        if start > end:\n+            raise ValueError(\"Start must be less than or equal to end.\")\n+\n+    # Sort a copy of the intervals by start point\n+    sorted_intervals = sorted(intervals, key=lambda x: x[0])\n+    \n+    if not sorted_intervals:\n+        return []\n+\n     result: List[Tuple[float, float]] = []\n-    for start, end in intervals:\n-        if result and start < result[-1][1]:\n-            result[-1] = (result[-1][0], max(result[-1][1], end))\n+    for start, end in sorted_intervals:\n+        if not result:\n+            result.append((start, end))\n         else:\n-            result.append((start, end))\n+            prev_start, prev_end = result[-1]\n+            # If current interval overlaps or touches the previous one\n+            if start <= prev_end:\n+                result[-1] = (prev_start, max(prev_end, end))\n+            else:\n+                result.append((start, end))\n     return result\n"
+              }
+            },
+            {
+              "task_id": "H6_parse_duration_multi_defect_fix",
+              "policy_id": "P1_STAGE",
+              "seed": 303,
+              "worker_reported_success": false,
+              "independently_verified": false,
+              "pipeline_verified": false,
+              "llm_native_completion": false,
+              "fallback_used": false,
+              "turns": 12,
+              "tool_calls_count": 11,
+              "tool_call_efficiency": 0.7273,
+              "wall_clock_s": 300.0023,
+              "peak_vram_mib": 6949,
+              "error": "Attempt stopped: subtask time limit reached",
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 22398,
+                "output_tokens": 3450,
+                "prompt_eval_cached_tokens": 8305,
+                "eval_duration_s": 197.3049,
+                "prompt_eval_duration_s": 16.896,
+                "wall_clock_s": 300.0022,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 11,
+                "read_file_calls": 5,
+                "unique_files_read": 2,
+                "repeated_file_reads": 2,
+                "total_repeated_file_reads": 3,
+                "edit_calls": 3,
+                "test_command_calls": 3,
+                "invalid_tool_arguments": 1,
+                "context_overflows": 0,
+                "truncated_generations": 1,
+                "compacted_messages": 65,
+                "successful_verifications": 0,
+                "recovery_policy": "P1_STAGE",
+                "reactive_recovery_enabled": false,
+                "stage_hints_enabled": true,
+                "recovery_attempts": 0,
+                "stage_hints_emitted": 11,
+                "repeated_unchanged_reads": 2,
+                "recovery_events": [],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1034,
+                    "output_tokens": 18,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 0.8938,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1296,
+                    "output_tokens": 24,
+                    "prompt_eval_cached_tokens": 1030,
+                    "eval_duration_s": 1.2135,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1531,
+                    "output_tokens": 31,
+                    "prompt_eval_cached_tokens": 1296,
+                    "eval_duration_s": 1.5943,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_durations.py",
+                        "success": false,
+                        "error": "ix_gm3a0z61/test_durations.py\", line 13, in test_invalid_text_raises\n    with self.assertRaises(ValueError):\n         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nFAILED (failures=2)"
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 1957,
+                    "output_tokens": 96,
+                    "prompt_eval_cached_tokens": 1531,
+                    "eval_duration_s": 5.0248,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -c \"import re; UNITS = {'h': 60, 'm': 60, 's': 1}; text = '1h30m'; print(sum(int(v) * UNITS[u] for v, u in re.findall(r'(\\d+)([hms])', text)))\"",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 1949,
+                    "output_tokens": 22,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.1166,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 6,
+                    "input_tokens": 2093,
+                    "output_tokens": 98,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 5.2006,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -c \"import re; UNITS = {'h': 3600, 'm': 60, 's': 1}; text = '1h30m'; print(sum(int(v) * UNITS[u] for v, u in re.findall(r'(\\d+)([hms])', text)))\"",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 7,
+                    "input_tokens": 1905,
+                    "output_tokens": 84,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 4.447,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "patch_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 8,
+                    "input_tokens": 2133,
+                    "output_tokens": 22,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.1309,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 9,
+                    "input_tokens": 2297,
+                    "output_tokens": 24,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.2197,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 10,
+                    "input_tokens": 2586,
+                    "output_tokens": 983,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 52.9663,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "patch_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 11,
+                    "input_tokens": 3617,
+                    "output_tokens": 2048,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 122.4974,
+                    "thinking_chars": 0,
+                    "done_reason": "length",
+                    "truncated": true,
+                    "tool_calls": [
+                      {
+                        "name": "write_file",
+                        "target": "",
+                        "success": false,
+                        "error": "Invalid arguments for tool 'write_file': WorkspaceToolSuite.write_file() missing 1 required positional argument: 'path'"
+                      }
+                    ]
+                  }
+                ],
+                "limit_reached": true,
+                "seed": 303,
+                "policy_id": "P1_STAGE",
+                "visible_tests_passed": false,
+                "holdout_tests_passed": false,
+                "pipeline_verified": false,
+                "llm_native_completion": false,
+                "fallback_used": false,
+                "tool_call_efficiency": 0.7273,
+                "initial_workspace_sha256": "4194549173ebdf6e48ce360849f8381a0868a430901b1c60a3ce00455107e141",
+                "final_workspace_sha256": "41319ab4ce9936ccaba85c95493d27d8e2038f4ff5d5f0a2c34b2f5dfe496a53",
+                "workspace_modified": true,
+                "workspace_diff": "--- a/durations.py\n+++ b/durations.py\n@@ -1,7 +1,7 @@\n \"\"\"Human-readable duration parsing.\"\"\"\n import re\n \n-UNITS = {'h': 60, 'm': 60, 's': 1}\n+UNITS = {'h': 3600, 'm': 60, 's': 1}\n \n def parse_duration(text: str) -> int:\n     \"\"\"Parse a duration such as \"1h30m\", \"45s\" or \"2h5s\" into total seconds.\n@@ -11,7 +11,52 @@\n     ValueError for an empty string, an unknown unit, a number without a unit, or\n     any other text that does not follow this format.\n     \"\"\"\n-    total = 0\n-    for value, unit in re.findall(r'(\\d+)([hms])', text):\n-        total += int(value) * UNITS[unit]\n-    return total\n+    text = text.strip()\n+    if not text:\n+        raise ValueError(\"Empty string\")\n+    \n+    # Check if the string contains only valid patterns\n+    # The regex should match the entire string after stripping\n+    # Valid formats: \"1h\", \"1h30m\", \"1h30m45s\", \"30m\", \"30m45s\", \"45s\"\n+    \n+    # First, check if there are any characters that are not part of the allowed format\n+    # Allowed: digits, h, m, s\n+    if not re.fullmatch(r'[0-9hms]*', text):\n+        raise ValueError(\"Invalid characters\")\n+    \n+    # Check if it's just a number without a unit\n+    if not any(u in text for u in 'hms'):\n+        raise ValueError(\"No unit provided\")\n+\n+    # Check if units appear in correct order and only once\n+    # We can use a regex to find all matches and then validate the structure\n+    matches = re.findall(r'(\\d+)([hms])', text)\n+    \n+    # If the number of matches doesn't cover the whole string (excluding some gaps)\n+    # or if there are characters between matches that aren't allowed.\n+    # A simpler way: check if the concatenated matches equal the original string\n+    # (after removing whitespace)\n+    \n+    # Let's refine the logic:\n+    # 1. Strip whitespace\n+    # 2. Check if it matches the pattern: ((\\d+h)?(\\d+m)?(\\d+s)?)\n+    # But we need to ensure that if a unit is present, it's followed by a number,\n+    # and no other characters are present.\n+    \n+    # Let's use a more strict regex for the whole string\n+    pattern = r'^(\\d+h)?(\\d+m)?(\\d+s)?$'\n+    # This doesn't work well because it allows \"1h\" to be empty if not present.\n+    # We need to ensure that if a part is present, it's valid.\n+    \n+    # Let's try a different approach:\n+    # 1. Strip\n+    # 2. Validate that it only contains digits and h, m, s\n+    # 3. Validate that it matches the sequence: (digits + h) then (digits + m) then (digits + s)\n+    \n+    # The current implementation:\n+    # for value, unit in re.findall(r'(\\d+)([hms])', text):\n+    #     total += int(value) * UNITS[unit]\n+    # This doesn't catch \"1h30m\" if it's \"1h30mX\" or \"1h 30m\" or \"1h30\"\n+    \n+    # Let's rewrite the function body:\n+    pass\n"
+              }
+            }
+          ],
+          "aggregate": {
+            "tasks_total": 2,
+            "pipeline_verified_count": 1,
+            "pipeline_verified_rate": 0.5,
+            "llm_native_completion_count": 1,
+            "llm_native_completion_rate": 0.5,
+            "fallback_used_count": 0,
+            "total_input_tokens": 33688,
+            "total_output_tokens": 3967,
+            "total_tokens": 37655,
+            "total_wall_clock_s": 339.8479,
+            "truncated_generations": 1,
+            "recovery_attempts": 0,
+            "stage_hints_emitted": 16,
+            "repeated_file_reads": 2,
+            "peak_vram_mib": 6949
+          }
+        },
+        {
+          "seed": 404,
+          "tasks": [
+            {
+              "task_id": "H5_merge_intervals_multi_defect_fix",
+              "policy_id": "P1_STAGE",
+              "seed": 404,
+              "worker_reported_success": true,
+              "independently_verified": true,
+              "pipeline_verified": true,
+              "llm_native_completion": true,
+              "fallback_used": false,
+              "turns": 6,
+              "tool_calls_count": 5,
+              "tool_call_efficiency": 1.0,
+              "wall_clock_s": 41.88,
+              "peak_vram_mib": 6949,
+              "error": null,
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 11318,
+                "output_tokens": 532,
+                "prompt_eval_cached_tokens": 5503,
+                "eval_duration_s": 32.0476,
+                "prompt_eval_duration_s": 7.7986,
+                "wall_clock_s": 41.8799,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 5,
+                "read_file_calls": 2,
+                "unique_files_read": 2,
+                "repeated_file_reads": 0,
+                "total_repeated_file_reads": 0,
+                "edit_calls": 1,
+                "test_command_calls": 2,
+                "invalid_tool_arguments": 0,
+                "context_overflows": 0,
+                "truncated_generations": 0,
+                "compacted_messages": 6,
+                "successful_verifications": 1,
+                "recovery_policy": "P1_STAGE",
+                "reactive_recovery_enabled": false,
+                "stage_hints_enabled": true,
+                "recovery_attempts": 0,
+                "stage_hints_emitted": 5,
+                "repeated_unchanged_reads": 0,
+                "recovery_events": [],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1028,
+                    "output_tokens": 17,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 0.949,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "intervals.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1278,
+                    "output_tokens": 23,
+                    "prompt_eval_cached_tokens": 1023,
+                    "eval_duration_s": 1.3267,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_intervals.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1534,
+                    "output_tokens": 30,
+                    "prompt_eval_cached_tokens": 1278,
+                    "eval_duration_s": 1.7801,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_intervals.py",
+                        "success": false,
+                        "error": " differ: [(5, 6)] != [(1, 4), (5, 6)]\n\nFirst differing element 0:\n(5, 6)\n(1, 4)\n\nSecond list contains 1 additional elements.\nFirst extra element 1:\n(5, 6)\n\n- [(5, 6)]\n+ [(1, 4), (5, 6)]\n\n----------------------------------------------------------------------\nRan 3 tests in 0.002s\n\nFAILED (failures=3)"
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 2297,
+                    "output_tokens": 367,
+                    "prompt_eval_cached_tokens": 1534,
+                    "eval_duration_s": 22.2612,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "write_file",
+                        "target": "intervals.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 2640,
+                    "output_tokens": 30,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.7874,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_intervals.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 6,
+                    "input_tokens": 2541,
+                    "output_tokens": 65,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 3.9433,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": []
+                  }
+                ],
+                "seed": 404,
+                "policy_id": "P1_STAGE",
+                "visible_tests_passed": true,
+                "holdout_tests_passed": true,
+                "pipeline_verified": true,
+                "llm_native_completion": true,
+                "fallback_used": false,
+                "tool_call_efficiency": 1.0,
+                "initial_workspace_sha256": "ce8a5ebe171bd2c1853df9bcd10495f7a4d54d1db59b8d6f2fcd24bf6634d506",
+                "final_workspace_sha256": "c1c6eb349cb8a8ff542271300886f6a0f45022361c52222f22d38557a0d64b8a",
+                "workspace_modified": true,
+                "workspace_diff": "--- a/intervals.py\n+++ b/intervals.py\n@@ -9,10 +9,28 @@\n     that touch (next start == current end) are merged. Raise ValueError if any\n     interval has start > end.\n     \"\"\"\n+    # Validate all intervals first\n+    validated = []\n+    for start, end in intervals:\n+        if start > end:\n+            raise ValueError(f\"Interval ({start}, {end}) has start > end\")\n+        validated.append((start, end))\n+\n+    # Sort by start time\n+    sorted_intervals = sorted(validated, key=lambda x: x[0])\n+    \n+    if not sorted_intervals:\n+        return []\n+\n     result: List[Tuple[float, float]] = []\n-    for start, end in intervals:\n-        if result and start < result[-1][1]:\n-            result[-1] = (result[-1][0], max(result[-1][1], end))\n+    for start, end in sorted_intervals:\n+        if not result:\n+            result.append((start, end))\n         else:\n-            result.append((start, end))\n+            prev_start, prev_end = result[-1]\n+            # If current interval overlaps or touches the previous one\n+            if start <= prev_end:\n+                result[-1] = (prev_start, max(prev_end, end))\n+            else:\n+                result.append((start, end))\n     return result\n"
+              }
+            },
+            {
+              "task_id": "H6_parse_duration_multi_defect_fix",
+              "policy_id": "P1_STAGE",
+              "seed": 404,
+              "worker_reported_success": false,
+              "independently_verified": false,
+              "pipeline_verified": false,
+              "llm_native_completion": false,
+              "fallback_used": false,
+              "turns": 10,
+              "tool_calls_count": 9,
+              "tool_call_efficiency": 0.5556,
+              "wall_clock_s": 300.0021,
+              "peak_vram_mib": 6949,
+              "error": "Attempt stopped: subtask time limit reached",
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 16841,
+                "output_tokens": 4329,
+                "prompt_eval_cached_tokens": 7193,
+                "eval_duration_s": 262.143,
+                "prompt_eval_duration_s": 12.5367,
+                "wall_clock_s": 300.002,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 9,
+                "read_file_calls": 5,
+                "unique_files_read": 2,
+                "repeated_file_reads": 2,
+                "total_repeated_file_reads": 3,
+                "edit_calls": 3,
+                "test_command_calls": 1,
+                "invalid_tool_arguments": 2,
+                "context_overflows": 0,
+                "truncated_generations": 2,
+                "compacted_messages": 39,
+                "successful_verifications": 0,
+                "recovery_policy": "P1_STAGE",
+                "reactive_recovery_enabled": false,
+                "stage_hints_enabled": true,
+                "recovery_attempts": 0,
+                "stage_hints_emitted": 9,
+                "repeated_unchanged_reads": 2,
+                "recovery_events": [],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1034,
+                    "output_tokens": 18,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 0.9735,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1296,
+                    "output_tokens": 24,
+                    "prompt_eval_cached_tokens": 1030,
+                    "eval_duration_s": 1.3652,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1531,
+                    "output_tokens": 31,
+                    "prompt_eval_cached_tokens": 1296,
+                    "eval_duration_s": 1.8022,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_durations.py",
+                        "success": false,
+                        "error": "ix_w8i9911n/test_durations.py\", line 13, in test_invalid_text_raises\n    with self.assertRaises(ValueError):\n         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 3 tests in 0.002s\n\nFAILED (failures=2)"
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 1959,
+                    "output_tokens": 2048,
+                    "prompt_eval_cached_tokens": 1531,
+                    "eval_duration_s": 124.486,
+                    "thinking_chars": 0,
+                    "done_reason": "length",
+                    "truncated": true,
+                    "tool_calls": [
+                      {
+                        "name": "write_file",
+                        "target": "",
+                        "success": false,
+                        "error": "Invalid arguments for tool 'write_file': WorkspaceToolSuite.write_file() missing 1 required positional argument: 'path'"
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 2021,
+                    "output_tokens": 22,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.2973,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 6,
+                    "input_tokens": 2165,
+                    "output_tokens": 92,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 5.5351,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "patch_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 7,
+                    "input_tokens": 2027,
+                    "output_tokens": 22,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.2641,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 8,
+                    "input_tokens": 2354,
+                    "output_tokens": 24,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.4294,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 9,
+                    "input_tokens": 2454,
+                    "output_tokens": 2048,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 123.9903,
+                    "thinking_chars": 0,
+                    "done_reason": "length",
+                    "truncated": true,
+                    "tool_calls": [
+                      {
+                        "name": "patch_file",
+                        "target": "durations.py",
+                        "success": false,
+                        "error": "Invalid arguments for tool 'patch_file': WorkspaceToolSuite.patch_file() missing 1 required positional argument: 'target_content'"
+                      }
+                    ]
+                  }
+                ],
+                "limit_reached": true,
+                "seed": 404,
+                "policy_id": "P1_STAGE",
+                "visible_tests_passed": false,
+                "holdout_tests_passed": false,
+                "pipeline_verified": false,
+                "llm_native_completion": false,
+                "fallback_used": false,
+                "tool_call_efficiency": 0.5556,
+                "initial_workspace_sha256": "4194549173ebdf6e48ce360849f8381a0868a430901b1c60a3ce00455107e141",
+                "final_workspace_sha256": "c4b4d07e00025a56b739b9445112dc10f28b4a6f1a5943811fe962c394a8cd0d",
+                "workspace_modified": true,
+                "workspace_diff": "--- a/durations.py\n+++ b/durations.py\n@@ -1,7 +1,7 @@\n \"\"\"Human-readable duration parsing.\"\"\"\n import re\n \n-UNITS = {'h': 60, 'm': 60, 's': 1}\n+UNITS = {'h': 3600, 'm': 60, 's': 1}\n \n def parse_duration(text: str) -> int:\n     \"\"\"Parse a duration such as \"1h30m\", \"45s\" or \"2h5s\" into total seconds.\n"
+              }
+            }
+          ],
+          "aggregate": {
+            "tasks_total": 2,
+            "pipeline_verified_count": 1,
+            "pipeline_verified_rate": 0.5,
+            "llm_native_completion_count": 1,
+            "llm_native_completion_rate": 0.5,
+            "fallback_used_count": 0,
+            "total_input_tokens": 28159,
+            "total_output_tokens": 4861,
+            "total_tokens": 33020,
+            "total_wall_clock_s": 341.8821,
+            "truncated_generations": 2,
+            "recovery_attempts": 0,
+            "stage_hints_emitted": 14,
+            "repeated_file_reads": 2,
+            "peak_vram_mib": 6949
+          }
+        }
+      ],
+      "summary_across_seeds": {
+        "pipeline_verified_rate": {
+          "mean": 0.5,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 0.5,
+          "max": 0.5
+        },
+        "llm_native_completion_rate": {
+          "mean": 0.5,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 0.5,
+          "max": 0.5
+        },
+        "total_wall_clock_s": {
+          "mean": 340.865,
+          "pstdev": 1.0171,
+          "sample_stdev": 1.4384,
+          "min": 339.8479,
+          "max": 341.8821
+        },
+        "total_tokens": {
+          "mean": 35337.5,
+          "pstdev": 2317.5,
+          "sample_stdev": 3277.4399,
+          "min": 33020.0,
+          "max": 37655.0
+        },
+        "truncated_generations": {
+          "mean": 1.5,
+          "pstdev": 0.5,
+          "sample_stdev": 0.7071,
+          "min": 1.0,
+          "max": 2.0
+        },
+        "recovery_attempts": {
+          "mean": 0.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "stage_hints_emitted": {
+          "mean": 15.0,
+          "pstdev": 1.0,
+          "sample_stdev": 1.4142,
+          "min": 14.0,
+          "max": 16.0
+        },
+        "repeated_file_reads": {
+          "mean": 2.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 2.0,
+          "max": 2.0
+        }
+      }
+    }
+  }
+}

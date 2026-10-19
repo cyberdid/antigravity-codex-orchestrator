@@ -150,3 +150,30 @@ All `31/31` unit and integration tests pass across `tests/test_gemma_orion_phase
 **H1–H3 unchanged** (6/6 verified, 0 truncations, 189 s/seed vs 177 s/seed at `0c1f186`).
 
 **Current conclusion.** On H1–H4, `P1_STAGE` matches `P0` on verified completion (8/8), removes all truncations, and is ~2.9× faster with fewer total tokens. Remaining limits: 4 tasks, 2 seeds with near-identical trajectories, one task family (small Python repairs with a unit-test oracle). Before Harness², add tasks where a first fix is commonly incomplete, so the repeated-failure hint path is exercised live.
+
+---
+
+## 8. Addendum: Multi-Defect Tasks H5 and H6 (`9ae29e2`)
+
+**Tasks.** H5 (`merge_intervals`: missing sort, `<` instead of `<=`, missing `ValueError`) and H6 (`parse_duration`: hour factor 60 instead of 3600, no validation; holdout also checks the unit-order rule stated in the docstring). One visible test per defect; offline, the original and every single-defect fix fail, only the full fix passes.
+
+**Run:** `benchmarks/gemma_orion_phase2b_multi_defect.json`, `git_commit=9ae29e2`, `git_dirty=false`, `P0` and `P1_STAGE`, seeds `303, 404` (8 runs). Background load during the run: a niced user indexing service (~1 core) and a root `node` process (~1 core); both policies ran under it with counterbalanced order, so wall-clock is noisier than in Sections 6–7.
+
+| Policy | Task | Verified | Native | Truncations | Wall-clock (s303 / s404) |
+|---|---|---:|---:|---:|---|
+| `P0` | H5 | 2/2 | 2/2 | 0 | 66 / 62 s |
+| `P1_STAGE` | H5 | 2/2 | 2/2 | 0 | 40 / 42 s |
+| `P0` | H6 | 1/2 | 0/2 | 1 | 57 s (stalled) / 300 s (deadline) |
+| `P1_STAGE` | H6 | 0/2 | 0/2 | 3 | 300 / 300 s (deadline) |
+
+**H5** was solved in one patch by both policies (all three defects at once), so it did not exercise the repeated-failure path either.
+
+**H6 is beyond what `gemma4:12b` reliably does here, and the trajectories show why:**
+1. **Truncation now happens inside tool calls.** All 3 `P1_STAGE` truncations are `write_file`/`patch_file` calls cut at 2048 tokens. Because the model emitted `content` before `path`, the truncated call arrives without `path` (or without `target_content`) and fails as an invalid-argument call. With `think=false` the model reasons *inside the file content*: the written code is long comment monologues (`# Wait, ...`, `# Let's try:`), in one case ending in `pass`.
+2. **`P0` s303 never edits.** It alternates `read_file` and test runs for 16 turns and is stopped by the cycle detector.
+3. **`P0` s404 produced a correct file** (visible and holdout tests pass) but only after a 123 s runaway turn and two ~55 s `write_file` turns full of commented reasoning, so it hit the 300 s deadline before stopping (`pipeline_verified=True`, `native=False`).
+
+**What this means.**
+- On H6 the bottleneck is reasoning, not tool-use discipline. Stage hints cannot supply that, and `P1_STAGE` is not better than `P0` on this task (0/2 vs 1/2; N too small to call either way).
+- A globally larger `num_predict` remains the wrong fix (Phase 2A: `G3` at 4096 was 1.7× slower with no accuracy gain). The two targeted options this data supports are: (a) when a truncated turn contains a tool call, do not execute the malformed call; retry that one turn with a larger budget; (b) the Phase 2A escalation policy: switch to `think=true` only on a retry after a failed attempt, so reasoning goes to the thinking channel instead of into code comments.
+- The 300 s per-task deadline is binding on hard tasks and should be reported alongside any H6-type result.
