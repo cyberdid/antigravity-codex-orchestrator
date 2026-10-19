@@ -178,6 +178,7 @@ def validate_narrative(text, claims):
     failures = []
     scrubbed = text
     allowed_values = []
+    tokens_to_scrub = []
     for claim in claims:
         if not isinstance(claim, dict):
             continue
@@ -188,12 +189,14 @@ def validate_narrative(text, claims):
         if evidence_ids and not any(eid in text for eid in evidence_ids):
             failures.append(f'Narrative report omits evidence citation for {claim_id or "unknown"}')
         if claim_id:
-            scrubbed = scrubbed.replace(claim_id, ' ')
+            tokens_to_scrub.append(claim_id)
         for eid in evidence_ids:
-            scrubbed = scrubbed.replace(eid, ' ')
+            tokens_to_scrub.append(eid)
         value = claim.get('value')
         if isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value):
             allowed_values.append(float(value))
+    for tok in sorted(set(tokens_to_scrub), key=len, reverse=True):
+        scrubbed = scrubbed.replace(tok, ' ')
     for match in re.finditer(r'(?<![\w.])([+-]?\d+(?:\.\d+)?)\s*(%?)(?!\w)', scrubbed):
         raw = float(match.group(1))
         candidates = (raw / 100.0, raw) if match.group(2) == '%' else (raw,)

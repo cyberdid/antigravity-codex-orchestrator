@@ -20,8 +20,11 @@ from antigravity_hybrid_orchestrator.workforce.context import (
     bytes_per_token,
     chat_num_predict,
     compact_messages,
+    effective_num_predict,
     num_ctx,
+    ollama_think,
     ollama_timeout_s,
+    preflight_context_budget,
     tool_call_reserve,
 )
 
@@ -36,16 +39,55 @@ class WorkforceClient:
 
     DEFAULT_BASE_URL = "http://127.0.0.1:11434"
     DEFAULT_MODEL = "gemma4:12b"
+    _model_digests: Dict[str, str] = {}
 
     def __init__(
         self,
         base_url: str = DEFAULT_BASE_URL,
         model: Optional[str] = None,
         timeout: Optional[float] = None,
+        think: Optional[bool] = None,
     ) -> None:
         self.base_url = base_url.rstrip("/")
         self.model = (model or os.environ.get("OLLAMA_MODEL", "")).strip() or self.DEFAULT_MODEL
         self.timeout = (timeout if timeout > 0 else None) if timeout is not None else ollama_timeout_s()
+        self.think = think
+
+    def _effective_think(self, override: Optional[bool] = None) -> bool:
+        if override is not None:
+            return bool(override)
+        if self.think is not None:
+            return bool(self.think)
+        return ollama_think()
+
+    def get_model_digest(self) -> str:
+        """Return the SHA-256 digest of ``self.model`` from Ollama ``/api/tags`` (cached)."""
+        cache_key = f"{self.base_url}::{self.model}"
+        if cache_key in self._model_digests:
+            return self._model_digests[cache_key]
+        url = f"{self.base_url}/api/tags"
+        try:
+            if HAS_HTTPX:
+                with httpx.Client(timeout=3.0) as client:
+                    resp = client.get(url)
+                    if resp.status_code != 200:
+                        return "unknown"
+                    data = resp.json()
+            else:
+                req = urllib.request.Request(url, method="GET")
+                with urllib.request.urlopen(req, timeout=3.0) as resp:
+                    if resp.status != 200:
+                        return "unknown"
+                    data = json.loads(resp.read().decode("utf-8"))
+            for item in data.get("models", []) or []:
+                if item.get("name") == self.model or item.get("model") == self.model:
+                    digest = str(item.get("digest", "") or "").strip()
+                    if digest:
+                        self._model_digests[cache_key] = digest
+                        return digest
+        except Exception:
+            return "unknown"
+        return "unknown"
 
 
     def check_health(self) -> bool:
@@ -309,69 +351,120 @@ class WorkforceClient:
         tools: Optional[List[Dict[str, Any]]] = None,
         temperature: float = 0.2,
         *,
+        think: Optional[bool] = None,
+        response_format: Optional[Any] = None,
         deadline: Optional[float] = None,
         execution_control: Any = None,
     ) -> Dict[str, Any]:
-        """Non-streaming `/api/chat` call with native Ollama tool-calling support.
+        """Non-streaming `/api/chat` call with native Ollama tool-calling and Thinking support.
 
         Args:
             messages: Chat history (roles: system/user/assistant/tool).
             tools: Optional tool schemas (OpenAI-style function definitions).
             temperature: Sampling temperature.
+            think: Optional per-call Thinking Mode override (defaults to ``OLLAMA_THINK``).
+            response_format: Optional JSON schema or ``"json"`` format constraint.
 
         Returns:
-            {"content": str, "tool_calls": [{"name", "arguments"}], "input_tokens", "output_tokens"}.
+            Dict with ``content``, ``thinking``, ``tool_calls``, token/duration telemetry,
+            ``done_reason``, ``truncated``, and budget diagnostics.
         """
         url = f"{self.base_url}/api/chat"
-        # Tool call responses from the worker are compact JSON (typically 50-200 tokens),
-        # so output is capped to tool_call_reserve() (or num_ctx // 4) when tools are present.
-        output_cap = (
-            min(chat_num_predict(), tool_call_reserve(), max(256, num_ctx() // 4))
-            if tools
-            else min(chat_num_predict(), num_ctx() // 2)
-        )
+        ctx_limit = num_ctx()
+        output_cap = effective_num_predict(has_tools=bool(tools), num_ctx_val=ctx_limit)
+        think_flag = self._effective_think(think)
         payload: Dict[str, Any] = {
             "model": self.model,
             "messages": messages,
             "stream": False,
-            "think": False,
+            "think": think_flag,
             "options": {
                 "temperature": temperature,
-                "num_ctx": num_ctx(),
+                "num_ctx": ctx_limit,
                 "num_predict": output_cap,
             },
         }
         if tools:
             payload["tools"] = tools
+        if response_format is not None:
+            payload["format"] = response_format
 
         # Budget tool schemas as well as history; convert available token budget to bytes
         # so token and byte units are properly aligned.
-        reserve = output_cap
-        overhead = len(json.dumps({k: v for k, v in payload.items() if k != "messages"}, ensure_ascii=False).encode())
-        available_tokens = max(1, num_ctx() - reserve)
-        max_bytes = max(1, int(available_tokens * bytes_per_token()) - overhead)
-        compact_messages(messages, max_bytes=max_bytes)
+        preflight = preflight_context_budget(
+            messages,
+            tools=tools,
+            num_ctx_val=ctx_limit,
+            num_predict_val=output_cap,
+            extra_payload={k: v for k, v in payload.items() if k not in ("messages", "tools")},
+        )
+        compacted_count = compact_messages(
+            messages,
+            max_bytes=preflight["max_message_bytes"],
+            reserved_tokens=output_cap,
+        )
         if deadline is not None or execution_control is not None:
             raw = self._post_json(url, payload, deadline=deadline, execution_control=execution_control)
         else:
             raw = self._post_json(url, payload)
         message = raw.get("message", {}) or {}
         content = message.get("content", "") or ""
+        thinking = message.get("thinking", "") or ""
+        done_reason = str(raw.get("done_reason", "") or "")
 
         tool_calls: List[Dict[str, Any]] = []
+        malformed_tool_calls = 0
         for tc in message.get("tool_calls", []) or []:
             fn = tc.get("function", {}) or {}
             args = fn.get("arguments", {})
+            malformed = False
             if isinstance(args, str):
                 try:
                     args = json.loads(args)
                 except json.JSONDecodeError:
                     args = {}
-            tool_calls.append({"name": fn.get("name", ""), "arguments": args or {}})
+                    malformed = True
+                    malformed_tool_calls += 1
+            elif not isinstance(args, dict):
+                args = {}
+                malformed = True
+                malformed_tool_calls += 1
+            call_entry: Dict[str, Any] = {"name": fn.get("name", ""), "arguments": args or {}}
+            if malformed:
+                call_entry["malformed_arguments"] = True
+            tool_calls.append(call_entry)
+
+        prompt_eval_count = int(raw.get("prompt_eval_count", 0))
+        prompt_eval_cached_count = int(raw.get("prompt_eval_cached_count", 0))
+        eval_count = int(raw.get("eval_count", 0))
+        eval_duration_ns = int(raw.get("eval_duration", 0))
+        prompt_eval_duration_ns = int(raw.get("prompt_eval_duration", 0))
+        total_duration_ns = int(raw.get("total_duration", 0))
+
+        truncated = (done_reason == "length") or (
+            done_reason == "" and output_cap > 0 and eval_count >= output_cap and not tool_calls
+        )
 
         return {
             "content": content,
+            "thinking": thinking,
+            "has_thinking": bool(thinking),
+            "thinking_chars": len(thinking),
             "tool_calls": tool_calls,
-            "input_tokens": int(raw.get("prompt_eval_count", 0)),
-            "output_tokens": int(raw.get("eval_count", 0)),
+            "malformed_tool_calls": malformed_tool_calls,
+            "input_tokens": prompt_eval_count,
+            "prompt_eval_cached_tokens": prompt_eval_cached_count,
+            "output_tokens": eval_count,
+            "done_reason": done_reason,
+            "truncated": bool(truncated),
+            "think_enabled": think_flag,
+            "num_ctx": ctx_limit,
+            "num_predict": output_cap,
+            "input_budget_tokens": preflight["input_budget_tokens"],
+            "compacted_messages": compacted_count,
+            "eval_duration_s": eval_duration_ns / 1_000_000_000.0 if eval_duration_ns > 0 else 0.0,
+            "prompt_eval_duration_s": (
+                prompt_eval_duration_ns / 1_000_000_000.0 if prompt_eval_duration_ns > 0 else 0.0
+            ),
+            "total_duration_s": total_duration_ns / 1_000_000_000.0 if total_duration_ns > 0 else 0.0,
         }

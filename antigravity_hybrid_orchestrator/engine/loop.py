@@ -384,7 +384,12 @@ class SelfCorrectionLoop:
                         tool_calls_count=total_tool_calls,
                         error=f"Subtask stalled after repeated failure: {worker_res.error}",
                         artifacts=worker_res.artifacts,
-                        metadata={"stalled": True, "attempts": attempt + 1},
+                        metadata={
+                            **dict(worker_res.metadata or {}),
+                            "stalled": True,
+                            "attempts": attempt + 1,
+                            "wall_clock_s": round(time.monotonic() - subtask_started, 4),
+                        },
                     )
                 attempt += 1
                 feedback_context = (
@@ -424,7 +429,10 @@ class SelfCorrectionLoop:
                     summary=worker_res.summary or f"Subtask '{subtask.id}' verified and completed.",
                     artifacts=worker_res.artifacts,
                     metadata={
+                        **dict(worker_res.metadata or {}),
                         "attempts": attempt + 1,
+                        "successful_verifications": int((worker_res.metadata or {}).get("successful_verifications", 0)) + 1,
+                        "wall_clock_s": round(time.monotonic() - subtask_started, 4),
                         "verification": verif_res.to_dict(),
                     },
                 )

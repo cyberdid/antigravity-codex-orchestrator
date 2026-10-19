@@ -89,6 +89,129 @@ def chat_num_predict() -> int:
     return max(256, value)
 
 
+def ollama_think() -> bool:
+    """Whether Gemma 4 Thinking Mode is enabled (``OLLAMA_THINK``, default False)."""
+    raw = os.environ.get("OLLAMA_THINK", "").strip().lower()
+    return raw in ("1", "true", "yes", "on")
+
+
+def effective_num_predict(has_tools: bool = False, num_ctx_val: int | None = None) -> int:
+    """Computes the effective ``num_predict`` cap for ``/api/chat``.
+
+    - When ``OLLAMA_NUM_PREDICT`` is explicitly configured, that value is honored
+      (bounded by ``max(256, num_ctx // 2)``, and by ``OLLAMA_TOOL_RESERVE`` if
+      ``OLLAMA_TOOL_RESERVE`` is also explicitly set alongside tools).
+    - Otherwise, tool-calling turns default to ``min(tool_call_reserve(), max(256, num_ctx // 4))``
+      (2048 at 16K context) and plain chat turns default to ``min(8192, num_ctx // 2)``.
+    """
+    ctx = num_ctx_val if num_ctx_val is not None else num_ctx()
+    raw_predict = os.environ.get("OLLAMA_NUM_PREDICT", "").strip()
+    explicit_predict = False
+    if raw_predict:
+        try:
+            int(raw_predict)
+            explicit_predict = True
+        except ValueError:
+            explicit_predict = False
+
+    if explicit_predict:
+        cap = min(chat_num_predict(), max(256, ctx // 2))
+        raw_reserve = os.environ.get("OLLAMA_TOOL_RESERVE", "").strip()
+        if has_tools and raw_reserve:
+            try:
+                int(raw_reserve)
+                cap = min(cap, tool_call_reserve())
+            except ValueError:
+                pass
+        return cap
+
+    if has_tools:
+        return min( chat_num_predict(), tool_call_reserve(), max(256, ctx // 4))
+    return min(chat_num_predict(), max(256, ctx // 2))
+
+
+def preflight_context_budget(
+    messages: List[Dict[str, Any]],
+    tools: List[Dict[str, Any]] | None = None,
+    *,
+    num_ctx_val: int | None = None,
+    num_predict_val: int | None = None,
+    bytes_per_token_ratio: float | None = None,
+    extra_payload: Dict[str, Any] | None = None,
+) -> Dict[str, Any]:
+    """Calculates the preflight token and UTF-8 byte budget for an Ollama chat call.
+
+    Separates ``num_ctx`` (total window), ``num_predict`` (generation reserve), and
+    ``input_budget_tokens`` (system prompt + task + tool schemas + history).
+    """
+    ctx = num_ctx_val if num_ctx_val is not None else num_ctx()
+    predict = (
+        num_predict_val
+        if num_predict_val is not None
+        else effective_num_predict(has_tools=bool(tools), num_ctx_val=ctx)
+    )
+    bpt = bytes_per_token() if bytes_per_token_ratio is None else max(1.0, float(bytes_per_token_ratio))
+    input_budget_tokens = max(1, ctx - predict)
+
+    envelope: Dict[str, Any] = dict(extra_payload or {})
+    envelope.pop("messages", None)
+    if tools:
+        envelope["tools"] = tools
+    overhead_bytes = len(json.dumps(envelope, ensure_ascii=False).encode("utf-8")) if envelope else 0
+    tool_schema_bytes = len(json.dumps(tools, ensure_ascii=False).encode("utf-8")) if tools else 0
+
+    max_message_bytes = max(1, int(input_budget_tokens * bpt) - overhead_bytes)
+    messages_bytes = len(json.dumps(messages, ensure_ascii=False).encode("utf-8"))
+
+    protected = {i for i, m in enumerate(messages) if m.get("role") == "system"}
+    first_user = next((i for i, m in enumerate(messages) if m.get("role") == "user"), None)
+    if first_user is not None:
+        protected.add(first_user)
+    protected_bytes = len(
+        json.dumps([m for i, m in enumerate(messages) if i in protected], ensure_ascii=False).encode("utf-8")
+    )
+
+    return {
+        "num_ctx": ctx,
+        "num_predict": predict,
+        "input_budget_tokens": input_budget_tokens,
+        "bytes_per_token": bpt,
+        "tool_schema_bytes": tool_schema_bytes,
+        "overhead_bytes": overhead_bytes,
+        "max_message_bytes": max_message_bytes,
+        "messages_bytes": messages_bytes,
+        "protected_bytes": protected_bytes,
+        "within_budget": messages_bytes <= max_message_bytes,
+        "irreducible_overflow": protected_bytes > max_message_bytes,
+    }
+
+
+def strip_completed_thinking(messages: List[Dict[str, Any]]) -> int:
+    """Strips ``thinking`` from completed turns while keeping active tool-call turns intact.
+
+    Per Gemma 4 conversation history rules:
+    - Completed turns prior to the latest ``user`` message must not retain internal
+      ``thinking`` traces.
+    - Final assistant turns without ``tool_calls`` also drop ``thinking`` once completed.
+    - Active function-calling turns (``assistant`` with ``tool_calls`` after the latest
+      ``user`` turn) keep ``thinking`` so multi-step tool reasoning stays coherent.
+    """
+    removed = 0
+    last_user_idx = -1
+    for idx, msg in enumerate(messages):
+        if msg.get("role") == "user":
+            last_user_idx = idx
+
+    for idx, msg in enumerate(messages):
+        if msg.get("role") != "assistant" or "thinking" not in msg:
+            continue
+        has_tool_calls = bool(msg.get("tool_calls"))
+        if idx < last_user_idx or not has_tool_calls:
+            msg.pop("thinking", None)
+            removed += 1
+    return removed
+
+
 def prune_tool_output(
     text: str,
     head: int = DEFAULT_HEAD_LINES,
@@ -147,7 +270,7 @@ def compact_messages(
     """
     bpt = bytes_per_token() if bytes_per_token_ratio is None else max(1.0, float(bytes_per_token_ratio))
     reserve = (
-        min(chat_num_predict(), tool_call_reserve(), max(256, num_ctx() // 4))
+        effective_num_predict(has_tools=True)
         if reserved_tokens is None
         else reserved_tokens
     )
@@ -156,6 +279,8 @@ def compact_messages(
     first_user = next((i for i, m in enumerate(messages) if m.get("role") == "user"), None)
     if first_user is not None:
         protected.add(first_user)
+
+    changed = strip_completed_thinking(messages)
 
     def size(items):
         return len(json.dumps(items, ensure_ascii=False).encode("utf-8"))
@@ -187,6 +312,8 @@ def compact_messages(
             if end == len(messages):
                 # Preserve the newest complete exchange; compress its evidence if needed.
                 for msg in messages[removable:end]:
+                    if "thinking" in msg:
+                        msg.pop("thinking", None)
                     if "content" in msg:
                         msg["content"] = _short(msg.get("content", ""), summary_chars)
                     if msg.get("tool_calls"):
@@ -204,7 +331,6 @@ def compact_messages(
             protected.clear()
             protected.update(protected_copy)
             changed += shift
-    changed = 0
 
     for i, msg in enumerate(messages):
         if i in protected or msg.get("role") != "assistant":
@@ -253,6 +379,9 @@ def compact_messages(
             continue
         content = str(messages[i].get("content", "") or "")
         msg_changed = False
+        if "thinking" in messages[i]:
+            messages[i].pop("thinking", None)
+            msg_changed = True
         if len(content) > assistant_chars:
             messages[i]["content"] = _short(content, assistant_chars)
             msg_changed = True

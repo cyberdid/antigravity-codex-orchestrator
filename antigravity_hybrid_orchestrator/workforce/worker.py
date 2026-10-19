@@ -20,7 +20,14 @@ from typing import Any, Callable, Dict, Generator, List, Optional, Tuple
 from antigravity_hybrid_orchestrator.planner.dag import SubTask
 from antigravity_hybrid_orchestrator.engine.control import ExecutionControl
 from antigravity_hybrid_orchestrator.workforce.tools import ToolResult, WorkspaceToolSuite
-from antigravity_hybrid_orchestrator.workforce.context import compact_messages, prune_tool_output
+from antigravity_hybrid_orchestrator.workforce.context import (
+    compact_messages,
+    effective_num_predict,
+    num_ctx,
+    ollama_think,
+    prune_tool_output,
+    strip_completed_thinking,
+)
 
 
 @dataclass
@@ -479,9 +486,61 @@ class AutonomousWorker:
             tool_calls_count = 0
             in_tokens = 0
             out_tokens = 0
+            cached_prompt_tokens = 0
+            eval_duration_total_s = 0.0
+            prompt_eval_duration_total_s = 0.0
+            turns_with_thinking = 0
+            thinking_chars_total = 0
+            invalid_tool_arguments = 0
+            context_overflows = 0
+            truncated_generations = 0
+            compacted_messages_total = 0
+            successful_verifications = 0
             turn = 0
             empty_turn_nudges = 0
             action_history: List[str] = []
+            subtask_wall_start = time.monotonic()
+
+            model_digest = (
+                client.get_model_digest()
+                if hasattr(client, "get_model_digest")
+                else "unknown"
+            )
+            think_cfg = (
+                client._effective_think()
+                if hasattr(client, "_effective_think")
+                else ollama_think()
+            )
+            active_num_ctx = num_ctx()
+            active_num_predict = effective_num_predict(has_tools=bool(tools), num_ctx_val=active_num_ctx)
+
+            def _build_telemetry_meta(extra: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+                meta: Dict[str, Any] = {
+                    "model": self.model_name,
+                    "model_digest": model_digest,
+                    "backend": "ollama_native_tools",
+                    "think_enabled": bool(think_cfg),
+                    "num_ctx": active_num_ctx,
+                    "num_predict": active_num_predict,
+                    "input_budget_tokens": max(1, active_num_ctx - active_num_predict),
+                    "input_tokens": in_tokens,
+                    "output_tokens": out_tokens,
+                    "prompt_eval_cached_tokens": cached_prompt_tokens,
+                    "eval_duration_s": round(eval_duration_total_s, 4),
+                    "prompt_eval_duration_s": round(prompt_eval_duration_total_s, 4),
+                    "wall_clock_s": round(time.monotonic() - subtask_wall_start, 4),
+                    "turns_with_thinking": turns_with_thinking,
+                    "thinking_chars": thinking_chars_total,
+                    "tool_calls_count": tool_calls_count,
+                    "invalid_tool_arguments": invalid_tool_arguments,
+                    "context_overflows": context_overflows,
+                    "truncated_generations": truncated_generations,
+                    "compacted_messages": compacted_messages_total,
+                    "successful_verifications": successful_verifications,
+                }
+                if extra:
+                    meta.update(extra)
+                return meta
 
             try:
                 while True:
@@ -492,8 +551,7 @@ class AutonomousWorker:
                             tool_calls_count=tool_calls_count,
                             error="Attempt stopped: subtask time limit reached",
                             artifacts=list(subtask.affected_files),
-                            metadata={"limit_reached": True,
-                                      "backend": "ollama_native_tools"},
+                            metadata=_build_telemetry_meta({"limit_reached": True}),
                         )
                     stop = self.execution_control.check()
                     if stop.stopped:
@@ -502,11 +560,10 @@ class AutonomousWorker:
                             tool_calls_count=tool_calls_count,
                             error=f"Execution paused: {stop.reason}",
                             artifacts=list(subtask.affected_files),
-                            metadata={"paused": True, "stop_reason": stop.reason,
-                                      "backend": "ollama_native_tools"},
+                            metadata=_build_telemetry_meta({"paused": True, "stop_reason": stop.reason}),
                         )
                     inference_started = time.monotonic()
-                    compact_messages(messages)
+                    compacted_messages_total += compact_messages(messages, reserved_tokens=active_num_predict)
                     from antigravity_hybrid_orchestrator.workforce.ollama_client import WorkforceClient
                     if isinstance(client, WorkforceClient):
                         resp = client.chat(messages, tools=tools, deadline=deadline,
@@ -517,37 +574,95 @@ class AutonomousWorker:
                     eval_tokens = int(resp.get("output_tokens", 0))
                     in_tokens += prompt_tokens
                     out_tokens += eval_tokens
+                    cached_prompt_tokens += int(resp.get("prompt_eval_cached_tokens", 0))
+                    compacted_messages_total += int(resp.get("compacted_messages", 0))
+                    invalid_tool_arguments += int(resp.get("malformed_tool_calls", 0))
+                    if "num_ctx" in resp:
+                        active_num_ctx = int(resp["num_ctx"])
+                    if "num_predict" in resp:
+                        active_num_predict = int(resp["num_predict"])
+                    if "think_enabled" in resp:
+                        think_cfg = bool(resp["think_enabled"])
+
                     inference_duration = float(
                         resp.get("eval_duration_s")
                         or (time.monotonic() - inference_started if eval_tokens else 0.0)
                     )
+                    eval_duration_total_s += inference_duration
+                    prompt_eval_duration_total_s += float(resp.get("prompt_eval_duration_s", 0.0) or 0.0)
+
+                    thinking = str(resp.get("thinking", "") or "")
+                    if thinking:
+                        turns_with_thinking += 1
+                        thinking_chars_total += len(thinking)
+
+                    is_truncated = bool(resp.get("truncated", False)) or (
+                        str(resp.get("done_reason", "") or "") == "length"
+                    )
+                    if is_truncated:
+                        truncated_generations += 1
+
                     if prompt_tokens or eval_tokens:
                         self._emit("model_usage", subtask.id, {
                             "input_tokens": prompt_tokens,
                             "output_tokens": eval_tokens,
                             "duration_s": inference_duration,
                             "turn": turn,
+                            "think_enabled": bool(think_cfg),
+                            "has_thinking": bool(thinking),
+                            "truncated": is_truncated,
                         })
                     content = resp.get("content", "") or ""
                     calls = resp.get("tool_calls", []) or []
 
+                    # Thinking content is deliberately NOT emitted to HUD by default.
                     if content.strip():
                         self._emit("thought", subtask.id, {"thought": content, "turn": turn})
 
                     if not calls:
-                        if not content.strip() and eval_tokens > 0 and empty_turn_nudges < 2:
-                            empty_turn_nudges += 1
-                            messages.append({
-                                "role": "user",
-                                "content": (
-                                    "Your previous response produced no text and no valid tool call "
-                                    "(it may have been truncated or malformed). Emit ONE concise tool call "
-                                    "at a time (for write_file, always pass 'path' first before 'content'), "
-                                    "or reply with a short text summary if verification has already passed."
-                                ),
-                            })
-                            continue
-                        # No tool call -> the model considers the task complete.
+                        if is_truncated or (not content.strip() and eval_tokens > 0):
+                            if empty_turn_nudges < 2:
+                                empty_turn_nudges += 1
+                                strip_completed_thinking(messages)
+                                nudge_reason = (
+                                    f"Your previous response hit the num_predict ({active_num_predict} tokens) "
+                                    "generation limit and was truncated before completing a tool call or final answer."
+                                    if is_truncated
+                                    else "Your previous response produced no text and no valid tool call "
+                                         "(it may have been truncated or malformed)."
+                                )
+                                messages.append({
+                                    "role": "user",
+                                    "content": (
+                                        f"{nudge_reason} Keep internal reasoning concise and emit ONE concise tool call "
+                                        "at a time (for write_file, always pass 'path' first before 'content'), "
+                                        "or reply with a short text summary if verification has already passed."
+                                    ),
+                                })
+                                continue
+                            err_msg = (
+                                f"Execution failed: model output truncated at num_predict={active_num_predict} "
+                                "without completing a valid tool call or final response"
+                                if is_truncated
+                                else "Execution failed: model repeatedly produced empty turns without tool calls"
+                            )
+                            self._emit(
+                                "subtask_failed",
+                                subtask.id,
+                                {"subtask_id": subtask.id, "error": err_msg},
+                            )
+                            return SubtaskResult(
+                                subtask_id=subtask.id,
+                                success=False,
+                                turns=turn,
+                                tool_calls_count=tool_calls_count,
+                                error=err_msg,
+                                artifacts=list(subtask.affected_files),
+                                metadata=_build_telemetry_meta({"truncated": is_truncated}),
+                            )
+
+                        # No tool call and not truncated -> the model considers the task complete.
+                        strip_completed_thinking(messages)
                         summary = content.strip() or f"Subtask '{subtask.id}' completed."
                         self._emit(
                             "subtask_complete",
@@ -561,25 +676,24 @@ class AutonomousWorker:
                             tool_calls_count=tool_calls_count,
                             summary=summary,
                             artifacts=list(subtask.affected_files),
-                            metadata={
-                                "model": self.model_name,
-                                "backend": "ollama_native_tools",
-                                "input_tokens": in_tokens,
-                                "output_tokens": out_tokens,
-                            },
+                            metadata=_build_telemetry_meta(),
                         )
 
                     empty_turn_nudges = 0
 
-                    # Record the assistant turn that requested tools.
-                    messages.append({
+                    # Record the assistant turn that requested tools, preserving `thinking`
+                    # during the active multi-step function-calling sequence.
+                    assistant_entry: Dict[str, Any] = {
                         "role": "assistant",
                         "content": content,
                         "tool_calls": [
                             {"function": {"name": c["name"], "arguments": c["arguments"]}}
                             for c in calls
                         ],
-                    })
+                    }
+                    if thinking:
+                        assistant_entry["thinking"] = thinking
+                    messages.append(assistant_entry)
 
                     for call in calls:
                         stop = self.execution_control.check()
@@ -589,8 +703,7 @@ class AutonomousWorker:
                                 tool_calls_count=tool_calls_count,
                                 error=f"Execution paused: {stop.reason}",
                                 artifacts=list(subtask.affected_files),
-                                metadata={"paused": True, "stop_reason": stop.reason,
-                                          "backend": "ollama_native_tools"},
+                                metadata=_build_telemetry_meta({"paused": True, "stop_reason": stop.reason}),
                             )
                         tool_calls_count += 1
                         name = call.get("name", "")
@@ -609,6 +722,18 @@ class AutonomousWorker:
                                 error=f"Tool execution exception: {exc}",
                                 metadata={"exception": str(exc)},
                             )
+                        if (
+                            not tool_result.success
+                            and (
+                                (tool_result.error or "").startswith("Invalid arguments for tool")
+                                or "Missing required argument" in (tool_result.error or "")
+                                or "missing 1 required positional argument" in (tool_result.error or "")
+                            )
+                        ):
+                            invalid_tool_arguments += 1
+                        if name == "run_command" and tool_result.success:
+                            successful_verifications += 1
+
                         self._emit(
                             "tool_result",
                             subtask.id,
@@ -662,7 +787,7 @@ class AutonomousWorker:
                                 tool_calls_count=tool_calls_count,
                                 error=err_msg,
                                 artifacts=list(subtask.affected_files),
-                                metadata={"stalled": True, "backend": "ollama_native_tools"},
+                                metadata=_build_telemetry_meta({"stalled": True}),
                             )
                         messages.append({
                             "role": "tool",
@@ -671,21 +796,22 @@ class AutonomousWorker:
                         })
 
             except Exception as exc:
+                if "exceeds context budget" in str(exc):
+                    context_overflows += 1
                 stop = self.execution_control.check()
                 if stop.stopped:
                     return SubtaskResult(
                         subtask_id=subtask.id, success=False, turns=turn,
                         tool_calls_count=tool_calls_count,
                         error=f"Execution paused: {stop.reason}",
-                        metadata={"paused": True, "stop_reason": stop.reason,
-                                  "backend": "ollama_native_tools"},
+                        metadata=_build_telemetry_meta({"paused": True, "stop_reason": stop.reason}),
                     )
                 if deadline is not None and time.monotonic() >= deadline:
                     return SubtaskResult(
                         subtask_id=subtask.id, success=False, turns=turn,
                         tool_calls_count=tool_calls_count,
                         error="Attempt stopped: subtask time limit reached",
-                        metadata={"limit_reached": True, "backend": "ollama_native_tools"},
+                        metadata=_build_telemetry_meta({"limit_reached": True}),
                     )
                 err_msg = f"Workforce inference error: {exc}"
                 self._emit(
@@ -700,7 +826,7 @@ class AutonomousWorker:
                     tool_calls_count=tool_calls_count,
                     error=err_msg,
                     artifacts=list(subtask.affected_files),
-                    metadata={"backend": "ollama_native_tools", "exception": str(exc)},
+                    metadata=_build_telemetry_meta({"exception": str(exc)}),
                 )
 
     def _execute_react(
