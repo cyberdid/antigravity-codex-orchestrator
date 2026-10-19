@@ -49,8 +49,22 @@ POLICIES: Dict[str, Dict[str, str]] = {
         "OLLAMA_NUM_PREDICT": "2048",
         "OLLAMA_RECOVERY_POLICY": "P0",
     },
+    "P1_REACTIVE": {
+        "label": "P1_REACTIVE (Reactive RecoveryController only, no stage hints)",
+        "OLLAMA_THINK": "false",
+        "OLLAMA_NUM_CTX": "16384",
+        "OLLAMA_NUM_PREDICT": "2048",
+        "OLLAMA_RECOVERY_POLICY": "P1_REACTIVE",
+    },
+    "P1_STAGE": {
+        "label": "P1_STAGE (Proactive [STAGE STATE] tool annotations only, P0 recovery)",
+        "OLLAMA_THINK": "false",
+        "OLLAMA_NUM_CTX": "16384",
+        "OLLAMA_NUM_PREDICT": "2048",
+        "OLLAMA_RECOVERY_POLICY": "P1_STAGE",
+    },
     "P1": {
-        "label": "P1 (Enhanced RecoveryController: think=false, predict=2048, stage-aware recovery)",
+        "label": "P1 (Full RecoveryController: proactive stage hints + reactive recovery)",
         "OLLAMA_THINK": "false",
         "OLLAMA_NUM_CTX": "16384",
         "OLLAMA_NUM_PREDICT": "2048",
@@ -168,8 +182,6 @@ def setup_h1_workspace(ws: Path) -> SubTask:
         "    if m == 0:\n"
         "        return FdrDecision(rejected_mask=[], num_rejected=0, critical_threshold=0.0)\n"
         "    indexed = sorted(enumerate(p_values), key=lambda pair: pair[1])\n"
-        "    # BUG: uses 0-based index i instead of 1-based rank (i + 1) and filters\n"
-        "    # pointwise instead of finding the largest step-up rank k_max.\n"
         "    rejected = [False] * m\n"
         "    crit = 0.0\n"
         "    for i, (orig_idx, p_val) in enumerate(indexed):\n"
@@ -189,8 +201,6 @@ def setup_h1_workspace(ws: Path) -> SubTask:
         "from fdr_control import benjamini_hochberg\n\n"
         "class TestFdrControl(unittest.TestCase):\n"
         "    def test_step_up_monotone_rejection(self):\n"
-        "        # m=4, alpha=0.05 -> thresholds for k=1..4 are 0.0125, 0.025, 0.0375, 0.05\n"
-        "        # p_(1)=0.014 (>0.0125), p_(2)=0.024 (<=0.025) -> k_max=2, so BOTH rank 1 and 2 must be rejected!\n"
         "        pvals = [0.20, 0.024, 0.014, 0.09]\n"
         "        res = benjamini_hochberg(pvals, alpha=0.05)\n"
         "        self.assertEqual(res.rejected_mask, [False, True, True, False])\n"
@@ -202,12 +212,11 @@ def setup_h1_workspace(ws: Path) -> SubTask:
     )
     return SubTask(
         id="H1_fdr_step_up_fix",
-        title="Fix Benjamini-Hochberg step-up rank and monotonicity bug",
+        title="Fix Benjamini-Hochberg FDR controller",
         description=(
             "Inspect `fdr_types.py`, `fdr_control.py`, and `test_fdr_control.py`. "
-            "Fix `benjamini_hochberg` in `fdr_control.py` so it uses 1-based ranks k=1..m, "
-            "finds the largest k_max where p_(k) <= (k / m) * alpha, rejects all ranks 1..k_max, "
-            "and passes `python3 -m unittest -q`."
+            "Fix `benjamini_hochberg` in `fdr_control.py` so it satisfies its docstring "
+            "specification and passes `python3 -m unittest -q`."
         ),
         input_files=["fdr_types.py", "fdr_control.py", "test_fdr_control.py"],
         affected_files=["fdr_control.py"],
@@ -266,7 +275,6 @@ def setup_h2_workspace(ws: Path) -> SubTask:
         "    Lower values are better on all three metrics. `a` dominates `b` iff `a` is\n"
         "    no worse (<=) than `b` on ALL three metrics and strictly better (<) on AT LEAST ONE.\n"
         '    """\n'
-        "    # BUG: requires strict inequality on all three metrics, failing when two metrics tie.\n"
         "    return (\n"
         "        a.wall_clock_s < b.wall_clock_s\n"
         "        and a.total_tokens < b.total_tokens\n"
@@ -276,7 +284,6 @@ def setup_h2_workspace(ws: Path) -> SubTask:
         '    """Filter to `rie_accepted=True` candidates, then return IDs on the non-dominated Pareto frontier,\n'
         "    sorted by (wall_clock_s, total_tokens, tool_errors, candidate_id) ascending.\n"
         '    """\n'
-        "    # BUG: forgets to filter out rie_accepted == False candidates before dominance check!\n"
         "    pool = list(candidates)\n"
         "    frontier = []\n"
         "    for cand in pool:\n"
@@ -307,12 +314,11 @@ def setup_h2_workspace(ws: Path) -> SubTask:
     )
     return SubTask(
         id="H2_pareto_judge_fix",
-        title="Fix RIE-gated Pareto dominance and frontier filtering",
+        title="Fix Pareto frontier selector",
         description=(
             "Inspect `candidate_spec.py`, `pareto_judge.py`, and `test_pareto_judge.py`. "
-            "Fix `dominates` and `select_pareto_frontier` in `pareto_judge.py` so RIE-rejected "
-            "candidates (`rie_accepted=False`) are excluded first and Pareto dominance uses `<=` "
-            "on all three metrics with `<` on at least one, then verify with `python3 -m unittest -q`."
+            "Fix `pareto_judge.py` so `dominates` and `select_pareto_frontier` satisfy their "
+            "docstring specifications and pass `python3 -m unittest -q`."
         ),
         input_files=["candidate_spec.py", "pareto_judge.py", "test_pareto_judge.py"],
         affected_files=["pareto_judge.py"],
@@ -375,8 +381,6 @@ def setup_h3_workspace(ws: Path) -> SubTask:
         '    """\n'
         "    if n_splits < 2:\n"
         "        raise ValueError('n_splits must be >= 2')\n"
-        "    # BUG: splits by record index i % n_splits instead of grouping by unique group_id,\n"
-        "    # causing records from the same group_id to leak between train and test!\n"
         "    folds: List[Tuple[List[int], List[int]]] = []\n"
         "    for k in range(n_splits):\n"
         "        test_ids = [r.sample_id for i, r in enumerate(records) if i % n_splits == k]\n"
@@ -419,12 +423,11 @@ def setup_h3_workspace(ws: Path) -> SubTask:
     )
     return SubTask(
         id="H3_group_kfold_leakage_fix",
-        title="Fix group leakage in group_kfold_splits",
+        title="Fix group-disjoint K-fold splitter",
         description=(
             "Inspect `sample_record.py`, `group_splitter.py`, and `test_group_splitter.py`. "
-            "Fix `group_kfold_splits` in `group_splitter.py` so unique groups (in order of first appearance) "
-            "are assigned to folds via `g % n_splits`, preventing group leakage between train and test, "
-            "and raising `ValueError` when unique groups < `n_splits`. Verify with `python3 -m unittest -q`."
+            "Fix `group_kfold_splits` in `group_splitter.py` so it satisfies its docstring "
+            "specification and passes `python3 -m unittest -q`."
         ),
         input_files=["sample_record.py", "group_splitter.py", "test_group_splitter.py"],
         affected_files=["group_splitter.py"],
@@ -594,9 +597,18 @@ def main() -> None:
         if any(tid.upper().startswith(pref) for pref in task_prefixes)
     ]
 
-    git_commit = subprocess.check_output(
+    git_head = subprocess.check_output(
         ["git", "rev-parse", "--short", "HEAD"], cwd=str(REPO_ROOT), text=True
     ).strip()
+    git_status = subprocess.check_output(
+        ["git", "status", "--porcelain"], cwd=str(REPO_ROOT), text=True
+    ).strip()
+    git_dirty = bool(git_status)
+    git_diff_bytes = subprocess.check_output(
+        ["git", "diff", "HEAD"], cwd=str(REPO_ROOT)
+    )
+    working_tree_diff_sha256 = hashlib.sha256(git_diff_bytes).hexdigest() if git_dirty else "clean"
+    git_commit = f"{git_head}-dirty" if git_dirty else git_head
 
     # Ensure subprocesses launched via WorkspaceToolSuite.run_command("python3 -m pytest -q")
     # resolve `python3` to the active virtualenv interpreter (`sys.executable`).
@@ -606,38 +618,56 @@ def main() -> None:
         os.environ["PATH"] = f"{venv_bin}{os.pathsep}{current_path}"
 
     results: Dict[str, Any] = {
-        "experiment": "GEMMA-ORION Phase 2B Recovery Controller PoC (P0 vs P1)",
+        "experiment": "GEMMA-ORION Phase 2B Recovery Controller Ablation (P0 vs P1_REACTIVE vs P1_STAGE vs P1)",
         "timestamp_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "git_commit": git_commit,
+        "git_head": git_head,
+        "git_dirty": git_dirty,
+        "working_tree_diff_sha256": working_tree_diff_sha256,
         "seeds": seeds,
         "task_deadline_s": TASK_DEADLINE_S,
+        "counterbalanced_seed_order": True,
         "policies": {},
     }
 
-    for pol_id in selected_policies:
-        pol_cfg = POLICIES[pol_id]
-        for k, v in pol_cfg.items():
-            if k.startswith("OLLAMA_"):
-                os.environ[k] = v
+    # Run counterbalanced across seeds (forward policy order on even seed index, reversed on odd seed index)
+    per_policy_seed_tasks: Dict[str, Dict[int, List[Dict[str, Any]]]] = {
+        pol_id: {s: [] for s in seeds} for pol_id in selected_policies
+    }
 
-        seed_runs: List[Dict[str, Any]] = []
-        for seed in seeds:
-            os.environ["OLLAMA_SEED"] = str(seed)
-            print(f"\n=== Running Policy {pol_id} | Seed {seed} ===", flush=True)
-            tasks_out: List[Dict[str, Any]] = []
+    for seed_idx, seed in enumerate(seeds):
+        os.environ["OLLAMA_SEED"] = str(seed)
+        ordered_policies = (
+            list(selected_policies)
+            if seed_idx % 2 == 0
+            else list(reversed(selected_policies))
+        )
+        for pol_id in ordered_policies:
+            pol_cfg = POLICIES[pol_id]
+            for k, v in pol_cfg.items():
+                if k.startswith("OLLAMA_"):
+                    os.environ[k] = v
+
+            print(f"\n=== Running Seed {seed} | Policy {pol_id} ===", flush=True)
             for tid, setup_fn, holdout_fn in active_tasks:
                 print(f"  -> Task {tid} ...", end="", flush=True)
                 tr = run_single_task(pol_id, seed, tid, setup_fn, holdout_fn)
-                tasks_out.append(tr)
+                per_policy_seed_tasks[pol_id][seed].append(tr)
                 print(
                     f" verified={tr['pipeline_verified']} native={tr['llm_native_completion']} "
                     f"turns={tr['turns']} tools={tr['tool_calls_count']} "
                     f"trunc={tr['metadata']['truncated_generations']} "
                     f"rec_attempts={tr['metadata']['recovery_attempts']} "
+                    f"stage_hints={tr['metadata'].get('stage_hints_emitted', 0)} "
                     f"wall={tr['wall_clock_s']}s",
                     flush=True,
                 )
 
+    for pol_id in selected_policies:
+        pol_cfg = POLICIES[pol_id]
+        seed_runs: List[Dict[str, Any]] = []
+        for seed in seeds:
+            tasks_out = per_policy_seed_tasks[pol_id][seed]
             verified_cnt = sum(1 for t in tasks_out if t["pipeline_verified"])
             native_cnt = sum(1 for t in tasks_out if t["llm_native_completion"])
             in_tok = sum(int(t["metadata"]["input_tokens"]) for t in tasks_out)
@@ -646,6 +676,7 @@ def main() -> None:
             wall_tot = round(sum(float(t["wall_clock_s"]) for t in tasks_out), 4)
             trunc_tot = sum(int(t["metadata"]["truncated_generations"]) for t in tasks_out)
             rec_tot = sum(int(t["metadata"]["recovery_attempts"]) for t in tasks_out)
+            stage_tot = sum(int(t["metadata"].get("stage_hints_emitted", 0)) for t in tasks_out)
             rep_reads = sum(int(t["metadata"]["repeated_file_reads"]) for t in tasks_out)
 
             seed_runs.append({
@@ -664,6 +695,7 @@ def main() -> None:
                     "total_wall_clock_s": wall_tot,
                     "truncated_generations": trunc_tot,
                     "recovery_attempts": rec_tot,
+                    "stage_hints_emitted": stage_tot,
                     "repeated_file_reads": rep_reads,
                     "peak_vram_mib": max((int(t["peak_vram_mib"]) for t in tasks_out), default=0),
                 },
@@ -680,13 +712,14 @@ def main() -> None:
                 "total_tokens": _mean_std([float(r["aggregate"]["total_tokens"]) for r in seed_runs]),
                 "truncated_generations": _mean_std([float(r["aggregate"]["truncated_generations"]) for r in seed_runs]),
                 "recovery_attempts": _mean_std([float(r["aggregate"]["recovery_attempts"]) for r in seed_runs]),
+                "stage_hints_emitted": _mean_std([float(r["aggregate"]["stage_hints_emitted"]) for r in seed_runs]),
                 "repeated_file_reads": _mean_std([float(r["aggregate"]["repeated_file_reads"]) for r in seed_runs]),
             },
         }
 
-        out_path = Path(args.output)
-        out_path.parent.mkdir(parents=True, exist_ok=True)
-        out_path.write_text(json.dumps(results, indent=2), encoding="utf-8")
+    out_path = Path(args.output)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(json.dumps(results, indent=2), encoding="utf-8")
 
     print(f"\nSaved Phase 2B benchmark results to {args.output}", flush=True)
 

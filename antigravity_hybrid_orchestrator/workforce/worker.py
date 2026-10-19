@@ -551,7 +551,7 @@ class AutonomousWorker:
                     "tool_calls_count": tool_calls_count,
                     "read_file_calls": len(files_read_list),
                     "unique_files_read": unique_reads,
-                    "repeated_file_reads": max(0, len(files_read_list) - unique_reads),
+                    "repeated_file_reads": recovery_controller.repeated_reads_count,
                     "edit_calls": edit_calls_count,
                     "test_command_calls": test_command_calls_count,
                     "invalid_tool_arguments": invalid_tool_arguments,
@@ -559,9 +559,7 @@ class AutonomousWorker:
                     "truncated_generations": truncated_generations,
                     "compacted_messages": compacted_messages_total,
                     "successful_verifications": successful_verifications,
-                    "recovery_policy": recovery_controller.policy,
-                    "recovery_attempts": recovery_controller.recovery_attempts,
-                    "recovery_events": list(recovery_controller.recovery_events),
+                    **recovery_controller.telemetry_summary(),
                     "turn_trajectory": list(turn_trajectory),
                 }
                 if extra:
@@ -770,7 +768,8 @@ class AutonomousWorker:
                             edit_calls_count += 1
                         elif name == "run_command":
                             test_command_calls_count += 1
-                            if tool_result.success:
+                            cmd_str = str(args.get("command") or "")
+                            if tool_result.success and recovery_controller._is_verification_command(cmd_str):
                                 successful_verifications += 1
                         turn_entry["tool_calls"].append({
                             "name": name,

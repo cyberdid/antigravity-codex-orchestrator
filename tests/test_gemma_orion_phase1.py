@@ -1314,4 +1314,108 @@ def test_t16_phase2b_loop_detection_and_p0_backward_compatibility(
     assert res_p0.metadata["recovery_attempts"] == 0
 
 
+def test_t17_phase2b_review_bugfixes_and_policy_ablation(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, tool_suite: WorkspaceToolSuite
+):
+    """T17: Verifies the 3 review bugfixes and P1_REACTIVE vs P1_STAGE vs P1 policy separation."""
+    from antigravity_hybrid_orchestrator.workforce.recovery_controller import RecoveryController
+
+    # 1. Bugfix A: non-verification commands (`ls -R`, `python3 -c "import sys..."`) must NOT mark verification_passed
+    rc = RecoveryController(
+        subtask_id="sub1",
+        input_files=["x.py"],
+        affected_files=["x.py"],
+        verification_command="python3 -m unittest -q",
+        policy="P1",
+    )
+    rc.record_tool_execution(
+        turn=1, tool_name="run_command", args={"command": "ls -R"}, success=True, output="x.py", error=None
+    )
+    assert rc.verification_passed is False
+    assert rc.verification_runs == 0
+    rc.record_tool_execution(
+        turn=2,
+        tool_name="run_command",
+        args={"command": 'python3 -c "import sys; print(sys.path)"'},
+        success=True,
+        output="[]",
+        error=None,
+    )
+    assert rc.verification_passed is False
+    assert rc.verification_runs == 0
+    rc.record_tool_execution(
+        turn=3,
+        tool_name="run_command",
+        args={"command": "python3 -m unittest -q"},
+        success=True,
+        output="OK",
+        error=None,
+    )
+    assert rc.verification_passed is True
+    assert rc.verification_runs == 1
+
+    # 2. Bugfix B: re-reading a file AFTER `patch_file` must NOT be flagged as `repeated_file_read`
+    rc2 = RecoveryController(
+        subtask_id="sub2",
+        input_files=["x.py"],
+        affected_files=["x.py"],
+        verification_command="python3 -m unittest -q",
+        policy="P1",
+    )
+    rc2.record_tool_execution(
+        turn=1, tool_name="read_file", args={"path": "x.py"}, success=True, output="a = 1", error=None
+    )
+    assert rc2.repeated_reads_count == 0
+    rc2.record_tool_execution(
+        turn=2,
+        tool_name="patch_file",
+        args={"path": "x.py", "target_content": "a = 1", "replacement_content": "a = 2"},
+        success=True,
+        output="Patched",
+        error=None,
+    )
+    assert "x.py" not in rc2.clean_read_files
+    note_after_post_edit_read = rc2.record_tool_execution(
+        turn=3, tool_name="read_file", args={"path": "x.py"}, success=True, output="a = 2", error=None
+    )
+    assert rc2.repeated_reads_count == 0
+    assert "was already read and unchanged" not in (note_after_post_edit_read or "")
+
+    # 3. Bugfix C: P0 resets consecutive_non_tool_turns after a valid tool call
+    rc_p0 = RecoveryController(subtask_id="sub_p0", policy="P0")
+    cont1, _, _ = rc_p0.handle_non_tool_turn(
+        turn=1, content="...", eval_tokens=2048, is_truncated=True, active_num_predict=2048
+    )
+    assert cont1 is True and rc_p0.consecutive_non_tool_turns == 1
+    rc_p0.record_tool_execution(
+        turn=2, tool_name="read_file", args={"path": "x.py"}, success=True, output="a = 1", error=None
+    )
+    assert rc_p0.consecutive_non_tool_turns == 0
+    cont2, _, _ = rc_p0.handle_non_tool_turn(
+        turn=3, content="...", eval_tokens=2048, is_truncated=True, active_num_predict=2048
+    )
+    cont3, _, _ = rc_p0.handle_non_tool_turn(
+        turn=4, content="...", eval_tokens=2048, is_truncated=True, active_num_predict=2048
+    )
+    assert cont2 is True and cont3 is True
+
+    # 4. Policy ablation flags: P1_REACTIVE vs P1_STAGE vs P1
+    rc_react = RecoveryController(subtask_id="r", policy="P1_REACTIVE")
+    assert rc_react.is_reactive is True and rc_react.is_stage_hints is False
+    assert (
+        rc_react.record_tool_execution(
+            turn=1, tool_name="read_file", args={"path": "x.py"}, success=True, output="a=1", error=None
+        )
+        is None
+    )
+
+    rc_stage = RecoveryController(subtask_id="s", policy="P1_STAGE", input_files=["x.py"])
+    assert rc_stage.is_reactive is False and rc_stage.is_stage_hints is True
+    stage_msg = rc_stage.record_tool_execution(
+        turn=1, tool_name="read_file", args={"path": "x.py"}, success=True, output="a=1", error=None
+    )
+    assert stage_msg is not None and stage_msg.startswith("[STAGE STATE:")
+
+
+
 

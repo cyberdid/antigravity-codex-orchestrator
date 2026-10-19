@@ -18,10 +18,17 @@ from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Tuple
 
 
+import re
+
+
 def active_recovery_policy(override: Optional[str] = None) -> str:
-    """Return active recovery policy ID ('P0' default baseline, or 'P1')."""
+    """Return canonical recovery policy ID: 'P0', 'P1_REACTIVE', 'P1_STAGE', or 'P1'."""
     raw = (override or os.environ.get("OLLAMA_RECOVERY_POLICY", "P0")).strip().upper()
-    if raw in ("P1", "RECOVERY", "ENHANCED", "TRUE", "1"):
+    if raw in ("P1_REACTIVE", "REACTIVE"):
+        return "P1_REACTIVE"
+    if raw in ("P1_STAGE", "P1_HINTS", "STAGE", "HINTS"):
+        return "P1_STAGE"
+    if raw in ("P1", "P1_FULL", "RECOVERY", "ENHANCED", "TRUE", "1"):
         return "P1"
     return "P0"
 
@@ -33,9 +40,41 @@ class RecoveryPolicyConfig:
     policy_id: str = "P1"
     max_recovery_attempts: int = 3
     max_repeated_file_reads: int = 1
+    reactive_recovery: bool = True
     annotate_tool_observations: bool = True
     catch_premature_stop_before_verification: bool = True
     max_error_snippet_chars: int = 320
+
+    @classmethod
+    def for_policy(cls, policy: str) -> "RecoveryPolicyConfig":
+        norm = active_recovery_policy(policy)
+        if norm == "P0":
+            return cls(
+                policy_id="P0",
+                reactive_recovery=False,
+                annotate_tool_observations=False,
+                catch_premature_stop_before_verification=False,
+            )
+        if norm == "P1_REACTIVE":
+            return cls(
+                policy_id="P1_REACTIVE",
+                reactive_recovery=True,
+                annotate_tool_observations=False,
+                catch_premature_stop_before_verification=True,
+            )
+        if norm == "P1_STAGE":
+            return cls(
+                policy_id="P1_STAGE",
+                reactive_recovery=False,
+                annotate_tool_observations=True,
+                catch_premature_stop_before_verification=False,
+            )
+        return cls(
+            policy_id="P1",
+            reactive_recovery=True,
+            annotate_tool_observations=True,
+            catch_premature_stop_before_verification=True,
+        )
 
 
 @dataclass
@@ -47,11 +86,12 @@ class RecoveryController:
     affected_files: List[str] = field(default_factory=list)
     verification_command: str = ""
     policy: str = "P0"
-    config: RecoveryPolicyConfig = field(default_factory=RecoveryPolicyConfig)
+    config: Optional[RecoveryPolicyConfig] = None
 
     # Runtime state tracked across turns
     all_read_files: List[str] = field(default_factory=list)
     clean_read_files: List[str] = field(default_factory=list)
+    modified_since_read_files: List[str] = field(default_factory=list)
     repeated_reads_count: int = 0
     edits_applied: List[str] = field(default_factory=list)
     consecutive_failed_edits: int = 0
@@ -60,12 +100,51 @@ class RecoveryController:
     verification_passed: bool = False
     last_verification_error: str = ""
     recovery_attempts: int = 0
+    stage_hints_emitted: int = 0
     consecutive_non_tool_turns: int = 0
     recovery_events: List[Dict[str, Any]] = field(default_factory=list)
 
+    def __post_init__(self) -> None:
+        self.policy = active_recovery_policy(self.policy)
+        if self.config is None:
+            self.config = RecoveryPolicyConfig.for_policy(self.policy)
+
     @property
     def is_enhanced(self) -> bool:
-        return self.policy.upper() == "P1"
+        return bool(self.config and (self.config.reactive_recovery or self.config.annotate_tool_observations))
+
+    @property
+    def is_reactive(self) -> bool:
+        return bool(self.config and self.config.reactive_recovery)
+
+    @property
+    def is_stage_hints(self) -> bool:
+        return bool(self.config and self.config.annotate_tool_observations)
+
+    def _is_verification_command(self, cmd: str) -> bool:
+        """Return True iff `cmd` actually executes the subtask's verification test suite."""
+        norm_cmd = " ".join(cmd.strip().split())
+        if not norm_cmd:
+            return False
+        norm_verif = " ".join((self.verification_command or "").strip().split())
+        if norm_verif:
+            if norm_cmd == norm_verif or norm_verif in norm_cmd:
+                return True
+            # Allow targeted unittest/pytest/assert invocations when verification_command is a test/assert command
+            verif_uses_test_runner = bool(re.search(r"\b(pytest|unittest|assert)\b", norm_verif))
+            cmd_uses_test_runner = bool(
+                re.search(r"\bpython3?\s+-m\s+(pytest|unittest)\b", norm_cmd)
+                or re.search(r"^\s*pytest\b", norm_cmd)
+                or re.search(r"\bpython3?\b.*\bassert\b", norm_cmd)
+            )
+            if verif_uses_test_runner and cmd_uses_test_runner:
+                return True
+            return False
+        # When subtask.verification_command is not explicitly set, treat explicit test/assert
+        # commands as verification, but never shell inspection commands like `ls -R`.
+        return bool(
+            re.search(r"\b(pytest|unittest|assert)\b", norm_cmd)
+        )
 
     def unread_input_files(self) -> List[str]:
         read_set = set(self.all_read_files)
@@ -125,11 +204,14 @@ class RecoveryController:
             if path:
                 is_repeated_clean_read = path in self.clean_read_files
                 self.all_read_files.append(path)
-                if path not in self.clean_read_files and success:
-                    self.clean_read_files.append(path)
+                if success:
+                    if path not in self.clean_read_files:
+                        self.clean_read_files.append(path)
+                    if path in self.modified_since_read_files:
+                        self.modified_since_read_files.remove(path)
                 if is_repeated_clean_read:
                     self.repeated_reads_count += 1
-                    if self.is_enhanced:
+                    if self.is_reactive:
                         next_act = self.recommended_next_action()
                         self._log_event(
                             turn=turn,
@@ -147,14 +229,21 @@ class RecoveryController:
             if success:
                 self.consecutive_failed_edits = 0
                 self.last_edit_error = ""
-                if path and path not in self.edits_applied:
-                    self.edits_applied.append(path)
+                if path:
+                    if path not in self.edits_applied:
+                        self.edits_applied.append(path)
+                    # File was modified on disk; invalidate clean_read_files so a subsequent
+                    # post-edit read_file is NOT misclassified as an unchanged repeated read.
+                    if path in self.clean_read_files:
+                        self.clean_read_files.remove(path)
+                    if path not in self.modified_since_read_files:
+                        self.modified_since_read_files.append(path)
                 # Once edited, verification must be (re-)run
                 self.verification_passed = False
             else:
                 self.consecutive_failed_edits += 1
                 self.last_edit_error = err_text[: self.config.max_error_snippet_chars]
-                if self.is_enhanced:
+                if self.is_reactive:
                     next_act = (
                         f"Check exact lines from `{path}` already in context and call "
                         "`patch_file` with exact `target_content` and `replacement_content` "
@@ -170,30 +259,32 @@ class RecoveryController:
 
         elif tool_name == "run_command":
             cmd = str(args.get("command") or "").strip()
-            self.verification_runs += 1
-            if success:
-                self.verification_passed = True
-                self.last_verification_error = ""
-            else:
-                self.verification_passed = False
-                combined = (err_text or str(output or "")).strip()
-                self.last_verification_error = combined[: self.config.max_error_snippet_chars]
-                if self.is_enhanced:
-                    next_act = self.recommended_next_action()
-                    self._log_event(
-                        turn=turn,
-                        reason="failed_verification_command",
-                        detail=f"Command '{cmd}' failed: {self.last_verification_error[:160]}",
-                        action_recommended=next_act,
-                    )
+            if self._is_verification_command(cmd):
+                self.verification_runs += 1
+                if success:
+                    self.verification_passed = True
+                    self.last_verification_error = ""
+                else:
+                    self.verification_passed = False
+                    combined = (err_text or str(output or "")).strip()
+                    self.last_verification_error = combined[: self.config.max_error_snippet_chars]
+                    if self.is_reactive:
+                        next_act = self.recommended_next_action()
+                        self._log_event(
+                            turn=turn,
+                            reason="failed_verification_command",
+                            detail=f"Command '{cmd}' failed: {self.last_verification_error[:160]}",
+                            action_recommended=next_act,
+                        )
 
-        if self.is_enhanced and self.config.annotate_tool_observations:
+        if self.is_stage_hints:
+            self.stage_hints_emitted += 1
             return f"[STAGE STATE: {self.recommended_next_action()}]"
         return None
 
     def annotate_observation(self, obs: str, stage_note: Optional[str]) -> str:
-        """Append stage note to pruned tool observation when P1 is active."""
-        if not self.is_enhanced or not stage_note:
+        """Append stage or recovery note to pruned tool observation when active."""
+        if not stage_note:
             return obs
         return f"{obs}\n\n{stage_note}"
 
@@ -213,10 +304,12 @@ class RecoveryController:
         """
         has_Empty_or_truncated = is_truncated or (not content.strip() and eval_tokens > 0)
 
-        if not self.is_enhanced:
-            # P0 baseline behavior (exact match with Phase 1 / Phase 2A G0)
+        if not self.is_reactive:
+            # P0 / P1_STAGE non-tool-turn baseline behavior (exact match with Phase 1 / Phase 2A G0:
+            # consecutive_non_tool_turns resets to 0 after any valid tool-call turn).
             if has_Empty_or_truncated:
-                if self.recovery_attempts < 2:
+                if self.consecutive_non_tool_turns < 2:
+                    self.consecutive_non_tool_turns += 1
                     self.recovery_attempts += 1
                     nudge_reason = (
                         f"Your previous response hit the num_predict ({active_num_predict} tokens) "
@@ -350,6 +443,10 @@ class RecoveryController:
     def telemetry_summary(self) -> Dict[str, Any]:
         return {
             "recovery_policy": self.policy,
+            "reactive_recovery_enabled": self.is_reactive,
+            "stage_hints_enabled": self.is_stage_hints,
             "recovery_attempts": self.recovery_attempts,
+            "stage_hints_emitted": self.stage_hints_emitted,
+            "repeated_unchanged_reads": self.repeated_reads_count,
             "recovery_events": list(self.recovery_events),
         }
