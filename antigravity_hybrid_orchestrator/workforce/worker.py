@@ -824,7 +824,7 @@ class AutonomousWorker:
                             test_command_calls_count += 1
                         turn_entry["tool_calls"].append({
                             "name": name,
-                            "target": str(args.get("path") or args.get("command") or ""),
+                            "target": str(args.get("path") or args.get("command") or args.get("name") or ""),
                             "success": bool(tool_result.success),
                             "error": "" if tool_result.success else str(tool_result.error or "")[-300:],
                         })

@@ -312,3 +312,10 @@ def test_h3_reports_no_edits_when_every_role_kept_base():
     step, _, _ = _step(rs, trees={})
     tree, decision = gated_choice(step)
     assert tree == DEFAULT_TREE and decision == "KEEP_BASE (no candidate proposed edits)"
+
+
+def test_trajectory_records_the_skill_name(monkeypatch, tmp_path):
+    tree = HarnessTree(tool_guidance="call read_skill regex_fix", skills={"regex_fix": "x"})
+    res, _ = _run_worker(monkeypatch, tmp_path, [_call("read_skill", {"name": "regex_fix"}), _text("Done.")],
+                         harness=tree)
+    assert res.metadata["turn_trajectory"][0]["tool_calls"][0]["target"] == "regex_fix"

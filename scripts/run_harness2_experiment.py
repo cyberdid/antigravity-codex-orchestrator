@@ -100,6 +100,17 @@ def _step_record(step: TaskStep) -> Dict[str, Any]:
     }
 
 
+def _tree_dirty(git, out_path: Path) -> bool:
+    """Tracked-tree changes, ignoring this run's own output files."""
+    excludes = []
+    try:
+        rel = out_path.resolve().relative_to(REPO_ROOT)
+        excludes = [f":!{rel}", f":!{rel.with_suffix('')}"]
+    except ValueError:
+        pass
+    return bool(git("status", "--porcelain", "--", ".", *excludes))
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--seed", type=int, default=303, help="Seed for adaptation rollouts")
@@ -132,7 +143,7 @@ def main() -> None:
         "experiment": "Harness² adaptation: H0 vs H2 (standard) vs H3 (verifier-gated)",
         "started_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "git_head": git("rev-parse", "--short", "HEAD"),
-        "git_dirty": bool(git("status", "--porcelain")),
+        "git_dirty": _tree_dirty(git, out_path),
         "worker_policy": POLICY, "adaptation_seed": args.seed, "cloud_backend": args.cloud_backend,
         "adaptation_tasks": ADAPTATION, "held_out_tasks": HELD_OUT,
         "arms": {}, "steps": [], "held_out": {},

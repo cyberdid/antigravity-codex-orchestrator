@@ -1,0 +1,100 @@
+[20:32:53] == adaptation H1 | arm H2 | base b25b4ccc0f
+[20:33:47]     [base] H1 harness b25b4ccc0f -> gate=True visible=True holdout=True wall=54s trunc=0 U=810.4
+[20:38:51]     [inv] H1 harness 91e9c8f744 -> gate=True visible=True holdout=True wall=46s trunc=0 U=787.0
+[20:46:43]     [dom] H1 harness f85f354189 -> gate=True visible=True holdout=True wall=300s trunc=1 U=-38.7
+[20:47:18]    H2: KEEP_BASE (composer)
+[20:47:18] == adaptation H1 | arm H3 | base b25b4ccc0f
+[20:47:18]    H3: KEEP_BASE (best inv U=787.0 <= base U=810.4 + 10.0)
+[20:47:18] == adaptation H2 | arm H2 | base b25b4ccc0f
+[20:48:20]     [base] H2 harness b25b4ccc0f -> gate=True visible=True holdout=True wall=62s trunc=0 U=725.6
+[20:54:08]     [inv] H2 harness 0f8a6dd812 -> gate=True visible=True holdout=True wall=51s trunc=0 U=787.5
+[21:00:29]     [dom] H2 harness 94f7794613 -> gate=True visible=True holdout=True wall=215s trunc=1 U=303.5
+[21:01:05]     [agg] H2 harness 0f8a6dd812 -> cached
+[21:01:05]    H2: ADOPT agg
+[21:01:05] == adaptation H2 | arm H3 | base b25b4ccc0f
+[21:01:05]    H3: ADOPT inv (U=787.5 vs base 725.6)
+[21:01:05] == adaptation H3 | arm H2 | base 0f8a6dd812
+[21:01:59]     [base] H3 harness 0f8a6dd812 -> gate=True visible=True holdout=True wall=54s trunc=0 U=823.1
+[21:04:10]    H2: KEEP_BASE (composer)
+[21:04:10] == adaptation H3 | arm H3 | base 0f8a6dd812
+[21:04:10]    H3: KEEP_BASE (no candidate passed trusted verification)
+[21:04:10] == adaptation H4 | arm H2 | base 0f8a6dd812
+[21:04:50]     [base] H4 harness 0f8a6dd812 -> gate=True visible=True holdout=True wall=39s trunc=0 U=766.8
+[21:10:28]     [inv] H4 harness d36d5ca5f7 -> gate=True visible=True holdout=True wall=42s trunc=0 U=761.4
+[21:16:44]     [dom] H4 harness 8f7ed7fd9c -> gate=True visible=True holdout=True wall=188s trunc=1 U=464.4
+[21:17:51]    H2: KEEP_BASE (composer)
+[21:17:51] == adaptation H4 | arm H3 | base 0f8a6dd812
+[21:17:51]    H3: KEEP_BASE (best inv U=761.4 <= base U=766.8 + 10.0)
+[21:17:51] == held-out H5 | arm H0 | seed 303
+[21:18:28]     [eval-H0] H5 harness b25b4ccc0f -> gate=True visible=True holdout=True wall=36s trunc=0 U=864.6
+[21:18:28] == held-out H6 | arm H0 | seed 303
+[21:20:10]     [eval-H0] H6 harness b25b4ccc0f -> gate=True visible=True holdout=True wall=101s trunc=0 U=768.3
+[21:20:10] == held-out H7 | arm H0 | seed 303
+[21:20:40]     [eval-H0] H7 harness b25b4ccc0f -> gate=True visible=True holdout=True wall=30s trunc=0 U=876.5
+[21:20:40] == held-out H8 | arm H0 | seed 303
+[21:21:07]     [eval-H0] H8 harness b25b4ccc0f -> gate=True visible=True holdout=True wall=27s trunc=0 U=884.1
+[21:21:07] == held-out H9 | arm H0 | seed 303
+[21:22:31]     [eval-H0] H9 harness b25b4ccc0f -> gate=False visible=True holdout=False wall=84s trunc=0 U=-231.2
+[21:22:31] == held-out H10 | arm H0 | seed 303
+[21:23:11]     [eval-H0] H10 harness b25b4ccc0f -> gate=False visible=True holdout=False wall=40s trunc=0 U=-131.1
+[21:23:11] == held-out H5 | arm H2 | seed 303
+[21:23:47]     [eval-H2] H5 harness 0f8a6dd812 -> gate=True visible=True holdout=True wall=36s trunc=0 U=864.6
+[21:23:47] == held-out H6 | arm H2 | seed 303
+[21:25:28]     [eval-H2] H6 harness 0f8a6dd812 -> gate=False visible=True holdout=False wall=100s trunc=0 U=-343.7
+[21:25:28] == held-out H7 | arm H2 | seed 303
+[21:25:56]     [eval-H2] H7 harness 0f8a6dd812 -> gate=True visible=True holdout=True wall=28s trunc=0 U=876.9
+[21:25:56] == held-out H8 | arm H2 | seed 303
+[21:26:49]     [eval-H2] H8 harness 0f8a6dd812 -> gate=True visible=True holdout=True wall=53s trunc=0 U=839.0
+[21:26:49] == held-out H9 | arm H2 | seed 303
+[21:28:00]     [eval-H2] H9 harness 0f8a6dd812 -> gate=False visible=True holdout=False wall=71s trunc=0 U=-186.2
+[21:28:00] == held-out H10 | arm H2 | seed 303
+[21:28:37]     [eval-H2] H10 harness 0f8a6dd812 -> gate=False visible=True holdout=False wall=36s trunc=0 U=-128.3
+[21:28:37] == held-out H5 | arm H3 | seed 303
+[21:28:37]     [eval-H3] H5 harness 0f8a6dd812 -> cached
+[21:28:37] == held-out H6 | arm H3 | seed 303
+[21:28:37]     [eval-H3] H6 harness 0f8a6dd812 -> cached
+[21:28:37] == held-out H7 | arm H3 | seed 303
+[21:28:37]     [eval-H3] H7 harness 0f8a6dd812 -> cached
+[21:28:37] == held-out H8 | arm H3 | seed 303
+[21:28:37]     [eval-H3] H8 harness 0f8a6dd812 -> cached
+[21:28:37] == held-out H9 | arm H3 | seed 303
+[21:28:37]     [eval-H3] H9 harness 0f8a6dd812 -> cached
+[21:28:37] == held-out H10 | arm H3 | seed 303
+[21:28:37]     [eval-H3] H10 harness 0f8a6dd812 -> cached
+[21:28:37] == held-out H5 | arm H0 | seed 404
+[21:29:14]     [eval-H0] H5 harness b25b4ccc0f -> gate=True visible=True holdout=True wall=37s trunc=0 U=864.1
+[21:29:14] == held-out H6 | arm H0 | seed 404
+[21:31:02]     [eval-H0] H6 harness b25b4ccc0f -> gate=False visible=True holdout=False wall=107s trunc=0 U=-237.2
+[21:31:02] == held-out H7 | arm H0 | seed 404
+[21:31:32]     [eval-H0] H7 harness b25b4ccc0f -> gate=True visible=True holdout=True wall=30s trunc=0 U=876.5
+[21:31:32] == held-out H8 | arm H0 | seed 404
+[21:31:59]     [eval-H0] H8 harness b25b4ccc0f -> gate=True visible=True holdout=True wall=26s trunc=0 U=884.3
+[21:31:59] == held-out H9 | arm H0 | seed 404
+[21:32:43]     [eval-H0] H9 harness b25b4ccc0f -> gate=False visible=True holdout=False wall=44s trunc=0 U=-140.1
+[21:32:43] == held-out H10 | arm H0 | seed 404
+[21:33:23]     [eval-H0] H10 harness b25b4ccc0f -> gate=False visible=True holdout=False wall=39s trunc=0 U=-130.6
+[21:33:23] == held-out H5 | arm H2 | seed 404
+[21:33:57]     [eval-H2] H5 harness 0f8a6dd812 -> gate=True visible=True holdout=True wall=34s trunc=0 U=866.5
+[21:33:57] == held-out H6 | arm H2 | seed 404
+[21:38:58]     [eval-H2] H6 harness 0f8a6dd812 -> gate=False visible=False holdout=False wall=300s trunc=1 U=-257.2
+[21:38:58] == held-out H7 | arm H2 | seed 404
+[21:39:22]     [eval-H2] H7 harness 0f8a6dd812 -> gate=True visible=True holdout=True wall=24s trunc=0 U=880.6
+[21:39:22] == held-out H8 | arm H2 | seed 404
+[21:39:50]     [eval-H2] H8 harness 0f8a6dd812 -> gate=True visible=True holdout=True wall=27s trunc=0 U=882.6
+[21:39:50] == held-out H9 | arm H2 | seed 404
+[21:41:14]     [eval-H2] H9 harness 0f8a6dd812 -> gate=False visible=True holdout=False wall=84s trunc=0 U=-199.7
+[21:41:14] == held-out H10 | arm H2 | seed 404
+[21:41:50]     [eval-H2] H10 harness 0f8a6dd812 -> gate=False visible=True holdout=False wall=35s trunc=0 U=-127.7
+[21:41:50] == held-out H5 | arm H3 | seed 404
+[21:41:50]     [eval-H3] H5 harness 0f8a6dd812 -> cached
+[21:41:50] == held-out H6 | arm H3 | seed 404
+[21:41:50]     [eval-H3] H6 harness 0f8a6dd812 -> cached
+[21:41:50] == held-out H7 | arm H3 | seed 404
+[21:41:50]     [eval-H3] H7 harness 0f8a6dd812 -> cached
+[21:41:50] == held-out H8 | arm H3 | seed 404
+[21:41:50]     [eval-H3] H8 harness 0f8a6dd812 -> cached
+[21:41:50] == held-out H9 | arm H3 | seed 404
+[21:41:50]     [eval-H3] H9 harness 0f8a6dd812 -> cached
+[21:41:50] == held-out H10 | arm H3 | seed 404
+[21:41:50]     [eval-H3] H10 harness 0f8a6dd812 -> cached
+[21:41:50] DONE {"H0": {"verified": 7, "runs": 12, "wall_s": 600.7, "tokens": 155144, "truncations": 0, "mean_utility": 429.0}, "H2": {"verified": 6, "runs": 12, "wall_s": 828.7, "tokens": 159334, "truncations": 1, "mean_utility": 330.6}, "H3": {"verified": 6, "runs": 12, "wall_s": 828.7, "tokens": 159334, "truncations": 1, "mean_utility": 330.6}}
