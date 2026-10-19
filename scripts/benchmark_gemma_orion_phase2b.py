@@ -860,6 +860,135 @@ def verify_h8_holdout(ws: Path) -> bool:
     ))
 
 
+# ---------------------------------------------------------------------------
+# Held-Out Task H9: Strict semantic-version parser (spec-heavy, like H6)
+# ---------------------------------------------------------------------------
+def setup_h9_workspace(ws: Path) -> SubTask:
+    (ws / "semver.py").write_text(
+        '"""Semantic version parsing."""\n'
+        "from typing import Optional, Tuple\n\n"
+        "def parse_semver(text: str) -> Tuple[int, int, int, Optional[str]]:\n"
+        '    """Parse "MAJOR.MINOR.PATCH" with an optional "-PRERELEASE" suffix.\n\n'
+        "    MAJOR, MINOR and PATCH are non-negative decimal integers written without\n"
+        "    leading zeros (a single 0 is allowed). PRERELEASE is one or more\n"
+        "    dot-separated identifiers, each a non-empty run of ASCII letters, digits or\n"
+        "    hyphens. No other characters (including surrounding whitespace) are allowed.\n"
+        "    Return (major, minor, patch, prerelease), with prerelease None when absent.\n"
+        "    Raise ValueError for anything else.\n"
+        '    """\n'
+        "    core, _, pre = text.partition('-')\n"
+        "    major, minor, patch = (int(part) for part in core.split('.'))\n"
+        "    return major, minor, patch, pre\n",
+        encoding="utf-8",
+    )
+    (ws / "test_semver.py").write_text(
+        "import unittest\n"
+        "from semver import parse_semver\n\n"
+        "class TestParseSemver(unittest.TestCase):\n"
+        "    def test_missing_prerelease_is_none(self):\n"
+        "        self.assertEqual(parse_semver('1.2.3'), (1, 2, 3, None))\n\n"
+        "    def test_leading_zero_rejected(self):\n"
+        "        with self.assertRaises(ValueError):\n"
+        "            parse_semver('01.2.3')\n\n"
+        "    def test_whitespace_rejected(self):\n"
+        "        with self.assertRaises(ValueError):\n"
+        "            parse_semver(' 1.2.3')\n\n"
+        "if __name__ == '__main__':\n"
+        "    unittest.main()\n",
+        encoding="utf-8",
+    )
+    return SubTask(
+        id="H9_parse_semver_multi_defect_fix",
+        title="Fix parse_semver",
+        description=(
+            "Inspect `semver.py` and `test_semver.py`. Fix `parse_semver` in `semver.py` so it "
+            "satisfies its docstring specification and passes `python3 -m unittest -q`."
+        ),
+        input_files=["semver.py", "test_semver.py"],
+        affected_files=["semver.py"],
+        verification_command="python3 -m unittest -q",
+    )
+
+
+def verify_h9_holdout(ws: Path) -> bool:
+    return _run_holdout(ws, (
+        "from semver import parse_semver\n"
+        "assert parse_semver('0.0.0') == (0, 0, 0, None)\n"
+        "assert parse_semver('10.20.30-rc.1') == (10, 20, 30, 'rc.1')\n"
+        "assert parse_semver('1.0.0-alpha-2.x') == (1, 0, 0, 'alpha-2.x')\n"
+        "for bad in ('1.2', '1.2.3.4', '1.2.x', '1.2.3-', '1.2.3-a..b', '1.2.3-beta_1', '1.2.3 ', '1.02.3'):\n"
+        "    try:\n"
+        "        parse_semver(bad)\n"
+        "    except ValueError:\n"
+        "        pass\n"
+        "    else:\n"
+        "        raise AssertionError(f'{bad!r} must raise ValueError')\n"
+    ))
+
+
+# ---------------------------------------------------------------------------
+# Held-Out Task H10: Strict IPv4 parser (spec-heavy, like H6)
+# ---------------------------------------------------------------------------
+def setup_h10_workspace(ws: Path) -> SubTask:
+    (ws / "ipv4.py").write_text(
+        '"""IPv4 address parsing."""\n'
+        "from typing import Tuple\n\n"
+        "def parse_ipv4(text: str) -> Tuple[int, int, int, int]:\n"
+        '    """Parse a dotted-quad IPv4 address such as "192.168.0.1".\n\n'
+        "    There are exactly four parts separated by single dots. Each part is 1 to 3\n"
+        "    ASCII digits with a value from 0 to 255, written without leading zeros (a\n"
+        "    single 0 is allowed); signs and whitespace are not allowed. Return the four\n"
+        "    values as a tuple of ints. Raise ValueError for anything else.\n"
+        '    """\n'
+        "    return tuple(int(part) for part in text.split('.'))\n",
+        encoding="utf-8",
+    )
+    (ws / "test_ipv4.py").write_text(
+        "import unittest\n"
+        "from ipv4 import parse_ipv4\n\n"
+        "class TestParseIpv4(unittest.TestCase):\n"
+        "    def test_needs_four_parts(self):\n"
+        "        with self.assertRaises(ValueError):\n"
+        "            parse_ipv4('1.2.3')\n\n"
+        "    def test_part_range(self):\n"
+        "        with self.assertRaises(ValueError):\n"
+        "            parse_ipv4('1.2.3.256')\n\n"
+        "    def test_leading_zero_rejected(self):\n"
+        "        with self.assertRaises(ValueError):\n"
+        "            parse_ipv4('01.2.3.4')\n\n"
+        "if __name__ == '__main__':\n"
+        "    unittest.main()\n",
+        encoding="utf-8",
+    )
+    return SubTask(
+        id="H10_parse_ipv4_multi_defect_fix",
+        title="Fix parse_ipv4",
+        description=(
+            "Inspect `ipv4.py` and `test_ipv4.py`. Fix `parse_ipv4` in `ipv4.py` so it satisfies "
+            "its docstring specification and passes `python3 -m unittest -q`."
+        ),
+        input_files=["ipv4.py", "test_ipv4.py"],
+        affected_files=["ipv4.py"],
+        verification_command="python3 -m unittest -q",
+    )
+
+
+def verify_h10_holdout(ws: Path) -> bool:
+    return _run_holdout(ws, (
+        "from ipv4 import parse_ipv4\n"
+        "assert parse_ipv4('0.0.0.0') == (0, 0, 0, 0)\n"
+        "assert parse_ipv4('255.255.255.255') == (255, 255, 255, 255)\n"
+        "assert parse_ipv4('10.0.20.3') == (10, 0, 20, 3)\n"
+        "for bad in (' 1.2.3.4', '1.2.3.+4', '1..2.3', '1.2.3.4.5', 'a.b.c.d', '1.2.3.4 ', '1.2.3.0001', '१.2.3.4'):\n"
+        "    try:\n"
+        "        parse_ipv4(bad)\n"
+        "    except ValueError:\n"
+        "        pass\n"
+        "    else:\n"
+        "        raise AssertionError(f'{bad!r} must raise ValueError')\n"
+    ))
+
+
 TASKS: List[Tuple[str, Callable[[Path], SubTask], Callable[[Path], bool]]] = [
     ("H1_fdr_step_up_fix", setup_h1_workspace, verify_h1_holdout),
     ("H2_pareto_judge_fix", setup_h2_workspace, verify_h2_holdout),
@@ -869,6 +998,8 @@ TASKS: List[Tuple[str, Callable[[Path], SubTask], Callable[[Path], bool]]] = [
     ("H6_parse_duration_multi_defect_fix", setup_h6_workspace, verify_h6_holdout),
     ("H7_rolling_mean_multi_defect_fix", setup_h7_workspace, verify_h7_holdout),
     ("H8_slugify_multi_defect_fix", setup_h8_workspace, verify_h8_holdout),
+    ("H9_parse_semver_multi_defect_fix", setup_h9_workspace, verify_h9_holdout),
+    ("H10_parse_ipv4_multi_defect_fix", setup_h10_workspace, verify_h10_holdout),
 ]
 
 
@@ -1097,7 +1228,7 @@ def main() -> None:
     active_tasks = [
         (tid, sfn, hfn)
         for (tid, sfn, hfn) in TASKS
-        if any(tid.upper().startswith(pref) for pref in task_prefixes)
+        if any(tid.upper().startswith(pref + "_") for pref in task_prefixes)
     ]
 
     git_head = subprocess.check_output(

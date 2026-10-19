@@ -4,7 +4,7 @@
 Adaptation split H1–H4: each arm walks the tasks in order; on every task one
 Propose–Probe–Compose step (k=1, INV + DOM candidates, one composition) runs from
 the arm's current harness, and the arm's promotion rule picks the next harness.
-Held-out split H5–H8: the frozen final harness of each arm (and the default one,
+Held-out split H5–H10: the frozen final harness of each arm (and the default one,
 H0) is evaluated once per seed. Worker policy is fixed for every rollout:
 gemma4:12b, think=false, num_ctx 16384, num_predict 2048, P1_STAGE stage hints,
 adaptive generation limit, single attempt, 300 s deadline.
@@ -40,7 +40,7 @@ from antigravity_hybrid_orchestrator.harness.tree import DEFAULT_TREE, HarnessTr
 
 POLICY = "P1_STAGE_ADAPTIVE"
 ADAPTATION = ["H1", "H2", "H3", "H4"]
-HELD_OUT = ["H5", "H6", "H7", "H8"]
+HELD_OUT = ["H5", "H6", "H7", "H8", "H9", "H10"]
 
 
 def _task(prefix: str):

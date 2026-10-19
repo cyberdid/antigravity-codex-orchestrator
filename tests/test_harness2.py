@@ -297,6 +297,6 @@ def test_experiment_script_end_to_end_with_fakes(tmp_path, monkeypatch):
     assert [d["decision"].split()[0] for d in data["arms"]["H3"]["decisions"]][0] == "ADOPT"
     assert data["arms"]["H2"]["decisions"][0]["decision"] == "ADOPT agg"
     assert set(data["held_out_summary"]) == {"H0", "H2", "H3"}
-    assert data["held_out_summary"]["H0"]["runs"] == 4
+    assert data["held_out_summary"]["H0"]["runs"] == 6
     assert data["cloud_tokens"] > 0
     assert (out.with_suffix("") / "final_H3" / "harness.json").exists()
