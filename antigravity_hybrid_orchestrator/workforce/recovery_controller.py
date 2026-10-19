@@ -25,6 +25,25 @@ def _tail(text: str, limit: int) -> str:
     return text[-limit:] if limit > 0 else ""
 
 
+# unittest headers (`FAIL: test_x (...)`), exception lines (`AssertionError: ...`),
+# pytest assertion detail (`E   assert ...`) and pytest summary (`FAILED a.py::t - ...`).
+_FAILURE_LINE = re.compile(r"^(?:FAIL|ERROR): |^\w*(?:Error|Exception)\b|^E\s{2,}\S|^FAILED \S+::")
+_TRACEBACK_FILE = re.compile(r'File "([^"]+)", line \d+')
+
+
+def _failure_excerpt(output: str, limit: int) -> str:
+    """Name the failing tests and their errors; runner summaries carry neither."""
+    lines = [line.strip() for line in (output or "").splitlines()]
+    key_lines = list(dict.fromkeys(line for line in lines if _FAILURE_LINE.match(line)))
+    return _tail(" | ".join(key_lines) if key_lines else output, limit)
+
+
+def _traceback_files(output: str, candidates: List[str]) -> List[str]:
+    """Return the candidate files that appear as frames in a traceback."""
+    frames = _TRACEBACK_FILE.findall(output or "")
+    return [c for c in candidates if any(f == c or f.endswith("/" + c) for f in frames)]
+
+
 def active_recovery_policy(override: Optional[str] = None) -> str:
     """Return canonical recovery policy ID: 'P0', 'P1_REACTIVE', 'P1_STAGE', or 'P1'."""
     raw = (override or os.environ.get("OLLAMA_RECOVERY_POLICY", "P0")).strip().upper()
@@ -107,6 +126,7 @@ class RecoveryController:
     successful_verifications: int = 0
     verification_passed: bool = False
     last_verification_error: str = ""
+    last_failure_files: List[str] = field(default_factory=list)
     recovery_attempts: int = 0
     stage_hints_emitted: int = 0
     consecutive_non_tool_turns: int = 0
@@ -166,10 +186,11 @@ class RecoveryController:
             )
         if self.verification_command and not self.verification_passed:
             if self.last_verification_error:
-                target = self.affected_files[0] if self.affected_files else "the affected file"
+                targets = self.last_failure_files or self.affected_files
+                target = ", ".join(f"`{f}`" for f in targets) if targets else "the affected file"
                 return (
-                    f"Last verification failed ({_tail(self.last_verification_error, 160)}). "
-                    f"Apply a targeted fix on `{target}` via `patch_file` and re-run "
+                    f"Last verification failed ({_tail(self.last_verification_error, 240)}). "
+                    f"Apply a targeted fix in {target} via `patch_file` and re-run "
                     f"`run_command` with `{self.verification_command}`."
                 )
             return (
@@ -280,9 +301,11 @@ class RecoveryController:
             self.successful_verifications += 1
             self.verification_passed = True
             self.last_verification_error = ""
+            self.last_failure_files = []
             return
         self.verification_passed = False
-        self.last_verification_error = _tail(output, self.config.max_error_snippet_chars)
+        self.last_verification_error = _failure_excerpt(output, self.config.max_error_snippet_chars)
+        self.last_failure_files = _traceback_files(output, self.affected_files)
         if self.is_reactive:
             self._log_event(
                 turn=turn,

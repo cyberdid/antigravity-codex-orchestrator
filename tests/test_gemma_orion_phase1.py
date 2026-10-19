@@ -1566,3 +1566,75 @@ def test_t19_phase2b_worker_trusted_verification_and_tool_error_trajectory(
     assert failed_patch["success"] is False
     assert failed_patch["error"]
     assert "PASSED" in sent_payloads[5][-1]["content"]
+
+
+UNITTEST_ASSERTION_FAILURE = (
+    "======================================================================\n"
+    "FAIL: test_length_mismatch_raises (test_summary.TestWeightedMean.test_length_mismatch_raises)\n"
+    "----------------------------------------------------------------------\n"
+    "Traceback (most recent call last):\n"
+    '  File "/tmp/ws/test_summary.py", line 9, in test_length_mismatch_raises\n'
+    "    with self.assertRaises(ValueError):\n"
+    "         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\n"
+    "AssertionError: ValueError not raised\n\n"
+    "----------------------------------------------------------------------\n"
+    "Ran 2 tests in 0.000s\n\nFAILED (failures=1)\n"
+)
+
+UNITTEST_ERROR_IN_SOURCE = (
+    "======================================================================\n"
+    "ERROR: test_weighted_mean (test_summary.TestWeightedMean.test_weighted_mean)\n"
+    "----------------------------------------------------------------------\n"
+    "Traceback (most recent call last):\n"
+    '  File "/tmp/ws/test_summary.py", line 6, in test_weighted_mean\n'
+    "    self.assertAlmostEqual(weighted_mean([1.0, 2.0, 3.0], [1.0, 1.0, 2.0]), 2.25)\n"
+    '  File "/tmp/ws/summary.py", line 11, in weighted_mean\n'
+    "    x = 1 / 0\n"
+    "ZeroDivisionError: division by zero\n\n"
+    "----------------------------------------------------------------------\n"
+    "Ran 2 tests in 0.000s\n\nFAILED (errors=1)\n"
+)
+
+
+def _failed_two_module_controller(verify_output: str):
+    from antigravity_hybrid_orchestrator.workforce.recovery_controller import RecoveryController
+
+    rc = RecoveryController(
+        subtask_id="t20",
+        input_files=["weights.py", "summary.py", "test_summary.py"],
+        affected_files=["weights.py", "summary.py"],
+        verification_command="python3 -m unittest -q",
+        policy="P1_STAGE",
+        verify_fn=lambda: (False, verify_output),
+    )
+    for path in ("weights.py", "summary.py", "test_summary.py"):
+        rc.record_tool_execution(turn=1, tool_name="read_file", args={"path": path},
+                                 success=True, output="...", error=None)
+    rc.record_tool_execution(turn=2, tool_name="patch_file", args={"path": "weights.py"},
+                             success=True, output="Patched", error=None)
+    rc.record_tool_execution(turn=3, tool_name="run_command",
+                             args={"command": "python3 -m unittest -q test_summary.py"},
+                             success=False, output="", error=None)
+    return rc
+
+
+def test_t20_phase2b_failure_hint_names_failing_test_and_assertion():
+    """T20a: the hint carries the failing test and assertion, not the runner summary."""
+    hint = _failed_two_module_controller(UNITTEST_ASSERTION_FAILURE).recommended_next_action()
+    assert "test_length_mismatch_raises" in hint
+    assert "AssertionError: ValueError not raised" in hint
+    assert "Ran 2 tests" not in hint
+
+
+def test_t20_phase2b_failure_hint_lists_all_affected_files_when_traceback_is_in_tests():
+    """T20b: when the traceback only shows the test file, no single source file is singled out."""
+    hint = _failed_two_module_controller(UNITTEST_ASSERTION_FAILURE).recommended_next_action()
+    assert "`weights.py`" in hint and "`summary.py`" in hint
+
+
+def test_t20_phase2b_failure_hint_targets_source_file_from_traceback():
+    """T20c: an affected file in the traceback is the one the hint points to."""
+    hint = _failed_two_module_controller(UNITTEST_ERROR_IN_SOURCE).recommended_next_action()
+    assert "ZeroDivisionError: division by zero" in hint
+    assert "`summary.py`" in hint
+    assert "`weights.py`" not in hint
