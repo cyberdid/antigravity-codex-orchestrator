@@ -260,6 +260,7 @@ class MockAutonomousWorker:
         tool_suite: WorkspaceToolSuite,
         feedback_context: Optional[str] = None,
         deadline: Optional[float] = None,  # accepted for interface parity; the mock finishes instantly
+        think: Optional[bool] = None,  # accepted for interface parity; the mock does not think
     ) -> SubtaskResult:
         """Executes a SubTask deterministically using the provided tool_suite (<0.05s)."""
         turn = 1

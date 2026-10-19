@@ -15,6 +15,7 @@ from antigravity_hybrid_orchestrator.engine.verifier import (
     VerificationRunner,
 )
 from antigravity_hybrid_orchestrator.engine.control import ExecutionControl
+from antigravity_hybrid_orchestrator.engine.escalation import EscalationLadder
 from antigravity_hybrid_orchestrator.planner.dag import ExecutionPlanDAG, SubTask
 from antigravity_hybrid_orchestrator.workforce.mock_worker import MockAutonomousWorker
 from antigravity_hybrid_orchestrator.workforce.tools import WorkspaceToolSuite
@@ -97,6 +98,7 @@ class SelfCorrectionLoop:
         execution_control: Optional[ExecutionControl] = None,
         replanner: Optional[Callable[[SubTask, List[Dict[str, Any]]], Optional[SubTask]]] = None,
         acceptance_gate: Optional[Callable[[SubTask], Dict[str, Any]]] = None,
+        ladder: Optional[EscalationLadder] = None,
     ) -> None:
         """Initializes the self-correction loop.
 
@@ -116,6 +118,8 @@ class SelfCorrectionLoop:
         self.execution_control = execution_control or ExecutionControl()
         self.replanner = replanner
         self.acceptance_gate = acceptance_gate
+        self.ladder = ladder
+        self._ladder_steps: List[str] = []
         self.checkpoint_git = checkpoint_git
         self.event_listener = event_listener
 
@@ -217,6 +221,20 @@ class SelfCorrectionLoop:
         Returns:
             SubtaskResult with success status, tool call counts, and artifacts.
         """
+        self._ladder_steps: List[str] = []
+        result = self._execute_subtask_attempts(subtask)
+        result.metadata = dict(result.metadata or {})
+        result.metadata.update(
+            think_retry_used="think_retry" in self._ladder_steps,
+            ladder_steps_used=list(self._ladder_steps),
+        )
+        return result
+
+    def _use_ladder_step(self, step: str) -> None:
+        if step not in self._ladder_steps:
+            self._ladder_steps.append(step)
+
+    def _execute_subtask_attempts(self, subtask: SubTask) -> SubtaskResult:
         subtask.status = SubtaskExecutionState.RUNNING.value
         feedback_context: Optional[str] = None
         attempt = 0
@@ -316,12 +334,21 @@ class SelfCorrectionLoop:
             })
 
             # 1. Execute subtask with worker
+            think = self.ladder.think_for_attempt(attempt) if self.ladder else None
+            # Workers that predate the ladder do not accept ``think``; pass it only when set.
+            ladder_kwargs: Dict[str, Any] = {}
+            if think:
+                self._use_ladder_step("think_retry")
+                ladder_kwargs["think"] = think
             worker_res = self.worker.execute_subtask(
                 subtask=subtask,
                 tool_suite=self.tool_suite,
                 feedback_context=feedback_context,
                 deadline=(subtask_started + time_limit_s) if time_limit_s else None,
+                **ladder_kwargs,
             )
+            if worker_res.metadata.get("budget_escalations"):
+                self._use_ladder_step("adaptive_limit")
             total_turns += worker_res.turns
             total_tool_calls += worker_res.tool_calls_count
             last_worker_res = worker_res

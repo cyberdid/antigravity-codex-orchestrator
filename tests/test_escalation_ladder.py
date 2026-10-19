@@ -109,3 +109,71 @@ def test_adaptive_limit_can_be_disabled(monkeypatch, tmp_path):
     assert result.metadata["budget_escalations"] == 0
     # Previous behaviour: the truncated call was executed.
     assert (tmp_path / "log.txt").read_text() == "hi\n"
+
+
+# --- Task 2: thinking on retry ------------------------------------------------
+
+from antigravity_hybrid_orchestrator.workforce.worker import SubtaskResult  # noqa: E402
+
+OK_CHECK = "python3 -c \"import pathlib,sys; sys.exit(0 if pathlib.Path('ok').exists() else 1)\""
+
+
+class RecordingWorker:
+    """Fails the first attempt (writes nothing useful), passes from the second on."""
+
+    def __init__(self, succeed_on: int = 2) -> None:
+        self.succeed_on = succeed_on
+        self.calls: List[Dict[str, Any]] = []
+
+    def execute_subtask(self, subtask, tool_suite, feedback_context=None, deadline=None, think=None):
+        self.calls.append({"think": think, "feedback_context": feedback_context})
+        attempt = len(self.calls)
+        root = Path(tool_suite.workspace_root)
+        (root / f"attempt{attempt}.txt").write_text("x")
+        if attempt >= self.succeed_on:
+            (root / "ok").write_text("1")
+        return SubtaskResult(subtask_id=subtask.id, success=True, turns=1, tool_calls_count=1)
+
+
+def _loop_subtask() -> SubTask:
+    return SubTask(id="loop", title="Create ok", input_files=[], affected_files=["ok"],
+                   verification_command=OK_CHECK)
+
+
+def _make_loop(tmp_path: Path, worker, ladder=None):
+    from antigravity_hybrid_orchestrator.engine.loop import SelfCorrectionLoop
+
+    return SelfCorrectionLoop(tool_suite=WorkspaceToolSuite(workspace_root=tmp_path), worker=worker,
+                              checkpoint_git=False, ladder=ladder)
+
+
+def test_ladder_think_for_attempt():
+    from antigravity_hybrid_orchestrator.engine.escalation import EscalationLadder
+
+    ladder = EscalationLadder(think_on_retry=True)
+    assert ladder.think_for_attempt(0) is None
+    assert ladder.think_for_attempt(1) is True
+    assert EscalationLadder().think_for_attempt(1) is None
+
+
+def test_loop_passes_think_override_on_retry(tmp_path):
+    from antigravity_hybrid_orchestrator.engine.escalation import EscalationLadder
+
+    worker = RecordingWorker()
+    result = _make_loop(tmp_path, worker, EscalationLadder(think_on_retry=True)).execute_subtask_with_retry(
+        _loop_subtask())
+    assert result.success is True
+    assert [c["think"] for c in worker.calls] == [None, True]
+    assert result.metadata["think_retry_used"] is True
+
+
+def test_loop_without_ladder_never_overrides_think(tmp_path):
+    worker = RecordingWorker()
+    _make_loop(tmp_path, worker).execute_subtask_with_retry(_loop_subtask())
+    assert [c["think"] for c in worker.calls] == [None, None]
+
+
+def test_worker_think_override_reaches_chat(monkeypatch, tmp_path):
+    _, sent = _run(monkeypatch, tmp_path, [_text("Done.")], think=True)
+    assert sent[0]["think"] is True
+    assert sent[0]["num_predict"] == 4096

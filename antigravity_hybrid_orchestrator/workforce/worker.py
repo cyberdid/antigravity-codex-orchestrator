@@ -411,14 +411,17 @@ class AutonomousWorker:
         tool_suite: WorkspaceToolSuite,
         feedback_context: Optional[str] = None,
         deadline: Optional[float] = None,
+        think: Optional[bool] = None,
     ) -> SubtaskResult:
         """Executes a SubTask, preferring native tool-calling over legacy ReAct.
 
         ``deadline`` is a ``time.monotonic()`` instant after which the attempt stops
         or during a native HTTP call, so a blocked model cannot evade the limit.
+        ``think=True`` runs this attempt with Thinking Mode and the escalated
+        generation limit (thinking consumes it); ``None`` keeps the configured mode.
         """
         if self._is_native_capable():
-            return self._execute_native(subtask, tool_suite, feedback_context, deadline)
+            return self._execute_native(subtask, tool_suite, feedback_context, deadline, think)
         return self._execute_react(subtask, tool_suite, feedback_context)
 
     def _execute_native(
@@ -427,6 +430,7 @@ class AutonomousWorker:
         tool_suite: WorkspaceToolSuite,
         feedback_context: Optional[str] = None,
         deadline: Optional[float] = None,
+        think: Optional[bool] = None,
     ) -> SubtaskResult:
         """Executes a SubTask via Ollama native function-calling (`/api/chat` tools).
 
@@ -534,10 +538,13 @@ class AutonomousWorker:
                 else "unknown"
             )
             think_cfg = (
-                client._effective_think()
+                client._effective_think(think)
                 if hasattr(client, "_effective_think")
-                else ollama_think()
+                else (ollama_think() if think is None else think)
             )
+            # Thinking shares the generation limit with the answer, so a thinking
+            # attempt gets the escalated limit on every turn.
+            attempt_num_predict = num_predict_max() if think else None
             active_num_ctx = num_ctx()
             active_num_predict = effective_num_predict(has_tools=bool(tools), num_ctx_val=active_num_ctx)
             budget_escalations = 0
@@ -605,8 +612,9 @@ class AutonomousWorker:
                         )
                     inference_started = time.monotonic()
                     # A truncated tool-call turn is re-requested once with a larger limit.
-                    request_num_predict = num_predict_max() if escalate_next_turn else None
+                    escalated_this_turn = escalate_next_turn
                     escalate_next_turn = False
+                    request_num_predict = num_predict_max() if escalated_this_turn else attempt_num_predict
                     compacted_messages_total += compact_messages(
                         messages, reserved_tokens=request_num_predict or active_num_predict
                     )
@@ -614,7 +622,7 @@ class AutonomousWorker:
                     if isinstance(client, WorkforceClient):
                         resp = client.chat(messages, tools=tools, deadline=deadline,
                                            execution_control=self.execution_control,
-                                           num_predict=request_num_predict)
+                                           num_predict=request_num_predict, think=think)
                     else:
                         resp = client.chat(messages, tools=tools)
                     prompt_tokens = int(resp.get("input_tokens", 0))
@@ -671,7 +679,7 @@ class AutonomousWorker:
                         "done_reason": str(resp.get("done_reason", "") or ""),
                         "truncated": is_truncated,
                         "num_predict": request_num_predict or active_num_predict,
-                        "budget_escalated": request_num_predict is not None,
+                        "budget_escalated": escalated_this_turn,
                         "tool_calls": [],
                     }
                     turn_trajectory.append(turn_entry)
@@ -686,7 +694,7 @@ class AutonomousWorker:
                         discarded_truncated_tool_calls += len(calls)
                         turn_entry["discarded_tool_calls"] = [str(c.get("name", "")) for c in calls]
                         calls = []
-                        if request_num_predict is not None:
+                        if request_num_predict is not None and request_num_predict >= num_predict_max():
                             turn_entry["budget_escalation_skipped"] = "already_escalated"
                         elif not isinstance(client, WorkforceClient):
                             turn_entry["budget_escalation_skipped"] = "client"
