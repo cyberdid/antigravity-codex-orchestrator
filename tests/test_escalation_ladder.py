@@ -242,3 +242,38 @@ def test_assist_returning_none_adds_no_guidance(tmp_path):
                         ).execute_subtask_with_retry(_assert_subtask())
     assert "Guidance from the cloud architect" not in (worker.calls[1]["feedback_context"] or "")
     assert result.metadata["solved_with_cloud_assist"] is False
+
+
+def test_cloud_excerpt_never_falls_back_to_raw_output(tmp_path):
+    """Output without recognisable failure lines must not reach the cloud verbatim."""
+    from antigravity_hybrid_orchestrator.engine.escalation import EscalationLadder
+
+    leaky = "python3 -c \"print('SOURCE_LINE = secret_formula(x)'); raise SystemExit(1)\""
+    assist = FakeAssist()
+    subtask = SubTask(id="loop", title="t", input_files=[], affected_files=["ok"], verification_command=leaky)
+    _make_loop(tmp_path, RecordingWorker(succeed_on=99), EscalationLadder(cloud_assist=assist)
+               ).execute_subtask_with_retry(subtask)
+
+    assert assist.calls, "assist should have been consulted"
+    assert "SOURCE_LINE" not in assist.calls[0]["excerpt"]
+
+
+class TimeoutThenPassWorker(RecordingWorker):
+    """Attempt 1 ends at the time limit without the loop running verification."""
+
+    def execute_subtask(self, subtask, tool_suite, feedback_context=None, deadline=None, think=None):
+        self.calls.append({"think": think, "feedback_context": feedback_context})
+        if len(self.calls) == 1:
+            return SubtaskResult(subtask_id=subtask.id, success=False, turns=3,
+                                 error="Attempt stopped: subtask time limit reached")
+        (Path(tool_suite.workspace_root) / "ok").write_text("1")
+        return SubtaskResult(subtask_id=subtask.id, success=True, turns=1)
+
+
+def test_assist_after_timeout_uses_a_fresh_verification_run(tmp_path):
+    from antigravity_hybrid_orchestrator.engine.escalation import EscalationLadder
+
+    assist = FakeAssist()
+    _make_loop(tmp_path, TimeoutThenPassWorker(), EscalationLadder(cloud_assist=assist)
+               ).execute_subtask_with_retry(_assert_subtask())
+    assert "AssertionError: ok file missing" in assist.calls[0]["excerpt"]

@@ -63,7 +63,9 @@ Reply with ONE fenced ```json block containing either the complete edited harnes
  "skills": {"name": "text"}, "notes": "what you changed and which evidence argues for it"}
 or {"keep_base": true, "notes": "why no edit is justified"}.
 Write the task-agnostic procedure and knowledge for this KIND of task; this harness will be
-reused on other tasks. KEEP_BASE is a real answer, not a failure."""
+reused on other tasks. KEEP_BASE is a real answer, not a failure.
+Answer directly in plain text. Do not use any tools: do not run commands, do not read or write
+files and do not browse. Everything you can know is in this message."""
 
 
 @dataclass

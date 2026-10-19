@@ -31,10 +31,17 @@ _FAILURE_LINE = re.compile(r"^(?:FAIL|ERROR): |^\w*(?:Error|Exception)\b|^E\s{2,
 _TRACEBACK_FILE = re.compile(r'File "([^"]+)", line \d+')
 
 
-def failure_excerpt(output: str, limit: int) -> str:
-    """Name the failing tests and their errors; runner summaries carry neither."""
+def failure_excerpt(output: str, limit: int, *, raw_fallback: bool = True) -> str:
+    """Name the failing tests and their errors; runner summaries carry neither.
+
+    With ``raw_fallback=False`` (anything leaving the machine) output without
+    recognisable failure lines yields "" instead of its raw tail, which could
+    contain source lines from a traceback or data the program printed.
+    """
     lines = [line.strip() for line in (output or "").splitlines()]
     key_lines = list(dict.fromkeys(line for line in lines if _FAILURE_LINE.match(line)))
+    if not key_lines and not raw_fallback:
+        return ""
     return _tail(" | ".join(key_lines) if key_lines else output, limit)
 
 

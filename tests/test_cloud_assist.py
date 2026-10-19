@@ -104,3 +104,26 @@ def test_successful_call_records_remote_tokens(tmp_path):
     assist, _ = _assist(tmp_path, control=control)
     assist.request(_subtask(), EXCERPT)
     assert control.remote_tokens == assist.tokens_used > 0
+
+
+def test_agy_empty_reply_with_denied_tools_is_an_error(monkeypatch):
+    import json as _json
+    import pytest as _pytest
+    from antigravity_hybrid_orchestrator.architect.client import CloudArchitectClient
+
+    client = CloudArchitectClient(backend="agy")
+    reply = {"status": "SUCCESS", "response": "", "usage": {"input_tokens": 2588, "output_tokens": 616},
+             "denied_actions": [{"action": "command", "display_name": "RunCommand"}]}
+    monkeypatch.setattr(client, "_run_subprocess", lambda cmd, label: (0, _json.dumps(reply), "no output produced"))
+    with _pytest.raises(CloudArchitectError, match="RunCommand"):
+        client.complete("hello")
+
+
+def test_cloud_prompts_forbid_tool_use(monkeypatch):
+    from antigravity_hybrid_orchestrator.architect.client import CloudArchitectClient
+
+    client = CloudArchitectClient(backend="agy")
+    sent = []
+    monkeypatch.setattr(client, "_invoke_cloud", lambda prompt: (sent.append(prompt) or "1. step", 1, 1))
+    client.assist_subtask("payload")
+    assert "Do not use any tools" in sent[0]

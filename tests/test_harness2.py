@@ -300,3 +300,8 @@ def test_experiment_script_end_to_end_with_fakes(tmp_path, monkeypatch):
     assert data["held_out_summary"]["H0"]["runs"] == 6
     assert data["cloud_tokens"] > 0
     assert (out.with_suffix("") / "final_H3" / "harness.json").exists()
+
+
+def test_proposer_prompt_forbids_tool_use():
+    prompt = HarnessProposer(lambda p: ("", 0, 0)).build_prompt("INV", DEFAULT_TREE, "e", [])
+    assert "Do not use any tools" in prompt

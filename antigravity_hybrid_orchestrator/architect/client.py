@@ -35,6 +35,12 @@ from antigravity_hybrid_orchestrator.privacy.workspace_privacy import verify_wor
 from antigravity_hybrid_orchestrator.workspace.scanner import WorkspaceOutline
 
 
+NO_TOOLS = (
+    "Answer directly in plain text. Do not use any tools: do not run commands, do not read or "
+    "write files and do not browse. Everything you can know is in this message."
+)
+
+
 class CloudArchitectError(Exception):
     """Raised when the Cloud Architect invocation or response parsing fails."""
     pass
@@ -396,6 +402,13 @@ class CloudArchitectClient:
             or payload.get("content")
             or ""
         )
+        denied = payload.get("denied_actions") or []
+        if not raw_response.strip() and denied:
+            # agy is an agent: in headless mode a tool call is auto-denied and the
+            # turn ends with no text. That is a failed call, not an empty answer.
+            names = ", ".join(str(d.get("display_name") or d.get("action")) if isinstance(d, dict) else str(d)
+                              for d in denied)
+            raise CloudArchitectError(f"agy produced no text; denied tool use: {names}")
         usage = payload.get("usage", {}) or {}
         return (
             raw_response,
@@ -724,7 +737,7 @@ class CloudArchitectClient:
             "failing tests' messages; the local model will write the code.\n"
             "Reply with at most 12 numbered steps or short pseudocode that lead to a fix "
             "satisfying the docstrings and the failing tests. Do NOT write complete code, "
-            "whole functions or files.\n\n" + payload
+            "whole functions or files.\n" + NO_TOOLS + "\n\n" + payload
         )
         raw, in_tokens, out_tokens = self._invoke_cloud(prompt)
         return str(raw or "").strip()[: self.ASSIST_RESPONSE_CHARS], in_tokens, out_tokens

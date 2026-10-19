@@ -242,11 +242,13 @@ class SelfCorrectionLoop:
         last_worker_res: Optional[SubtaskResult],
     ) -> Optional[str]:
         """Append owner-approved cloud guidance, if the cloud gives any, to the feedback."""
-        if last_verif_res is not None:
-            evidence = f"{last_verif_res.stderr}\n{last_verif_res.stdout}"
-        else:
-            evidence = (last_worker_res.error if last_worker_res else "") or ""
-        guidance = self.ladder.cloud_assist.request(subtask, failure_excerpt(evidence, 600))
+        if last_verif_res is None:
+            # The attempt ended without verification (e.g. time limit): run the
+            # verification command now so the cloud sees which tests fail.
+            last_verif_res = self.verifier.run_verification(subtask)
+        evidence = f"{last_verif_res.stderr}\n{last_verif_res.stdout}"
+        excerpt = failure_excerpt(evidence, 600, raw_fallback=False) or "(no failing-test message captured)"
+        guidance = self.ladder.cloud_assist.request(subtask, excerpt)
         if not guidance:
             return feedback_context
         self._use_ladder_step("cloud_assist")
