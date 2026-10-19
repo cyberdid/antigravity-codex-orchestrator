@@ -550,11 +550,164 @@ def verify_h4_holdout(ws: Path) -> bool:
     return proc.returncode == 0
 
 
+def _run_holdout(ws: Path, holdout_code: str) -> bool:
+    proc = subprocess.run(
+        [sys.executable, "-B", "-c", holdout_code],
+        cwd=str(ws),
+        capture_output=True,
+        text=True,
+        timeout=15.0,
+    )
+    return proc.returncode == 0
+
+
+# ---------------------------------------------------------------------------
+# Held-Out Task H5: Interval merging with three independent defects
+# (one visible test per defect, so a first partial fix still fails)
+# ---------------------------------------------------------------------------
+def setup_h5_workspace(ws: Path) -> SubTask:
+    (ws / "intervals.py").write_text(
+        '"""Closed-interval utilities."""\n'
+        "from typing import List, Sequence, Tuple\n\n"
+        "def merge_intervals(intervals: Sequence[Tuple[float, float]]) -> List[Tuple[float, float]]:\n"
+        '    """Merge overlapping or touching closed intervals.\n\n'
+        "    `intervals` holds (start, end) pairs in any order. Return a NEW list of merged\n"
+        "    (start, end) tuples sorted by start; the input must not be modified. Intervals\n"
+        "    that touch (next start == current end) are merged. Raise ValueError if any\n"
+        "    interval has start > end.\n"
+        '    """\n'
+        "    result: List[Tuple[float, float]] = []\n"
+        "    for start, end in intervals:\n"
+        "        if result and start < result[-1][1]:\n"
+        "            result[-1] = (result[-1][0], max(result[-1][1], end))\n"
+        "        else:\n"
+        "            result.append((start, end))\n"
+        "    return result\n",
+        encoding="utf-8",
+    )
+    (ws / "test_intervals.py").write_text(
+        "import unittest\n"
+        "from intervals import merge_intervals\n\n"
+        "class TestMergeIntervals(unittest.TestCase):\n"
+        "    def test_unsorted_input(self):\n"
+        "        self.assertEqual(merge_intervals([(5, 6), (1, 3), (2, 4)]), [(1, 4), (5, 6)])\n\n"
+        "    def test_touching_intervals_merge(self):\n"
+        "        self.assertEqual(merge_intervals([(1, 2), (2, 3)]), [(1, 3)])\n\n"
+        "    def test_reversed_interval_raises(self):\n"
+        "        with self.assertRaises(ValueError):\n"
+        "            merge_intervals([(1, 2), (3, 1)])\n\n"
+        "if __name__ == '__main__':\n"
+        "    unittest.main()\n",
+        encoding="utf-8",
+    )
+    return SubTask(
+        id="H5_merge_intervals_multi_defect_fix",
+        title="Fix merge_intervals",
+        description=(
+            "Inspect `intervals.py` and `test_intervals.py`. Fix `merge_intervals` in "
+            "`intervals.py` so it satisfies its docstring specification and passes "
+            "`python3 -m unittest -q`."
+        ),
+        input_files=["intervals.py", "test_intervals.py"],
+        affected_files=["intervals.py"],
+        verification_command="python3 -m unittest -q",
+    )
+
+
+def verify_h5_holdout(ws: Path) -> bool:
+    return _run_holdout(ws, (
+        "from intervals import merge_intervals\n"
+        "assert merge_intervals([]) == []\n"
+        "assert merge_intervals([(1, 10), (2, 3)]) == [(1, 10)]\n"
+        "assert merge_intervals([(3, 4), (1, 2)]) == [(1, 2), (3, 4)]\n"
+        "assert merge_intervals([(0.5, 1.5), (1.5, 2.0)]) == [(0.5, 2.0)]\n"
+        "src = [(4, 5), (1, 2)]\n"
+        "merge_intervals(src)\n"
+        "assert src == [(4, 5), (1, 2)], 'input must not be modified'\n"
+        "try:\n"
+        "    merge_intervals([(2, 1)])\n"
+        "except ValueError:\n"
+        "    pass\n"
+        "else:\n"
+        "    raise AssertionError('start > end must raise ValueError')\n"
+    ))
+
+
+# ---------------------------------------------------------------------------
+# Held-Out Task H6: Duration parser with a unit defect and missing validation
+# (the holdout also checks the unit-order rule stated only in the docstring)
+# ---------------------------------------------------------------------------
+def setup_h6_workspace(ws: Path) -> SubTask:
+    (ws / "durations.py").write_text(
+        '"""Human-readable duration parsing."""\n'
+        "import re\n\n"
+        "UNITS = {'h': 60, 'm': 60, 's': 1}\n\n"
+        "def parse_duration(text: str) -> int:\n"
+        '    """Parse a duration such as "1h30m", "45s" or "2h5s" into total seconds.\n\n'
+        "    Units are h (3600 s), m (60 s) and s (1 s). Each unit appears at most once and\n"
+        "    units appear in the order h, m, s. Surrounding whitespace is ignored. Raise\n"
+        "    ValueError for an empty string, an unknown unit, a number without a unit, or\n"
+        "    any other text that does not follow this format.\n"
+        '    """\n'
+        "    total = 0\n"
+        "    for value, unit in re.findall(r'(\\d+)([hms])', text):\n"
+        "        total += int(value) * UNITS[unit]\n"
+        "    return total\n",
+        encoding="utf-8",
+    )
+    (ws / "test_durations.py").write_text(
+        "import unittest\n"
+        "from durations import parse_duration\n\n"
+        "class TestParseDuration(unittest.TestCase):\n"
+        "    def test_hours_and_minutes(self):\n"
+        "        self.assertEqual(parse_duration('1h30m'), 5400)\n\n"
+        "    def test_seconds(self):\n"
+        "        self.assertEqual(parse_duration('45s'), 45)\n\n"
+        "    def test_invalid_text_raises(self):\n"
+        "        for bad in ('', 'abc', '10x'):\n"
+        "            with self.assertRaises(ValueError):\n"
+        "                parse_duration(bad)\n\n"
+        "if __name__ == '__main__':\n"
+        "    unittest.main()\n",
+        encoding="utf-8",
+    )
+    return SubTask(
+        id="H6_parse_duration_multi_defect_fix",
+        title="Fix parse_duration",
+        description=(
+            "Inspect `durations.py` and `test_durations.py`. Fix `parse_duration` in "
+            "`durations.py` so it satisfies its docstring specification and passes "
+            "`python3 -m unittest -q`."
+        ),
+        input_files=["durations.py", "test_durations.py"],
+        affected_files=["durations.py"],
+        verification_command="python3 -m unittest -q",
+    )
+
+
+def verify_h6_holdout(ws: Path) -> bool:
+    return _run_holdout(ws, (
+        "from durations import parse_duration\n"
+        "assert parse_duration(' 2h5s ') == 7205\n"
+        "assert parse_duration('0s') == 0\n"
+        "assert parse_duration('3m') == 180\n"
+        "for bad in ('1m1h', '1h1h', '90', 'h', '1h 30m x'):\n"
+        "    try:\n"
+        "        parse_duration(bad)\n"
+        "    except ValueError:\n"
+        "        pass\n"
+        "    else:\n"
+        "        raise AssertionError(f'{bad!r} must raise ValueError')\n"
+    ))
+
+
 TASKS: List[Tuple[str, Callable[[Path], SubTask], Callable[[Path], bool]]] = [
     ("H1_fdr_step_up_fix", setup_h1_workspace, verify_h1_holdout),
     ("H2_pareto_judge_fix", setup_h2_workspace, verify_h2_holdout),
     ("H3_group_kfold_leakage_fix", setup_h3_workspace, verify_h3_holdout),
     ("H4_weighted_mean_two_module_fix", setup_h4_workspace, verify_h4_holdout),
+    ("H5_merge_intervals_multi_defect_fix", setup_h5_workspace, verify_h5_holdout),
+    ("H6_parse_duration_multi_defect_fix", setup_h6_workspace, verify_h6_holdout),
 ]
 
 
