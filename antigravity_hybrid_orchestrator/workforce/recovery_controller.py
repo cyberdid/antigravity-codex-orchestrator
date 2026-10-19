@@ -31,7 +31,7 @@ _FAILURE_LINE = re.compile(r"^(?:FAIL|ERROR): |^\w*(?:Error|Exception)\b|^E\s{2,
 _TRACEBACK_FILE = re.compile(r'File "([^"]+)", line \d+')
 
 
-def _failure_excerpt(output: str, limit: int) -> str:
+def failure_excerpt(output: str, limit: int) -> str:
     """Name the failing tests and their errors; runner summaries carry neither."""
     lines = [line.strip() for line in (output or "").splitlines()]
     key_lines = list(dict.fromkeys(line for line in lines if _FAILURE_LINE.match(line)))
@@ -304,7 +304,7 @@ class RecoveryController:
             self.last_failure_files = []
             return
         self.verification_passed = False
-        self.last_verification_error = _failure_excerpt(output, self.config.max_error_snippet_chars)
+        self.last_verification_error = failure_excerpt(output, self.config.max_error_snippet_chars)
         self.last_failure_files = _traceback_files(output, self.affected_files)
         if self.is_reactive:
             self._log_event(
