@@ -16,7 +16,13 @@ from __future__ import annotations
 import os
 import re
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple
+
+
+def _tail(text: str, limit: int) -> str:
+    """Keep the end of tool output, where test runners print the assertion."""
+    text = (text or "").strip()
+    return text[-limit:] if limit > 0 else ""
 
 
 def active_recovery_policy(override: Optional[str] = None) -> str:
@@ -85,6 +91,9 @@ class RecoveryController:
     verification_command: str = ""
     policy: str = "P0"
     config: Optional[RecoveryPolicyConfig] = None
+    # Controller-owned run of the verification command -> (passed, output). When set,
+    # verification state never depends on how the model spelled its own command.
+    verify_fn: Optional[Callable[[], Tuple[bool, str]]] = field(default=None, repr=False)
 
     # Runtime state tracked across turns
     all_read_files: List[str] = field(default_factory=list)
@@ -95,6 +104,7 @@ class RecoveryController:
     consecutive_failed_edits: int = 0
     last_edit_error: str = ""
     verification_runs: int = 0
+    successful_verifications: int = 0
     verification_passed: bool = False
     last_verification_error: str = ""
     recovery_attempts: int = 0
@@ -158,7 +168,7 @@ class RecoveryController:
             if self.last_verification_error:
                 target = self.affected_files[0] if self.affected_files else "the affected file"
                 return (
-                    f"Last verification failed ({self.last_verification_error[:160]}). "
+                    f"Last verification failed ({_tail(self.last_verification_error, 160)}). "
                     f"Apply a targeted fix on `{target}` via `patch_file` and re-run "
                     f"`run_command` with `{self.verification_command}`."
                 )
@@ -248,27 +258,38 @@ class RecoveryController:
         elif tool_name == "run_command":
             cmd = str(args.get("command") or "").strip()
             if self._is_verification_command(cmd):
-                self.verification_runs += 1
-                if success:
-                    self.verification_passed = True
-                    self.last_verification_error = ""
-                else:
-                    self.verification_passed = False
-                    combined = (err_text or str(output or "")).strip()
-                    self.last_verification_error = combined[: self.config.max_error_snippet_chars]
-                    if self.is_reactive:
-                        next_act = self.recommended_next_action()
-                        self._log_event(
-                            turn=turn,
-                            reason="failed_verification_command",
-                            detail=f"Command '{cmd}' failed: {self.last_verification_error[:160]}",
-                            action_recommended=next_act,
-                        )
+                # The model ran the exact verification command; its result is authoritative.
+                self._record_verification(turn, cmd, success, err_text or str(output or ""))
+            elif self.verify_fn is not None:
+                # Any other command (`-q test_x.py`, `| tail`, `assert True`) is only a
+                # signal that the model is checking its work: run the real command instead.
+                try:
+                    passed, verify_output = self.verify_fn()
+                except Exception as exc:
+                    passed, verify_output = False, f"Trusted verification error: {exc}"
+                self._record_verification(turn, self.verification_command, bool(passed), str(verify_output or ""))
 
         if self.is_stage_hints:
             self.stage_hints_emitted += 1
             return f"[STAGE STATE: {self.recommended_next_action()}]"
         return None
+
+    def _record_verification(self, turn: int, cmd: str, passed: bool, output: str) -> None:
+        self.verification_runs += 1
+        if passed:
+            self.successful_verifications += 1
+            self.verification_passed = True
+            self.last_verification_error = ""
+            return
+        self.verification_passed = False
+        self.last_verification_error = _tail(output, self.config.max_error_snippet_chars)
+        if self.is_reactive:
+            self._log_event(
+                turn=turn,
+                reason="failed_verification_command",
+                detail=f"Command '{cmd}' failed: {_tail(self.last_verification_error, 160)}",
+                action_recommended=self.recommended_next_action(),
+            )
 
     def annotate_observation(self, obs: str, stage_note: Optional[str]) -> str:
         """Append stage or recovery note to pruned tool observation when active."""
@@ -394,7 +415,7 @@ class RecoveryController:
         read_str = ", ".join(self.clean_read_files) if self.clean_read_files else "none"
         edits_str = ", ".join(self.edits_applied) if self.edits_applied else "none"
         verify_str = "PASSED" if self.verification_passed else (
-            f"FAILED ({self.last_verification_error[:120]})"
+            f"FAILED ({_tail(self.last_verification_error, 120)})"
             if self.last_verification_error
             else "NOT_RUN"
         )

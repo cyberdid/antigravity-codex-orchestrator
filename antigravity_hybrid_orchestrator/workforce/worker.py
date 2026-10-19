@@ -501,7 +501,6 @@ class AutonomousWorker:
             context_overflows = 0
             truncated_generations = 0
             compacted_messages_total = 0
-            successful_verifications = 0
             turn = 0
             action_history: List[str] = []
             turn_trajectory: List[Dict[str, Any]] = []
@@ -509,12 +508,21 @@ class AutonomousWorker:
             edit_calls_count = 0
             test_command_calls_count = 0
             subtask_wall_start = time.monotonic()
+            verification_command = str(subtask.verification_command or "").strip()
+
+            def _trusted_verification() -> Tuple[bool, str]:
+                result = tool_suite.run_command(verification_command)
+                return bool(result.success), "\n".join(
+                    part for part in (result.output, result.error) if part
+                )
+
             recovery_controller = RecoveryController(
                 subtask_id=subtask.id,
                 input_files=list(subtask.input_files or []),
                 affected_files=list(subtask.affected_files or []),
-                verification_command=str(subtask.verification_command or ""),
+                verification_command=verification_command,
                 policy=active_recovery_policy(self.recovery_policy),
+                verify_fn=_trusted_verification if verification_command else None,
             )
 
             model_digest = (
@@ -559,7 +567,7 @@ class AutonomousWorker:
                     "context_overflows": context_overflows,
                     "truncated_generations": truncated_generations,
                     "compacted_messages": compacted_messages_total,
-                    "successful_verifications": successful_verifications,
+                    "successful_verifications": recovery_controller.successful_verifications,
                     **recovery_controller.telemetry_summary(),
                     "turn_trajectory": list(turn_trajectory),
                 }
@@ -769,13 +777,11 @@ class AutonomousWorker:
                             edit_calls_count += 1
                         elif name == "run_command":
                             test_command_calls_count += 1
-                            cmd_str = str(args.get("command") or "")
-                            if tool_result.success and recovery_controller._is_verification_command(cmd_str):
-                                successful_verifications += 1
                         turn_entry["tool_calls"].append({
                             "name": name,
                             "target": str(args.get("path") or args.get("command") or ""),
                             "success": bool(tool_result.success),
+                            "error": "" if tool_result.success else str(tool_result.error or "")[-300:],
                         })
 
                         self._emit(

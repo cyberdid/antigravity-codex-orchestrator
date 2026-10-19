@@ -463,10 +463,98 @@ def verify_h3_holdout(ws: Path) -> bool:
     return proc.returncode == 0
 
 
+# ---------------------------------------------------------------------------
+# Held-Out Task H4: Weighted mean with defects split across two modules
+# (neither fix alone makes the visible test pass)
+# ---------------------------------------------------------------------------
+def setup_h4_workspace(ws: Path) -> SubTask:
+    (ws / "weights.py").write_text(
+        '"""Weight normalization helpers."""\n'
+        "from typing import List, Sequence\n\n"
+        "def normalize(weights: Sequence[float]) -> List[float]:\n"
+        '    """Return the weights scaled so that they sum to 1.0.\n\n'
+        "    Raise ValueError if `weights` is empty, any weight is negative,\n"
+        "    or the weights sum to 0.\n"
+        '    """\n'
+        "    total = max(weights)\n"
+        "    return [w / total for w in weights]\n",
+        encoding="utf-8",
+    )
+    (ws / "summary.py").write_text(
+        '"""Weighted summary statistics."""\n'
+        "from typing import Sequence\n"
+        "from weights import normalize\n\n"
+        "def weighted_mean(values: Sequence[float], weights: Sequence[float]) -> float:\n"
+        '    """Return sum(v_i * w_i) where w are `weights` normalized to sum to 1.0.\n\n'
+        "    Raise ValueError if `values` and `weights` have different lengths.\n"
+        '    """\n'
+        "    w = normalize(weights)\n"
+        "    return sum(v * wi for v, wi in zip(values, w)) / len(values)\n",
+        encoding="utf-8",
+    )
+    (ws / "test_summary.py").write_text(
+        "import unittest\n"
+        "from summary import weighted_mean\n\n"
+        "class TestWeightedMean(unittest.TestCase):\n"
+        "    def test_weighted_mean(self):\n"
+        "        self.assertAlmostEqual(weighted_mean([1.0, 2.0, 3.0], [1.0, 1.0, 2.0]), 2.25)\n\n"
+        "    def test_length_mismatch_raises(self):\n"
+        "        with self.assertRaises(ValueError):\n"
+        "            weighted_mean([1.0, 2.0], [1.0])\n\n"
+        "if __name__ == '__main__':\n"
+        "    unittest.main()\n",
+        encoding="utf-8",
+    )
+    return SubTask(
+        id="H4_weighted_mean_two_module_fix",
+        title="Fix weighted mean across weights and summary modules",
+        description=(
+            "Inspect `weights.py`, `summary.py`, and `test_summary.py`. "
+            "Fix the code so `normalize` and `weighted_mean` satisfy their docstring "
+            "specifications and pass `python3 -m unittest -q`."
+        ),
+        input_files=["weights.py", "summary.py", "test_summary.py"],
+        affected_files=["weights.py", "summary.py"],
+        verification_command="python3 -m unittest -q",
+    )
+
+
+def verify_h4_holdout(ws: Path) -> bool:
+    holdout_code = (
+        "from weights import normalize\n"
+        "from summary import weighted_mean\n"
+        "assert normalize([2.0, 2.0]) == [0.5, 0.5]\n"
+        "for bad in ([], [1.0, -1.0], [0.0, 0.0]):\n"
+        "    try:\n"
+        "        normalize(bad)\n"
+        "    except ValueError:\n"
+        "        pass\n"
+        "    else:\n"
+        "        raise AssertionError(f'normalize({bad}) must raise ValueError')\n"
+        "assert abs(weighted_mean([10.0], [3.0]) - 10.0) < 1e-9\n"
+        "assert abs(weighted_mean([0.0, 4.0], [3.0, 1.0]) - 1.0) < 1e-9\n"
+        "try:\n"
+        "    weighted_mean([1.0, 2.0, 3.0], [1.0, 1.0])\n"
+        "except ValueError:\n"
+        "    pass\n"
+        "else:\n"
+        "    raise AssertionError('length mismatch must raise ValueError')\n"
+    )
+    proc = subprocess.run(
+        [sys.executable, "-B", "-c", holdout_code],
+        cwd=str(ws),
+        capture_output=True,
+        text=True,
+        timeout=15.0,
+    )
+    return proc.returncode == 0
+
+
 TASKS: List[Tuple[str, Callable[[Path], SubTask], Callable[[Path], bool]]] = [
     ("H1_fdr_step_up_fix", setup_h1_workspace, verify_h1_holdout),
     ("H2_pareto_judge_fix", setup_h2_workspace, verify_h2_holdout),
     ("H3_group_kfold_leakage_fix", setup_h3_workspace, verify_h3_holdout),
+    ("H4_weighted_mean_two_module_fix", setup_h4_workspace, verify_h4_holdout),
 ]
 
 

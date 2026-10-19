@@ -1452,3 +1452,117 @@ def test_t17_phase2b_review_bugfixes_and_policy_ablation(
 
 
 
+
+
+def test_t18_phase2b_trusted_verification_and_error_tail():
+    """T18: verification state comes from a controller-run verification command,
+    not from string-matching the model's command; error snippets keep the tail."""
+    from antigravity_hybrid_orchestrator.workforce.recovery_controller import RecoveryController
+
+    suite_state = {"passes": True, "output": "OK"}
+    calls: List[str] = []
+
+    def verify_fn():
+        calls.append("verify")
+        return suite_state["passes"], suite_state["output"]
+
+    rc = RecoveryController(
+        subtask_id="t18",
+        input_files=["x.py"],
+        affected_files=["x.py"],
+        verification_command="python3 -m unittest -q",
+        policy="P1_STAGE",
+        verify_fn=verify_fn,
+    )
+    rc.record_tool_execution(
+        turn=0, tool_name="read_file", args={"path": "x.py"}, success=True, output="a = 1", error=None
+    )
+    rc.record_tool_execution(
+        turn=0, tool_name="patch_file", args={"path": "x.py"}, success=True, output="Patched", error=None
+    )
+
+    # Model runs the suite with an explicit test file: the trusted run decides.
+    note = rc.record_tool_execution(
+        turn=1, tool_name="run_command",
+        args={"command": "python3 -m unittest -q test_x.py"},
+        success=True, output="OK", error=None,
+    )
+    assert calls == ["verify"]
+    assert rc.verification_passed is True
+    assert rc.verification_runs == 1
+    assert "PASSED" in (note or "")
+
+    # A spoofed success cannot pass when the trusted suite fails.
+    header = "=" * 70 + "\nFAIL: test_rie_gate (test_x.TestX)\n" + "-" * 70 + "\n"
+    traceback = "Traceback (most recent call last):\n" + '  File "test_x.py", line 9\n' * 20
+    suite_state.update(passes=False, output=header + traceback + "AssertionError: ['H1', 'H2'] != ['H1']\n")
+    rc.record_tool_execution(
+        turn=2, tool_name="run_command",
+        args={"command": 'python3 -c "assert True"'},
+        success=True, output="", error=None,
+    )
+    assert rc.verification_passed is False
+    assert rc.last_verification_error.rstrip().endswith("AssertionError: ['H1', 'H2'] != ['H1']")
+    assert "AssertionError: ['H1', 'H2'] != ['H1']" in rc.recommended_next_action()
+
+    # Non-command tools never trigger the trusted run.
+    rc.record_tool_execution(
+        turn=3, tool_name="read_file", args={"path": "x.py"}, success=True, output="a = 1", error=None
+    )
+    assert calls == ["verify", "verify"]
+
+
+def test_t19_phase2b_worker_trusted_verification_and_tool_error_trajectory(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, tool_suite: WorkspaceToolSuite
+):
+    """T19: the worker counts a filename-qualified test run as verification via the
+    trusted run, and records failed tool error text in the turn trajectory."""
+    monkeypatch.setenv("OLLAMA_THINK", "false")
+    monkeypatch.setenv("OLLAMA_RECOVERY_POLICY", "P1_STAGE")
+    (tmp_path / "calc.py").write_text("def add(a, b):\n    return a - b\n", encoding="utf-8")
+    (tmp_path / "test_calc.py").write_text(
+        "import unittest\nfrom calc import add\n\n"
+        "class T(unittest.TestCase):\n"
+        "    def test_add(self):\n        self.assertEqual(add(2, 3), 5)\n",
+        encoding="utf-8",
+    )
+
+    def call(name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
+        return {
+            "message": {"role": "assistant", "content": "",
+                        "tool_calls": [{"function": {"name": name, "arguments": arguments}}]},
+            "done": True, "done_reason": "stop", "prompt_eval_count": 100, "eval_count": 20,
+        }
+
+    responses = [
+        call("read_file", {"path": "calc.py"}),
+        call("read_file", {"path": "test_calc.py"}),
+        call("patch_file", {"path": "calc.py", "target_content": "return a * b",
+                            "replacement_content": "return a + b"}),
+        call("patch_file", {"path": "calc.py", "target_content": "return a - b",
+                            "replacement_content": "return a + b"}),
+        call("run_command", {"command": "python3 -m unittest -q test_calc.py"}),
+        {"message": {"role": "assistant", "content": "Fixed add and verified."},
+         "done": True, "done_reason": "stop", "prompt_eval_count": 100, "eval_count": 10},
+    ]
+    sent_payloads: List[List[Dict[str, Any]]] = []
+    client = WorkforceClient(base_url="http://127.0.0.1:11434", model="gemma4:12b")
+    monkeypatch.setattr(client, "get_model_digest", lambda: "sha256:gemma4")
+
+    def fake_post(url: str, payload: Dict[str, Any], **kwargs: Any) -> Dict[str, Any]:
+        sent_payloads.append(json.loads(json.dumps(payload["messages"])))
+        return responses.pop(0)
+
+    monkeypatch.setattr(client, "_post_json", fake_post)
+    res = AutonomousWorker(client=client).execute_subtask(
+        SubTask(id="t19", title="Fix add", input_files=["calc.py", "test_calc.py"],
+                affected_files=["calc.py"], verification_command="python3 -m unittest -q"),
+        tool_suite,
+    )
+
+    assert res.success is True
+    assert res.metadata["successful_verifications"] == 1
+    failed_patch = res.metadata["turn_trajectory"][2]["tool_calls"][0]
+    assert failed_patch["success"] is False
+    assert failed_patch["error"]
+    assert "PASSED" in sent_payloads[5][-1]["content"]
