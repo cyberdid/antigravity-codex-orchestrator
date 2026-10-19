@@ -1,6 +1,7 @@
 """Command-line interface for Antigravity Hybrid Orchestrator."""
 
 import argparse
+import os
 import sys
 from pathlib import Path
 from typing import Callable, Dict, List, Optional
@@ -98,6 +99,18 @@ def build_parser() -> argparse.ArgumentParser:
                         help="Optional run-wide time budget in seconds (default: unlimited)")
     parser.add_argument("--max-remote-tokens", type=int, default=None,
                         help="Optional cloud token budget for planning (default: unlimited)")
+    parser.add_argument("--cloud-assist", choices=["off", "spec"], default="off",
+                        help="Owner permission for cloud guidance after local failures: 'spec' sends "
+                             "signatures, docstrings and failing-test messages (never code bodies); "
+                             "applies to this invocation only (default: off)")
+    parser.add_argument("--cloud-assist-max-calls", type=int, default=3,
+                        help="Maximum cloud-assist calls per run (default: 3)")
+    parser.add_argument("--think-on-retry", action="store_true",
+                        help="Run attempts after a failed attempt with Thinking Mode")
+    parser.add_argument("--max-num-predict", type=int, default=None,
+                        help="Generation limit for a re-requested truncated tool call (default: 4096)")
+    parser.add_argument("--no-adaptive-num-predict", action="store_true",
+                        help="Execute truncated tool calls as before instead of re-requesting them")
     parser.add_argument("--model-idle-timeout", type=float, default=900,
                         help="Stop after this many seconds without model progress; 0 disables")
     parser.add_argument("--tool-idle-timeout", type=float, default=300,
@@ -207,6 +220,16 @@ def main(argv: Optional[List[str]] = None) -> int:
     if args.retry_budget < 0:
         sys.stderr.write("error: --retry-budget must be non-negative\n")
         return 2
+    if args.cloud_assist_max_calls < 1:
+        sys.stderr.write("error: --cloud-assist-max-calls must be at least 1\n")
+        return 2
+    if args.max_num_predict is not None and args.max_num_predict < 256:
+        sys.stderr.write("error: --max-num-predict must be at least 256\n")
+        return 2
+    if args.max_num_predict is not None:
+        os.environ["OLLAMA_NUM_PREDICT_MAX"] = str(args.max_num_predict)
+    if args.no_adaptive_num_predict:
+        os.environ["OLLAMA_ADAPTIVE_NUM_PREDICT"] = "0"
     if args.sandbox_max_file_mb <= 0:
         sys.stderr.write('error: --sandbox-max-file-mb must be positive\n')
         return 2
@@ -263,6 +286,9 @@ def main(argv: Optional[List[str]] = None) -> int:
         "evidence_directory": args.evidence_dir,
         "sandbox_max_file_mb": args.sandbox_max_file_mb,
         "study_profile": args.study_profile,
+        "cloud_assist": args.cloud_assist,
+        "cloud_assist_max_calls": args.cloud_assist_max_calls,
+        "think_on_retry": args.think_on_retry,
     }
 
 

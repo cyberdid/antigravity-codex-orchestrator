@@ -27,6 +27,8 @@ class TelemetrySummary:
     total_tokens: int
     cost_savings_pct: float
     tokens_per_second: float
+    cloud_assist_calls: int = 0
+    cloud_assist_tokens: int = 0
 
 
 class TelemetryTracker:

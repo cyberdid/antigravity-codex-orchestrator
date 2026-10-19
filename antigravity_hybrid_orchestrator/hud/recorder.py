@@ -89,6 +89,7 @@ class EventRecorder:
         fields = (
             "cloud_tokens", "cloud_cost_usd", "local_tokens", "local_cost_usd",
             "total_tokens", "cost_savings_pct", "tokens_per_second",
+            "cloud_assist_calls", "cloud_assist_tokens",
         )
         snap = {f: getattr(summary, f, None) for f in fields} if summary is not None else {}
         self._write({"kind": "telemetry", "summary": snap})

@@ -43,6 +43,7 @@ from antigravity_hybrid_orchestrator.workforce import (
 
 # R&D universal engine components (Milestone 6 integration)
 from antigravity_hybrid_orchestrator.engine.loop import SelfCorrectionLoop
+from antigravity_hybrid_orchestrator.engine.escalation import EscalationLadder
 from antigravity_hybrid_orchestrator.engine.control import ExecutionBudget, ExecutionControl
 from antigravity_hybrid_orchestrator.engine.run_state import RunStateStore
 from antigravity_hybrid_orchestrator.planner.dag import ExecutionPlanDAG
@@ -83,6 +84,9 @@ class HybridCoordinator:
         evidence_directory: Optional[str] = None,
         sandbox_max_file_mb: int = 16,
         study_profile: str = "full",
+        cloud_assist: str = "off",
+        cloud_assist_max_calls: int = 3,
+        think_on_retry: bool = False,
     ) -> None:
         self.mode = mode.lower()
         self.target = target
@@ -110,6 +114,13 @@ class HybridCoordinator:
         self.evidence_directory = evidence_directory
         self.sandbox_max_file_mb = sandbox_max_file_mb
         self.study_profile = study_profile
+        # Owner permission for this invocation only; never restored from saved state.
+        if cloud_assist not in ("off", "spec"):
+            raise ValueError("cloud_assist must be 'off' or 'spec'")
+        self.cloud_assist = cloud_assist
+        self.cloud_assist_max_calls = int(cloud_assist_max_calls)
+        self.think_on_retry = bool(think_on_retry)
+        self._cloud_assist = None
         self.integrity_evaluator = None
         self.resume_run = resume_run
         self._run_state_path: Optional[Path] = None
@@ -555,6 +566,24 @@ class HybridCoordinator:
 
         return 0 if (all_passed and privacy_passed) else 1
 
+    def _build_cloud_assist(self, workspace_path: Path):
+        """Cloud assist exists only when the owner passed --cloud-assist spec this invocation."""
+        if self.cloud_assist != "spec":
+            return None
+        from antigravity_hybrid_orchestrator.engine.cloud_assist import CloudAssist
+
+        self._cloud_assist = CloudAssist(
+            self.architect, workspace_path,
+            max_calls=self.cloud_assist_max_calls,
+            audit=self._rd_event_listener,
+            execution_control=self.execution_control,
+        )
+        self.rd_hud.console.print(
+            f"[yellow]Cloud assist enabled by owner: up to {self.cloud_assist_max_calls} calls; "
+            "signatures, docstrings and failing-test messages may be sent.[/]"
+        )
+        return self._cloud_assist
+
     def _drain_planner_usage(self) -> None:
         """Moves every unrecorded planner call from the architect ledger into telemetry."""
         ledger = getattr(self.architect, "usage_ledger", None)
@@ -716,7 +745,8 @@ class HybridCoordinator:
                 RunPolicyStore.save(self.recorder.path, {
                     'workspace':str(workspace_path), 'goal':self.goal or '',
                     **{key:getattr(self,key) for key in ('integrity_contract','evidence_directory',
-                       'sandbox_backend','sandbox_image','sandbox_max_file_mb','study_profile')},
+                       'sandbox_backend','sandbox_image','sandbox_max_file_mb','study_profile',
+                       'cloud_assist','cloud_assist_max_calls')},
                 })
             self._rd_event_listener("execution_policy", "", {"sandbox": self.sandbox_backend,
                                     "integrity_contract": self.integrity_contract,
@@ -785,6 +815,10 @@ class HybridCoordinator:
                 execution_control=self.execution_control,
                 replanner=self._replan_rd_subtask,
                 acceptance_gate=(lambda task: self.integrity_evaluator.evaluate_subtask(task, self.integrity_contract)) if self.integrity_evaluator else None,
+                ladder=EscalationLadder(
+                    think_on_retry=self.think_on_retry,
+                    cloud_assist=self._build_cloud_assist(workspace_path),
+                ),
             )
 
             # Step 4: Execute the full DAG in topological order.
@@ -833,6 +867,9 @@ class HybridCoordinator:
             self.rd_hud.set_privacy_verified(privacy_passed)
             self._drain_planner_usage()
             summary = self.telemetry.get_summary()
+            if self._cloud_assist is not None:
+                summary.cloud_assist_calls = self._cloud_assist.calls_made
+                summary.cloud_assist_tokens = self._cloud_assist.tokens_used
             self.rd_hud.update_telemetry(summary)
             self.rd_hud.stop()
 
@@ -855,6 +892,11 @@ class HybridCoordinator:
                 except Exception:
                     pass
 
+            if self._cloud_assist is not None:
+                self.rd_hud.console.print(
+                    f"[yellow]Cloud assist: {self._cloud_assist.calls_made} call(s), "
+                    f"{self._cloud_assist.tokens_used} cloud tokens (recorded verbatim in the run log).[/]"
+                )
             if dag is not None and dag_result is not None:
                 self.rd_hud.print_final_summary(
                     dag_result=dag_result,
