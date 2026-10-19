@@ -638,3 +638,118 @@ def test_t10_research_report_builder_and_real_metrics_verification():
     assert "cd6dbb999a4b4a75a15cd864ade65db3" in result.markdown
     # Independent RIE narrative validator confirms zero failures
     assert validate_narrative(result.markdown, result.claims) == []
+    # Because unverified numbers had to be stripped, fallback_used is True and llm_native_completion is False
+    assert result.pipeline_verified is True
+    assert result.llm_native_completion is False
+    assert result.fallback_used is True
+    assert result.verification_status == "ACCEPTED"
+
+
+def test_t11_phase2a_native_vs_fallback_and_trajectory_telemetry(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, tool_suite: WorkspaceToolSuite
+):
+    """T11: Verifies Phase 2A seed forwarding, trajectory counters, and native vs fallback report completion."""
+    monkeypatch.setenv("OLLAMA_THINK", "false")
+    monkeypatch.setenv("OLLAMA_NUM_PREDICT", "4096")
+    monkeypatch.setenv("OLLAMA_SEED", "777")
+
+    (tmp_path / "code.py").write_text("x = 1\n", encoding="utf-8")
+    captured_options: List[Dict[str, Any]] = []
+    responses = [
+        {
+            "message": {
+                "role": "assistant",
+                "content": "",
+                "tool_calls": [{"function": {"name": "read_file", "arguments": {"path": "code.py"}}}],
+            },
+            "done": True,
+            "done_reason": "stop",
+            "prompt_eval_count": 100,
+            "eval_count": 20,
+        },
+        {
+            "message": {
+                "role": "assistant",
+                "content": "",
+                "tool_calls": [{"function": {"name": "read_file", "arguments": {"path": "code.py"}}}],
+            },
+            "done": True,
+            "done_reason": "stop",
+            "prompt_eval_count": 110,
+            "eval_count": 20,
+        },
+        {
+            "message": {
+                "role": "assistant",
+                "content": "",
+                "tool_calls": [
+                    {
+                        "function": {
+                            "name": "patch_file",
+                            "arguments": {"path": "code.py", "target": "x = 1", "replacement": "x = 2"},
+                        }
+                    }
+                ],
+            },
+            "done": True,
+            "done_reason": "stop",
+            "prompt_eval_count": 120,
+            "eval_count": 30,
+        },
+        {
+            "message": {
+                "role": "assistant",
+                "content": "Completed patch.",
+            },
+            "done": True,
+            "done_reason": "stop",
+            "prompt_eval_count": 130,
+            "eval_count": 10,
+        },
+    ]
+
+    client = WorkforceClient(base_url="http://127.0.0.1:11434", model="gemma4:12b")
+    monkeypatch.setattr(client, "get_model_digest", lambda: "sha256:gemma4")
+
+    def fake_post(url: str, payload: Dict[str, Any], **kwargs: Any) -> Dict[str, Any]:
+        captured_options.append(dict(payload.get("options", {})))
+        return responses.pop(0)
+
+    monkeypatch.setattr(client, "_post_json", fake_post)
+    worker = AutonomousWorker(client=client)
+    res = worker.execute_subtask(SubTask(id="t11", title="Trajectory test", affected_files=["code.py"]), tool_suite)
+
+    assert res.success is True
+    assert all(opt.get("seed") == 777 and opt.get("num_predict") == 4096 for opt in captured_options)
+    assert res.metadata["read_file_calls"] == 2
+    assert res.metadata["unique_files_read"] == 1
+    assert res.metadata["repeated_file_reads"] == 1
+    assert res.metadata["edit_calls"] == 1
+    assert len(res.metadata["turn_trajectory"]) == 4
+
+    orion2_dir = Path(__file__).resolve().parent.parent / "temp" / "project_orion" / "orion2-run"
+    if orion2_dir.is_dir():
+        class CleanLLMClient:
+            def chat(self, messages, temperature=0.1, response_format=None):
+                return {
+                    "content": json.dumps({
+                        "executive_summary": "All study claims passed controller checks.",
+                        "clustering_interpretation": "Risk-aware clustering maintained target false discovery control.",
+                        "retrieval_scalability_interpretation": "Projection window indexing showed degraded recall at large corpus scale.",
+                        "limitations_and_next_steps": "Future work will compare against hierarchical graph baselines.",
+                    }),
+                    "done_reason": "stop",
+                    "truncated": False,
+                }
+
+        builder = ResearchReportBuilder(
+            study_dir=orion2_dir,
+            profile="full",
+            evidence_id="cd6dbb999a4b4a75a15cd864ade65db3",
+        )
+        clean_res = builder.build_report(client=CleanLLMClient())
+        assert clean_res.pipeline_verified is True
+        assert clean_res.llm_native_completion is True
+        assert clean_res.fallback_used is False
+        assert clean_res.verification_status == "ACCEPTED"
+

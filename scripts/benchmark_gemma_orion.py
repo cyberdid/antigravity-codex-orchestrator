@@ -1,25 +1,30 @@
 #!/usr/bin/env python3
-"""Controlled GEMMA-ORION Phase 1 A/B Smoke Benchmark (G0 vs G1 vs G2).
+"""Controlled GEMMA-ORION Phase 1 & Phase 2A 2x2 Factorial Benchmark (G0, G1, G2, G3).
 
-Evaluates local `gemma4:12b` on identical R&D coding/verification tasks and
-deterministic report synthesis without modifying global Ollama settings or
-existing Orion-2 artifacts.
+Evaluates local `gemma4:12b` across the 2x2 factorial design (Thinking x Output Budget)
+on identical R&D coding/verification tasks and deterministic report synthesis with
+independent RNG seeds, SHA-256 file hashes, per-turn trajectories, and explicit
+separation of `pipeline_verified`, `llm_native_completion`, and `fallback_used`.
 
 Configurations:
 - G0: OLLAMA_THINK=false, OLLAMA_NUM_CTX=16384, OLLAMA_NUM_PREDICT=2048
 - G1: OLLAMA_THINK=true,  OLLAMA_NUM_CTX=16384, OLLAMA_NUM_PREDICT=2048
 - G2: OLLAMA_THINK=true,  OLLAMA_NUM_CTX=16384, OLLAMA_NUM_PREDICT=4096
+- G3: OLLAMA_THINK=false, OLLAMA_NUM_CTX=16384, OLLAMA_NUM_PREDICT=4096
 """
 
 from __future__ import annotations
 
 import argparse
+import difflib
+import hashlib
 import json
 import os
 from pathlib import Path
+import subprocess
 import tempfile
 import time
-from typing import Any, Callable, Dict, List
+from typing import Any, Callable, Dict, List, Optional
 
 import numpy as np
 
@@ -48,7 +53,72 @@ CONFIGURATIONS: Dict[str, Dict[str, str]] = {
         "OLLAMA_NUM_CTX": "16384",
         "OLLAMA_NUM_PREDICT": "4096",
     },
+    "G3": {
+        "OLLAMA_THINK": "false",
+        "OLLAMA_NUM_CTX": "16384",
+        "OLLAMA_NUM_PREDICT": "4096",
+    },
 }
+
+
+def _git_commit_sha(repo_root: Path) -> str:
+    try:
+        res = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=repo_root,
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        return res.stdout.strip()
+    except Exception:
+        return "unknown"
+
+
+def _workspace_file_hashes(ws: Path) -> Dict[str, str]:
+    hashes: Dict[str, str] = {}
+    for p in sorted(ws.rglob("*")):
+        if not p.is_file() or "__pycache__" in p.parts:
+            continue
+        rel = p.relative_to(ws).as_posix()
+        hashes[rel] = hashlib.sha256(p.read_bytes()).hexdigest()
+    return hashes
+
+
+def _workspace_file_contents(ws: Path) -> Dict[str, str]:
+    contents: Dict[str, str] = {}
+    for p in sorted(ws.rglob("*")):
+        if not p.is_file() or "__pycache__" in p.parts:
+            continue
+        rel = p.relative_to(ws).as_posix()
+        contents[rel] = p.read_text(encoding="utf-8", errors="replace")
+    return contents
+
+
+def _compute_diff_summary(before: Dict[str, str], after: Dict[str, str]) -> Dict[str, Any]:
+    changed_files: List[str] = []
+    added_lines = 0
+    removed_lines = 0
+    patches: Dict[str, str] = {}
+    for rel in sorted(set(before) | set(after)):
+        b_lines = before.get(rel, "").splitlines(keepends=True)
+        a_lines = after.get(rel, "").splitlines(keepends=True)
+        if b_lines == a_lines:
+            continue
+        changed_files.append(rel)
+        diff = list(difflib.unified_diff(b_lines, a_lines, fromfile=f"a/{rel}", tofile=f"b/{rel}"))
+        patches[rel] = "".join(diff)
+        for line in diff:
+            if line.startswith("+") and not line.startswith("+++"):
+                added_lines += 1
+            elif line.startswith("-") and not line.startswith("---"):
+                removed_lines += 1
+    return {
+        "changed_files": changed_files,
+        "added_lines": added_lines,
+        "removed_lines": removed_lines,
+        "patches": patches,
+    }
 
 
 def _setup_task_b1(workspace: Path) -> tuple[SubTask, Callable[[Path], Dict[str, Any]]]:
@@ -263,21 +333,44 @@ if __name__ == "__main__":
     return subtask, independent_oracle
 
 
-def run_configuration(config_name: str, env_vars: Dict[str, str], orion2_dir: Path) -> Dict[str, Any]:
-    """Runs B1, B2, and B3 under the specified configuration and collects full telemetry."""
-    old_env = {k: os.environ.get(k) for k in env_vars}
+def run_configuration(
+    config_name: str,
+    env_vars: Dict[str, str],
+    orion2_dir: Path,
+    *,
+    seed: Optional[int] = None,
+    selected_tasks: Optional[List[str]] = None,
+    git_commit: str = "unknown",
+) -> Dict[str, Any]:
+    """Runs selected benchmark tasks under the specified configuration + seed and collects full telemetry."""
+    run_env = dict(env_vars)
+    if seed is not None:
+        run_env["OLLAMA_SEED"] = str(seed)
+
+    old_env = {k: os.environ.get(k) for k in ("OLLAMA_THINK", "OLLAMA_NUM_CTX", "OLLAMA_NUM_PREDICT", "OLLAMA_SEED")}
     try:
-        for k, v in env_vars.items():
+        for k, v in run_env.items():
             os.environ[k] = v
+        if seed is None:
+            os.environ.pop("OLLAMA_SEED", None)
 
         client = WorkforceClient()
         model_digest = client.get_model_digest()
         task_records: List[Dict[str, Any]] = []
+        active_tasks = selected_tasks or ["B1", "B2", "B3"]
 
-        for task_label, setup_fn in [("B1_selective_metrics", _setup_task_b1), ("B2_ann_rerank", _setup_task_b2)]:
-            with tempfile.TemporaryDirectory(prefix=f"gemma-orion-{config_name}-{task_label}-") as tmp_dir:
+        coding_tasks = [
+            ("B1", "B1_selective_metrics", _setup_task_b1),
+            ("B2", "B2_ann_rerank", _setup_task_b2),
+        ]
+        for short_id, task_label, setup_fn in coding_tasks:
+            if short_id not in active_tasks and task_label not in active_tasks:
+                continue
+            with tempfile.TemporaryDirectory(prefix=f"gemma-orion-{config_name}-s{seed}-{task_label}-") as tmp_dir:
                 ws = Path(tmp_dir)
                 subtask, oracle_fn = setup_fn(ws)
+                initial_hashes = _workspace_file_hashes(ws)
+                initial_contents = _workspace_file_contents(ws)
                 suite = WorkspaceToolSuite(workspace_root=ws)
                 worker = AutonomousWorker(client=client)
                 loop = SelfCorrectionLoop(
@@ -289,15 +382,36 @@ def run_configuration(config_name: str, env_vars: Dict[str, str], orion2_dir: Pa
                 t0 = time.monotonic()
                 res = loop.execute_subtask_with_retry(subtask)
                 wall_s = round(time.monotonic() - t0, 3)
+                final_hashes = _workspace_file_hashes(ws)
+                final_contents = _workspace_file_contents(ws)
+                diff_summary = _compute_diff_summary(initial_contents, final_contents)
+
                 meta = dict(res.metadata or {})
                 verif = meta.get("verification", {}) or {}
                 integrity = (verif.get("metadata", {}) or {}).get("integrity", {}) or {}
                 rie_accepted = integrity.get("status") == "ACCEPTED"
+                pipeline_ok = bool(res.success and rie_accepted)
+                verif_status = integrity.get("status", "REJECTED" if not pipeline_ok else "ACCEPTED")
+
                 task_records.append({
                     "task_id": task_label,
-                    "success": bool(res.success and rie_accepted),
+                    "seed": seed,
+                    "git_commit": git_commit,
+                    "model_digest": model_digest,
+                    "ollama_config": dict(run_env),
+                    "success": pipeline_ok,
+                    "pipeline_verified": pipeline_ok,
+                    "llm_native_completion": pipeline_ok,
+                    "fallback_used": False,
+                    "verification_status": verif_status,
+                    "rie_status": verif_status,
                     "turns": res.turns,
                     "tool_calls_count": res.tool_calls_count,
+                    "read_file_calls": int(meta.get("read_file_calls", 0)),
+                    "unique_files_read": int(meta.get("unique_files_read", 0)),
+                    "repeated_file_reads": int(meta.get("repeated_file_reads", 0)),
+                    "edit_calls": int(meta.get("edit_calls", 0)),
+                    "test_command_calls": int(meta.get("test_command_calls", 0)),
                     "invalid_tool_arguments": int(meta.get("invalid_tool_arguments", 0)),
                     "context_overflows": int(meta.get("context_overflows", 0)),
                     "truncated_generations": int(meta.get("truncated_generations", 0)),
@@ -306,59 +420,97 @@ def run_configuration(config_name: str, env_vars: Dict[str, str], orion2_dir: Pa
                     "turns_with_thinking": int(meta.get("turns_with_thinking", 0)),
                     "thinking_chars": int(meta.get("thinking_chars", 0)),
                     "wall_clock_s": wall_s,
-                    "rie_status": integrity.get("status", "REJECTED" if not res.success else "ACCEPTED"),
+                    "initial_file_hashes": initial_hashes,
+                    "final_artifact_hashes": final_hashes,
+                    "diff_summary": diff_summary,
+                    "turn_trajectory": list(meta.get("turn_trajectory", [])),
                     "error": res.error,
                 })
 
-        # Task B3: Deterministic ResearchReportBuilder + live Gemma qualitative interpretation
-        t0 = time.monotonic()
-        builder = ResearchReportBuilder(
-            study_dir=orion2_dir,
-            profile="full",
-            evidence_id="cd6dbb999a4b4a75a15cd864ade65db3",
-        )
-        usage_capture: Dict[str, Any] = {}
-        orig_chat = client.chat
+        if "B3" in active_tasks or "B3_research_report_builder" in active_tasks:
+            t0 = time.monotonic()
+            builder = ResearchReportBuilder(
+                study_dir=orion2_dir,
+                profile="full",
+                evidence_id="cd6dbb999a4b4a75a15cd864ade65db3",
+            )
+            usage_capture: Dict[str, Any] = {}
+            orig_chat = client.chat
 
-        def tracked_chat(*args: Any, **kwargs: Any) -> Dict[str, Any]:
-            out = orig_chat(*args, **kwargs)
-            usage_capture.update(out)
-            return out
+            def tracked_chat(*args: Any, **kwargs: Any) -> Dict[str, Any]:
+                out = orig_chat(*args, **kwargs)
+                usage_capture.update(out)
+                return out
 
-        client.chat = tracked_chat  # type: ignore[method-assign]
-        try:
-            report_res = builder.build_report(client=client)
-        finally:
-            client.chat = orig_chat  # type: ignore[method-assign]
-        b3_wall_s = round(time.monotonic() - t0, 3)
-        independent_narrative_failures = validate_narrative(report_res.markdown, report_res.claims)
-        b3_rie_ok = report_res.accepted and len(independent_narrative_failures) == 0
+            client.chat = tracked_chat  # type: ignore[method-assign]
+            try:
+                report_res = builder.build_report(client=client)
+            finally:
+                client.chat = orig_chat  # type: ignore[method-assign]
+            b3_wall_s = round(time.monotonic() - t0, 3)
+            independent_narrative_failures = validate_narrative(report_res.markdown, report_res.claims)
+            b3_rie_ok = report_res.accepted and len(independent_narrative_failures) == 0
+            b3_verif_status = "ACCEPTED" if b3_rie_ok else "REJECTED"
+            report_sha = hashlib.sha256(report_res.markdown.encode("utf-8")).hexdigest()
+            claims_sha = hashlib.sha256(
+                (orion2_dir / "claims.json").read_bytes()
+            ).hexdigest() if (orion2_dir / "claims.json").is_file() else "missing"
 
-        task_records.append({
-            "task_id": "B3_research_report_builder",
-            "success": bool(b3_rie_ok),
-            "turns": 1,
-            "tool_calls_count": 0,
-            "invalid_tool_arguments": 0,
-            "context_overflows": 0,
-            "truncated_generations": int(bool(usage_capture.get("truncated", False))),
-            "input_tokens": int(usage_capture.get("input_tokens", 0)),
-            "output_tokens": int(usage_capture.get("output_tokens", 0)),
-            "turns_with_thinking": int(bool(usage_capture.get("has_thinking", False))),
-            "thinking_chars": int(usage_capture.get("thinking_chars", 0)),
-            "unverified_numbers_stripped": report_res.unverified_numbers_stripped,
-            "wall_clock_s": b3_wall_s,
-            "rie_status": "ACCEPTED" if b3_rie_ok else "REJECTED",
-            "error": "; ".join(report_res.failures) if not b3_rie_ok else None,
-        })
+            task_records.append({
+                "task_id": "B3_research_report_builder",
+                "seed": seed,
+                "git_commit": git_commit,
+                "model_digest": model_digest,
+                "ollama_config": dict(run_env),
+                "success": bool(b3_rie_ok),
+                "pipeline_verified": bool(b3_rie_ok),
+                "llm_native_completion": bool(b3_rie_ok and report_res.llm_native_completion),
+                "fallback_used": bool(report_res.fallback_used),
+                "verification_status": b3_verif_status,
+                "rie_status": b3_verif_status,
+                "turns": 1,
+                "tool_calls_count": 0,
+                "read_file_calls": 0,
+                "unique_files_read": 0,
+                "repeated_file_reads": 0,
+                "edit_calls": 0,
+                "test_command_calls": 0,
+                "invalid_tool_arguments": 0,
+                "context_overflows": 0,
+                "truncated_generations": int(bool(usage_capture.get("truncated", False))),
+                "input_tokens": int(usage_capture.get("input_tokens", 0)),
+                "output_tokens": int(usage_capture.get("output_tokens", 0)),
+                "turns_with_thinking": int(bool(usage_capture.get("has_thinking", False))),
+                "thinking_chars": int(usage_capture.get("thinking_chars", 0)),
+                "unverified_numbers_stripped": report_res.unverified_numbers_stripped,
+                "wall_clock_s": b3_wall_s,
+                "initial_file_hashes": {"claims.json": claims_sha},
+                "final_artifact_hashes": {"research_report.md": report_sha},
+                "turn_trajectory": [
+                    {
+                        "turn": 1,
+                        "input_tokens": int(usage_capture.get("input_tokens", 0)),
+                        "output_tokens": int(usage_capture.get("output_tokens", 0)),
+                        "thinking_chars": int(usage_capture.get("thinking_chars", 0)),
+                        "done_reason": str(usage_capture.get("done_reason", "")),
+                        "truncated": bool(usage_capture.get("truncated", False)),
+                        "tool_calls": [],
+                    }
+                ],
+                "error": "; ".join(report_res.failures) if not b3_rie_ok else None,
+            })
 
-        succ = [r for r in task_records if r["success"]]
+        succ = [r for r in task_records if r["pipeline_verified"]]
+        native_succ = [r for r in task_records if r["llm_native_completion"]]
+        fallback_rec = [r for r in task_records if r["pipeline_verified"] and r["fallback_used"]]
         total_tokens_succ = sum(r["input_tokens"] + r["output_tokens"] for r in succ)
         total_wall_s = round(sum(r["wall_clock_s"] for r in task_records), 3)
 
         return {
             "configuration": config_name,
-            "env": dict(env_vars),
+            "seed": seed,
+            "git_commit": git_commit,
+            "env": dict(run_env),
             "model": client.model,
             "model_digest": model_digest,
             "think_enabled": env_vars["OLLAMA_THINK"].lower() == "true",
@@ -367,17 +519,20 @@ def run_configuration(config_name: str, env_vars: Dict[str, str], orion2_dir: Pa
             "input_budget_tokens": int(env_vars["OLLAMA_NUM_CTX"]) - int(env_vars["OLLAMA_NUM_PREDICT"]),
             "tasks_completed": f"{len(succ)}/{len(task_records)}",
             "tasks_completed_count": len(succ),
+            "pipeline_verified_count": len(succ),
+            "llm_native_completion_count": len(native_succ),
+            "fallback_recovery_count": len(fallback_rec),
             "tasks_total": len(task_records),
             "invalid_tool_calls": sum(r["invalid_tool_arguments"] for r in task_records),
             "context_overflows": sum(r["context_overflows"] for r in task_records),
             "truncated_generations": sum(r["truncated_generations"] for r in task_records),
             "total_wall_clock_s": total_wall_s,
-            "mean_wall_clock_s": round(total_wall_s / len(task_records), 3),
+            "mean_wall_clock_s": round(total_wall_s / len(task_records), 3) if task_records else 0.0,
             "tokens_per_successful_task": round(total_tokens_succ / len(succ), 1) if succ else 0.0,
             "total_input_tokens": sum(r["input_tokens"] for r in task_records),
             "total_output_tokens": sum(r["output_tokens"] for r in task_records),
             "total_thinking_chars": sum(r["thinking_chars"] for r in task_records),
-            "rie_independent_pass": f"{sum(1 for r in task_records if r['rie_status'] == 'ACCEPTED')}/{len(task_records)}",
+            "rie_independent_pass": f"{sum(1 for r in task_records if r['verification_status'] == 'ACCEPTED')}/{len(task_records)}",
             "tasks": task_records,
         }
     finally:
@@ -388,14 +543,85 @@ def run_configuration(config_name: str, env_vars: Dict[str, str], orion2_dir: Pa
                 os.environ[k] = old_v
 
 
+def summarize_across_seeds(runs: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """Computes mean and standard deviation across independent seed runs per configuration."""
+    by_cfg: Dict[str, List[Dict[str, Any]]] = {}
+    for r in runs:
+        by_cfg.setdefault(r["configuration"], []).append(r)
+
+    summaries: Dict[str, Any] = {}
+    for cfg, cfg_runs in by_cfg.items():
+        wall_times = [float(r["total_wall_clock_s"]) for r in cfg_runs]
+        tokens = [float(r["total_input_tokens"] + r["total_output_tokens"]) for r in cfg_runs]
+        pipe_rates = [
+            r["pipeline_verified_count"] / r["tasks_total"] if r["tasks_total"] else 0.0
+            for r in cfg_runs
+        ]
+        native_rates = [
+            r["llm_native_completion_count"] / r["tasks_total"] if r["tasks_total"] else 0.0
+            for r in cfg_runs
+        ]
+        fallback_rates = [
+            r["fallback_recovery_count"] / r["tasks_total"] if r["tasks_total"] else 0.0
+            for r in cfg_runs
+        ]
+
+        per_task_stats: Dict[str, Any] = {}
+        task_ids = sorted({t["task_id"] for r in cfg_runs for t in r.get("tasks", [])})
+        for tid in task_ids:
+            t_rows = [t for r in cfg_runs for t in r.get("tasks", []) if t["task_id"] == tid]
+            t_walls = [float(t["wall_clock_s"]) for t in t_rows]
+            t_out = [float(t["output_tokens"]) for t in t_rows]
+            t_turns = [float(t["turns"]) for t in t_rows]
+            per_task_stats[tid] = {
+                "runs": len(t_rows),
+                "pipeline_verified_rate": round(float(np.mean([1.0 if t["pipeline_verified"] else 0.0 for t in t_rows])), 4),
+                "llm_native_completion_rate": round(float(np.mean([1.0 if t["llm_native_completion"] else 0.0 for t in t_rows])), 4),
+                "fallback_used_rate": round(float(np.mean([1.0 if t["fallback_used"] else 0.0 for t in t_rows])), 4),
+                "wall_clock_mean_s": round(float(np.mean(t_walls)), 3),
+                "wall_clock_std_s": round(float(np.std(t_walls)), 3),
+                "output_tokens_mean": round(float(np.mean(t_out)), 1),
+                "output_tokens_std": round(float(np.std(t_out)), 1),
+                "turns_mean": round(float(np.mean(t_turns)), 2),
+                "turns_std": round(float(np.std(t_turns)), 2),
+            }
+
+        summaries[cfg] = {
+            "seed_runs": len(cfg_runs),
+            "seeds": [r.get("seed") for r in cfg_runs],
+            "pipeline_verified_rate_mean": round(float(np.mean(pipe_rates)), 4),
+            "llm_native_completion_rate_mean": round(float(np.mean(native_rates)), 4),
+            "fallback_recovery_rate_mean": round(float(np.mean(fallback_rates)), 4),
+            "total_wall_clock_mean_s": round(float(np.mean(wall_times)), 3),
+            "total_wall_clock_std_s": round(float(np.std(wall_times)), 3),
+            "total_tokens_mean": round(float(np.mean(tokens)), 1),
+            "total_tokens_std": round(float(np.std(tokens)), 1),
+            "per_task": per_task_stats,
+        }
+    return summaries
+
+
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Run GEMMA-ORION Phase 1 G0/G1/G2 benchmark.")
+    parser = argparse.ArgumentParser(description="Run GEMMA-ORION 2x2 factorial benchmark (G0/G1/G2/G3).")
     parser.add_argument(
         "--configs",
         nargs="+",
-        default=["G0", "G1", "G2"],
+        default=["G0", "G1", "G2", "G3"],
         choices=list(CONFIGURATIONS.keys()),
         help="Configurations to benchmark",
+    )
+    parser.add_argument(
+        "--seeds",
+        nargs="+",
+        type=int,
+        default=[101],
+        help="Independent Ollama RNG seeds for repeated trials",
+    )
+    parser.add_argument(
+        "--tasks",
+        nargs="+",
+        default=["B1", "B2", "B3"],
+        help="Subset of tasks to execute (B1, B2, B3)",
     )
     parser.add_argument(
         "--output",
@@ -407,14 +633,37 @@ def main() -> None:
 
     repo_root = Path(__file__).resolve().parent.parent
     orion2_dir = repo_root / "temp" / "project_orion" / "orion2-run"
+    git_commit = _git_commit_sha(repo_root)
 
-    results = []
-    for cfg in args.configs:
-        summary = run_configuration(cfg, CONFIGURATIONS[cfg], orion2_dir=orion2_dir)
-        results.append(summary)
+    results: List[Dict[str, Any]] = []
+    for seed in args.seeds:
+        for cfg in args.configs:
+            summary = run_configuration(
+                cfg,
+                CONFIGURATIONS[cfg],
+                orion2_dir=orion2_dir,
+                seed=seed,
+                selected_tasks=args.tasks,
+                git_commit=git_commit,
+            )
+            results.append(summary)
+            if args.output is not None:
+                args.output.parent.mkdir(parents=True, exist_ok=True)
+                partial_report = {
+                    "benchmark": "GEMMA-ORION-Phase2A",
+                    "git_commit": git_commit,
+                    "config_summaries": summarize_across_seeds(results),
+                    "results": results,
+                }
+                args.output.write_text(
+                    json.dumps(partial_report, indent=2, ensure_ascii=False),
+                    encoding="utf-8",
+                )
 
     report = {
-        "benchmark": "GEMMA-ORION-Phase1",
+        "benchmark": "GEMMA-ORION-Phase2A",
+        "git_commit": git_commit,
+        "config_summaries": summarize_across_seeds(results),
         "results": results,
     }
     if args.output is not None:

@@ -499,6 +499,10 @@ class AutonomousWorker:
             turn = 0
             empty_turn_nudges = 0
             action_history: List[str] = []
+            turn_trajectory: List[Dict[str, Any]] = []
+            files_read_list: List[str] = []
+            edit_calls_count = 0
+            test_command_calls_count = 0
             subtask_wall_start = time.monotonic()
 
             model_digest = (
@@ -515,6 +519,7 @@ class AutonomousWorker:
             active_num_predict = effective_num_predict(has_tools=bool(tools), num_ctx_val=active_num_ctx)
 
             def _build_telemetry_meta(extra: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+                unique_reads = len(set(files_read_list))
                 meta: Dict[str, Any] = {
                     "model": self.model_name,
                     "model_digest": model_digest,
@@ -532,11 +537,17 @@ class AutonomousWorker:
                     "turns_with_thinking": turns_with_thinking,
                     "thinking_chars": thinking_chars_total,
                     "tool_calls_count": tool_calls_count,
+                    "read_file_calls": len(files_read_list),
+                    "unique_files_read": unique_reads,
+                    "repeated_file_reads": max(0, len(files_read_list) - unique_reads),
+                    "edit_calls": edit_calls_count,
+                    "test_command_calls": test_command_calls_count,
                     "invalid_tool_arguments": invalid_tool_arguments,
                     "context_overflows": context_overflows,
                     "truncated_generations": truncated_generations,
                     "compacted_messages": compacted_messages_total,
                     "successful_verifications": successful_verifications,
+                    "turn_trajectory": list(turn_trajectory),
                 }
                 if extra:
                     meta.update(extra)
@@ -614,6 +625,18 @@ class AutonomousWorker:
                         })
                     content = resp.get("content", "") or ""
                     calls = resp.get("tool_calls", []) or []
+                    turn_entry: Dict[str, Any] = {
+                        "turn": turn,
+                        "input_tokens": prompt_tokens,
+                        "output_tokens": eval_tokens,
+                        "prompt_eval_cached_tokens": int(resp.get("prompt_eval_cached_tokens", 0)),
+                        "eval_duration_s": round(inference_duration, 4),
+                        "thinking_chars": len(thinking),
+                        "done_reason": str(resp.get("done_reason", "") or ""),
+                        "truncated": is_truncated,
+                        "tool_calls": [],
+                    }
+                    turn_trajectory.append(turn_entry)
 
                     # Thinking content is deliberately NOT emitted to HUD by default.
                     if content.strip():
@@ -731,8 +754,19 @@ class AutonomousWorker:
                             )
                         ):
                             invalid_tool_arguments += 1
-                        if name == "run_command" and tool_result.success:
-                            successful_verifications += 1
+                        if name == "read_file" and isinstance(args.get("path"), str):
+                            files_read_list.append(args["path"])
+                        elif name in ("write_file", "patch_file"):
+                            edit_calls_count += 1
+                        elif name == "run_command":
+                            test_command_calls_count += 1
+                            if tool_result.success:
+                                successful_verifications += 1
+                        turn_entry["tool_calls"].append({
+                            "name": name,
+                            "target": str(args.get("path") or args.get("command") or ""),
+                            "success": bool(tool_result.success),
+                        })
 
                         self._emit(
                             "tool_result",

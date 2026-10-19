@@ -56,10 +56,18 @@ class ReportBuildResult:
     interpretation: Dict[str, str]
     failures: List[str] = field(default_factory=list)
     unverified_numbers_stripped: int = 0
+    pipeline_verified: bool = True
+    llm_native_completion: bool = False
+    fallback_used: bool = False
+    verification_status: str = "ACCEPTED"
 
     def to_dict(self) -> Dict[str, Any]:
         return {
             "accepted": self.accepted,
+            "pipeline_verified": self.pipeline_verified,
+            "llm_native_completion": self.llm_native_completion,
+            "fallback_used": self.fallback_used,
+            "verification_status": self.verification_status,
             "markdown": self.markdown,
             "verified_metrics": dict(self.verified_metrics),
             "claims": list(self.claims),
@@ -278,6 +286,8 @@ class ResearchReportBuilder:
             protected_tokens.append(self.evidence_id)
 
         raw_interp = self._default_interpretation(verified_metrics)
+        llm_all_sections_parsed = False
+        llm_was_truncated = False
         if client is not None and hasattr(client, "chat"):
             prompt_payload = {
                 "trusted_measurements": verified_metrics.get("trusted_measurements", {}),
@@ -311,6 +321,9 @@ class ResearchReportBuilder:
                     )
                 except TypeError:
                     resp = client.chat(messages, temperature=0.1)
+                llm_was_truncated = bool(resp.get("truncated", False)) or (
+                    str(resp.get("done_reason", "") or "") == "length"
+                )
                 content = str(resp.get("content", "") or "").strip()
                 if content.startswith("```"):
                     fence = re.search(r"```(?:json)?\s*([\s\S]*?)\s*```", content, re.IGNORECASE)
@@ -318,11 +331,17 @@ class ResearchReportBuilder:
                         content = fence.group(1).strip()
                 parsed = json.loads(content)
                 if isinstance(parsed, dict):
+                    matched_keys = 0
                     for key in INTERPRETATION_JSON_SCHEMA["required"]:
                         if isinstance(parsed.get(key), str) and parsed[key].strip():
                             raw_interp[key] = parsed[key].strip()
+                            matched_keys += 1
+                    llm_all_sections_parsed = (
+                        matched_keys == len(INTERPRETATION_JSON_SCHEMA["required"])
+                        and not llm_was_truncated
+                    )
             except Exception:
-                pass
+                llm_all_sections_parsed = False
 
         total_stripped = 0
         sanitized_interp: Dict[str, str] = {}
@@ -335,6 +354,12 @@ class ResearchReportBuilder:
             sanitized_interp[key] = clean_text
             total_stripped += stripped
 
+        self._last_llm_native_completion = bool(
+            client is not None and llm_all_sections_parsed and total_stripped == 0
+        )
+        self._last_fallback_used = bool(
+            client is None or (not llm_all_sections_parsed) or total_stripped > 0
+        )
         return sanitized_interp, total_stripped
 
     def build_report(
@@ -412,4 +437,8 @@ class ResearchReportBuilder:
             interpretation=interpretation,
             failures=failures,
             unverified_numbers_stripped=stripped_count,
+            pipeline_verified=accepted,
+            llm_native_completion=bool(accepted and getattr(self, "_last_llm_native_completion", False)),
+            fallback_used=bool(getattr(self, "_last_fallback_used", client is None)),
+            verification_status="ACCEPTED" if accepted else "REJECTED",
         )

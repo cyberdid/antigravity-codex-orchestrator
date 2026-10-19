@@ -352,6 +352,7 @@ class WorkforceClient:
         temperature: float = 0.2,
         *,
         think: Optional[bool] = None,
+        seed: Optional[int] = None,
         response_format: Optional[Any] = None,
         deadline: Optional[float] = None,
         execution_control: Any = None,
@@ -363,6 +364,7 @@ class WorkforceClient:
             tools: Optional tool schemas (OpenAI-style function definitions).
             temperature: Sampling temperature.
             think: Optional per-call Thinking Mode override (defaults to ``OLLAMA_THINK``).
+            seed: Optional deterministic RNG seed (defaults to ``OLLAMA_SEED`` if set).
             response_format: Optional JSON schema or ``"json"`` format constraint.
 
         Returns:
@@ -373,16 +375,27 @@ class WorkforceClient:
         ctx_limit = num_ctx()
         output_cap = effective_num_predict(has_tools=bool(tools), num_ctx_val=ctx_limit)
         think_flag = self._effective_think(think)
+        effective_seed = seed
+        if effective_seed is None:
+            raw_seed = os.environ.get("OLLAMA_SEED", "").strip()
+            if raw_seed:
+                try:
+                    effective_seed = int(raw_seed)
+                except ValueError:
+                    effective_seed = None
+        options: Dict[str, Any] = {
+            "temperature": temperature,
+            "num_ctx": ctx_limit,
+            "num_predict": output_cap,
+        }
+        if effective_seed is not None:
+            options["seed"] = effective_seed
         payload: Dict[str, Any] = {
             "model": self.model,
             "messages": messages,
             "stream": False,
             "think": think_flag,
-            "options": {
-                "temperature": temperature,
-                "num_ctx": ctx_limit,
-                "num_predict": output_cap,
-            },
+            "options": options,
         }
         if tools:
             payload["tools"] = tools
