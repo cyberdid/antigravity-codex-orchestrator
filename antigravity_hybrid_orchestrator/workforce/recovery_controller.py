@@ -56,6 +56,8 @@ def active_recovery_policy(override: Optional[str] = None) -> str:
     raw = (override or os.environ.get("OLLAMA_RECOVERY_POLICY", "P0")).strip().upper()
     if raw in ("P1_REACTIVE", "REACTIVE"):
         return "P1_REACTIVE"
+    if raw in ("P1_STAGE_SPEC", "SPEC", "SPECCHECK"):
+        return "P1_STAGE_SPEC"
     if raw in ("P1_STAGE", "P1_HINTS", "STAGE", "HINTS"):
         return "P1_STAGE"
     if raw in ("P1", "P1_FULL", "RECOVERY", "ENHANCED", "TRUE", "1"):
@@ -74,6 +76,8 @@ class RecoveryPolicyConfig:
     annotate_tool_observations: bool = True
     catch_premature_stop_before_verification: bool = True
     max_error_snippet_chars: int = 320
+    # After visible tests pass, require one self-check of the docstring contract.
+    spec_self_check: bool = False
 
     @classmethod
     def for_policy(cls, policy: str) -> "RecoveryPolicyConfig":
@@ -91,6 +95,14 @@ class RecoveryPolicyConfig:
                 reactive_recovery=True,
                 annotate_tool_observations=False,
                 catch_premature_stop_before_verification=True,
+            )
+        if norm == "P1_STAGE_SPEC":
+            return cls(
+                policy_id="P1_STAGE_SPEC",
+                reactive_recovery=False,
+                annotate_tool_observations=True,
+                catch_premature_stop_before_verification=False,
+                spec_self_check=True,
             )
         if norm == "P1_STAGE":
             return cls(
@@ -120,6 +132,8 @@ class RecoveryController:
     # Controller-owned run of the verification command -> (passed, output). When set,
     # verification state never depends on how the model spelled its own command.
     verify_fn: Optional[Callable[[], Tuple[bool, str]]] = field(default=None, repr=False)
+    # Signatures and docstrings of the affected files, for the contract self-check.
+    spec_contract: str = ""
 
     # Runtime state tracked across turns
     all_read_files: List[str] = field(default_factory=list)
@@ -138,6 +152,9 @@ class RecoveryController:
     stage_hints_emitted: int = 0
     consecutive_non_tool_turns: int = 0
     recovery_events: List[Dict[str, Any]] = field(default_factory=list)
+    spec_check_requested: bool = False
+    spec_check_done: bool = False
+    spec_nudges: int = 0
 
     def __post_init__(self) -> None:
         self.policy = active_recovery_policy(self.policy)
@@ -285,6 +302,8 @@ class RecoveryController:
 
         elif tool_name == "run_command":
             cmd = str(args.get("command") or "").strip()
+            if self.spec_check_requested and not self.spec_check_done and not self._is_verification_command(cmd):
+                self.spec_check_done = True
             if self._is_verification_command(cmd):
                 # The model ran the exact verification command; its result is authoritative.
                 self._record_verification(turn, cmd, success, err_text or str(output or ""))
@@ -299,7 +318,7 @@ class RecoveryController:
 
         if self.is_stage_hints:
             self.stage_hints_emitted += 1
-            return f"[STAGE STATE: {self.recommended_next_action()}]"
+            return f"[STAGE STATE: {self._stage_action()}]"
         return None
 
     def _record_verification(self, turn: int, cmd: str, passed: bool, output: str) -> None:
@@ -320,6 +339,26 @@ class RecoveryController:
                 detail=f"Command '{cmd}' failed: {_tail(self.last_verification_error, 160)}",
                 action_recommended=self.recommended_next_action(),
             )
+
+    def _needs_spec_check(self) -> bool:
+        return bool(self.config.spec_self_check and self.verification_passed and not self.spec_check_done
+                    and self.spec_contract.strip())
+
+    def _stage_action(self) -> str:
+        if not self._needs_spec_check():
+            return self.recommended_next_action()
+        if self.spec_check_requested:
+            return ("Visible tests pass; the docstring contract self-check is still pending. Run ONE "
+                    "run_command with `python3 -c` asserting every contract rule, fix any violation, then finish.")
+        self.spec_check_requested = True
+        return (
+            "Visible tests PASS, but hidden tests check EVERY rule of the docstring contract below, "
+            "including inputs that must be rejected. Now run ONE run_command with `python3 -c` that imports "
+            "the function and asserts each rule: correct results for valid inputs and ValueError (checked "
+            "with try/except) for every kind of invalid input the contract describes. If any check fails, "
+            f"fix the code and re-run `{self.verification_command}`; then finish.\n"
+            f"Contract:\n{self.spec_contract[:1500]}"
+        )
 
     def annotate_observation(self, obs: str, stage_note: Optional[str]) -> str:
         """Append stage or recovery note to pruned tool observation when active."""
@@ -343,6 +382,14 @@ class RecoveryController:
         """
         has_Empty_or_truncated = is_truncated or (not content.strip() and eval_tokens > 0)
 
+        if (not is_truncated and self.config.spec_self_check and self.spec_check_requested
+                and not self.spec_check_done and self.spec_nudges < 1):
+            self.spec_nudges += 1
+            return True, (
+                "Before finishing, run the docstring contract self-check: ONE run_command with "
+                "`python3 -c` asserting every rule of the contract, including inputs that must raise "
+                "ValueError. Fix any violation, re-run the verification command, then finish."
+            ), None
         if not self.is_reactive:
             # P0 / P1_STAGE non-tool-turn baseline behavior (exact match with Phase 1 / Phase 2A G0:
             # consecutive_non_tool_turns resets to 0 after any valid tool-call turn).

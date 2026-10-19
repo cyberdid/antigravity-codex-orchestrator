@@ -96,6 +96,23 @@ POLICIES: Dict[str, Dict[str, Any]] = {
         "OLLAMA_ADAPTIVE_NUM_PREDICT": "1",
         "think_on_retry": True,
     },
+    "P1_STAGE_ADAPTIVE_SPEC": {
+        "label": "P1_STAGE_ADAPTIVE + local docstring-contract self-check after visible tests pass",
+        "OLLAMA_THINK": "false",
+        "OLLAMA_NUM_CTX": "16384",
+        "OLLAMA_NUM_PREDICT": "2048",
+        "OLLAMA_RECOVERY_POLICY": "P1_STAGE_SPEC",
+        "OLLAMA_ADAPTIVE_NUM_PREDICT": "1",
+    },
+    "P1_STAGE_ADAPTIVE_SPECTESTS": {
+        "label": "P1_STAGE_ADAPTIVE + cloud-written contract tests from signatures and docstrings",
+        "OLLAMA_THINK": "false",
+        "OLLAMA_NUM_CTX": "16384",
+        "OLLAMA_NUM_PREDICT": "2048",
+        "OLLAMA_RECOVERY_POLICY": "P1_STAGE",
+        "OLLAMA_ADAPTIVE_NUM_PREDICT": "1",
+        "spec_tests": True,
+    },
     "P1_STAGE_ADAPTIVE_ASSIST": {
         "label": "P1_STAGE_ADAPTIVE + cloud guidance (spec level) before the retry attempt",
         "OLLAMA_THINK": "false",
@@ -989,6 +1006,207 @@ def verify_h10_holdout(ws: Path) -> bool:
     ))
 
 
+# ---------------------------------------------------------------------------
+# Held-Out Task H11: Boolean flag parsing (spec-heavy, like H6)
+# ---------------------------------------------------------------------------
+def setup_h11_workspace(ws: Path) -> SubTask:
+    (ws / "flags.py").write_text(
+        '"""Boolean flag parsing."""\n'
+        "def parse_bool(text: str) -> bool:\n"
+        '    """Parse a boolean flag.\n'
+        "\n"
+        "    Accepted values, case-insensitive and ignoring surrounding whitespace:\n"
+        "    true, yes, on and 1 mean True; false, no, off and 0 mean False.\n"
+        "    Raise ValueError for anything else, including an empty string.\n"
+        '    """\n'
+        "    if text == 'true':\n"
+        "        return True\n"
+        "    if text == 'false':\n"
+        "        return False\n"
+        "    return bool(text)\n"
+        ,
+        encoding="utf-8",
+    )
+    (ws / "test_flags.py").write_text(
+        "import unittest\n"
+        "from flags import parse_bool\n\n"
+        "class TestParseBool(unittest.TestCase):\n"
+        "    def test_case_insensitive(self):\n"
+        "        self.assertIs(parse_bool('TRUE'), True)\n"
+        "\n"
+        "    def test_synonyms(self):\n"
+        "        self.assertIs(parse_bool('no'), False)\n"
+        "\n"
+        "    def test_invalid_raises(self):\n"
+        "        with self.assertRaises(ValueError):\n"
+        "            parse_bool('maybe')\n"
+        "\nif __name__ == '__main__':\n"
+        "    unittest.main()\n",
+        encoding="utf-8",
+    )
+    return SubTask(
+        id="H11_parse_bool_multi_defect_fix",
+        title="Fix parse_bool",
+        description=(
+            "Inspect `flags.py` and `test_flags.py`. Fix `parse_bool` in `flags.py` so it "
+            "satisfies its docstring specification and passes `python3 -m unittest -q`."
+        ),
+        input_files=["flags.py", "test_flags.py"],
+        affected_files=["flags.py"],
+        verification_command="python3 -m unittest -q",
+    )
+
+
+def verify_h11_holdout(ws: Path) -> bool:
+    return _run_holdout(ws, (
+        "from flags import parse_bool\n"
+        "assert parse_bool(' yes ') is True\n"
+        "assert parse_bool('On') is True\n"
+        "assert parse_bool('1') is True\n"
+        "assert parse_bool('0') is False\n"
+        "assert parse_bool('OFF') is False\n"
+        "for bad in ('', '   ', 'tru', 'yes please', '2', 'none'):\n"
+        "    try:\n"
+        "        parse_bool(bad)\n"
+        "    except ValueError:\n"
+        "        pass\n"
+        "    else:\n"
+        "        raise AssertionError(f'{bad!r} must raise ValueError')\n"
+    ))
+
+
+# ---------------------------------------------------------------------------
+# Held-Out Task H12: Hex colour parsing (spec-heavy, like H6)
+# ---------------------------------------------------------------------------
+def setup_h12_workspace(ws: Path) -> SubTask:
+    (ws / "colors.py").write_text(
+        '"""Hex colour parsing."""\n'
+        "def parse_hex_color(text: str) -> tuple:\n"
+        '    """Parse "#RRGGBB" or the shorthand "#RGB" into an (r, g, b) tuple of ints.\n'
+        "\n"
+        "    In the shorthand every hex digit is doubled (#f80 is #ff8800). Hex digits\n"
+        "    are case-insensitive. The leading # is required and nothing else is\n"
+        "    allowed: no whitespace, signs or separators. Raise ValueError otherwise.\n"
+        '    """\n'
+        "    h = text.lstrip('#')\n"
+        "    return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))\n"
+        ,
+        encoding="utf-8",
+    )
+    (ws / "test_colors.py").write_text(
+        "import unittest\n"
+        "from colors import parse_hex_color\n\n"
+        "class TestParseHexColor(unittest.TestCase):\n"
+        "    def test_shorthand(self):\n"
+        "        self.assertEqual(parse_hex_color('#f80'), (255, 136, 0))\n"
+        "\n"
+        "    def test_requires_hash(self):\n"
+        "        with self.assertRaises(ValueError):\n"
+        "            parse_hex_color('ff8800')\n"
+        "\n"
+        "    def test_too_long_raises(self):\n"
+        "        with self.assertRaises(ValueError):\n"
+        "            parse_hex_color('#ff880011')\n"
+        "\nif __name__ == '__main__':\n"
+        "    unittest.main()\n",
+        encoding="utf-8",
+    )
+    return SubTask(
+        id="H12_parse_hex_color_multi_defect_fix",
+        title="Fix parse_hex_color",
+        description=(
+            "Inspect `colors.py` and `test_colors.py`. Fix `parse_hex_color` in `colors.py` so it "
+            "satisfies its docstring specification and passes `python3 -m unittest -q`."
+        ),
+        input_files=["colors.py", "test_colors.py"],
+        affected_files=["colors.py"],
+        verification_command="python3 -m unittest -q",
+    )
+
+
+def verify_h12_holdout(ws: Path) -> bool:
+    return _run_holdout(ws, (
+        "from colors import parse_hex_color\n"
+        "assert parse_hex_color('#FFF') == (255, 255, 255)\n"
+        "assert parse_hex_color('#Ff8800') == (255, 136, 0)\n"
+        "assert parse_hex_color('#000000') == (0, 0, 0)\n"
+        "for bad in (' #fff', '#fff ', '#+f8800', '#12345', '#', '#ff8_00', '##ff8800', '#gg0000'):\n"
+        "    try:\n"
+        "        parse_hex_color(bad)\n"
+        "    except ValueError:\n"
+        "        pass\n"
+        "    else:\n"
+        "        raise AssertionError(f'{bad!r} must raise ValueError')\n"
+    ))
+
+
+# ---------------------------------------------------------------------------
+# Held-Out Task H13: Integer range parsing (spec-heavy, like H6)
+# ---------------------------------------------------------------------------
+def setup_h13_workspace(ws: Path) -> SubTask:
+    (ws / "ranges.py").write_text(
+        '"""Integer range parsing."""\n'
+        "def parse_range(text: str) -> list:\n"
+        '    """Parse "A-B" (an inclusive range) or a single "N" into a list of ints.\n'
+        "\n"
+        "    A, B and N are non-negative decimal integers written with ASCII digits\n"
+        "    only, and A must not exceed B. No whitespace or other characters are\n"
+        "    allowed. Raise ValueError otherwise.\n"
+        '    """\n'
+        "    if '-' in text:\n"
+        "        a, b = text.split('-')\n"
+        "        return list(range(int(a), int(b)))\n"
+        "    return [int(text)]\n"
+        ,
+        encoding="utf-8",
+    )
+    (ws / "test_ranges.py").write_text(
+        "import unittest\n"
+        "from ranges import parse_range\n\n"
+        "class TestParseRange(unittest.TestCase):\n"
+        "    def test_inclusive(self):\n"
+        "        self.assertEqual(parse_range('3-5'), [3, 4, 5])\n"
+        "\n"
+        "    def test_reversed_raises(self):\n"
+        "        with self.assertRaises(ValueError):\n"
+        "            parse_range('5-3')\n"
+        "\n"
+        "    def test_whitespace_raises(self):\n"
+        "        with self.assertRaises(ValueError):\n"
+        "            parse_range(' 4')\n"
+        "\nif __name__ == '__main__':\n"
+        "    unittest.main()\n",
+        encoding="utf-8",
+    )
+    return SubTask(
+        id="H13_parse_range_multi_defect_fix",
+        title="Fix parse_range",
+        description=(
+            "Inspect `ranges.py` and `test_ranges.py`. Fix `parse_range` in `ranges.py` so it "
+            "satisfies its docstring specification and passes `python3 -m unittest -q`."
+        ),
+        input_files=["ranges.py", "test_ranges.py"],
+        affected_files=["ranges.py"],
+        verification_command="python3 -m unittest -q",
+    )
+
+
+def verify_h13_holdout(ws: Path) -> bool:
+    return _run_holdout(ws, (
+        "from ranges import parse_range\n"
+        "assert parse_range('7') == [7]\n"
+        "assert parse_range('0-0') == [0]\n"
+        "assert parse_range('10-12') == [10, 11, 12]\n"
+        "for bad in ('-3', '3-', '1-2-3', '+3', '3 - 5', '3-5 ', '\u0663', '', 'a-b'):\n"
+        "    try:\n"
+        "        parse_range(bad)\n"
+        "    except ValueError:\n"
+        "        pass\n"
+        "    else:\n"
+        "        raise AssertionError(f'{bad!r} must raise ValueError')\n"
+    ))
+
+
 TASKS: List[Tuple[str, Callable[[Path], SubTask], Callable[[Path], bool]]] = [
     ("H1_fdr_step_up_fix", setup_h1_workspace, verify_h1_holdout),
     ("H2_pareto_judge_fix", setup_h2_workspace, verify_h2_holdout),
@@ -1000,6 +1218,9 @@ TASKS: List[Tuple[str, Callable[[Path], SubTask], Callable[[Path], bool]]] = [
     ("H8_slugify_multi_defect_fix", setup_h8_workspace, verify_h8_holdout),
     ("H9_parse_semver_multi_defect_fix", setup_h9_workspace, verify_h9_holdout),
     ("H10_parse_ipv4_multi_defect_fix", setup_h10_workspace, verify_h10_holdout),
+    ("H11_parse_bool_multi_defect_fix", setup_h11_workspace, verify_h11_holdout),
+    ("H12_parse_hex_color_multi_defect_fix", setup_h12_workspace, verify_h12_holdout),
+    ("H13_parse_range_multi_defect_fix", setup_h13_workspace, verify_h13_holdout),
 ]
 
 
@@ -1054,6 +1275,35 @@ def _aggregate_attempts(attempts: List[Dict[str, Any]]) -> Dict[str, Any]:
     return merged
 
 
+SPEC_TEST_CACHE: Dict[str, Dict[str, Any]] = {}
+
+
+def _install_spec_tests(task_id: str, setup_fn, ws: Path, subtask: SubTask, cloud_client: Any) -> Dict[str, Any]:
+    """Generate contract tests once per task (fresh workspace), install them in every run."""
+    from antigravity_hybrid_orchestrator.engine.spec_tests import SpecTestWriter
+
+    if task_id not in SPEC_TEST_CACHE:
+        events: List[Dict[str, Any]] = []
+        writer = SpecTestWriter(cloud_client.complete, audit=lambda e, p: events.append({"event": e, **p}))
+        fresh = Path(tempfile.mkdtemp(prefix=f"spec_{task_id}_"))
+        try:
+            source = writer.generate(fresh, setup_fn(fresh))
+        finally:
+            shutil.rmtree(fresh, ignore_errors=True)
+        SPEC_TEST_CACHE[task_id] = {"source": source, "tokens": writer.tokens_used, "events": events}
+    cached = SPEC_TEST_CACHE[task_id]
+    if cached["source"]:
+        from antigravity_hybrid_orchestrator.engine.spec_tests import SpecTestWriter
+
+        SpecTestWriter.install(ws, subtask, cached["source"])
+    return {
+        "spec_tests_installed": bool(cached["source"]),
+        "spec_tests_source": cached["source"],
+        "spec_tests_tokens": cached["tokens"],
+        "spec_tests_events": cached["events"],
+    }
+
+
 def run_single_task(
     policy_id: str,
     seed: int,
@@ -1067,6 +1317,9 @@ def run_single_task(
     ws = Path(tempfile.mkdtemp(prefix=f"gemma_p2b_{policy_id}_s{seed}_{task_id}_"))
     try:
         subtask = setup_fn(ws)
+        spec_meta: Dict[str, Any] = {}
+        if POLICIES[policy_id].get("spec_tests"):
+            spec_meta = _install_spec_tests(task_id, setup_fn, ws, subtask, cloud_client)
         before_snap = _snapshot_files(ws)
         initial_sha = _hash_snapshot(before_snap)
 
@@ -1115,8 +1368,11 @@ def run_single_task(
         diff_text = _diff_snapshots(before_snap, after_snap)
 
         # Independent verification: both visible unittest and hidden holdout check
+        # Only the task's own visible test modules: generated contract tests
+        # (SPEC_TESTS policies) must not change what "visible" means.
+        visible_modules = [Path(f).stem for f in subtask.input_files if Path(f).name.startswith("test_")]
         vis_proc = subprocess.run(
-            [sys.executable, "-m", "unittest", "-q"],
+            [sys.executable, "-m", "unittest", "-q", *visible_modules],
             cwd=str(ws),
             capture_output=True,
             text=True,
@@ -1154,6 +1410,7 @@ def run_single_task(
             "workspace_modified": initial_sha != final_sha,
             "workspace_diff": diff_text,
             "visible_test_output": (vis_proc.stderr + "\n" + vis_proc.stdout)[-2000:],
+            **spec_meta,
             "attempts_used": len(attempt_records) or 1,
             "solved_with_cloud_assist": solved_with_cloud_assist,
             "cloud_assist_tokens": sum(
@@ -1217,8 +1474,8 @@ def main() -> None:
 
     selected_policies = [p.strip().upper() for p in args.policies.split(",") if p.strip()]
     cloud_client = None
-    if any(POLICIES[p].get("cloud_assist") for p in selected_policies):
-        if args.attempts < 2:
+    if any(POLICIES[p].get("cloud_assist") or POLICIES[p].get("spec_tests") for p in selected_policies):
+        if any(POLICIES[p].get("cloud_assist") for p in selected_policies) and args.attempts < 2:
             parser.error("cloud-assist policies need --attempts 2 or more")
         from antigravity_hybrid_orchestrator.architect.client import CloudArchitectClient
 

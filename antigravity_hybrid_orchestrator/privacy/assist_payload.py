@@ -70,6 +70,15 @@ def _describe_file(workspace: Path, relative: str) -> List[str]:
     return lines
 
 
+def describe_contract(workspace: Path, files: List[str]) -> str:
+    """Signatures and docstrings of the given files (the specification, never bodies)."""
+    workspace = Path(workspace).resolve()
+    lines: List[str] = []
+    for relative in files or []:
+        lines.extend(_describe_file(workspace, str(relative)))
+    return "\n".join(lines)
+
+
 def build_assist_payload(workspace: Path, subtask: SubTask, failure_excerpt: str) -> str:
     workspace = Path(workspace).resolve()
     sections = [

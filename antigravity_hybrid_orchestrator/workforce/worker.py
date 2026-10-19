@@ -36,6 +36,7 @@ from antigravity_hybrid_orchestrator.workforce.recovery_controller import (
     active_recovery_policy,
 )
 from antigravity_hybrid_orchestrator.harness.tree import DEFAULT_TREE, READ_SKILL_TOOL, HarnessTree
+from antigravity_hybrid_orchestrator.privacy.assist_payload import describe_contract
 
 
 @dataclass
@@ -521,6 +522,7 @@ class AutonomousWorker:
                 verification_command=verification_command,
                 policy=active_recovery_policy(self.recovery_policy),
                 verify_fn=_trusted_verification if verification_command else None,
+                spec_contract=describe_contract(tool_suite.workspace_root, list(subtask.affected_files or [])),
             )
 
             model_digest = (
