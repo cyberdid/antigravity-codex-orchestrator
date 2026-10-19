@@ -40,14 +40,19 @@ sys.path.insert(0, str(REPO_ROOT))
 from antigravity_hybrid_orchestrator.planner.dag import SubTask
 from antigravity_hybrid_orchestrator.workforce.tools import WorkspaceToolSuite
 from antigravity_hybrid_orchestrator.workforce.worker import AutonomousWorker
+from antigravity_hybrid_orchestrator.engine.cloud_assist import CloudAssist
+from antigravity_hybrid_orchestrator.engine.control import ExecutionControl
+from antigravity_hybrid_orchestrator.engine.escalation import EscalationLadder
+from antigravity_hybrid_orchestrator.engine.loop import SelfCorrectionLoop
 
-POLICIES: Dict[str, Dict[str, str]] = {
+POLICIES: Dict[str, Dict[str, Any]] = {
     "P0": {
         "label": "P0 (Baseline G0: think=false, predict=2048, basic recovery)",
         "OLLAMA_THINK": "false",
         "OLLAMA_NUM_CTX": "16384",
         "OLLAMA_NUM_PREDICT": "2048",
         "OLLAMA_RECOVERY_POLICY": "P0",
+        "OLLAMA_ADAPTIVE_NUM_PREDICT": "0",
     },
     "P1_REACTIVE": {
         "label": "P1_REACTIVE (Reactive RecoveryController only, no stage hints)",
@@ -55,6 +60,7 @@ POLICIES: Dict[str, Dict[str, str]] = {
         "OLLAMA_NUM_CTX": "16384",
         "OLLAMA_NUM_PREDICT": "2048",
         "OLLAMA_RECOVERY_POLICY": "P1_REACTIVE",
+        "OLLAMA_ADAPTIVE_NUM_PREDICT": "0",
     },
     "P1_STAGE": {
         "label": "P1_STAGE (Proactive [STAGE STATE] tool annotations only, P0 recovery)",
@@ -62,6 +68,7 @@ POLICIES: Dict[str, Dict[str, str]] = {
         "OLLAMA_NUM_CTX": "16384",
         "OLLAMA_NUM_PREDICT": "2048",
         "OLLAMA_RECOVERY_POLICY": "P1_STAGE",
+        "OLLAMA_ADAPTIVE_NUM_PREDICT": "0",
     },
     "P1": {
         "label": "P1 (Full RecoveryController: proactive stage hints + reactive recovery)",
@@ -69,6 +76,34 @@ POLICIES: Dict[str, Dict[str, str]] = {
         "OLLAMA_NUM_CTX": "16384",
         "OLLAMA_NUM_PREDICT": "2048",
         "OLLAMA_RECOVERY_POLICY": "P1",
+        "OLLAMA_ADAPTIVE_NUM_PREDICT": "0",
+    },
+    # Escalation ladder (run with --attempts 2): stage hints plus one ladder step each.
+    "P1_STAGE_ADAPTIVE": {
+        "label": "P1_STAGE + re-request truncated tool calls with num_predict 4096",
+        "OLLAMA_THINK": "false",
+        "OLLAMA_NUM_CTX": "16384",
+        "OLLAMA_NUM_PREDICT": "2048",
+        "OLLAMA_RECOVERY_POLICY": "P1_STAGE",
+        "OLLAMA_ADAPTIVE_NUM_PREDICT": "1",
+    },
+    "P1_STAGE_ADAPTIVE_THINK": {
+        "label": "P1_STAGE_ADAPTIVE + Thinking Mode on the retry attempt",
+        "OLLAMA_THINK": "false",
+        "OLLAMA_NUM_CTX": "16384",
+        "OLLAMA_NUM_PREDICT": "2048",
+        "OLLAMA_RECOVERY_POLICY": "P1_STAGE",
+        "OLLAMA_ADAPTIVE_NUM_PREDICT": "1",
+        "think_on_retry": True,
+    },
+    "P1_STAGE_ADAPTIVE_ASSIST": {
+        "label": "P1_STAGE_ADAPTIVE + cloud guidance (spec level) before the retry attempt",
+        "OLLAMA_THINK": "false",
+        "OLLAMA_NUM_CTX": "16384",
+        "OLLAMA_NUM_PREDICT": "2048",
+        "OLLAMA_RECOVERY_POLICY": "P1_STAGE",
+        "OLLAMA_ADAPTIVE_NUM_PREDICT": "1",
+        "cloud_assist": True,
     },
 }
 
@@ -701,6 +736,130 @@ def verify_h6_holdout(ws: Path) -> bool:
     ))
 
 
+# ---------------------------------------------------------------------------
+# Held-Out Task H7: Rolling mean with three independent defects
+# ---------------------------------------------------------------------------
+def setup_h7_workspace(ws: Path) -> SubTask:
+    (ws / "rolling.py").write_text(
+        '"""Sliding-window statistics."""\n'
+        "from typing import List, Sequence\n\n"
+        "def rolling_mean(values: Sequence[float], window: int) -> List[float]:\n"
+        '    """Return the mean of every full window of `window` consecutive values.\n\n'
+        "    The result has len(values) - window + 1 entries, in order; it is empty when\n"
+        "    window > len(values). Raise ValueError if window is not an int or is < 1\n"
+        "    (bool is not accepted as an int).\n"
+        '    """\n'
+        "    out: List[float] = []\n"
+        "    for i in range(len(values) - window):\n"
+        "        out.append(sum(values[i:i + window]) / len(values))\n"
+        "    return out\n",
+        encoding="utf-8",
+    )
+    (ws / "test_rolling.py").write_text(
+        "import unittest\n"
+        "from rolling import rolling_mean\n\n"
+        "class TestRollingMean(unittest.TestCase):\n"
+        "    def test_includes_last_window(self):\n"
+        "        self.assertEqual(len(rolling_mean([1, 2, 3, 4], 2)), 3)\n\n"
+        "    def test_window_mean_values(self):\n"
+        "        self.assertEqual(rolling_mean([2, 4, 6, 8], 2)[:2], [3.0, 5.0])\n\n"
+        "    def test_invalid_window_raises(self):\n"
+        "        with self.assertRaises(ValueError):\n"
+        "            rolling_mean([1, 2, 3], 0)\n\n"
+        "if __name__ == '__main__':\n"
+        "    unittest.main()\n",
+        encoding="utf-8",
+    )
+    return SubTask(
+        id="H7_rolling_mean_multi_defect_fix",
+        title="Fix rolling_mean",
+        description=(
+            "Inspect `rolling.py` and `test_rolling.py`. Fix `rolling_mean` in `rolling.py` so it "
+            "satisfies its docstring specification and passes `python3 -m unittest -q`."
+        ),
+        input_files=["rolling.py", "test_rolling.py"],
+        affected_files=["rolling.py"],
+        verification_command="python3 -m unittest -q",
+    )
+
+
+def verify_h7_holdout(ws: Path) -> bool:
+    return _run_holdout(ws, (
+        "from rolling import rolling_mean\n"
+        "assert rolling_mean([1.0, 2.0, 3.0], 3) == [2.0]\n"
+        "assert rolling_mean([1.0, 2.0], 5) == []\n"
+        "assert rolling_mean([4.0, 8.0], 1) == [4.0, 8.0]\n"
+        "for bad in (-1, 1.5, True, '2'):\n"
+        "    try:\n"
+        "        rolling_mean([1.0, 2.0, 3.0], bad)\n"
+        "    except ValueError:\n"
+        "        pass\n"
+        "    else:\n"
+        "        raise AssertionError(f'window={bad!r} must raise ValueError')\n"
+    ))
+
+
+# ---------------------------------------------------------------------------
+# Held-Out Task H8: Slug generation with three independent defects
+# ---------------------------------------------------------------------------
+def setup_h8_workspace(ws: Path) -> SubTask:
+    (ws / "slugs.py").write_text(
+        '"""URL slug generation."""\n'
+        "import re\n\n"
+        "def slugify(title: str) -> str:\n"
+        '    """Return a URL slug for `title`.\n\n'
+        "    The slug is lowercase. Every run of characters other than ASCII letters and\n"
+        "    digits becomes a single hyphen, and the slug never starts or ends with a\n"
+        "    hyphen. Raise ValueError when no ASCII letter or digit remains.\n"
+        '    """\n'
+        "    return re.sub(r'[^A-Za-z0-9]', '-', title).lower()\n",
+        encoding="utf-8",
+    )
+    (ws / "test_slugs.py").write_text(
+        "import unittest\n"
+        "from slugs import slugify\n\n"
+        "class TestSlugify(unittest.TestCase):\n"
+        "    def test_runs_collapse(self):\n"
+        "        self.assertEqual(slugify('a  b'), 'a-b')\n\n"
+        "    def test_edges_trimmed(self):\n"
+        "        self.assertEqual(slugify(' Hello '), 'hello')\n\n"
+        "    def test_empty_slug_raises(self):\n"
+        "        with self.assertRaises(ValueError):\n"
+        "            slugify('!!!')\n\n"
+        "if __name__ == '__main__':\n"
+        "    unittest.main()\n",
+        encoding="utf-8",
+    )
+    return SubTask(
+        id="H8_slugify_multi_defect_fix",
+        title="Fix slugify",
+        description=(
+            "Inspect `slugs.py` and `test_slugs.py`. Fix `slugify` in `slugs.py` so it satisfies "
+            "its docstring specification and passes `python3 -m unittest -q`."
+        ),
+        input_files=["slugs.py", "test_slugs.py"],
+        affected_files=["slugs.py"],
+        verification_command="python3 -m unittest -q",
+    )
+
+
+def verify_h8_holdout(ws: Path) -> bool:
+    return _run_holdout(ws, (
+        "from slugs import slugify\n"
+        "assert slugify('Hello, World!') == 'hello-world'\n"
+        "assert slugify('--A--') == 'a'\n"
+        "assert slugify('x1 y2') == 'x1-y2'\n"
+        "assert slugify('Кафе Mocha') == 'mocha'\n"
+        "for bad in ('', '   ', 'Привіт'):\n"
+        "    try:\n"
+        "        slugify(bad)\n"
+        "    except ValueError:\n"
+        "        pass\n"
+        "    else:\n"
+        "        raise AssertionError(f'{bad!r} must raise ValueError')\n"
+    ))
+
+
 TASKS: List[Tuple[str, Callable[[Path], SubTask], Callable[[Path], bool]]] = [
     ("H1_fdr_step_up_fix", setup_h1_workspace, verify_h1_holdout),
     ("H2_pareto_judge_fix", setup_h2_workspace, verify_h2_holdout),
@@ -708,7 +867,60 @@ TASKS: List[Tuple[str, Callable[[Path], SubTask], Callable[[Path], bool]]] = [
     ("H4_weighted_mean_two_module_fix", setup_h4_workspace, verify_h4_holdout),
     ("H5_merge_intervals_multi_defect_fix", setup_h5_workspace, verify_h5_holdout),
     ("H6_parse_duration_multi_defect_fix", setup_h6_workspace, verify_h6_holdout),
+    ("H7_rolling_mean_multi_defect_fix", setup_h7_workspace, verify_h7_holdout),
+    ("H8_slugify_multi_defect_fix", setup_h8_workspace, verify_h8_holdout),
 ]
+
+
+_SUMMED_METADATA = (
+    "input_tokens", "output_tokens", "prompt_eval_cached_tokens", "eval_duration_s",
+    "prompt_eval_duration_s", "turns_with_thinking", "thinking_chars", "tool_calls_count",
+    "read_file_calls", "repeated_file_reads", "total_repeated_file_reads", "edit_calls",
+    "test_command_calls", "invalid_tool_arguments", "context_overflows", "truncated_generations",
+    "budget_escalations", "discarded_truncated_tool_calls", "compacted_messages",
+    "successful_verifications", "recovery_attempts", "stage_hints_emitted",
+)
+
+
+class _PerAttemptDeadline:
+    """Gives every attempt the same budget and keeps each attempt's telemetry."""
+
+    def __init__(self, worker: AutonomousWorker, seconds: float) -> None:
+        self.worker = worker
+        self.seconds = seconds
+        self.attempts: List[Dict[str, Any]] = []
+
+    def execute_subtask(self, subtask, tool_suite, feedback_context=None, deadline=None, **kwargs):
+        cap = time.monotonic() + self.seconds
+        res = self.worker.execute_subtask(
+            subtask, tool_suite, feedback_context=feedback_context,
+            deadline=min(deadline, cap) if deadline else cap, **kwargs,
+        )
+        self.attempts.append({
+            "think": kwargs.get("think"),
+            "had_cloud_guidance": "Guidance from the cloud architect" in (feedback_context or ""),
+            "success": res.success,
+            "error": res.error,
+            "metadata": dict(res.metadata or {}),
+        })
+        return res
+
+
+def _aggregate_attempts(attempts: List[Dict[str, Any]]) -> Dict[str, Any]:
+    merged: Dict[str, Any] = dict(attempts[-1]["metadata"]) if attempts else {}
+    for key in _SUMMED_METADATA:
+        values = [a["metadata"].get(key) for a in attempts]
+        if any(isinstance(v, (int, float)) for v in values):
+            merged[key] = sum(v for v in values if isinstance(v, (int, float)))
+    merged["turn_trajectory"] = [
+        dict(entry, attempt=index + 1)
+        for index, attempt in enumerate(attempts)
+        for entry in attempt["metadata"].get("turn_trajectory", [])
+    ]
+    merged["attempts_detail"] = [
+        {k: v for k, v in a.items() if k != "metadata"} for a in attempts
+    ]
+    return merged
 
 
 def run_single_task(
@@ -717,6 +929,8 @@ def run_single_task(
     task_id: str,
     setup_fn: Callable[[Path], SubTask],
     holdout_fn: Callable[[Path], bool],
+    attempts: int = 1,
+    cloud_client: Any = None,
 ) -> Dict[str, Any]:
     ws = Path(tempfile.mkdtemp(prefix=f"gemma_p2b_{policy_id}_s{seed}_{task_id}_"))
     try:
@@ -725,16 +939,41 @@ def run_single_task(
         initial_sha = _hash_snapshot(before_snap)
 
         tool_suite = WorkspaceToolSuite(workspace_root=ws)
-        worker = AutonomousWorker(model_name="gemma4:12b", recovery_policy=policy_id)
+        policy = POLICIES[policy_id]
+        worker = AutonomousWorker(model_name="gemma4:12b", recovery_policy=policy["OLLAMA_RECOVERY_POLICY"])
+        assist_events: List[Dict[str, Any]] = []
 
         vram = VramMonitor()
         vram.start()
         t0 = time.monotonic()
-        res = worker.execute_subtask(
-            subtask,
-            tool_suite,
-            deadline=t0 + TASK_DEADLINE_S,
-        )
+        if attempts <= 1:
+            res = worker.execute_subtask(
+                subtask,
+                tool_suite,
+                deadline=t0 + TASK_DEADLINE_S,
+            )
+            attempt_records: List[Dict[str, Any]] = []
+        else:
+            # Same ladder code path as the orchestrator: SelfCorrectionLoop + EscalationLadder.
+            os.environ["RD_MAX_REPAIR_ATTEMPTS"] = str(attempts)
+            os.environ["RD_SUBTASK_TIMEOUT_S"] = str(TASK_DEADLINE_S * attempts)
+            control = ExecutionControl()
+            assist = None
+            if policy.get("cloud_assist"):
+                assist = CloudAssist(
+                    cloud_client, ws, max_calls=1, execution_control=control,
+                    audit=lambda event, _sid, payload: assist_events.append({"event": event, **payload}),
+                )
+            wrapped = _PerAttemptDeadline(worker, TASK_DEADLINE_S)
+            loop = SelfCorrectionLoop(
+                tool_suite=tool_suite, worker=wrapped, checkpoint_git=False, execution_control=control,
+                ladder=EscalationLadder(think_on_retry=bool(policy.get("think_on_retry")), cloud_assist=assist),
+            )
+            res = loop.execute_subtask_with_retry(subtask)
+            attempt_records = wrapped.attempts
+            ladder_meta = {k: res.metadata.get(k) for k in (
+                "think_retry_used", "ladder_steps_used", "cloud_assist_calls", "solved_with_cloud_assist")}
+            res.metadata = dict(_aggregate_attempts(attempt_records), **ladder_meta)
         wall_s = round(time.monotonic() - t0, 4)
         peak_vram = vram.stop()
 
@@ -753,10 +992,12 @@ def run_single_task(
         visible_passed = vis_proc.returncode == 0
         holdout_passed = holdout_fn(ws) if visible_passed else False
         independently_verified = bool(visible_passed and holdout_passed)
+        solved_with_cloud_assist = bool(independently_verified and res.metadata.get("solved_with_cloud_assist"))
         llm_native = bool(
             res.success
             and independently_verified
             and int(res.metadata.get("successful_verifications", 0)) >= 1
+            and not solved_with_cloud_assist
         )
 
         total_tools = int(res.tool_calls_count)
@@ -779,6 +1020,13 @@ def run_single_task(
             "final_workspace_sha256": final_sha,
             "workspace_modified": initial_sha != final_sha,
             "workspace_diff": diff_text,
+            "attempts_used": len(attempt_records) or 1,
+            "solved_with_cloud_assist": solved_with_cloud_assist,
+            "cloud_assist_tokens": sum(
+                int(e.get("input_tokens", 0)) + int(e.get("output_tokens", 0))
+                for e in assist_events if e["event"] == "cloud_assist_response"
+            ),
+            "cloud_assist_events": assist_events,
         })
 
         return {
@@ -827,9 +1075,20 @@ def main() -> None:
         default=str(REPO_ROOT / "benchmarks" / "gemma_orion_phase2b_p0_vs_p1.json"),
         help="Path to output JSON file",
     )
+    parser.add_argument("--attempts", type=int, default=1,
+                        help="Attempts per task through SelfCorrectionLoop (1 = single worker attempt)")
+    parser.add_argument("--cloud-backend", choices=["agy", "haiku", "luna"], default="agy",
+                        help="Real cloud backend for *_ASSIST policies (owner-approved for this benchmark)")
     args = parser.parse_args()
 
     selected_policies = [p.strip().upper() for p in args.policies.split(",") if p.strip()]
+    cloud_client = None
+    if any(POLICIES[p].get("cloud_assist") for p in selected_policies):
+        if args.attempts < 2:
+            parser.error("cloud-assist policies need --attempts 2 or more")
+        from antigravity_hybrid_orchestrator.architect.client import CloudArchitectClient
+
+        cloud_client = CloudArchitectClient(backend=args.cloud_backend)
     seeds = [int(s.strip()) for s in args.seeds.split(",") if s.strip()]
     task_prefixes = [t.strip().upper() for t in args.tasks.split(",") if t.strip()]
     active_tasks = [
@@ -867,6 +1126,8 @@ def main() -> None:
         "working_tree_diff_sha256": working_tree_diff_sha256,
         "seeds": seeds,
         "task_deadline_s": TASK_DEADLINE_S,
+        "attempts": args.attempts,
+        "cloud_backend": args.cloud_backend if cloud_client is not None else None,
         "counterbalanced_seed_order": True,
         "policies": {},
     }
@@ -892,7 +1153,8 @@ def main() -> None:
             print(f"\n=== Running Seed {seed} | Policy {pol_id} ===", flush=True)
             for tid, setup_fn, holdout_fn in active_tasks:
                 print(f"  -> Task {tid} ...", end="", flush=True)
-                tr = run_single_task(pol_id, seed, tid, setup_fn, holdout_fn)
+                tr = run_single_task(pol_id, seed, tid, setup_fn, holdout_fn,
+                                     attempts=args.attempts, cloud_client=cloud_client)
                 per_policy_seed_tasks[pol_id][seed].append(tr)
                 print(
                     f" verified={tr['pipeline_verified']} native={tr['llm_native_completion']} "
