@@ -14,11 +14,9 @@ Safety contract:
 from __future__ import annotations
 
 import os
+import re
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Tuple
-
-
-import re
 
 
 def active_recovery_policy(override: Optional[str] = None) -> str:
@@ -110,10 +108,6 @@ class RecoveryController:
             self.config = RecoveryPolicyConfig.for_policy(self.policy)
 
     @property
-    def is_enhanced(self) -> bool:
-        return bool(self.config and (self.config.reactive_recovery or self.config.annotate_tool_observations))
-
-    @property
     def is_reactive(self) -> bool:
         return bool(self.config and self.config.reactive_recovery)
 
@@ -122,29 +116,23 @@ class RecoveryController:
         return bool(self.config and self.config.annotate_tool_observations)
 
     def _is_verification_command(self, cmd: str) -> bool:
-        """Return True iff `cmd` actually executes the subtask's verification test suite."""
+        """Return True iff `cmd` strictly executes the subtask's verification command.
+
+        When `self.verification_command` is set, checks exact normalized match first
+        so legitimate compound verification commands (e.g. `cd . && python3 -m unittest -q`)
+        are accepted while any appended `| tail`, `|| true`, partial test runs, or
+        `python3 -c "assert True"` are rejected.
+        """
         norm_cmd = " ".join(cmd.strip().split())
         if not norm_cmd:
             return False
         norm_verif = " ".join((self.verification_command or "").strip().split())
         if norm_verif:
-            if norm_cmd == norm_verif or norm_verif in norm_cmd:
-                return True
-            # Allow targeted unittest/pytest/assert invocations when verification_command is a test/assert command
-            verif_uses_test_runner = bool(re.search(r"\b(pytest|unittest|assert)\b", norm_verif))
-            cmd_uses_test_runner = bool(
-                re.search(r"\bpython3?\s+-m\s+(pytest|unittest)\b", norm_cmd)
-                or re.search(r"^\s*pytest\b", norm_cmd)
-                or re.search(r"\bpython3?\b.*\bassert\b", norm_cmd)
-            )
-            if verif_uses_test_runner and cmd_uses_test_runner:
-                return True
+            return norm_cmd == norm_verif
+        # Fallback only when SubTask.verification_command was left empty:
+        if any(op in norm_cmd for op in ("|", "&&")):
             return False
-        # When subtask.verification_command is not explicitly set, treat explicit test/assert
-        # commands as verification, but never shell inspection commands like `ls -R`.
-        return bool(
-            re.search(r"\b(pytest|unittest|assert)\b", norm_cmd)
-        )
+        return bool(re.search(r"\b(pytest|unittest|assert)\b", norm_cmd))
 
     def unread_input_files(self) -> List[str]:
         read_set = set(self.all_read_files)

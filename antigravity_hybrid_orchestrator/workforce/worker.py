@@ -552,6 +552,7 @@ class AutonomousWorker:
                     "read_file_calls": len(files_read_list),
                     "unique_files_read": unique_reads,
                     "repeated_file_reads": recovery_controller.repeated_reads_count,
+                    "total_repeated_file_reads": max(0, len(files_read_list) - unique_reads),
                     "edit_calls": edit_calls_count,
                     "test_command_calls": test_command_calls_count,
                     "invalid_tool_arguments": invalid_tool_arguments,

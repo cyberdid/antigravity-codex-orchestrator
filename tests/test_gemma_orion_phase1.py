@@ -1143,7 +1143,7 @@ def test_t15_phase2b_p1_failed_test_recovery_preserves_evidence(
                     {
                         "function": {
                             "name": "run_command",
-                            "arguments": {"command": 'python3 -c "import math_util; assert math_util.double(3) == 6, (\'got_wrong_double\',)[0]"'.replace("\\'", "'")},
+                            "arguments": {"command": 'python3 -c "import math_util; assert math_util.double(3) == 6, \'got_wrong_double\'"'},
                         }
                     }
                 ],
@@ -1196,7 +1196,7 @@ def test_t15_phase2b_p1_failed_test_recovery_preserves_evidence(
                     {
                         "function": {
                             "name": "run_command",
-                            "arguments": {"command": 'python3 -c "import math_util; assert math_util.double(3) == 6, (\'got_wrong_double\',)[0]"'.replace("\\'", "'")},
+                            "arguments": {"command": 'python3 -c "import math_util; assert math_util.double(3) == 6, \'got_wrong_double\'"'},
                         }
                     }
                 ],
@@ -1343,6 +1343,22 @@ def test_t17_phase2b_review_bugfixes_and_policy_ablation(
     )
     assert rc.verification_passed is False
     assert rc.verification_runs == 0
+    for spoof_cmd in (
+        "python3 -m unittest -q 2>&1 | tail -20",
+        "python3 -m unittest -q || true",
+        'python3 -c "assert True"',
+        "python3 -m unittest test_x.py",
+    ):
+        rc.record_tool_execution(
+            turn=2,
+            tool_name="run_command",
+            args={"command": spoof_cmd},
+            success=True,
+            output="OK",
+            error=None,
+        )
+        assert rc.verification_passed is False, f"spoof_cmd should not pass: {spoof_cmd}"
+        assert rc.verification_runs == 0
     rc.record_tool_execution(
         turn=3,
         tool_name="run_command",
@@ -1353,6 +1369,23 @@ def test_t17_phase2b_review_bugfixes_and_policy_ablation(
     )
     assert rc.verification_passed is True
     assert rc.verification_runs == 1
+
+    # Compound verification_command containing `&&` must be recognized on exact match
+    rc_compound = RecoveryController(
+        subtask_id="sub_compound",
+        verification_command="cd . && python3 -m unittest -q",
+        policy="P1",
+    )
+    rc_compound.record_tool_execution(
+        turn=1,
+        tool_name="run_command",
+        args={"command": "cd . && python3 -m unittest -q"},
+        success=True,
+        output="OK",
+        error=None,
+    )
+    assert rc_compound.verification_passed is True
+    assert rc_compound.verification_runs == 1
 
     # 2. Bugfix B: re-reading a file AFTER `patch_file` must NOT be flagged as `repeated_file_read`
     rc2 = RecoveryController(
