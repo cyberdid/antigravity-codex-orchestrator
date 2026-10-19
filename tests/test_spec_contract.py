@@ -161,3 +161,32 @@ def test_writer_rejects_unsafe_reply_after_one_retry(tmp_path):
     replies = ["```python\nimport os\n" + GOOD_TESTS + "```", "```python\nimport os\n" + GOOD_TESTS + "```"]
     writer = SpecTestWriter(lambda p: (replies.pop(0), 1, 1))
     assert writer.generate(tmp_path, subtask) is None
+
+
+def test_contract_includes_dataclass_fields_without_defaults(tmp_path):
+    from antigravity_hybrid_orchestrator.privacy.assist_payload import describe_contract
+
+    (tmp_path / "types_mod.py").write_text(
+        "from dataclasses import dataclass\nfrom typing import List\n\n"
+        "@dataclass\nclass Decision:\n    \"\"\"Outcome.\"\"\"\n    rejected_mask: List[bool]\n"
+        "    critical_threshold: float = 0.05123\n"
+    )
+    text = describe_contract(tmp_path, ["types_mod.py"])
+    assert "class Decision" in text
+    assert "    rejected_mask: List[bool]" in text and "    critical_threshold: float" in text
+    assert "0.05123" not in text
+
+
+def test_writer_contract_covers_input_type_modules(tmp_path):
+    from antigravity_hybrid_orchestrator.engine.spec_tests import SpecTestWriter
+    from benchmark_gemma_orion_phase2b import setup_h1_workspace
+
+    subtask = setup_h1_workspace(tmp_path)
+    prompts = []
+    source = ("import unittest\nfrom fdr_control import benjamini_hochberg\nfrom fdr_types import FdrDecision\n\n"
+              "class T(unittest.TestCase):\n    def test_empty(self):\n"
+              "        self.assertEqual(benjamini_hochberg([]).num_rejected, 0)\n")
+    writer = SpecTestWriter(lambda p: (prompts.append(p) or ("```python\n" + source + "```", 1, 1)))
+    assert writer.generate(tmp_path, subtask) == source
+    assert "rejected_mask: List[bool]" in prompts[0]
+    assert "test_fdr_control" not in prompts[0]

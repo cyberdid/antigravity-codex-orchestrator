@@ -25,6 +25,8 @@ FORBIDDEN_CALLS = {"open", "exec", "eval", "compile", "__import__", "input", "br
 PROMPT = """\
 You write acceptance tests from a specification. Below are the signatures and docstrings of
 Python functions; their implementation is hidden from you and may be wrong.
+The specification also lists the data types the functions use; construct and inspect them
+using exactly the field names, types and constructor arguments shown, nothing else.
 Write ONE Python unittest module that checks EVERY rule the docstrings state: correct results
 for representative valid inputs (including edge values) and ValueError for every kind of
 invalid input the docstrings describe. Only assert behaviour the docstrings state explicitly;
@@ -83,7 +85,12 @@ class SpecTestWriter:
         self.tokens_used = 0
 
     def generate(self, workspace: Path, subtask: SubTask, attempts: int = 2) -> Optional[str]:
-        files = [str(f) for f in subtask.affected_files or []]
+        affected = [str(f) for f in subtask.affected_files or []]
+        # The functions' own module(s) plus the non-test modules they use (data types):
+        # without those field names the cloud has to guess the interface.
+        deps = [str(f) for f in subtask.input_files or []
+                if str(f).endswith(".py") and not Path(f).name.startswith("test_") and str(f) not in affected]
+        files = affected + deps
         modules = [Path(f).stem for f in files if f.endswith(".py")]
         contract = describe_contract(Path(workspace), files)
         if not contract.strip():

@@ -67,6 +67,11 @@ def _describe_file(workspace: Path, relative: str) -> List[str]:
         doc = ast.get_docstring(node)
         if doc:
             lines.extend("    " + line for line in doc.splitlines())
+        if isinstance(node, ast.ClassDef):
+            # Field names and types are interface, not implementation; defaults are dropped.
+            for item in node.body:
+                if isinstance(item, ast.AnnAssign) and isinstance(item.target, ast.Name):
+                    lines.append(f"    {item.target.id}: {ast.unparse(item.annotation)}")
     return lines
 
 
