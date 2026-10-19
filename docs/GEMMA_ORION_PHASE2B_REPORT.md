@@ -99,3 +99,34 @@ All `31/31` unit and integration tests pass across `tests/test_gemma_orion_phase
 3. **Ready for Harness² (`docs/HARNESS2_INTEGRATION_DESIGN.md`):**
    - `RecoveryPolicyConfig` (`P0`, `P1_STAGE`, `P1_REACTIVE`, `P1`) now provides clean, orthogonal policy knobs ready for RIE-gated **Harness² (`OrchestratorSubstrate`)** evaluation.
 
+
+---
+
+## 6. Addendum: Trusted Verification Re-run and Multi-Module Task H4 (`0c1f186`)
+
+**Why a re-run was needed.** In all 24 runs of the unhinted ablation (`ff40f43`) the model verified with `python3 -m unittest -q <test_file>.py`, never with the exact `verification_command`. Under the exact-match rule introduced in `2071a1b` none of those runs would count as verified, and `P1_STAGE` would never see a `PASSED` state. Sections 1–3 therefore describe `ff40f43` behaviour, not HEAD. In `0c1f186` the worker passes a controller-owned `verify_fn`: whenever the model runs any other command, the controller runs the real `verification_command` and uses that result (`successful_verifications` now counts these trusted runs). Failing output is excerpted from the tail, and failed tool error text is stored in `turn_trajectory`.
+
+**New task H4** (`H4_weighted_mean_two_module_fix`): defects in two modules (`weights.normalize` divides by `max`, `summary.weighted_mean` divides by `len` and lacks the length check). Offline check: fixing either module alone fails the visible test; both fixes pass visible and holdout tests.
+
+**Run:** `benchmarks/gemma_orion_phase2b_trusted_verification.json`, `git_commit=0c1f186`, `git_dirty=false`, policies `P0` and `P1_STAGE`, seeds `303, 404`, tasks `H1–H4`, counterbalanced order (16 runs). `P1_REACTIVE` and `P1` were not re-run; their Section 3 results remain valid measurements of `ff40f43`.
+
+| Policy | Scope | Verified | Native | Truncations | Wall-clock / seed | Output tokens / seed | Total tokens / seed |
+|---|---|---:|---:|---:|---:|---:|---:|
+| `P0` | H1–H3 | 6/6 | 6/6 | 6 | 543 s | 9,010 | 71,848 |
+| `P1_STAGE` | H1–H3 | 6/6 | 6/6 | 0 | 177 s | 2,220 | 67,480 |
+| `P0` | H1–H4 | **8/8** | 8/8 | 8 | 691 s | 11,526 | 92,708 |
+| `P1_STAGE` | H1–H4 | **6/8** | 6/8 | 0 | 218 s | 2,634 | 90,660 |
+
+**H1–H3 replicate.** `P1_STAGE` again removes every truncation and is ~3× faster with equal verified completion.
+
+**H4 fails under `P1_STAGE` on both seeds** (identical trajectories, stopped by the cycle detector after 12 turns), while `P0` solves it on both seeds. Trajectory forensics:
+
+1. `P1_STAGE` acts early: it patches `weights.py` and `summary.py` (both main defects fixed) but omits the length-mismatch `ValueError`, so 1 of 2 visible tests still fails.
+2. The `[STAGE STATE]` note after that failure cannot help: the tail of unittest output is `Ran 2 tests ... FAILED (failures=1)`, which carries no assertion text, and the note always names `affected_files[0]` (`weights.py`) as the file to fix.
+3. The model re-reads `summary.py` (the correct file) three times with identical output and the cycle detector stops the attempt.
+4. `P0`'s truncated 2048-token turn was not pure waste on H4: after it the model added both validation checks in one pass.
+
+**Conclusions (revised).**
+- Stage hints remove the post-read runaway generation and are ~3× faster on single-module repairs.
+- They are not yet safe as a default: on a two-module task they trade thoroughness for speed and give no usable guidance after a failed test. Before `P1_STAGE` becomes the default or enters Harness², the failure hint must (a) excerpt the failing test name and assertion line rather than the runner summary, and (b) not hard-code `affected_files[0]`.
+- Evidence base: 4 tasks × 2 seeds; seeds produce near-identical trajectories at `temperature=0.2`, so effective sample size is closer to 4 tasks than 8 runs.
