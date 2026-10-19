@@ -177,3 +177,28 @@ All `31/31` unit and integration tests pass across `tests/test_gemma_orion_phase
 - On H6 the bottleneck is reasoning, not tool-use discipline. Stage hints cannot supply that, and `P1_STAGE` is not better than `P0` on this task (0/2 vs 1/2; N too small to call either way).
 - A globally larger `num_predict` remains the wrong fix (Phase 2A: `G3` at 4096 was 1.7× slower with no accuracy gain). The two targeted options this data supports are: (a) when a truncated turn contains a tool call, do not execute the malformed call; retry that one turn with a larger budget; (b) the Phase 2A escalation policy: switch to `think=true` only on a retry after a failed attempt, so reasoning goes to the thinking channel instead of into code comments.
 - The 300 s per-task deadline is binding on hard tasks and should be reported alongside any H6-type result.
+
+---
+
+## 9. Addendum: Escalation Ladder (`76576c0`)
+
+**Run:** `benchmarks/gemma_orion_phase2b_escalation_ladder.json`, `git_commit=76576c0`, `git_dirty=false`, `--attempts 2` through `SelfCorrectionLoop` + `EscalationLadder` (the orchestrator's code path), seed 303, tasks H6–H8, 300 s per attempt. Policies: `P1_STAGE` (adaptive limit off, plain retry), `P1_STAGE_ADAPTIVE` (truncated tool-call turns re-requested once at 4096), `+THINK` (attempt 2 with `think=true` and 4096), `+ASSIST` (cloud guidance from agy before attempt 2). Design and plan: `docs/superpowers/specs/2026-10-19-escalation-ladder-design.md`, `docs/superpowers/plans/2026-10-19-escalation-ladder.md`.
+
+| Policy | Verified | Native | Wall (sum) | Tokens | Truncations | Escalations | Discarded truncated calls | Cloud tokens |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| `P1_STAGE` | 2/3 | 2/3 | 341 s | 54,637 | 2 | 0 | 0 | 0 |
+| `P1_STAGE_ADAPTIVE` | 3/3 | 3/3 | 244 s | 55,384 | 0 | 0 | 0 | 0 |
+| `P1_STAGE_ADAPTIVE_THINK` | 2/3 | 2/3 | 658 s | 51,686 | 1 | 1 | 2 | 0 |
+| `P1_STAGE_ADAPTIVE_ASSIST` | 2/3 | 2/3 | 656 s | 38,940 | 2 | 2 | 2 | 2,805 |
+
+H7 and H8 were solved in one attempt by every policy (26–31 s, 6 turns); all differences come from H6.
+
+**H6 per policy (trajectory forensics).**
+- `P1_STAGE`: visible tests pass, holdout fails (unit-order rule). Two turns hit 2048 tokens inside `write_file`/`patch_file` and arrived without `path`/`target_content` (old behaviour: executed as invalid calls).
+- `P1_STAGE_ADAPTIVE`: solved (189 s, 12 turns), but **no truncation occurred, so the adaptive limit never fired** (`budget_escalations=0`). Up to turn 4 the trajectory is identical to `P1_STAGE`; at turn 5 `P1_STAGE` produced a 2048-token truncated call while this run wrote a 595-token file. With the same seed and prompt this divergence is sampling nondeterminism (partially CPU-offloaded inference), **not an effect of the ladder**. The win must not be attributed to the adaptive limit.
+- `+THINK`: attempt 1 truncated at turn 5; both truncated `write_file` calls were discarded (not executed) and the turn was re-requested at 4096. The escalated turn produced a 2859-token `write_file` whose code had a `SyntaxError` (unmatched `}`). Attempt 2 with thinking also ended at the deadline (a 2407-token turn, 130 s). Thinking on retry did not help here.
+- `+ASSIST`: both attempts truncated at the first write (discarded and escalated). The cloud call carried **no failing-test lines** (attempt 1 ended at the time limit, so the loop had no verification output) and **agy returned an empty reply**: in headless mode it tried to run a command, the tool call was auto-denied, and the turn ended with `status: SUCCESS`, empty `response`, `denied_actions: RunCommand` (2,490 input / 315 output tokens). No guidance reached attempt 2. Assist was therefore **not measured** in this run.
+
+**Fixes made after this run (`645133a`, not in the measured commit):** cloud payloads never fall back to raw verification output; when the previous attempt ended without verification the loop runs the verification command before asking the cloud; an agy reply with empty text and `denied_actions` raises `CloudArchitectError`; the assist and Harness² proposer prompts forbid tool use. Earlier, `0c1f186`/`6eb79f0` had already made verification trusted and failure hints specific (sections 6–7).
+
+**What this run supports.** Discarding truncated tool calls works as designed (never executed). The adaptive limit, thinking on retry and cloud assist showed no measured benefit on H6; the one H6 success was variance. Limits: one seed, one hard task, two attempts, 300 s per attempt; a single agy call costs ~30k tokens including agy's own system prompt.

@@ -1,0 +1,3291 @@
+{
+  "experiment": "GEMMA-ORION Phase 2B Recovery Controller Ablation (P0 vs P1_REACTIVE vs P1_STAGE vs P1)",
+  "timestamp_utc": "2026-10-19T14:25:36Z",
+  "git_commit": "76576c0",
+  "git_head": "76576c0",
+  "git_dirty": false,
+  "working_tree_diff_sha256": "clean",
+  "seeds": [
+    303
+  ],
+  "task_deadline_s": 300.0,
+  "attempts": 2,
+  "cloud_backend": "agy",
+  "counterbalanced_seed_order": true,
+  "policies": {
+    "P1_STAGE": {
+      "label": "P1_STAGE (Proactive [STAGE STATE] tool annotations only, P0 recovery)",
+      "env": {
+        "OLLAMA_THINK": "false",
+        "OLLAMA_NUM_CTX": "16384",
+        "OLLAMA_NUM_PREDICT": "2048",
+        "OLLAMA_RECOVERY_POLICY": "P1_STAGE",
+        "OLLAMA_ADAPTIVE_NUM_PREDICT": "0"
+      },
+      "seed_runs": [
+        {
+          "seed": 303,
+          "tasks": [
+            {
+              "task_id": "H6_parse_duration_multi_defect_fix",
+              "policy_id": "P1_STAGE",
+              "seed": 303,
+              "worker_reported_success": true,
+              "independently_verified": false,
+              "pipeline_verified": false,
+              "llm_native_completion": false,
+              "fallback_used": false,
+              "turns": 13,
+              "tool_calls_count": 12,
+              "tool_call_efficiency": 0.5833,
+              "wall_clock_s": 286.3929,
+              "peak_vram_mib": 6949,
+              "error": null,
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 28459,
+                "output_tokens": 4916,
+                "prompt_eval_cached_tokens": 9417,
+                "eval_duration_s": 261.4051,
+                "prompt_eval_duration_s": 22.4511,
+                "wall_clock_s": 286.3557,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 12,
+                "read_file_calls": 6,
+                "unique_files_read": 2,
+                "repeated_file_reads": 3,
+                "total_repeated_file_reads": 4,
+                "edit_calls": 4,
+                "test_command_calls": 2,
+                "invalid_tool_arguments": 2,
+                "context_overflows": 0,
+                "truncated_generations": 2,
+                "budget_escalations": 0,
+                "discarded_truncated_tool_calls": 0,
+                "compacted_messages": 94,
+                "successful_verifications": 1,
+                "recovery_policy": "P1_STAGE",
+                "reactive_recovery_enabled": false,
+                "stage_hints_enabled": true,
+                "recovery_attempts": 0,
+                "stage_hints_emitted": 12,
+                "repeated_unchanged_reads": 3,
+                "recovery_events": [],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1034,
+                    "output_tokens": 18,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 0.885,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1296,
+                    "output_tokens": 24,
+                    "prompt_eval_cached_tokens": 1030,
+                    "eval_duration_s": 1.217,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1531,
+                    "output_tokens": 31,
+                    "prompt_eval_cached_tokens": 1296,
+                    "eval_duration_s": 1.5999,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_durations.py",
+                        "success": false,
+                        "error": "ix_yllyzbzp/test_durations.py\", line 13, in test_invalid_text_raises\n    with self.assertRaises(ValueError):\n         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nFAILED (failures=2)"
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 1951,
+                    "output_tokens": 26,
+                    "prompt_eval_cached_tokens": 1531,
+                    "eval_duration_s": 1.3294,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 2078,
+                    "output_tokens": 2048,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 108.7665,
+                    "thinking_chars": 0,
+                    "done_reason": "length",
+                    "truncated": true,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "write_file",
+                        "target": "",
+                        "success": false,
+                        "error": "Invalid arguments for tool 'write_file': WorkspaceToolSuite.write_file() missing 1 required positional argument: 'path'"
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 6,
+                    "input_tokens": 2157,
+                    "output_tokens": 84,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 4.398,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "patch_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 7,
+                    "input_tokens": 2032,
+                    "output_tokens": 22,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.1123,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 8,
+                    "input_tokens": 2189,
+                    "output_tokens": 24,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.2303,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 9,
+                    "input_tokens": 2450,
+                    "output_tokens": 2048,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 109.5336,
+                    "thinking_chars": 0,
+                    "done_reason": "length",
+                    "truncated": true,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "patch_file",
+                        "target": "durations.py",
+                        "success": false,
+                        "error": "Invalid arguments for tool 'patch_file': WorkspaceToolSuite.patch_file() missing 1 required positional argument: 'target_content'"
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 10,
+                    "input_tokens": 2662,
+                    "output_tokens": 22,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.1149,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 11,
+                    "input_tokens": 2765,
+                    "output_tokens": 479,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 25.5226,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "write_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 12,
+                    "input_tokens": 3177,
+                    "output_tokens": 25,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.2843,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 13,
+                    "input_tokens": 3137,
+                    "output_tokens": 65,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 3.4114,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [],
+                    "attempt": 1
+                  }
+                ],
+                "attempts_detail": [
+                  {
+                    "think": null,
+                    "had_cloud_guidance": false,
+                    "success": true,
+                    "error": null
+                  }
+                ],
+                "think_retry_used": false,
+                "ladder_steps_used": [],
+                "cloud_assist_calls": 0,
+                "solved_with_cloud_assist": false,
+                "seed": 303,
+                "policy_id": "P1_STAGE",
+                "visible_tests_passed": true,
+                "holdout_tests_passed": false,
+                "pipeline_verified": false,
+                "llm_native_completion": false,
+                "fallback_used": false,
+                "tool_call_efficiency": 0.5833,
+                "initial_workspace_sha256": "4194549173ebdf6e48ce360849f8381a0868a430901b1c60a3ce00455107e141",
+                "final_workspace_sha256": "7de4ee739eac36986ad66e54de7e79bb6beabae4954653f1ec6d089979d43792",
+                "workspace_modified": true,
+                "workspace_diff": "--- a/durations.py\n+++ b/durations.py\n@@ -1,7 +1,7 @@\n \"\"\"Human-readable duration parsing.\"\"\"\n import re\n \n-UNITS = {'h': 60, 'm': 60, 's': 1}\n+UNITS = {'h': 3600, 'm': 60, 's': 1}\n \n def parse_duration(text: str) -> int:\n     \"\"\"Parse a duration such as \"1h30m\", \"45s\" or \"2h5s\" into total seconds.\n@@ -11,7 +11,30 @@\n     ValueError for an empty string, an unknown unit, a number without a unit, or\n     any other text that does not follow this format.\n     \"\"\"\n+    text = text.strip()\n+    if not text:\n+        raise ValueError(\"Empty string\")\n+\n+    # Check if the text matches the format exactly.\n+    # The format is: optional h, optional m, optional s.\n+    # Each unit must be preceded by a number.\n+    # Example: \"1h30m\", \"45s\", \"2h5s\"\n+    # We need to ensure no extra characters are present.\n+    \n+    # Regex to find all matches of (number)(unit)\n+    matches = re.findall(r'(\\d+)([hms])', text)\n+    \n+    # Check if the entire string is composed of these matches\n+    # We can do this by checking if the reconstructed string matches the original.\n+    reconstructed = \"\".join(f\"{val}{unit}\" for val, unit in matches)\n+    if reconstructed != text:\n+        # This handles cases like \"1h 30m\" (space), \"1h30x\" (wrong unit), \"10\" (no unit)\n+        raise ValueError(\"Invalid format\")\n+\n+    if not matches:\n+        raise ValueError(\"No units found\")\n+\n     total = 0\n-    for value, unit in re.findall(r'(\\d+)([hms])', text):\n+    for value, unit in matches:\n         total += int(value) * UNITS[unit]\n     return total\n",
+                "attempts_used": 1,
+                "cloud_assist_tokens": 0,
+                "cloud_assist_events": []
+              }
+            },
+            {
+              "task_id": "H7_rolling_mean_multi_defect_fix",
+              "policy_id": "P1_STAGE",
+              "seed": 303,
+              "worker_reported_success": true,
+              "independently_verified": true,
+              "pipeline_verified": true,
+              "llm_native_completion": true,
+              "fallback_used": false,
+              "turns": 6,
+              "tool_calls_count": 5,
+              "tool_call_efficiency": 1.0,
+              "wall_clock_s": 28.4297,
+              "peak_vram_mib": 6949,
+              "error": null,
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 10550,
+                "output_tokens": 384,
+                "prompt_eval_cached_tokens": 5421,
+                "eval_duration_s": 20.1197,
+                "prompt_eval_duration_s": 6.7701,
+                "wall_clock_s": 28.3864,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 5,
+                "read_file_calls": 2,
+                "unique_files_read": 2,
+                "repeated_file_reads": 0,
+                "total_repeated_file_reads": 0,
+                "edit_calls": 1,
+                "test_command_calls": 2,
+                "invalid_tool_arguments": 0,
+                "context_overflows": 0,
+                "truncated_generations": 0,
+                "budget_escalations": 0,
+                "discarded_truncated_tool_calls": 0,
+                "compacted_messages": 6,
+                "successful_verifications": 1,
+                "recovery_policy": "P1_STAGE",
+                "reactive_recovery_enabled": false,
+                "stage_hints_enabled": true,
+                "recovery_attempts": 0,
+                "stage_hints_emitted": 5,
+                "repeated_unchanged_reads": 0,
+                "recovery_events": [],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1028,
+                    "output_tokens": 17,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 0.8236,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "rolling.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1238,
+                    "output_tokens": 23,
+                    "prompt_eval_cached_tokens": 1023,
+                    "eval_duration_s": 1.1342,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_rolling.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1492,
+                    "output_tokens": 30,
+                    "prompt_eval_cached_tokens": 1238,
+                    "eval_duration_s": 1.5435,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_rolling.py",
+                        "success": false,
+                        "error": "    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Lists differ: [1.5, 2.5] != [3.0, 5.0]\n\nFirst differing element 0:\n1.5\n3.0\n\n- [1.5, 2.5]\n+ [3.0, 5.0]\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nFAILED (failures=3)"
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 2139,
+                    "output_tokens": 230,
+                    "prompt_eval_cached_tokens": 1492,
+                    "eval_duration_s": 12.1994,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "write_file",
+                        "target": "rolling.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 2375,
+                    "output_tokens": 30,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.5579,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_rolling.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 6,
+                    "input_tokens": 2278,
+                    "output_tokens": 54,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 2.8612,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [],
+                    "attempt": 1
+                  }
+                ],
+                "attempts_detail": [
+                  {
+                    "think": null,
+                    "had_cloud_guidance": false,
+                    "success": true,
+                    "error": null
+                  }
+                ],
+                "think_retry_used": false,
+                "ladder_steps_used": [],
+                "cloud_assist_calls": 0,
+                "solved_with_cloud_assist": false,
+                "seed": 303,
+                "policy_id": "P1_STAGE",
+                "visible_tests_passed": true,
+                "holdout_tests_passed": true,
+                "pipeline_verified": true,
+                "llm_native_completion": true,
+                "fallback_used": false,
+                "tool_call_efficiency": 1.0,
+                "initial_workspace_sha256": "5438347bd33496839d3e744a561a57c203b696616341f7d1d4734e08628ea0c5",
+                "final_workspace_sha256": "cb1ad6f13cc4140986ea7270ab020c9bf8ab1440f89355c81b651921fedac145",
+                "workspace_modified": true,
+                "workspace_diff": "--- a/rolling.py\n+++ b/rolling.py\n@@ -8,7 +8,10 @@\n     window > len(values). Raise ValueError if window is not an int or is < 1\n     (bool is not accepted as an int).\n     \"\"\"\n+    if not isinstance(window, int) or isinstance(window, bool) or window < 1:\n+        raise ValueError(\"window must be an integer >= 1\")\n+    \n     out: List[float] = []\n-    for i in range(len(values) - window):\n-        out.append(sum(values[i:i + window]) / len(values))\n+    for i in range(len(values) - window + 1):\n+        out.append(sum(values[i:i + window]) / window)\n     return out\n",
+                "attempts_used": 1,
+                "cloud_assist_tokens": 0,
+                "cloud_assist_events": []
+              }
+            },
+            {
+              "task_id": "H8_slugify_multi_defect_fix",
+              "policy_id": "P1_STAGE",
+              "seed": 303,
+              "worker_reported_success": true,
+              "independently_verified": true,
+              "pipeline_verified": true,
+              "llm_native_completion": true,
+              "fallback_used": false,
+              "turns": 6,
+              "tool_calls_count": 5,
+              "tool_call_efficiency": 1.0,
+              "wall_clock_s": 26.1802,
+              "peak_vram_mib": 6949,
+              "error": null,
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 9979,
+                "output_tokens": 349,
+                "prompt_eval_cached_tokens": 5285,
+                "eval_duration_s": 18.1318,
+                "prompt_eval_duration_s": 6.5172,
+                "wall_clock_s": 26.1391,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 5,
+                "read_file_calls": 2,
+                "unique_files_read": 2,
+                "repeated_file_reads": 0,
+                "total_repeated_file_reads": 0,
+                "edit_calls": 1,
+                "test_command_calls": 2,
+                "invalid_tool_arguments": 0,
+                "context_overflows": 0,
+                "truncated_generations": 0,
+                "budget_escalations": 0,
+                "discarded_truncated_tool_calls": 0,
+                "compacted_messages": 6,
+                "successful_verifications": 1,
+                "recovery_policy": "P1_STAGE",
+                "reactive_recovery_enabled": false,
+                "stage_hints_enabled": true,
+                "recovery_attempts": 0,
+                "stage_hints_emitted": 5,
+                "repeated_unchanged_reads": 0,
+                "recovery_events": [],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1031,
+                    "output_tokens": 18,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 0.8834,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "slugs.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1190,
+                    "output_tokens": 24,
+                    "prompt_eval_cached_tokens": 1027,
+                    "eval_duration_s": 1.1848,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_slugs.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1400,
+                    "output_tokens": 31,
+                    "prompt_eval_cached_tokens": 1190,
+                    "eval_duration_s": 1.571,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_slugs.py",
+                        "success": false,
+                        "error": "est_slugs.py\", line 6, in test_runs_collapse\n    self.assertEqual(slugify('a  b'), 'a-b')\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 'a--b' != 'a-b'\n- a--b\n?  -\n+ a-b\n\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nFAILED (failures=3)"
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 1976,
+                    "output_tokens": 171,
+                    "prompt_eval_cached_tokens": 1400,
+                    "eval_duration_s": 9.0358,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "write_file",
+                        "target": "slugs.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 2215,
+                    "output_tokens": 31,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.6015,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_slugs.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 6,
+                    "input_tokens": 2167,
+                    "output_tokens": 74,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 3.8552,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [],
+                    "attempt": 1
+                  }
+                ],
+                "attempts_detail": [
+                  {
+                    "think": null,
+                    "had_cloud_guidance": false,
+                    "success": true,
+                    "error": null
+                  }
+                ],
+                "think_retry_used": false,
+                "ladder_steps_used": [],
+                "cloud_assist_calls": 0,
+                "solved_with_cloud_assist": false,
+                "seed": 303,
+                "policy_id": "P1_STAGE",
+                "visible_tests_passed": true,
+                "holdout_tests_passed": true,
+                "pipeline_verified": true,
+                "llm_native_completion": true,
+                "fallback_used": false,
+                "tool_call_efficiency": 1.0,
+                "initial_workspace_sha256": "30f5c657577359a70aaa8a051ce57d17e6b460f36bc1a67ac93963f5dff2067a",
+                "final_workspace_sha256": "4630f7ab8e381e0a2cb5f19dd914131d1074000538d2e5755ffb43ef9ddcdf17",
+                "workspace_modified": true,
+                "workspace_diff": "--- a/slugs.py\n+++ b/slugs.py\n@@ -8,4 +8,7 @@\n     digits becomes a single hyphen, and the slug never starts or ends with a\n     hyphen. Raise ValueError when no ASCII letter or digit remains.\n     \"\"\"\n-    return re.sub(r'[^A-Za-z0-9]', '-', title).lower()\n+    slug = re.sub(r'[^A-Za-z0-9]+', '-', title).strip('-').lower()\n+    if not any(c.isalnum() for c in slug):\n+        raise ValueError(\"No ASCII letters or digits remain.\")\n+    return slug\n",
+                "attempts_used": 1,
+                "cloud_assist_tokens": 0,
+                "cloud_assist_events": []
+              }
+            }
+          ],
+          "aggregate": {
+            "tasks_total": 3,
+            "pipeline_verified_count": 2,
+            "pipeline_verified_rate": 0.6667,
+            "llm_native_completion_count": 2,
+            "llm_native_completion_rate": 0.6667,
+            "fallback_used_count": 0,
+            "total_input_tokens": 48988,
+            "total_output_tokens": 5649,
+            "total_tokens": 54637,
+            "total_wall_clock_s": 341.0028,
+            "truncated_generations": 2,
+            "recovery_attempts": 0,
+            "stage_hints_emitted": 22,
+            "repeated_file_reads": 3,
+            "peak_vram_mib": 6949
+          }
+        }
+      ],
+      "summary_across_seeds": {
+        "pipeline_verified_rate": {
+          "mean": 0.6667,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 0.6667,
+          "max": 0.6667
+        },
+        "llm_native_completion_rate": {
+          "mean": 0.6667,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 0.6667,
+          "max": 0.6667
+        },
+        "total_wall_clock_s": {
+          "mean": 341.0028,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 341.0028,
+          "max": 341.0028
+        },
+        "total_tokens": {
+          "mean": 54637.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 54637.0,
+          "max": 54637.0
+        },
+        "truncated_generations": {
+          "mean": 2.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 2.0,
+          "max": 2.0
+        },
+        "recovery_attempts": {
+          "mean": 0.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "stage_hints_emitted": {
+          "mean": 22.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 22.0,
+          "max": 22.0
+        },
+        "repeated_file_reads": {
+          "mean": 3.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 3.0,
+          "max": 3.0
+        }
+      }
+    },
+    "P1_STAGE_ADAPTIVE": {
+      "label": "P1_STAGE + re-request truncated tool calls with num_predict 4096",
+      "env": {
+        "OLLAMA_THINK": "false",
+        "OLLAMA_NUM_CTX": "16384",
+        "OLLAMA_NUM_PREDICT": "2048",
+        "OLLAMA_RECOVERY_POLICY": "P1_STAGE",
+        "OLLAMA_ADAPTIVE_NUM_PREDICT": "1"
+      },
+      "seed_runs": [
+        {
+          "seed": 303,
+          "tasks": [
+            {
+              "task_id": "H6_parse_duration_multi_defect_fix",
+              "policy_id": "P1_STAGE_ADAPTIVE",
+              "seed": 303,
+              "worker_reported_success": true,
+              "independently_verified": true,
+              "pipeline_verified": true,
+              "llm_native_completion": true,
+              "fallback_used": false,
+              "turns": 12,
+              "tool_calls_count": 11,
+              "tool_call_efficiency": 0.8182,
+              "wall_clock_s": 188.802,
+              "peak_vram_mib": 6949,
+              "error": null,
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 31040,
+                "output_tokens": 3022,
+                "prompt_eval_cached_tokens": 8861,
+                "eval_duration_s": 159.57,
+                "prompt_eval_duration_s": 25.2689,
+                "wall_clock_s": 188.7606,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 11,
+                "read_file_calls": 5,
+                "unique_files_read": 2,
+                "repeated_file_reads": 2,
+                "total_repeated_file_reads": 3,
+                "edit_calls": 4,
+                "test_command_calls": 2,
+                "invalid_tool_arguments": 0,
+                "context_overflows": 0,
+                "truncated_generations": 0,
+                "budget_escalations": 0,
+                "discarded_truncated_tool_calls": 0,
+                "compacted_messages": 75,
+                "successful_verifications": 1,
+                "recovery_policy": "P1_STAGE",
+                "reactive_recovery_enabled": false,
+                "stage_hints_enabled": true,
+                "recovery_attempts": 0,
+                "stage_hints_emitted": 11,
+                "repeated_unchanged_reads": 2,
+                "recovery_events": [],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1034,
+                    "output_tokens": 18,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 0.8822,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1296,
+                    "output_tokens": 24,
+                    "prompt_eval_cached_tokens": 1030,
+                    "eval_duration_s": 1.2226,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1531,
+                    "output_tokens": 31,
+                    "prompt_eval_cached_tokens": 1296,
+                    "eval_duration_s": 1.6077,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_durations.py",
+                        "success": false,
+                        "error": "ix_towbxsfl/test_durations.py\", line 13, in test_invalid_text_raises\n    with self.assertRaises(ValueError):\n         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nFAILED (failures=2)"
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 1959,
+                    "output_tokens": 26,
+                    "prompt_eval_cached_tokens": 1531,
+                    "eval_duration_s": 1.317,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 2086,
+                    "output_tokens": 595,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 31.2841,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "write_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 6,
+                    "input_tokens": 2662,
+                    "output_tokens": 705,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 37.3425,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "write_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 7,
+                    "input_tokens": 3155,
+                    "output_tokens": 22,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.1192,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 8,
+                    "input_tokens": 3332,
+                    "output_tokens": 24,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.2332,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 9,
+                    "input_tokens": 2985,
+                    "output_tokens": 929,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 49.183,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "patch_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 10,
+                    "input_tokens": 3970,
+                    "output_tokens": 551,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 29.2835,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "write_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 11,
+                    "input_tokens": 3945,
+                    "output_tokens": 31,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.6145,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 12,
+                    "input_tokens": 3085,
+                    "output_tokens": 66,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 3.4806,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [],
+                    "attempt": 1
+                  }
+                ],
+                "attempts_detail": [
+                  {
+                    "think": null,
+                    "had_cloud_guidance": false,
+                    "success": true,
+                    "error": null
+                  }
+                ],
+                "think_retry_used": false,
+                "ladder_steps_used": [],
+                "cloud_assist_calls": 0,
+                "solved_with_cloud_assist": false,
+                "seed": 303,
+                "policy_id": "P1_STAGE_ADAPTIVE",
+                "visible_tests_passed": true,
+                "holdout_tests_passed": true,
+                "pipeline_verified": true,
+                "llm_native_completion": true,
+                "fallback_used": false,
+                "tool_call_efficiency": 0.8182,
+                "initial_workspace_sha256": "4194549173ebdf6e48ce360849f8381a0868a430901b1c60a3ce00455107e141",
+                "final_workspace_sha256": "0baef052a1f6651ed86213b3371efda776464117f448283e317f831c0119cf4d",
+                "workspace_modified": true,
+                "workspace_diff": "--- a/durations.py\n+++ b/durations.py\n@@ -1,7 +1,7 @@\n \"\"\"Human-readable duration parsing.\"\"\"\n import re\n \n-UNITS = {'h': 60, 'm': 60, 's': 1}\n+UNITS = {'h': 3600, 'm': 60, 's': 1}\n \n def parse_duration(text: str) -> int:\n     \"\"\"Parse a duration such as \"1h30m\", \"45s\" or \"2h5s\" into total seconds.\n@@ -11,7 +11,31 @@\n     ValueError for an empty string, an unknown unit, a number without a unit, or\n     any other text that does not follow this format.\n     \"\"\"\n+    text = text.strip()\n+    if not text:\n+        raise ValueError(\"Empty string\")\n+\n+    # The regex matches the entire string consisting of optional h, m, s components.\n+    # It ensures that only valid units are used and they are in the correct order.\n+    # It also ensures that there are no extra characters.\n+    match = re.fullmatch(r'(\\d+h)?(\\d+m)?(\\d+s)?', text)\n+    \n+    # If the regex doesn't match the whole string, or if it matches but no units are present,\n+    # or if there are any characters that don't fit the pattern.\n+    if not match or not any(m for m in match.groups() if m):\n+        raise ValueError(\"Invalid format\")\n+\n     total = 0\n-    for value, unit in re.findall(r'(\\d+)([hms])', text):\n+    # Extract components\n+    # We use a more specific regex to ensure we only capture valid units and their preceding numbers.\n+    # Since the fullmatch already validated the structure, we can just extract.\n+    parts = re.findall(r'(\\d+)([hms])', text)\n+    for value, unit in parts:\n         total += int(value) * UNITS[unit]\n+    \n+    # Final check: ensure the length of the matched parts equals the length of the input.\n+    # This catches cases like \"1h 30m\" (space) or \"1h30m \" (trailing space handled by strip).\n+    if len(\"\".join(p[0] + p[1] for p in parts)) != len(text):\n+        raise ValueError(\"Invalid format\")\n+\n     return total\n",
+                "attempts_used": 1,
+                "cloud_assist_tokens": 0,
+                "cloud_assist_events": []
+              }
+            },
+            {
+              "task_id": "H7_rolling_mean_multi_defect_fix",
+              "policy_id": "P1_STAGE_ADAPTIVE",
+              "seed": 303,
+              "worker_reported_success": true,
+              "independently_verified": true,
+              "pipeline_verified": true,
+              "llm_native_completion": true,
+              "fallback_used": false,
+              "turns": 6,
+              "tool_calls_count": 5,
+              "tool_call_efficiency": 1.0,
+              "wall_clock_s": 29.1195,
+              "peak_vram_mib": 6949,
+              "error": null,
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 10586,
+                "output_tokens": 392,
+                "prompt_eval_cached_tokens": 5421,
+                "eval_duration_s": 20.6564,
+                "prompt_eval_duration_s": 6.8497,
+                "wall_clock_s": 29.0742,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 5,
+                "read_file_calls": 2,
+                "unique_files_read": 2,
+                "repeated_file_reads": 0,
+                "total_repeated_file_reads": 0,
+                "edit_calls": 1,
+                "test_command_calls": 2,
+                "invalid_tool_arguments": 0,
+                "context_overflows": 0,
+                "truncated_generations": 0,
+                "budget_escalations": 0,
+                "discarded_truncated_tool_calls": 0,
+                "compacted_messages": 6,
+                "successful_verifications": 1,
+                "recovery_policy": "P1_STAGE",
+                "reactive_recovery_enabled": false,
+                "stage_hints_enabled": true,
+                "recovery_attempts": 0,
+                "stage_hints_emitted": 5,
+                "repeated_unchanged_reads": 0,
+                "recovery_events": [],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1028,
+                    "output_tokens": 17,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 0.8516,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "rolling.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1238,
+                    "output_tokens": 23,
+                    "prompt_eval_cached_tokens": 1023,
+                    "eval_duration_s": 1.1502,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_rolling.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1492,
+                    "output_tokens": 30,
+                    "prompt_eval_cached_tokens": 1238,
+                    "eval_duration_s": 1.5488,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_rolling.py",
+                        "success": false,
+                        "error": "    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Lists differ: [1.5, 2.5] != [3.0, 5.0]\n\nFirst differing element 0:\n1.5\n3.0\n\n- [1.5, 2.5]\n+ [3.0, 5.0]\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nFAILED (failures=3)"
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 2151,
+                    "output_tokens": 230,
+                    "prompt_eval_cached_tokens": 1492,
+                    "eval_duration_s": 12.249,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "write_file",
+                        "target": "rolling.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 2387,
+                    "output_tokens": 30,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.568,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_rolling.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 6,
+                    "input_tokens": 2290,
+                    "output_tokens": 62,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 3.2887,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [],
+                    "attempt": 1
+                  }
+                ],
+                "attempts_detail": [
+                  {
+                    "think": null,
+                    "had_cloud_guidance": false,
+                    "success": true,
+                    "error": null
+                  }
+                ],
+                "think_retry_used": false,
+                "ladder_steps_used": [],
+                "cloud_assist_calls": 0,
+                "solved_with_cloud_assist": false,
+                "seed": 303,
+                "policy_id": "P1_STAGE_ADAPTIVE",
+                "visible_tests_passed": true,
+                "holdout_tests_passed": true,
+                "pipeline_verified": true,
+                "llm_native_completion": true,
+                "fallback_used": false,
+                "tool_call_efficiency": 1.0,
+                "initial_workspace_sha256": "5438347bd33496839d3e744a561a57c203b696616341f7d1d4734e08628ea0c5",
+                "final_workspace_sha256": "cb1ad6f13cc4140986ea7270ab020c9bf8ab1440f89355c81b651921fedac145",
+                "workspace_modified": true,
+                "workspace_diff": "--- a/rolling.py\n+++ b/rolling.py\n@@ -8,7 +8,10 @@\n     window > len(values). Raise ValueError if window is not an int or is < 1\n     (bool is not accepted as an int).\n     \"\"\"\n+    if not isinstance(window, int) or isinstance(window, bool) or window < 1:\n+        raise ValueError(\"window must be an integer >= 1\")\n+    \n     out: List[float] = []\n-    for i in range(len(values) - window):\n-        out.append(sum(values[i:i + window]) / len(values))\n+    for i in range(len(values) - window + 1):\n+        out.append(sum(values[i:i + window]) / window)\n     return out\n",
+                "attempts_used": 1,
+                "cloud_assist_tokens": 0,
+                "cloud_assist_events": []
+              }
+            },
+            {
+              "task_id": "H8_slugify_multi_defect_fix",
+              "policy_id": "P1_STAGE_ADAPTIVE",
+              "seed": 303,
+              "worker_reported_success": true,
+              "independently_verified": true,
+              "pipeline_verified": true,
+              "llm_native_completion": true,
+              "fallback_used": false,
+              "turns": 6,
+              "tool_calls_count": 5,
+              "tool_call_efficiency": 1.0,
+              "wall_clock_s": 26.2065,
+              "peak_vram_mib": 6949,
+              "error": null,
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 9997,
+                "output_tokens": 347,
+                "prompt_eval_cached_tokens": 5285,
+                "eval_duration_s": 18.0533,
+                "prompt_eval_duration_s": 6.6058,
+                "wall_clock_s": 26.1629,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 5,
+                "read_file_calls": 2,
+                "unique_files_read": 2,
+                "repeated_file_reads": 0,
+                "total_repeated_file_reads": 0,
+                "edit_calls": 1,
+                "test_command_calls": 2,
+                "invalid_tool_arguments": 0,
+                "context_overflows": 0,
+                "truncated_generations": 0,
+                "budget_escalations": 0,
+                "discarded_truncated_tool_calls": 0,
+                "compacted_messages": 6,
+                "successful_verifications": 1,
+                "recovery_policy": "P1_STAGE",
+                "reactive_recovery_enabled": false,
+                "stage_hints_enabled": true,
+                "recovery_attempts": 0,
+                "stage_hints_emitted": 5,
+                "repeated_unchanged_reads": 0,
+                "recovery_events": [],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1031,
+                    "output_tokens": 18,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 0.8966,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "slugs.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1190,
+                    "output_tokens": 24,
+                    "prompt_eval_cached_tokens": 1027,
+                    "eval_duration_s": 1.1931,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_slugs.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1400,
+                    "output_tokens": 31,
+                    "prompt_eval_cached_tokens": 1190,
+                    "eval_duration_s": 1.5857,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_slugs.py",
+                        "success": false,
+                        "error": "est_slugs.py\", line 6, in test_runs_collapse\n    self.assertEqual(slugify('a  b'), 'a-b')\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 'a--b' != 'a-b'\n- a--b\n?  -\n+ a-b\n\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nFAILED (failures=3)"
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 1982,
+                    "output_tokens": 171,
+                    "prompt_eval_cached_tokens": 1400,
+                    "eval_duration_s": 9.0264,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "write_file",
+                        "target": "slugs.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 2221,
+                    "output_tokens": 31,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 1.5812,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_slugs.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 6,
+                    "input_tokens": 2173,
+                    "output_tokens": 72,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 3.7704,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [],
+                    "attempt": 1
+                  }
+                ],
+                "attempts_detail": [
+                  {
+                    "think": null,
+                    "had_cloud_guidance": false,
+                    "success": true,
+                    "error": null
+                  }
+                ],
+                "think_retry_used": false,
+                "ladder_steps_used": [],
+                "cloud_assist_calls": 0,
+                "solved_with_cloud_assist": false,
+                "seed": 303,
+                "policy_id": "P1_STAGE_ADAPTIVE",
+                "visible_tests_passed": true,
+                "holdout_tests_passed": true,
+                "pipeline_verified": true,
+                "llm_native_completion": true,
+                "fallback_used": false,
+                "tool_call_efficiency": 1.0,
+                "initial_workspace_sha256": "30f5c657577359a70aaa8a051ce57d17e6b460f36bc1a67ac93963f5dff2067a",
+                "final_workspace_sha256": "1987e165f895eea89de76bf240dc158982fcfd5b2b16c38c61f0b5eb3e2da6f8",
+                "workspace_modified": true,
+                "workspace_diff": "--- a/slugs.py\n+++ b/slugs.py\n@@ -8,4 +8,7 @@\n     digits becomes a single hyphen, and the slug never starts or ends with a\n     hyphen. Raise ValueError when no ASCII letter or digit remains.\n     \"\"\"\n-    return re.sub(r'[^A-Za-z0-9]', '-', title).lower()\n+    slug = re.sub(r'[^A-Za-z0-9]+', '-', title).strip('-').lower()\n+    if not any(c.isalnum() for c in slug):\n+        raise ValueError(\"No ASCII letter or digit remains.\")\n+    return slug\n",
+                "attempts_used": 1,
+                "cloud_assist_tokens": 0,
+                "cloud_assist_events": []
+              }
+            }
+          ],
+          "aggregate": {
+            "tasks_total": 3,
+            "pipeline_verified_count": 3,
+            "pipeline_verified_rate": 1.0,
+            "llm_native_completion_count": 3,
+            "llm_native_completion_rate": 1.0,
+            "fallback_used_count": 0,
+            "total_input_tokens": 51623,
+            "total_output_tokens": 3761,
+            "total_tokens": 55384,
+            "total_wall_clock_s": 244.128,
+            "truncated_generations": 0,
+            "recovery_attempts": 0,
+            "stage_hints_emitted": 21,
+            "repeated_file_reads": 2,
+            "peak_vram_mib": 6949
+          }
+        }
+      ],
+      "summary_across_seeds": {
+        "pipeline_verified_rate": {
+          "mean": 1.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "llm_native_completion_rate": {
+          "mean": 1.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "total_wall_clock_s": {
+          "mean": 244.128,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 244.128,
+          "max": 244.128
+        },
+        "total_tokens": {
+          "mean": 55384.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 55384.0,
+          "max": 55384.0
+        },
+        "truncated_generations": {
+          "mean": 0.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "recovery_attempts": {
+          "mean": 0.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "stage_hints_emitted": {
+          "mean": 21.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 21.0,
+          "max": 21.0
+        },
+        "repeated_file_reads": {
+          "mean": 2.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 2.0,
+          "max": 2.0
+        }
+      }
+    },
+    "P1_STAGE_ADAPTIVE_THINK": {
+      "label": "P1_STAGE_ADAPTIVE + Thinking Mode on the retry attempt",
+      "env": {
+        "OLLAMA_THINK": "false",
+        "OLLAMA_NUM_CTX": "16384",
+        "OLLAMA_NUM_PREDICT": "2048",
+        "OLLAMA_RECOVERY_POLICY": "P1_STAGE",
+        "OLLAMA_ADAPTIVE_NUM_PREDICT": "1"
+      },
+      "seed_runs": [
+        {
+          "seed": 303,
+          "tasks": [
+            {
+              "task_id": "H6_parse_duration_multi_defect_fix",
+              "policy_id": "P1_STAGE_ADAPTIVE_THINK",
+              "seed": 303,
+              "worker_reported_success": false,
+              "independently_verified": false,
+              "pipeline_verified": false,
+              "llm_native_completion": false,
+              "fallback_used": false,
+              "turns": 13,
+              "tool_calls_count": 11,
+              "tool_call_efficiency": 0.8182,
+              "wall_clock_s": 600.1163,
+              "peak_vram_mib": 6951,
+              "error": "Subtask stopped: attempt limit reached (2 attempts)",
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": true,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 22603,
+                "output_tokens": 7680,
+                "prompt_eval_cached_tokens": 11688,
+                "eval_duration_s": 410.6826,
+                "prompt_eval_duration_s": 14.5591,
+                "wall_clock_s": 299.9408,
+                "turns_with_thinking": 5,
+                "thinking_chars": 7344,
+                "tool_calls_count": 11,
+                "read_file_calls": 7,
+                "unique_files_read": 3,
+                "repeated_file_reads": 2,
+                "total_repeated_file_reads": 2,
+                "edit_calls": 1,
+                "test_command_calls": 3,
+                "invalid_tool_arguments": 0,
+                "context_overflows": 0,
+                "truncated_generations": 1,
+                "budget_escalations": 1,
+                "discarded_truncated_tool_calls": 2,
+                "compacted_messages": 13,
+                "successful_verifications": 0,
+                "recovery_policy": "P1_STAGE",
+                "reactive_recovery_enabled": false,
+                "stage_hints_enabled": true,
+                "recovery_attempts": 0,
+                "stage_hints_emitted": 11,
+                "repeated_unchanged_reads": 1,
+                "recovery_events": [],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1034,
+                    "output_tokens": 18,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 0.8834,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1296,
+                    "output_tokens": 24,
+                    "prompt_eval_cached_tokens": 1030,
+                    "eval_duration_s": 1.2147,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1531,
+                    "output_tokens": 31,
+                    "prompt_eval_cached_tokens": 1296,
+                    "eval_duration_s": 1.6053,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_durations.py",
+                        "success": false,
+                        "error": "ix_nf6sas9c/test_durations.py\", line 13, in test_invalid_text_raises\n    with self.assertRaises(ValueError):\n         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nFAILED (failures=2)"
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 1967,
+                    "output_tokens": 26,
+                    "prompt_eval_cached_tokens": 1531,
+                    "eval_duration_s": 1.3298,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 2094,
+                    "output_tokens": 2048,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 108.7499,
+                    "thinking_chars": 0,
+                    "done_reason": "length",
+                    "truncated": true,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [],
+                    "discarded_tool_calls": [
+                      "write_file",
+                      "write_file"
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 6,
+                    "input_tokens": 2094,
+                    "output_tokens": 2859,
+                    "prompt_eval_cached_tokens": 556,
+                    "eval_duration_s": 152.7179,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 4096,
+                    "budget_escalated": true,
+                    "tool_calls": [
+                      {
+                        "name": "write_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      },
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_durations.py",
+                        "success": false,
+                        "error": "APTIVE_THINK_s303_H6_parse_duration_multi_defect_fix_nf6sas9c/test_durations.py\", line 2, in <module>\n    from durations import parse_duration\n  File \"/tmp/gemma_p2b_P1_STAGE_ADAPTIVE_THINK_s303_H6_parse_duration_multi_defect_fix_nf6sas9c/durations.py\", line 79\n    }\n    ^\nSyntaxError: unmatched '}'"
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 1,
+                    "input_tokens": 1097,
+                    "output_tokens": 90,
+                    "prompt_eval_cached_tokens": 0,
+                    "eval_duration_s": 4.5962,
+                    "thinking_chars": 262,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 4096,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 2
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 2090,
+                    "output_tokens": 66,
+                    "prompt_eval_cached_tokens": 1168,
+                    "eval_duration_s": 3.4811,
+                    "thinking_chars": 161,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 4096,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_dur_durations.py",
+                        "success": false,
+                        "error": "File not found: 'test_dur_durations.py'"
+                      }
+                    ],
+                    "attempt": 2
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 2214,
+                    "output_tokens": 43,
+                    "prompt_eval_cached_tokens": 2155,
+                    "eval_duration_s": 2.2241,
+                    "thinking_chars": 68,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 4096,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 2
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 2475,
+                    "output_tokens": 2407,
+                    "prompt_eval_cached_tokens": 2256,
+                    "eval_duration_s": 130.2317,
+                    "thinking_chars": 6680,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 4096,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_durations.py",
+                        "success": false,
+                        "error": "APTIVE_THINK_s303_H6_parse_duration_multi_defect_fix_nf6sas9c/test_durations.py\", line 2, in <module>\n    from durations import parse_duration\n  File \"/tmp/gemma_p2b_P1_STAGE_ADAPTIVE_THINK_s303_H6_parse_duration_multi_defect_fix_nf6sas9c/durations.py\", line 79\n    }\n    ^\nSyntaxError: unmatched '}'"
+                      }
+                    ],
+                    "attempt": 2
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 4711,
+                    "output_tokens": 68,
+                    "prompt_eval_cached_tokens": 584,
+                    "eval_duration_s": 3.6483,
+                    "thinking_chars": 173,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 4096,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 2
+                  }
+                ],
+                "limit_reached": true,
+                "attempts_detail": [
+                  {
+                    "think": null,
+                    "had_cloud_guidance": false,
+                    "success": false,
+                    "error": "Attempt stopped: subtask time limit reached"
+                  },
+                  {
+                    "think": true,
+                    "had_cloud_guidance": false,
+                    "success": false,
+                    "error": "Attempt stopped: subtask time limit reached"
+                  }
+                ],
+                "think_retry_used": true,
+                "ladder_steps_used": [
+                  "adaptive_limit",
+                  "think_retry"
+                ],
+                "cloud_assist_calls": 0,
+                "solved_with_cloud_assist": false,
+                "seed": 303,
+                "policy_id": "P1_STAGE_ADAPTIVE_THINK",
+                "visible_tests_passed": false,
+                "holdout_tests_passed": false,
+                "pipeline_verified": false,
+                "llm_native_completion": false,
+                "fallback_used": false,
+                "tool_call_efficiency": 0.8182,
+                "initial_workspace_sha256": "4194549173ebdf6e48ce360849f8381a0868a430901b1c60a3ce00455107e141",
+                "final_workspace_sha256": "955af5ed2332305cacb4750a55f4ae2bb31d67e6163f92a0e261512b3bfae7c0",
+                "workspace_modified": true,
+                "workspace_diff": "--- a/durations.py\n+++ b/durations.py\n@@ -1,7 +1,7 @@\n \"\"\"Human-readable duration parsing.\"\"\"\n import re\n \n-UNITS = {'h': 60, 'm': 60, 's': 1}\n+UNITS = {'h': 3600, 'm': 60, 's': 1}\n \n def parse_duration(text: str) -> int:\n     \"\"\"Parse a duration such as \"1h30m\", \"45s\" or \"2h5s\" into total seconds.\n@@ -11,7 +11,69 @@\n     ValueError for an empty string, an unknown unit, a number without a unit, or\n     any other text that does not follow this format.\n     \"\"\"\n+    text = text.strip()\n+    if not text:\n+        raise ValueError(\"Empty string\")\n+\n+    # The regex ensures:\n+    # 1. Optional h part: one or more digits followed by 'h'\n+    # 2. Optional m part: one or more digits followed by 'm'\n+    # 3. Optional s part: one or more digits followed by 's'\n+    # The total string must match this exactly.\n+    match = re.fullmatch(r'(\\d+h)?(\\d+m)?(\\d+s)?', text)\n+    \n+    if not match or text == \"\" or any(part is None or part == \"\" for part in match.groups()):\n+        # Wait, the regex above allows empty groups. \n+        # If text is \"1h30m\", match.groups() will be ('1h', '30m', None)\n+        # If text is \"45s\", match.groups() will be (None, None, '45s')\n+        # If text is \"10\", it won't match because there's no 'h', 'm', or 's'.\n+        pass\n+\n+    # Let's refine the logic:\n+    # 1. Strip whitespace.\n+    # 2. Check if it's empty.\n+    # 3. Check if it matches the pattern: (digits)h (digits)m (digits)s\n+    #    where each part is optional but if present must have a unit.\n+    # 4. Ensure no extra characters.\n+    \n+    # Let's use a more precise regex:\n+    # ^((?P<h>\\d+)h)?((?P<m>\\d+)m)?((?P<s>\\d+)s)?$\n+    # And then check if the string is not empty and contains at least one unit.\n+    \n+    # Actually, the simplest way to satisfy all conditions:\n+    # 1. Strip.\n+    # 2. If empty, raise.\n+    # 3. Check if it matches ^(\\d+h)?(\\d+m)?(\\d+s)?$\n+    # 4. If it doesn't match, or if it contains any characters not in [0-9hms], raise.\n+    # 5. If it matches, but has no units (e.g. \"10\"), raise.\n+    \n+    # Let's try this:\n+    if not text:\n+        raise ValueError(\"Empty string\")\n+    \n+    # Check for invalid characters or format\n+    # This regex ensures that:\n+    # - Only digits and h, m, s are allowed.\n+    # - Each unit h, m, s appears at most once.\n+    # - They appear in the order h, m, s.\n+    # - Every number is followed by a unit.\n+    if not re.fullmatch(r'(\\d+h)?(\\d+m)?(\\d+s)?', text):\n+        raise ValueError(\"Invalid format\")\n+    \n+    # If it matches the regex but is just \"10\", it won't match because \n+    # the regex requires a unit after the digits.\n+    # Wait, \"10\" would not match (\\d+h)?(\\d+m)?(\\d+s)? because it has no h, m, or s.\n+    # But \"10h\" would match.\n+    \n+    # Let's check if it contains at least one unit.\n+    if not re.search(r'[hms]', text):\n+        raise ValueError(\"No unit found\")\n+\n     total = 0\n-    for value, unit in re.findall(r'(\\d+)([hms])', text):\n+    # Now we can safely extract the parts.\n+    # Since we validated with fullmatch, we can just find all matches.\n+    parts = re.findall(r'(\\d+)([hms])', text)\n+    for value, unit in parts:\n         total += int(value) * UNITS[unit]\n     return total\n+}\n",
+                "attempts_used": 2,
+                "cloud_assist_tokens": 0,
+                "cloud_assist_events": []
+              }
+            },
+            {
+              "task_id": "H7_rolling_mean_multi_defect_fix",
+              "policy_id": "P1_STAGE_ADAPTIVE_THINK",
+              "seed": 303,
+              "worker_reported_success": true,
+              "independently_verified": true,
+              "pipeline_verified": true,
+              "llm_native_completion": true,
+              "fallback_used": false,
+              "turns": 6,
+              "tool_calls_count": 5,
+              "tool_call_efficiency": 1.0,
+              "wall_clock_s": 30.6847,
+              "peak_vram_mib": 6951,
+              "error": null,
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 10613,
+                "output_tokens": 402,
+                "prompt_eval_cached_tokens": 4783,
+                "eval_duration_s": 21.4275,
+                "prompt_eval_duration_s": 7.5061,
+                "wall_clock_s": 30.6421,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 5,
+                "read_file_calls": 2,
+                "unique_files_read": 2,
+                "repeated_file_reads": 0,
+                "total_repeated_file_reads": 0,
+                "edit_calls": 1,
+                "test_command_calls": 2,
+                "invalid_tool_arguments": 0,
+                "context_overflows": 0,
+                "truncated_generations": 0,
+                "budget_escalations": 0,
+                "discarded_truncated_tool_calls": 0,
+                "compacted_messages": 6,
+                "successful_verifications": 1,
+                "recovery_policy": "P1_STAGE",
+                "reactive_recovery_enabled": false,
+                "stage_hints_enabled": true,
+                "recovery_attempts": 0,
+                "stage_hints_emitted": 5,
+                "repeated_unchanged_reads": 0,
+                "recovery_events": [],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1028,
+                    "output_tokens": 17,
+                    "prompt_eval_cached_tokens": 0,
+                    "eval_duration_s": 0.8647,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "rolling.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1238,
+                    "output_tokens": 23,
+                    "prompt_eval_cached_tokens": 1023,
+                    "eval_duration_s": 1.1617,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_rolling.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1492,
+                    "output_tokens": 30,
+                    "prompt_eval_cached_tokens": 1238,
+                    "eval_duration_s": 1.6142,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_rolling.py",
+                        "success": false,
+                        "error": "    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Lists differ: [1.5, 2.5] != [3.0, 5.0]\n\nFirst differing element 0:\n1.5\n3.0\n\n- [1.5, 2.5]\n+ [3.0, 5.0]\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nFAILED (failures=3)"
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 2160,
+                    "output_tokens": 230,
+                    "prompt_eval_cached_tokens": 1492,
+                    "eval_duration_s": 12.3429,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "write_file",
+                        "target": "rolling.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 2396,
+                    "output_tokens": 30,
+                    "prompt_eval_cached_tokens": 515,
+                    "eval_duration_s": 1.5688,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_rolling.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 6,
+                    "input_tokens": 2299,
+                    "output_tokens": 72,
+                    "prompt_eval_cached_tokens": 515,
+                    "eval_duration_s": 3.8752,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [],
+                    "attempt": 1
+                  }
+                ],
+                "attempts_detail": [
+                  {
+                    "think": null,
+                    "had_cloud_guidance": false,
+                    "success": true,
+                    "error": null
+                  }
+                ],
+                "think_retry_used": false,
+                "ladder_steps_used": [],
+                "cloud_assist_calls": 0,
+                "solved_with_cloud_assist": false,
+                "seed": 303,
+                "policy_id": "P1_STAGE_ADAPTIVE_THINK",
+                "visible_tests_passed": true,
+                "holdout_tests_passed": true,
+                "pipeline_verified": true,
+                "llm_native_completion": true,
+                "fallback_used": false,
+                "tool_call_efficiency": 1.0,
+                "initial_workspace_sha256": "5438347bd33496839d3e744a561a57c203b696616341f7d1d4734e08628ea0c5",
+                "final_workspace_sha256": "cb1ad6f13cc4140986ea7270ab020c9bf8ab1440f89355c81b651921fedac145",
+                "workspace_modified": true,
+                "workspace_diff": "--- a/rolling.py\n+++ b/rolling.py\n@@ -8,7 +8,10 @@\n     window > len(values). Raise ValueError if window is not an int or is < 1\n     (bool is not accepted as an int).\n     \"\"\"\n+    if not isinstance(window, int) or isinstance(window, bool) or window < 1:\n+        raise ValueError(\"window must be an integer >= 1\")\n+    \n     out: List[float] = []\n-    for i in range(len(values) - window):\n-        out.append(sum(values[i:i + window]) / len(values))\n+    for i in range(len(values) - window + 1):\n+        out.append(sum(values[i:i + window]) / window)\n     return out\n",
+                "attempts_used": 1,
+                "cloud_assist_tokens": 0,
+                "cloud_assist_events": []
+              }
+            },
+            {
+              "task_id": "H8_slugify_multi_defect_fix",
+              "policy_id": "P1_STAGE_ADAPTIVE_THINK",
+              "seed": 303,
+              "worker_reported_success": true,
+              "independently_verified": true,
+              "pipeline_verified": true,
+              "llm_native_completion": true,
+              "fallback_used": false,
+              "turns": 6,
+              "tool_calls_count": 5,
+              "tool_call_efficiency": 1.0,
+              "wall_clock_s": 27.0363,
+              "peak_vram_mib": 6951,
+              "error": null,
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 10042,
+                "output_tokens": 346,
+                "prompt_eval_cached_tokens": 5162,
+                "eval_duration_s": 18.5677,
+                "prompt_eval_duration_s": 6.7434,
+                "wall_clock_s": 26.9848,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 5,
+                "read_file_calls": 2,
+                "unique_files_read": 2,
+                "repeated_file_reads": 0,
+                "total_repeated_file_reads": 0,
+                "edit_calls": 1,
+                "test_command_calls": 2,
+                "invalid_tool_arguments": 0,
+                "context_overflows": 0,
+                "truncated_generations": 0,
+                "budget_escalations": 0,
+                "discarded_truncated_tool_calls": 0,
+                "compacted_messages": 6,
+                "successful_verifications": 1,
+                "recovery_policy": "P1_STAGE",
+                "reactive_recovery_enabled": false,
+                "stage_hints_enabled": true,
+                "recovery_attempts": 0,
+                "stage_hints_emitted": 5,
+                "repeated_unchanged_reads": 0,
+                "recovery_events": [],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1031,
+                    "output_tokens": 18,
+                    "prompt_eval_cached_tokens": 515,
+                    "eval_duration_s": 0.8995,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "slugs.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1190,
+                    "output_tokens": 24,
+                    "prompt_eval_cached_tokens": 1027,
+                    "eval_duration_s": 1.2171,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_slugs.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1400,
+                    "output_tokens": 31,
+                    "prompt_eval_cached_tokens": 1190,
+                    "eval_duration_s": 1.639,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_slugs.py",
+                        "success": false,
+                        "error": "est_slugs.py\", line 6, in test_runs_collapse\n    self.assertEqual(slugify('a  b'), 'a-b')\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 'a--b' != 'a-b'\n- a--b\n?  -\n+ a-b\n\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nFAILED (failures=3)"
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 1997,
+                    "output_tokens": 175,
+                    "prompt_eval_cached_tokens": 1400,
+                    "eval_duration_s": 9.5298,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "write_file",
+                        "target": "slugs.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 2236,
+                    "output_tokens": 31,
+                    "prompt_eval_cached_tokens": 515,
+                    "eval_duration_s": 1.7204,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_slugs.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 6,
+                    "input_tokens": 2188,
+                    "output_tokens": 67,
+                    "prompt_eval_cached_tokens": 515,
+                    "eval_duration_s": 3.562,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [],
+                    "attempt": 1
+                  }
+                ],
+                "attempts_detail": [
+                  {
+                    "think": null,
+                    "had_cloud_guidance": false,
+                    "success": true,
+                    "error": null
+                  }
+                ],
+                "think_retry_used": false,
+                "ladder_steps_used": [],
+                "cloud_assist_calls": 0,
+                "solved_with_cloud_assist": false,
+                "seed": 303,
+                "policy_id": "P1_STAGE_ADAPTIVE_THINK",
+                "visible_tests_passed": true,
+                "holdout_tests_passed": true,
+                "pipeline_verified": true,
+                "llm_native_completion": true,
+                "fallback_used": false,
+                "tool_call_efficiency": 1.0,
+                "initial_workspace_sha256": "30f5c657577359a70aaa8a051ce57d17e6b460f36bc1a67ac93963f5dff2067a",
+                "final_workspace_sha256": "1987e165f895eea89de76bf240dc158982fcfd5b2b16c38c61f0b5eb3e2da6f8",
+                "workspace_modified": true,
+                "workspace_diff": "--- a/slugs.py\n+++ b/slugs.py\n@@ -8,4 +8,7 @@\n     digits becomes a single hyphen, and the slug never starts or ends with a\n     hyphen. Raise ValueError when no ASCII letter or digit remains.\n     \"\"\"\n-    return re.sub(r'[^A-Za-z0-9]', '-', title).lower()\n+    slug = re.sub(r'[^A-Za-z0-9]+', '-', title).strip('-').lower()\n+    if not any(c.isalnum() for c in slug):\n+        raise ValueError(\"No ASCII letter or digit remains.\")\n+    return slug\n",
+                "attempts_used": 1,
+                "cloud_assist_tokens": 0,
+                "cloud_assist_events": []
+              }
+            }
+          ],
+          "aggregate": {
+            "tasks_total": 3,
+            "pipeline_verified_count": 2,
+            "pipeline_verified_rate": 0.6667,
+            "llm_native_completion_count": 2,
+            "llm_native_completion_rate": 0.6667,
+            "fallback_used_count": 0,
+            "total_input_tokens": 43258,
+            "total_output_tokens": 8428,
+            "total_tokens": 51686,
+            "total_wall_clock_s": 657.8373,
+            "truncated_generations": 1,
+            "recovery_attempts": 0,
+            "stage_hints_emitted": 21,
+            "repeated_file_reads": 2,
+            "peak_vram_mib": 6951
+          }
+        }
+      ],
+      "summary_across_seeds": {
+        "pipeline_verified_rate": {
+          "mean": 0.6667,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 0.6667,
+          "max": 0.6667
+        },
+        "llm_native_completion_rate": {
+          "mean": 0.6667,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 0.6667,
+          "max": 0.6667
+        },
+        "total_wall_clock_s": {
+          "mean": 657.8373,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 657.8373,
+          "max": 657.8373
+        },
+        "total_tokens": {
+          "mean": 51686.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 51686.0,
+          "max": 51686.0
+        },
+        "truncated_generations": {
+          "mean": 1.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "recovery_attempts": {
+          "mean": 0.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "stage_hints_emitted": {
+          "mean": 21.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 21.0,
+          "max": 21.0
+        },
+        "repeated_file_reads": {
+          "mean": 2.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 2.0,
+          "max": 2.0
+        }
+      }
+    },
+    "P1_STAGE_ADAPTIVE_ASSIST": {
+      "label": "P1_STAGE_ADAPTIVE + cloud guidance (spec level) before the retry attempt",
+      "env": {
+        "OLLAMA_THINK": "false",
+        "OLLAMA_NUM_CTX": "16384",
+        "OLLAMA_NUM_PREDICT": "2048",
+        "OLLAMA_RECOVERY_POLICY": "P1_STAGE",
+        "OLLAMA_ADAPTIVE_NUM_PREDICT": "1"
+      },
+      "seed_runs": [
+        {
+          "seed": 303,
+          "tasks": [
+            {
+              "task_id": "H6_parse_duration_multi_defect_fix",
+              "policy_id": "P1_STAGE_ADAPTIVE_ASSIST",
+              "seed": 303,
+              "worker_reported_success": false,
+              "independently_verified": false,
+              "pipeline_verified": false,
+              "llm_native_completion": false,
+              "fallback_used": false,
+              "turns": 11,
+              "tool_calls_count": 7,
+              "tool_call_efficiency": 1.0,
+              "wall_clock_s": 600.1097,
+              "peak_vram_mib": 6951,
+              "error": "Subtask stopped: attempt limit reached (2 attempts)",
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 13291,
+                "output_tokens": 4265,
+                "prompt_eval_cached_tokens": 10238,
+                "eval_duration_s": 230.309,
+                "prompt_eval_duration_s": 6.2526,
+                "wall_clock_s": 263.3104,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 7,
+                "read_file_calls": 4,
+                "unique_files_read": 2,
+                "repeated_file_reads": 0,
+                "total_repeated_file_reads": 0,
+                "edit_calls": 0,
+                "test_command_calls": 2,
+                "invalid_tool_arguments": 0,
+                "context_overflows": 0,
+                "truncated_generations": 2,
+                "budget_escalations": 2,
+                "discarded_truncated_tool_calls": 2,
+                "compacted_messages": 0,
+                "successful_verifications": 0,
+                "recovery_policy": "P1_STAGE",
+                "reactive_recovery_enabled": false,
+                "stage_hints_enabled": true,
+                "recovery_attempts": 0,
+                "stage_hints_emitted": 7,
+                "repeated_unchanged_reads": 0,
+                "recovery_events": [],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1034,
+                    "output_tokens": 18,
+                    "prompt_eval_cached_tokens": 515,
+                    "eval_duration_s": 0.9045,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1296,
+                    "output_tokens": 24,
+                    "prompt_eval_cached_tokens": 1030,
+                    "eval_duration_s": 1.2171,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1531,
+                    "output_tokens": 31,
+                    "prompt_eval_cached_tokens": 1296,
+                    "eval_duration_s": 1.6238,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_durations.py",
+                        "success": false,
+                        "error": "ix_n7b48pqi/test_durations.py\", line 13, in test_invalid_text_raises\n    with self.assertRaises(ValueError):\n         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nFAILED (failures=2)"
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 1971,
+                    "output_tokens": 2048,
+                    "prompt_eval_cached_tokens": 1531,
+                    "eval_duration_s": 110.4249,
+                    "thinking_chars": 0,
+                    "done_reason": "length",
+                    "truncated": true,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [],
+                    "discarded_tool_calls": [
+                      "write_file"
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 1,
+                    "input_tokens": 1099,
+                    "output_tokens": 19,
+                    "prompt_eval_cached_tokens": 515,
+                    "eval_duration_s": 0.9639,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "list_dir",
+                        "target": ".",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 2
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1163,
+                    "output_tokens": 22,
+                    "prompt_eval_cached_tokens": 1095,
+                    "eval_duration_s": 1.1158,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 2
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1429,
+                    "output_tokens": 24,
+                    "prompt_eval_cached_tokens": 1163,
+                    "eval_duration_s": 1.2333,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_durations.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 2
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 1664,
+                    "output_tokens": 31,
+                    "prompt_eval_cached_tokens": 1429,
+                    "eval_duration_s": 1.6089,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_durations.py",
+                        "success": false,
+                        "error": "ix_n7b48pqi/test_durations.py\", line 13, in test_invalid_text_raises\n    with self.assertRaises(ValueError):\n         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nFAILED (failures=2)"
+                      }
+                    ],
+                    "attempt": 2
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 2104,
+                    "output_tokens": 2048,
+                    "prompt_eval_cached_tokens": 1664,
+                    "eval_duration_s": 111.2168,
+                    "thinking_chars": 0,
+                    "done_reason": "length",
+                    "truncated": true,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [],
+                    "discarded_tool_calls": [
+                      "write_file"
+                    ],
+                    "attempt": 2
+                  }
+                ],
+                "limit_reached": true,
+                "attempts_detail": [
+                  {
+                    "think": null,
+                    "had_cloud_guidance": false,
+                    "success": false,
+                    "error": "Attempt stopped: subtask time limit reached"
+                  },
+                  {
+                    "think": null,
+                    "had_cloud_guidance": false,
+                    "success": false,
+                    "error": "Attempt stopped: subtask time limit reached"
+                  }
+                ],
+                "think_retry_used": false,
+                "ladder_steps_used": [
+                  "adaptive_limit"
+                ],
+                "cloud_assist_calls": 0,
+                "solved_with_cloud_assist": false,
+                "seed": 303,
+                "policy_id": "P1_STAGE_ADAPTIVE_ASSIST",
+                "visible_tests_passed": false,
+                "holdout_tests_passed": false,
+                "pipeline_verified": false,
+                "llm_native_completion": false,
+                "fallback_used": false,
+                "tool_call_efficiency": 1.0,
+                "initial_workspace_sha256": "4194549173ebdf6e48ce360849f8381a0868a430901b1c60a3ce00455107e141",
+                "final_workspace_sha256": "4194549173ebdf6e48ce360849f8381a0868a430901b1c60a3ce00455107e141",
+                "workspace_modified": false,
+                "workspace_diff": "",
+                "attempts_used": 2,
+                "cloud_assist_tokens": 2805,
+                "cloud_assist_events": [
+                  {
+                    "event": "cloud_assist_request",
+                    "payload": "SUBTASK\nid: H6_parse_duration_multi_defect_fix\ntitle: Fix parse_duration\ndescription: Inspect `durations.py` and `test_durations.py`. Fix `parse_duration` in `durations.py` so it satisfies its docstring specification and passes `python3 -m unittest -q`.\nsuccess criteria: \n\nSIGNATURES AND DOCSTRINGS\n# durations.py\ndef parse_duration(text: str) -> int\n    Parse a duration such as \"1h30m\", \"45s\" or \"2h5s\" into total seconds.\n    \n    Units are h (3600 s), m (60 s) and s (1 s). Each unit appears at most once and\n    units appear in the order h, m, s. Surrounding whitespace is ignored. Raise\n    ValueError for an empty string, an unknown unit, a number without a unit, or\n    any other text that does not follow this format.\n\nFAILURE\n",
+                    "payload_sha256": "51245e120430e87a1e5baff6cb652c1427383120103a72137523fd1916f387ce",
+                    "backend": "agy"
+                  },
+                  {
+                    "event": "cloud_assist_response",
+                    "response": "",
+                    "input_tokens": 2490,
+                    "output_tokens": 315
+                  }
+                ]
+              }
+            },
+            {
+              "task_id": "H7_rolling_mean_multi_defect_fix",
+              "policy_id": "P1_STAGE_ADAPTIVE_ASSIST",
+              "seed": 303,
+              "worker_reported_success": true,
+              "independently_verified": true,
+              "pipeline_verified": true,
+              "llm_native_completion": true,
+              "fallback_used": false,
+              "turns": 6,
+              "tool_calls_count": 5,
+              "tool_call_efficiency": 1.0,
+              "wall_clock_s": 29.9359,
+              "peak_vram_mib": 6951,
+              "error": null,
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 10595,
+                "output_tokens": 408,
+                "prompt_eval_cached_tokens": 5298,
+                "eval_duration_s": 21.3828,
+                "prompt_eval_duration_s": 6.9503,
+                "wall_clock_s": 29.9009,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 5,
+                "read_file_calls": 2,
+                "unique_files_read": 2,
+                "repeated_file_reads": 0,
+                "total_repeated_file_reads": 0,
+                "edit_calls": 1,
+                "test_command_calls": 2,
+                "invalid_tool_arguments": 0,
+                "context_overflows": 0,
+                "truncated_generations": 0,
+                "budget_escalations": 0,
+                "discarded_truncated_tool_calls": 0,
+                "compacted_messages": 6,
+                "successful_verifications": 1,
+                "recovery_policy": "P1_STAGE",
+                "reactive_recovery_enabled": false,
+                "stage_hints_enabled": true,
+                "recovery_attempts": 0,
+                "stage_hints_emitted": 5,
+                "repeated_unchanged_reads": 0,
+                "recovery_events": [],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1028,
+                    "output_tokens": 21,
+                    "prompt_eval_cached_tokens": 515,
+                    "eval_duration_s": 1.0431,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "rolling.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1238,
+                    "output_tokens": 23,
+                    "prompt_eval_cached_tokens": 1023,
+                    "eval_duration_s": 1.1443,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_rolling.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1492,
+                    "output_tokens": 30,
+                    "prompt_eval_cached_tokens": 1238,
+                    "eval_duration_s": 1.5354,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_rolling.py",
+                        "success": false,
+                        "error": "    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Lists differ: [1.5, 2.5] != [3.0, 5.0]\n\nFirst differing element 0:\n1.5\n3.0\n\n- [1.5, 2.5]\n+ [3.0, 5.0]\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nFAILED (failures=3)"
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 2154,
+                    "output_tokens": 230,
+                    "prompt_eval_cached_tokens": 1492,
+                    "eval_duration_s": 12.2095,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "write_file",
+                        "target": "rolling.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 2390,
+                    "output_tokens": 30,
+                    "prompt_eval_cached_tokens": 515,
+                    "eval_duration_s": 1.5574,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_rolling.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 6,
+                    "input_tokens": 2293,
+                    "output_tokens": 74,
+                    "prompt_eval_cached_tokens": 515,
+                    "eval_duration_s": 3.8932,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [],
+                    "attempt": 1
+                  }
+                ],
+                "attempts_detail": [
+                  {
+                    "think": null,
+                    "had_cloud_guidance": false,
+                    "success": true,
+                    "error": null
+                  }
+                ],
+                "think_retry_used": false,
+                "ladder_steps_used": [],
+                "cloud_assist_calls": 0,
+                "solved_with_cloud_assist": false,
+                "seed": 303,
+                "policy_id": "P1_STAGE_ADAPTIVE_ASSIST",
+                "visible_tests_passed": true,
+                "holdout_tests_passed": true,
+                "pipeline_verified": true,
+                "llm_native_completion": true,
+                "fallback_used": false,
+                "tool_call_efficiency": 1.0,
+                "initial_workspace_sha256": "5438347bd33496839d3e744a561a57c203b696616341f7d1d4734e08628ea0c5",
+                "final_workspace_sha256": "cb1ad6f13cc4140986ea7270ab020c9bf8ab1440f89355c81b651921fedac145",
+                "workspace_modified": true,
+                "workspace_diff": "--- a/rolling.py\n+++ b/rolling.py\n@@ -8,7 +8,10 @@\n     window > len(values). Raise ValueError if window is not an int or is < 1\n     (bool is not accepted as an int).\n     \"\"\"\n+    if not isinstance(window, int) or isinstance(window, bool) or window < 1:\n+        raise ValueError(\"window must be an integer >= 1\")\n+    \n     out: List[float] = []\n-    for i in range(len(values) - window):\n-        out.append(sum(values[i:i + window]) / len(values))\n+    for i in range(len(values) - window + 1):\n+        out.append(sum(values[i:i + window]) / window)\n     return out\n",
+                "attempts_used": 1,
+                "cloud_assist_tokens": 0,
+                "cloud_assist_events": []
+              }
+            },
+            {
+              "task_id": "H8_slugify_multi_defect_fix",
+              "policy_id": "P1_STAGE_ADAPTIVE_ASSIST",
+              "seed": 303,
+              "worker_reported_success": true,
+              "independently_verified": true,
+              "pipeline_verified": true,
+              "llm_native_completion": true,
+              "fallback_used": false,
+              "turns": 6,
+              "tool_calls_count": 5,
+              "tool_call_efficiency": 1.0,
+              "wall_clock_s": 26.3523,
+              "peak_vram_mib": 6951,
+              "error": null,
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 10033,
+                "output_tokens": 348,
+                "prompt_eval_cached_tokens": 5162,
+                "eval_duration_s": 18.1286,
+                "prompt_eval_duration_s": 6.6459,
+                "wall_clock_s": 26.3083,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 5,
+                "read_file_calls": 2,
+                "unique_files_read": 2,
+                "repeated_file_reads": 0,
+                "total_repeated_file_reads": 0,
+                "edit_calls": 1,
+                "test_command_calls": 2,
+                "invalid_tool_arguments": 0,
+                "context_overflows": 0,
+                "truncated_generations": 0,
+                "budget_escalations": 0,
+                "discarded_truncated_tool_calls": 0,
+                "compacted_messages": 6,
+                "successful_verifications": 1,
+                "recovery_policy": "P1_STAGE",
+                "reactive_recovery_enabled": false,
+                "stage_hints_enabled": true,
+                "recovery_attempts": 0,
+                "stage_hints_emitted": 5,
+                "repeated_unchanged_reads": 0,
+                "recovery_events": [],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1031,
+                    "output_tokens": 18,
+                    "prompt_eval_cached_tokens": 515,
+                    "eval_duration_s": 0.8925,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "slugs.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1190,
+                    "output_tokens": 24,
+                    "prompt_eval_cached_tokens": 1027,
+                    "eval_duration_s": 1.2041,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_slugs.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1400,
+                    "output_tokens": 31,
+                    "prompt_eval_cached_tokens": 1190,
+                    "eval_duration_s": 1.5848,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_slugs.py",
+                        "success": false,
+                        "error": "est_slugs.py\", line 6, in test_runs_collapse\n    self.assertEqual(slugify('a  b'), 'a-b')\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 'a--b' != 'a-b'\n- a--b\n?  -\n+ a-b\n\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nFAILED (failures=3)"
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 1994,
+                    "output_tokens": 175,
+                    "prompt_eval_cached_tokens": 1400,
+                    "eval_duration_s": 9.2223,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "write_file",
+                        "target": "slugs.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 2233,
+                    "output_tokens": 31,
+                    "prompt_eval_cached_tokens": 515,
+                    "eval_duration_s": 1.6031,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_slugs.py",
+                        "success": true,
+                        "error": ""
+                      }
+                    ],
+                    "attempt": 1
+                  },
+                  {
+                    "turn": 6,
+                    "input_tokens": 2185,
+                    "output_tokens": 69,
+                    "prompt_eval_cached_tokens": 515,
+                    "eval_duration_s": 3.6219,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "num_predict": 2048,
+                    "budget_escalated": false,
+                    "tool_calls": [],
+                    "attempt": 1
+                  }
+                ],
+                "attempts_detail": [
+                  {
+                    "think": null,
+                    "had_cloud_guidance": false,
+                    "success": true,
+                    "error": null
+                  }
+                ],
+                "think_retry_used": false,
+                "ladder_steps_used": [],
+                "cloud_assist_calls": 0,
+                "solved_with_cloud_assist": false,
+                "seed": 303,
+                "policy_id": "P1_STAGE_ADAPTIVE_ASSIST",
+                "visible_tests_passed": true,
+                "holdout_tests_passed": true,
+                "pipeline_verified": true,
+                "llm_native_completion": true,
+                "fallback_used": false,
+                "tool_call_efficiency": 1.0,
+                "initial_workspace_sha256": "30f5c657577359a70aaa8a051ce57d17e6b460f36bc1a67ac93963f5dff2067a",
+                "final_workspace_sha256": "1987e165f895eea89de76bf240dc158982fcfd5b2b16c38c61f0b5eb3e2da6f8",
+                "workspace_modified": true,
+                "workspace_diff": "--- a/slugs.py\n+++ b/slugs.py\n@@ -8,4 +8,7 @@\n     digits becomes a single hyphen, and the slug never starts or ends with a\n     hyphen. Raise ValueError when no ASCII letter or digit remains.\n     \"\"\"\n-    return re.sub(r'[^A-Za-z0-9]', '-', title).lower()\n+    slug = re.sub(r'[^A-Za-z0-9]+', '-', title).strip('-').lower()\n+    if not any(c.isalnum() for c in slug):\n+        raise ValueError(\"No ASCII letter or digit remains.\")\n+    return slug\n",
+                "attempts_used": 1,
+                "cloud_assist_tokens": 0,
+                "cloud_assist_events": []
+              }
+            }
+          ],
+          "aggregate": {
+            "tasks_total": 3,
+            "pipeline_verified_count": 2,
+            "pipeline_verified_rate": 0.6667,
+            "llm_native_completion_count": 2,
+            "llm_native_completion_rate": 0.6667,
+            "fallback_used_count": 0,
+            "total_input_tokens": 33919,
+            "total_output_tokens": 5021,
+            "total_tokens": 38940,
+            "total_wall_clock_s": 656.3979,
+            "truncated_generations": 2,
+            "recovery_attempts": 0,
+            "stage_hints_emitted": 17,
+            "repeated_file_reads": 0,
+            "peak_vram_mib": 6951
+          }
+        }
+      ],
+      "summary_across_seeds": {
+        "pipeline_verified_rate": {
+          "mean": 0.6667,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 0.6667,
+          "max": 0.6667
+        },
+        "llm_native_completion_rate": {
+          "mean": 0.6667,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 0.6667,
+          "max": 0.6667
+        },
+        "total_wall_clock_s": {
+          "mean": 656.3979,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 656.3979,
+          "max": 656.3979
+        },
+        "total_tokens": {
+          "mean": 38940.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 38940.0,
+          "max": 38940.0
+        },
+        "truncated_generations": {
+          "mean": 2.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 2.0,
+          "max": 2.0
+        },
+        "recovery_attempts": {
+          "mean": 0.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "stage_hints_emitted": {
+          "mean": 17.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 17.0,
+          "max": 17.0
+        },
+        "repeated_file_reads": {
+          "mean": 0.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        }
+      }
+    }
+  }
+}
