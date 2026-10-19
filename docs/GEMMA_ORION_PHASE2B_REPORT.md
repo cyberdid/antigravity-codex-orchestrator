@@ -130,3 +130,23 @@ All `31/31` unit and integration tests pass across `tests/test_gemma_orion_phase
 - Stage hints remove the post-read runaway generation and are ~3× faster on single-module repairs.
 - They are not yet safe as a default: on a two-module task they trade thoroughness for speed and give no usable guidance after a failed test. Before `P1_STAGE` becomes the default or enters Harness², the failure hint must (a) excerpt the failing test name and assertion line rather than the runner summary, and (b) not hard-code `affected_files[0]`.
 - Evidence base: 4 tasks × 2 seeds; seeds produce near-identical trajectories at `temperature=0.2`, so effective sample size is closer to 4 tasks than 8 runs.
+
+---
+
+## 7. Addendum: Failure Hints that Name the Failing Test and File (`6eb79f0`)
+
+**Change.** After a failed verification the `[STAGE STATE]` hint now carries the `FAIL:`/`ERROR:` headers and exception lines (pytest `E`/`FAILED` lines too) instead of the runner summary, and names the affected files that appear in the traceback, or all affected files when the traceback only shows the test file. Tests: T20 (built from real H4 unittest output).
+
+**Run:** `benchmarks/gemma_orion_phase2b_stage_failure_hints.json`, `git_commit=6eb79f0`, `git_dirty=false`, `P1_STAGE`, seeds `303, 404`, tasks `H1–H4` (8 runs). `P0` was not re-run: it emits no hints, so this change does not affect it, and the Section 6 `P0` numbers (`0c1f186`) remain the baseline.
+
+| Policy (commit) | Scope | Verified | Truncations | Wall-clock / seed | Output tokens / seed | Total tokens / seed |
+|---|---|---:|---:|---:|---:|---:|
+| `P0` (`0c1f186`) | H1–H4 | 8/8 | 8 | 691 s | 11,526 | 92,708 |
+| `P1_STAGE` (`0c1f186`) | H1–H4 | 6/8 | 0 | 218 s | 2,634 | 90,660 |
+| `P1_STAGE` (`6eb79f0`) | H1–H4 | **8/8** | **0** | **235 s** | 2,706 | 81,008 |
+
+**H4 now passes on both seeds** (10 turns, 43–50 s, holdout passed). The trajectory is identical to the failing `0c1f186` runs up to turn 8, but the model now adds the length check in its first `summary.py` patch. The effective change is the hint after the *first* test run (turn 4): it now states `FAIL: test_length_mismatch_raises ... | AssertionError: ValueError not raised` and names both modules. The "repeated failure after a partial fix" path that looped in Section 6 did not occur in this run, so the improved hint for that path is covered by T20 but not yet by a live trajectory.
+
+**H1–H3 unchanged** (6/6 verified, 0 truncations, 189 s/seed vs 177 s/seed at `0c1f186`).
+
+**Current conclusion.** On H1–H4, `P1_STAGE` matches `P0` on verified completion (8/8), removes all truncations, and is ~2.9× faster with fewer total tokens. Remaining limits: 4 tasks, 2 seeds with near-identical trajectories, one task family (small Python repairs with a unit-test oracle). Before Harness², add tasks where a first fix is commonly incomplete, so the repeated-failure hint path is exercised live.
