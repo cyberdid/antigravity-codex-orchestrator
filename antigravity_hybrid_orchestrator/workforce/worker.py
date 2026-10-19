@@ -35,6 +35,7 @@ from antigravity_hybrid_orchestrator.workforce.recovery_controller import (
     RecoveryController,
     active_recovery_policy,
 )
+from antigravity_hybrid_orchestrator.harness.tree import DEFAULT_TREE, READ_SKILL_TOOL, HarnessTree
 
 
 @dataclass
@@ -152,8 +153,11 @@ class AutonomousWorker:
         client: Optional[Any] = None,
         execution_control: Optional[ExecutionControl] = None,
         recovery_policy: Optional[str] = None,
+        harness: Optional[HarnessTree] = None,
     ) -> None:
         self.model_name = (model_name or os.environ.get("OLLAMA_MODEL", "")).strip() or "gemma4:12b"
+        # Editable prompt-level harness (c1..c5); None means DEFAULT_TREE.
+        self.harness = harness
         self.host = host
 
         # Kept as a compatibility attribute only. Execution is bounded by
@@ -450,23 +454,10 @@ class AutonomousWorker:
             )
 
             tools = tool_suite.get_tool_definitions()
-            system_prompt = (
-                "You are an expert autonomous R&D coding workforce running locally on an "
-                "RTX 4060 GPU. You accomplish the task by CALLING the provided tools "
-                "(read_file, write_file, patch_file, list_dir, run_command, git_status, git_diff) — do not just "
-                "describe what to do. Treat Input Files and Expected Outputs as authoritative. "
-                "Never invent source paths. If a path is missing, inspect the supplied file "
-                "list and report the gap instead of guessing. Do not install packages, use "
-                "system package managers, or access the network; report unavailable runtime "
-                "dependencies as limitations. Write real file contents with write_file. When a "
-                "write_file call is required, always pass BOTH required JSON arguments with "
-                "\"path\" FIRST (the exact relative path from Expected Outputs) followed by \"content\" "
-                "(the full text), and emit at most ONE write_file call per turn so output is never truncated. "
-                "Never call write_file with content alone. When a "
-                "verification command is given, run it with run_command and fix failures. "
-                "Only stop (reply with a short summary and NO tool call) once the work is "
-                "done and verification passes."
-            )
+            harness = self.harness or DEFAULT_TREE
+            if harness.skills:
+                tools = [*tools, READ_SKILL_TOOL]
+            system_prompt = harness.render_system_prompt()
             user_msg = (
                 f"SubTask ID: {subtask.id}\n"
                 f"Title: {subtask.title}\n"
@@ -797,7 +788,18 @@ class AutonomousWorker:
                             {"tool": name, "args": args, "turn": turn},
                         )
                         try:
-                            tool_result = tool_suite.execute(name, **args)
+                            if name == "read_skill" and harness.skills:
+                                skill_text = harness.skills.get(str(args.get("name", "")))
+                                tool_result = ToolResult(
+                                    success=skill_text is not None,
+                                    output=skill_text or "",
+                                    error=None if skill_text is not None else (
+                                        f"Unknown skill {args.get('name')!r}; available: "
+                                        + ", ".join(sorted(harness.skills))
+                                    ),
+                                )
+                            else:
+                                tool_result = tool_suite.execute(name, **args)
                         except Exception as exc:
                             tool_result = ToolResult(
                                 success=False,

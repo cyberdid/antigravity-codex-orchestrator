@@ -705,6 +705,11 @@ class CloudArchitectClient:
 
         return dag
 
+    def complete(self, prompt: str) -> Tuple[str, int, int]:
+        """One free-form cloud call (recorded in ``usage_ledger``); used by the harness editor."""
+        raw, in_tokens, out_tokens = self._invoke_cloud(prompt)
+        return str(raw or ""), in_tokens, out_tokens
+
     ASSIST_RESPONSE_CHARS = 4000
 
     def assist_subtask(self, payload: str) -> Tuple[str, int, int]:

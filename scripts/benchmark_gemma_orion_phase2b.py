@@ -931,6 +931,7 @@ def run_single_task(
     holdout_fn: Callable[[Path], bool],
     attempts: int = 1,
     cloud_client: Any = None,
+    harness: Any = None,
 ) -> Dict[str, Any]:
     ws = Path(tempfile.mkdtemp(prefix=f"gemma_p2b_{policy_id}_s{seed}_{task_id}_"))
     try:
@@ -940,7 +941,8 @@ def run_single_task(
 
         tool_suite = WorkspaceToolSuite(workspace_root=ws)
         policy = POLICIES[policy_id]
-        worker = AutonomousWorker(model_name="gemma4:12b", recovery_policy=policy["OLLAMA_RECOVERY_POLICY"])
+        worker = AutonomousWorker(model_name="gemma4:12b", recovery_policy=policy["OLLAMA_RECOVERY_POLICY"],
+                                  harness=harness)
         assist_events: List[Dict[str, Any]] = []
 
         vram = VramMonitor()
@@ -1020,6 +1022,7 @@ def run_single_task(
             "final_workspace_sha256": final_sha,
             "workspace_modified": initial_sha != final_sha,
             "workspace_diff": diff_text,
+            "visible_test_output": (vis_proc.stderr + "\n" + vis_proc.stdout)[-2000:],
             "attempts_used": len(attempt_records) or 1,
             "solved_with_cloud_assist": solved_with_cloud_assist,
             "cloud_assist_tokens": sum(
