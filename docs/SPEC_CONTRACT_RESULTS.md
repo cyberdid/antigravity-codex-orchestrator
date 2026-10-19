@@ -64,3 +64,18 @@ Per task (verified / 3 seeds; ✓ verified, v visible only, ✗ neither):
 3. **Cost:** about 2.8× median wall time per run (100 s vs 36 s), 2.5× worker tokens and ~29.5k cloud tokens per task (one generation per task, reused across seeds). Raising the attempt budget would likely recover the two H6 timeouts.
 
 **Limits:** 6 tasks of one family (single-function Python parsers with docstring specs), 3 seeds, one local model, one cloud model; the effect size is large, but generalisation to multi-file or less precisely specified tasks is untested. Contract tests are only as good as the docstring; under-specified functions give the cloud nothing to test.
+
+## Control: do contract tests hurt tasks the baseline already solves? (v1, `24fbe35`)
+
+`benchmarks/spec_contract_control.json`: baseline vs SPECTESTS on H1–H5, H7, H8 (tasks the baseline solves), 3 seeds, 42 runs.
+
+| Policy | Verified | Paired vs baseline |
+|---|---:|---|
+| baseline | 21/21 | — |
+| SPECTESTS v1 | 15/21 | 0 wins, 6 losses, **p = 0.031 (harm)** |
+
+All six losses are on H1 (2) and H3 (3) plus one on H4. Grading the generated modules against reference implementations explains it: for **H1 the contract tests were wrong in 19 of 20 cases** (they read `FdrDecision.rejected`, a field that does not exist; the real field is `rejected_mask`), and for **H3 in 11 of 12** (they built `SampleRecord` without its required `value` field). The cloud had seen only the functions' own file; the data types live in other input files (`fdr_types.py`, `sample_record.py`), so it guessed the interface. The worker then could not satisfy impossible tests and ran out of time. On H2, H4, H5, H7 and H8, where the interface is fully visible in the function's own file, every generated test was correct.
+
+**Fix (`750647e`, v2):** the contract also lists class field names and types (defaults dropped — still no implementation) and covers the non-test input modules the functions use. Live re-generation for H1 and H3 then passed 100% on the reference implementations (10/10 and 11/11 tests). A final same-session run of baseline vs SPECTESTS v2 on all 13 tasks follows below.
+
+**Lesson:** contract tests are only safe when the cloud sees the complete interface. A plausible-looking but wrong test is worse than no test: it turns a solved task into a timeout.
