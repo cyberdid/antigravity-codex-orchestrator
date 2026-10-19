@@ -118,3 +118,19 @@ To evaluate whether recursive harness adaptation improves local Gemma 4 12B R&D 
   3. Wall-clock time & GPU-hours per verified task
   4. Invalid tool calls & output truncations (`done_reason == "length"`)
   5. False-promotion rate (harnesses promoted in `H2` that fail independent RIE vs. `H3`)
+
+---
+
+## 6. Implementation status (2026-10-19, `02d6954`)
+
+Implemented natively in `antigravity_hybrid_orchestrator/harness/` (the upstream `harness2` package is not installed or executed; its design was read as reference only):
+
+- `tree.py` — `HarnessTree` with c1 `system_prompt`, c2 `guardrails`, c3 `memory`, c4 `tool_guidance`, c5 `skills` (served on demand by the worker through a `read_skill` tool). Validation: always-on text ≤ 8192 characters (~2048 tokens), ≤ 6 skills of ≤ 6000 characters, no template braces, every skill named in c1/c2/c4. c6–c8 stay frozen Python. `DEFAULT_TREE` renders the previous worker system prompt byte-for-byte (H0).
+- `proposer.py` — cloud harness editor with Harness²'s roles: INV (procedure, tool use, completion), DOM (practitioner knowledge, preferably as triggered skills), AGG (composition from execution contrasts). JSON reply or `keep_base`; one retry with validation errors, then fallback to the base harness.
+- `evidence.py` — renders the agent's own view of a rollout (turns, tool calls and errors, truncations, visible test output, final diff). Hidden holdout results are never shown to the proposer; they only feed the H3 gate.
+- `recursion.py` — one parallel Propose–Probe–Compose step per task (k=1: INV + DOM candidates probed on the same task, one composition probed); `standard_choice` (H2: adopt the composition) and `gated_choice` (H3: trusted verification gate, then `EfficiencyJudge` utility `U = 1000·VCR − 25·trunc − 15·bad_tool − 0.5·wall − 0.01·tokens`, `KEEP_BASE` unless `U` beats the base by more than ε = 10).
+- `scripts/run_harness2_experiment.py` — adaptation on H1–H4 (seed 303) for arms H2 and H3, lessons carried to later tasks (harnessing-level recursion, as short notes), then frozen H0/H2/H3 harnesses evaluated on held-out H5–H8 (seeds 303, 404). Worker policy fixed: `P1_STAGE` stage hints + adaptive generation limit, `think=false`, `num_predict=2048`, one attempt, 300 s.
+
+Deviations from sections 2–5: arm H1 (hand-written harness) is not run; c4 tool guidance is always-on text rather than tool descriptions; the experiment uses the synthetic H-tasks rather than Orion R&D tasks.
+
+**Privacy.** The harness editor sees trajectories and diffs, i.e. code. This is acceptable for the synthetic benchmark tasks used here; running Harness² adaptation on private workspaces sends their code to the cloud and needs an explicit owner decision (it is not wired into normal orchestrator runs).
