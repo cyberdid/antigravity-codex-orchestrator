@@ -28,6 +28,10 @@ from antigravity_hybrid_orchestrator.workforce.context import (
     prune_tool_output,
     strip_completed_thinking,
 )
+from antigravity_hybrid_orchestrator.workforce.recovery_controller import (
+    RecoveryController,
+    active_recovery_policy,
+)
 
 
 @dataclass
@@ -144,6 +148,7 @@ class AutonomousWorker:
         event_callback: Optional[Callable[[str, str, Dict[str, Any]], None]] = None,
         client: Optional[Any] = None,
         execution_control: Optional[ExecutionControl] = None,
+        recovery_policy: Optional[str] = None,
     ) -> None:
         self.model_name = (model_name or os.environ.get("OLLAMA_MODEL", "")).strip() or "gemma4:12b"
         self.host = host
@@ -153,6 +158,7 @@ class AutonomousWorker:
         self.max_turns = max_turns
         self.event_callback = event_callback
         self.client = client
+        self.recovery_policy = recovery_policy
         self.execution_control = execution_control or ExecutionControl()
 
     def _emit(self, event_type: str, subtask_id: str, payload: Dict[str, Any]) -> None:
@@ -497,13 +503,19 @@ class AutonomousWorker:
             compacted_messages_total = 0
             successful_verifications = 0
             turn = 0
-            empty_turn_nudges = 0
             action_history: List[str] = []
             turn_trajectory: List[Dict[str, Any]] = []
             files_read_list: List[str] = []
             edit_calls_count = 0
             test_command_calls_count = 0
             subtask_wall_start = time.monotonic()
+            recovery_controller = RecoveryController(
+                subtask_id=subtask.id,
+                input_files=list(subtask.input_files or []),
+                affected_files=list(subtask.affected_files or []),
+                verification_command=str(subtask.verification_command or ""),
+                policy=active_recovery_policy(self.recovery_policy),
+            )
 
             model_digest = (
                 client.get_model_digest()
@@ -547,6 +559,9 @@ class AutonomousWorker:
                     "truncated_generations": truncated_generations,
                     "compacted_messages": compacted_messages_total,
                     "successful_verifications": successful_verifications,
+                    "recovery_policy": recovery_controller.policy,
+                    "recovery_attempts": recovery_controller.recovery_attempts,
+                    "recovery_events": list(recovery_controller.recovery_events),
                     "turn_trajectory": list(turn_trajectory),
                 }
                 if extra:
@@ -643,43 +658,40 @@ class AutonomousWorker:
                         self._emit("thought", subtask.id, {"thought": content, "turn": turn})
 
                     if not calls:
-                        if is_truncated or (not content.strip() and eval_tokens > 0):
-                            if empty_turn_nudges < 2:
-                                empty_turn_nudges += 1
-                                strip_completed_thinking(messages)
-                                nudge_reason = (
-                                    f"Your previous response hit the num_predict ({active_num_predict} tokens) "
-                                    "generation limit and was truncated before completing a tool call or final answer."
-                                    if is_truncated
-                                    else "Your previous response produced no text and no valid tool call "
-                                         "(it may have been truncated or malformed)."
-                                )
-                                messages.append({
-                                    "role": "user",
-                                    "content": (
-                                        f"{nudge_reason} Keep internal reasoning concise and emit ONE concise tool call "
-                                        "at a time (for write_file, always pass 'path' first before 'content'), "
-                                        "or reply with a short text summary if verification has already passed."
-                                    ),
-                                })
-                                continue
-                            err_msg = (
-                                f"Execution failed: model output truncated at num_predict={active_num_predict} "
-                                "without completing a valid tool call or final response"
-                                if is_truncated
-                                else "Execution failed: model repeatedly produced empty turns without tool calls"
+                        should_continue, recovery_prompt, terminal_err = (
+                            recovery_controller.handle_non_tool_turn(
+                                turn=turn,
+                                content=content,
+                                eval_tokens=eval_tokens,
+                                is_truncated=is_truncated,
+                                active_num_predict=active_num_predict,
                             )
+                        )
+                        if should_continue and recovery_prompt:
+                            strip_completed_thinking(messages)
+                            turn_entry["recovery_triggered"] = True
+                            turn_entry["recovery_reason"] = (
+                                recovery_controller.recovery_events[-1]["reason"]
+                                if recovery_controller.recovery_events
+                                else "recovery"
+                            )
+                            messages.append({
+                                "role": "user",
+                                "content": recovery_prompt,
+                            })
+                            continue
+                        if terminal_err is not None:
                             self._emit(
                                 "subtask_failed",
                                 subtask.id,
-                                {"subtask_id": subtask.id, "error": err_msg},
+                                {"subtask_id": subtask.id, "error": terminal_err},
                             )
                             return SubtaskResult(
                                 subtask_id=subtask.id,
                                 success=False,
                                 turns=turn,
                                 tool_calls_count=tool_calls_count,
-                                error=err_msg,
+                                error=terminal_err,
                                 artifacts=list(subtask.affected_files),
                                 metadata=_build_telemetry_meta({"truncated": is_truncated}),
                             )
@@ -701,8 +713,6 @@ class AutonomousWorker:
                             artifacts=list(subtask.affected_files),
                             metadata=_build_telemetry_meta(),
                         )
-
-                    empty_turn_nudges = 0
 
                     # Record the assistant turn that requested tools, preserving `thinking`
                     # during the active multi-step function-calling sequence.
@@ -825,7 +835,17 @@ class AutonomousWorker:
                             )
                         messages.append({
                             "role": "tool",
-                            "content": prune_tool_output(str(obs)),
+                            "content": recovery_controller.annotate_observation(
+                                prune_tool_output(str(obs)),
+                                recovery_controller.record_tool_execution(
+                                    turn=turn,
+                                    tool_name=name,
+                                    args=args,
+                                    success=bool(tool_result.success),
+                                    output=str(tool_result.output or ""),
+                                    error=tool_result.error,
+                                ),
+                            ),
                             "tool_name": name,
                         })
 

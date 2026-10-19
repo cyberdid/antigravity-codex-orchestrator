@@ -1,0 +1,3536 @@
+{
+  "benchmark": "GEMMA-ORION-Phase2A-Balanced-4x2x3",
+  "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+  "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+  "config_summaries": {
+    "G0": {
+      "seed_runs": 2,
+      "seeds": [
+        101,
+        202
+      ],
+      "dispersion_note": "pstdev is population SD (N denominator, equals half-range for N=2); sample_stdev uses N-1 Bessel correction.",
+      "pipeline_verified_rate_mean": 1.0,
+      "llm_native_completion_rate_mean": 1.0,
+      "fallback_recovery_rate_mean": 0.0,
+      "truncated_generations_mean": 2,
+      "truncated_generations_pstdev": 0.0,
+      "total_wall_clock_mean_s": 348.011,
+      "total_wall_clock_pstdev_s": 1.638,
+      "total_wall_clock_sample_stdev_s": 2.316,
+      "total_tokens_mean": 32623.5,
+      "total_tokens_pstdev": 2847.5,
+      "tokens_per_verified_task_mean": 10874.5,
+      "tokens_per_verified_task_pstdev": 949.2,
+      "per_task": {
+        "B1_selective_metrics": {
+          "runs": 2,
+          "pipeline_verified_rate": 1.0,
+          "llm_native_completion_rate": 1.0,
+          "fallback_used_rate": 0.0,
+          "wall_clock_mean_s": 170.798,
+          "wall_clock_pstdev_s": 1.028,
+          "wall_clock_sample_stdev_s": 1.455,
+          "output_tokens_mean": 2823.5,
+          "output_tokens_pstdev": 64.5,
+          "turns_mean": 8,
+          "turns_pstdev": 1.0
+        },
+        "B2_ann_rerank": {
+          "runs": 2,
+          "pipeline_verified_rate": 1.0,
+          "llm_native_completion_rate": 1.0,
+          "fallback_used_rate": 0.0,
+          "wall_clock_mean_s": 135.875,
+          "wall_clock_pstdev_s": 2.117,
+          "wall_clock_sample_stdev_s": 2.995,
+          "output_tokens_mean": 2319.5,
+          "output_tokens_pstdev": 6.5,
+          "turns_mean": 6,
+          "turns_pstdev": 0.0
+        },
+        "B3_research_report_builder": {
+          "runs": 2,
+          "pipeline_verified_rate": 1.0,
+          "llm_native_completion_rate": 1.0,
+          "fallback_used_rate": 0.0,
+          "wall_clock_mean_s": 41.337,
+          "wall_clock_pstdev_s": 0.549,
+          "wall_clock_sample_stdev_s": 0.776,
+          "output_tokens_mean": 347.5,
+          "output_tokens_pstdev": 17.5,
+          "turns_mean": 1,
+          "turns_pstdev": 0.0
+        }
+      }
+    },
+    "G3": {
+      "seed_runs": 2,
+      "seeds": [
+        101,
+        202
+      ],
+      "dispersion_note": "pstdev is population SD (N denominator, equals half-range for N=2); sample_stdev uses N-1 Bessel correction.",
+      "pipeline_verified_rate_mean": 1.0,
+      "llm_native_completion_rate_mean": 1.0,
+      "fallback_recovery_rate_mean": 0.0,
+      "truncated_generations_mean": 2,
+      "truncated_generations_pstdev": 0.0,
+      "total_wall_clock_mean_s": 593.355,
+      "total_wall_clock_pstdev_s": 6.303,
+      "total_wall_clock_sample_stdev_s": 8.914,
+      "total_tokens_mean": 34610,
+      "total_tokens_pstdev": 296.0,
+      "tokens_per_verified_task_mean": 11536.65,
+      "tokens_per_verified_task_pstdev": 98.65,
+      "per_task": {
+        "B1_selective_metrics": {
+          "runs": 2,
+          "pipeline_verified_rate": 1.0,
+          "llm_native_completion_rate": 1.0,
+          "fallback_used_rate": 0.0,
+          "wall_clock_mean_s": 305.239,
+          "wall_clock_pstdev_s": 5.741,
+          "wall_clock_sample_stdev_s": 8.119,
+          "output_tokens_mean": 5038.5,
+          "output_tokens_pstdev": 96.5,
+          "turns_mean": 7,
+          "turns_pstdev": 0.0
+        },
+        "B2_ann_rerank": {
+          "runs": 2,
+          "pipeline_verified_rate": 1.0,
+          "llm_native_completion_rate": 1.0,
+          "fallback_used_rate": 0.0,
+          "wall_clock_mean_s": 248.772,
+          "wall_clock_pstdev_s": 1.02,
+          "wall_clock_sample_stdev_s": 1.442,
+          "output_tokens_mean": 4382,
+          "output_tokens_pstdev": 10.0,
+          "turns_mean": 6,
+          "turns_pstdev": 0.0
+        },
+        "B3_research_report_builder": {
+          "runs": 2,
+          "pipeline_verified_rate": 1.0,
+          "llm_native_completion_rate": 1.0,
+          "fallback_used_rate": 0.0,
+          "wall_clock_mean_s": 39.343,
+          "wall_clock_pstdev_s": 0.457,
+          "wall_clock_sample_stdev_s": 0.646,
+          "output_tokens_mean": 339.5,
+          "output_tokens_pstdev": 9.5,
+          "turns_mean": 1,
+          "turns_pstdev": 0.0
+        }
+      }
+    },
+    "G1": {
+      "seed_runs": 2,
+      "seeds": [
+        101,
+        202
+      ],
+      "dispersion_note": "pstdev is population SD (N denominator, equals half-range for N=2); sample_stdev uses N-1 Bessel correction.",
+      "pipeline_verified_rate_mean": 1.0,
+      "llm_native_completion_rate_mean": 0.667,
+      "fallback_recovery_rate_mean": 0.333,
+      "truncated_generations_mean": 3,
+      "truncated_generations_pstdev": 0.0,
+      "total_wall_clock_mean_s": 1176.952,
+      "total_wall_clock_pstdev_s": 82.558,
+      "total_wall_clock_sample_stdev_s": 116.755,
+      "total_tokens_mean": 46294.5,
+      "total_tokens_pstdev": 9219.5,
+      "tokens_per_verified_task_mean": 15431.5,
+      "tokens_per_verified_task_pstdev": 3073.2,
+      "per_task": {
+        "B1_selective_metrics": {
+          "runs": 2,
+          "pipeline_verified_rate": 1.0,
+          "llm_native_completion_rate": 1.0,
+          "fallback_used_rate": 0.0,
+          "wall_clock_mean_s": 902.953,
+          "wall_clock_pstdev_s": 196.161,
+          "wall_clock_sample_stdev_s": 277.414,
+          "output_tokens_mean": 6583.5,
+          "output_tokens_pstdev": 285.5,
+          "turns_mean": 14,
+          "turns_pstdev": 2.0
+        },
+        "B2_ann_rerank": {
+          "runs": 2,
+          "pipeline_verified_rate": 1.0,
+          "llm_native_completion_rate": 1.0,
+          "fallback_used_rate": 0.0,
+          "wall_clock_mean_s": 139.534,
+          "wall_clock_pstdev_s": 113.387,
+          "wall_clock_sample_stdev_s": 160.354,
+          "output_tokens_mean": 2370.5,
+          "output_tokens_pstdev": 1972.5,
+          "turns_mean": 7,
+          "turns_pstdev": 2.0
+        },
+        "B3_research_report_builder": {
+          "runs": 2,
+          "pipeline_verified_rate": 1.0,
+          "llm_native_completion_rate": 0.0,
+          "fallback_used_rate": 1.0,
+          "wall_clock_mean_s": 134.466,
+          "wall_clock_pstdev_s": 0.216,
+          "wall_clock_sample_stdev_s": 0.305,
+          "output_tokens_mean": 2048,
+          "output_tokens_pstdev": 0.0,
+          "turns_mean": 1,
+          "turns_pstdev": 0.0
+        }
+      }
+    },
+    "G2": {
+      "seed_runs": 2,
+      "seeds": [
+        101,
+        202
+      ],
+      "dispersion_note": "pstdev is population SD (N denominator, equals half-range for N=2); sample_stdev uses N-1 Bessel correction.",
+      "pipeline_verified_rate_mean": 1.0,
+      "llm_native_completion_rate_mean": 0.667,
+      "fallback_recovery_rate_mean": 0.333,
+      "truncated_generations_mean": 3.5,
+      "truncated_generations_pstdev": 0.5,
+      "total_wall_clock_mean_s": 1124.823,
+      "total_wall_clock_pstdev_s": 193.899,
+      "total_wall_clock_sample_stdev_s": 274.215,
+      "total_tokens_mean": 54315.5,
+      "total_tokens_pstdev": 8932.5,
+      "tokens_per_verified_task_mean": 18105.2,
+      "tokens_per_verified_task_pstdev": 2977.5,
+      "per_task": {
+        "B1_selective_metrics": {
+          "runs": 2,
+          "pipeline_verified_rate": 1.0,
+          "llm_native_completion_rate": 1.0,
+          "fallback_used_rate": 0.0,
+          "wall_clock_mean_s": 601.136,
+          "wall_clock_pstdev_s": 190.2,
+          "wall_clock_sample_stdev_s": 268.983,
+          "output_tokens_mean": 10491.5,
+          "output_tokens_pstdev": 3045.5,
+          "turns_mean": 7.5,
+          "turns_pstdev": 1.5
+        },
+        "B2_ann_rerank": {
+          "runs": 2,
+          "pipeline_verified_rate": 1.0,
+          "llm_native_completion_rate": 1.0,
+          "fallback_used_rate": 0.0,
+          "wall_clock_mean_s": 274.278,
+          "wall_clock_pstdev_s": 3.712,
+          "wall_clock_sample_stdev_s": 5.25,
+          "output_tokens_mean": 4730.5,
+          "output_tokens_pstdev": 23.5,
+          "turns_mean": 7,
+          "turns_pstdev": 0.0
+        },
+        "B3_research_report_builder": {
+          "runs": 2,
+          "pipeline_verified_rate": 1.0,
+          "llm_native_completion_rate": 0.0,
+          "fallback_used_rate": 1.0,
+          "wall_clock_mean_s": 249.41,
+          "wall_clock_pstdev_s": 7.412,
+          "wall_clock_sample_stdev_s": 10.481,
+          "output_tokens_mean": 4096,
+          "output_tokens_pstdev": 0.0,
+          "turns_mean": 1,
+          "turns_pstdev": 0.0
+        }
+      }
+    }
+  },
+  "results": [
+    {
+      "configuration": "G0",
+      "seed": 101,
+      "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+      "env": {
+        "OLLAMA_THINK": "false",
+        "OLLAMA_NUM_CTX": "16384",
+        "OLLAMA_NUM_PREDICT": "2048",
+        "OLLAMA_SEED": "101"
+      },
+      "model": "gemma4:12b",
+      "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+      "think_enabled": false,
+      "num_ctx": 16384,
+      "num_predict": 2048,
+      "input_budget_tokens": 14336,
+      "tasks_completed": "3/3",
+      "tasks_completed_count": 3,
+      "pipeline_verified_count": 3,
+      "llm_native_completion_count": 3,
+      "fallback_recovery_count": 0,
+      "tasks_total": 3,
+      "invalid_tool_calls": 0,
+      "context_overflows": 0,
+      "truncated_generations": 2,
+      "total_wall_clock_s": 346.373,
+      "mean_wall_clock_s": 115.458,
+      "tokens_per_successful_task": 9925.3,
+      "total_input_tokens": 24361,
+      "total_output_tokens": 5415,
+      "total_thinking_chars": 0,
+      "rie_independent_pass": "3/3",
+      "tasks": [
+        {
+          "task_id": "B1_selective_metrics",
+          "seed": 101,
+          "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+          "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+          "ollama_config": {
+            "OLLAMA_THINK": "false",
+            "OLLAMA_NUM_CTX": "16384",
+            "OLLAMA_NUM_PREDICT": "2048",
+            "OLLAMA_SEED": "101"
+          },
+          "success": true,
+          "pipeline_verified": true,
+          "llm_native_completion": true,
+          "fallback_used": false,
+          "verification_status": "ACCEPTED",
+          "rie_status": "ACCEPTED",
+          "turns": 7,
+          "tool_calls_count": 5,
+          "read_file_calls": 2,
+          "unique_files_read": 2,
+          "repeated_file_reads": 0,
+          "edit_calls": 2,
+          "test_command_calls": 1,
+          "invalid_tool_arguments": 0,
+          "context_overflows": 0,
+          "truncated_generations": 1,
+          "input_tokens": 12818,
+          "output_tokens": 2759,
+          "turns_with_thinking": 0,
+          "thinking_chars": 0,
+          "wall_clock_s": 171.827,
+          "initial_file_hashes": {
+            "src/metric_eval.py": "2a09b6069b8e671e51f7162a1c85ffddc4a079fe4dbb63aacafeed3d88566bb2",
+            "test_metric_eval.py": "b62c62f41d5d026a285350d4f1f7de8110c2067d72328eb8a0e4bfe9159798c8"
+          },
+          "final_artifact_hashes": {
+            "src/metric_eval.py": "ed492a19b963bd07b1dc51c80b5218bd8e75837b5ac5659237b66649f1198b76",
+            "test_metric_eval.py": "b62c62f41d5d026a285350d4f1f7de8110c2067d72328eb8a0e4bfe9159798c8"
+          },
+          "diff_summary": {
+            "changed_files": [
+              "src/metric_eval.py"
+            ],
+            "added_lines": 2,
+            "removed_lines": 2,
+            "patches": {
+              "src/metric_eval.py": "--- a/src/metric_eval.py\n+++ b/src/metric_eval.py\n@@ -15,7 +15,7 @@\n     for i in range(n):\n         for j in range(i + 1, n):\n             # BUG 1: does not check if i or j was abstained (labels_pred == -1) in pred_same\n-            pred_same = (labels_pred[i] == labels_pred[j])\n+            pred_same = (labels_pred[i] == labels_pred[j]) and (labels_pred[i] != -1)\n             true_same = (labels_true[i] >= 0 and labels_true[j] >= 0 and labels_true[i] == labels_true[j])\n             if pred_same and true_same:\n                 tp += 1\n@@ -25,7 +25,7 @@\n                 fn += 1\n \n     # BUG 2: denominator uses tp - fp instead of tp + fp, and zero-decision precision should be 0.0\n-    precision = tp / (tp - fp) if (tp - fp) > 0 else 1.0\n+    precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0\n     recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0\n     f1 = (2 * precision * recall / (precision + recall)) if (precision + recall) > 0 else 0.0\n     fdp = fp / (tp + fp) if (tp + fp) > 0 else 0.0\n"
+            }
+          },
+          "turn_trajectory": [
+            {
+              "turn": 1,
+              "input_tokens": 1134,
+              "output_tokens": 21,
+              "prompt_eval_cached_tokens": 0,
+              "eval_duration_s": 1.1761,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "src/metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 2,
+              "input_tokens": 1645,
+              "output_tokens": 2048,
+              "prompt_eval_cached_tokens": 1130,
+              "eval_duration_s": 116.7508,
+              "thinking_chars": 0,
+              "done_reason": "length",
+              "truncated": true,
+              "tool_calls": []
+            },
+            {
+              "turn": 3,
+              "input_tokens": 1730,
+              "output_tokens": 21,
+              "prompt_eval_cached_tokens": 1640,
+              "eval_duration_s": 1.0701,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "test_metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 4,
+              "input_tokens": 2042,
+              "output_tokens": 233,
+              "prompt_eval_cached_tokens": 1726,
+              "eval_duration_s": 12.8389,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "patch_file",
+                  "target": "src/metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 5,
+              "input_tokens": 2297,
+              "output_tokens": 197,
+              "prompt_eval_cached_tokens": 2042,
+              "eval_duration_s": 10.9897,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "patch_file",
+                  "target": "src/metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 6,
+              "input_tokens": 2080,
+              "output_tokens": 30,
+              "prompt_eval_cached_tokens": 621,
+              "eval_duration_s": 1.5874,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "run_command",
+                  "target": "python3 -m unittest test_metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 7,
+              "input_tokens": 1890,
+              "output_tokens": 209,
+              "prompt_eval_cached_tokens": 621,
+              "eval_duration_s": 11.6612,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": []
+            }
+          ],
+          "error": null
+        },
+        {
+          "task_id": "B2_ann_rerank",
+          "seed": 101,
+          "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+          "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+          "ollama_config": {
+            "OLLAMA_THINK": "false",
+            "OLLAMA_NUM_CTX": "16384",
+            "OLLAMA_NUM_PREDICT": "2048",
+            "OLLAMA_SEED": "101"
+          },
+          "success": true,
+          "pipeline_verified": true,
+          "llm_native_completion": true,
+          "fallback_used": false,
+          "verification_status": "ACCEPTED",
+          "rie_status": "ACCEPTED",
+          "turns": 6,
+          "tool_calls_count": 4,
+          "read_file_calls": 2,
+          "unique_files_read": 2,
+          "repeated_file_reads": 0,
+          "edit_calls": 1,
+          "test_command_calls": 1,
+          "invalid_tool_arguments": 0,
+          "context_overflows": 0,
+          "truncated_generations": 1,
+          "input_tokens": 10111,
+          "output_tokens": 2326,
+          "turns_with_thinking": 0,
+          "thinking_chars": 0,
+          "wall_clock_s": 133.758,
+          "initial_file_hashes": {
+            "src/ann_index.py": "ca43b17bbe27777b407db23b31dbcdb301f930b1430bb2ec8e9c52c3021c42fc",
+            "test_ann_index.py": "6f0990e620e906d75d0910db033cd33f5c3a38fbb7c181a02cca8ac7dd5dbbab"
+          },
+          "final_artifact_hashes": {
+            "src/ann_index.py": "14006338aacb43e87b007800e30441daa4c610de84c350226b860779f022e072",
+            "test_ann_index.py": "6f0990e620e906d75d0910db033cd33f5c3a38fbb7c181a02cca8ac7dd5dbbab"
+          },
+          "diff_summary": {
+            "changed_files": [
+              "src/ann_index.py"
+            ],
+            "added_lines": 1,
+            "removed_lines": 1,
+            "patches": {
+              "src/ann_index.py": "--- a/src/ann_index.py\n+++ b/src/ann_index.py\n@@ -26,7 +26,7 @@\n         diffs = vectors[cands] - queries[qi]\n         sq_dists = np.sum(diffs * diffs, axis=1)\n         # BUG: sorts in descending order (-sq_dists) instead of ascending (sq_dists)\n-        top_local = np.argsort(-sq_dists)[:k]\n+        top_local = np.argsort(sq_dists)[:k]\n         out_ids[qi] = cands[top_local]\n         out_dists[qi] = sq_dists[top_local]\n \n"
+            }
+          },
+          "turn_trajectory": [
+            {
+              "turn": 1,
+              "input_tokens": 1086,
+              "output_tokens": 21,
+              "prompt_eval_cached_tokens": 621,
+              "eval_duration_s": 1.2022,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "src/ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 2,
+              "input_tokens": 1596,
+              "output_tokens": 33,
+              "prompt_eval_cached_tokens": 1082,
+              "eval_duration_s": 1.7801,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "test_ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 3,
+              "input_tokens": 1845,
+              "output_tokens": 2048,
+              "prompt_eval_cached_tokens": 1596,
+              "eval_duration_s": 113.6546,
+              "thinking_chars": 0,
+              "done_reason": "length",
+              "truncated": true,
+              "tool_calls": []
+            },
+            {
+              "turn": 4,
+              "input_tokens": 1930,
+              "output_tokens": 67,
+              "prompt_eval_cached_tokens": 1840,
+              "eval_duration_s": 3.44,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "patch_file",
+                  "target": "src/ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 5,
+              "input_tokens": 2023,
+              "output_tokens": 30,
+              "prompt_eval_cached_tokens": 1926,
+              "eval_duration_s": 1.5297,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "run_command",
+                  "target": "python3 -m unittest test_ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 6,
+              "input_tokens": 1631,
+              "output_tokens": 127,
+              "prompt_eval_cached_tokens": 621,
+              "eval_duration_s": 6.7395,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": []
+            }
+          ],
+          "error": null
+        },
+        {
+          "task_id": "B3_research_report_builder",
+          "seed": 101,
+          "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+          "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+          "ollama_config": {
+            "OLLAMA_THINK": "false",
+            "OLLAMA_NUM_CTX": "16384",
+            "OLLAMA_NUM_PREDICT": "2048",
+            "OLLAMA_SEED": "101"
+          },
+          "success": true,
+          "pipeline_verified": true,
+          "llm_native_completion": true,
+          "fallback_used": false,
+          "verification_status": "ACCEPTED",
+          "rie_status": "ACCEPTED",
+          "turns": 1,
+          "tool_calls_count": 0,
+          "read_file_calls": 0,
+          "unique_files_read": 0,
+          "repeated_file_reads": 0,
+          "edit_calls": 0,
+          "test_command_calls": 0,
+          "invalid_tool_arguments": 0,
+          "context_overflows": 0,
+          "truncated_generations": 0,
+          "input_tokens": 1432,
+          "output_tokens": 330,
+          "turns_with_thinking": 0,
+          "thinking_chars": 0,
+          "unverified_numbers_stripped": 0,
+          "wall_clock_s": 40.788,
+          "initial_file_hashes": {
+            "claims.json": "56055e3447dc1ce80d296afbae28a03fa6a4b91196acfe5d31c24e4f33aebbf5"
+          },
+          "final_artifact_hashes": {
+            "research_report.md": "c2f2aef240b7d46eaffb8ff4f719cad2a62cc5eab3347488092693beae4593ab"
+          },
+          "turn_trajectory": [
+            {
+              "turn": 1,
+              "input_tokens": 1432,
+              "output_tokens": 330,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": []
+            }
+          ],
+          "error": null
+        }
+      ]
+    },
+    {
+      "configuration": "G0",
+      "seed": 202,
+      "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+      "env": {
+        "OLLAMA_THINK": "false",
+        "OLLAMA_NUM_CTX": "16384",
+        "OLLAMA_NUM_PREDICT": "2048",
+        "OLLAMA_SEED": "202"
+      },
+      "model": "gemma4:12b",
+      "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+      "think_enabled": false,
+      "num_ctx": 16384,
+      "num_predict": 2048,
+      "input_budget_tokens": 14336,
+      "tasks_completed": "3/3",
+      "tasks_completed_count": 3,
+      "pipeline_verified_count": 3,
+      "llm_native_completion_count": 3,
+      "fallback_recovery_count": 0,
+      "tasks_total": 3,
+      "invalid_tool_calls": 0,
+      "context_overflows": 0,
+      "truncated_generations": 2,
+      "total_wall_clock_s": 349.649,
+      "mean_wall_clock_s": 116.55,
+      "tokens_per_successful_task": 11823.7,
+      "total_input_tokens": 29905,
+      "total_output_tokens": 5566,
+      "total_thinking_chars": 0,
+      "rie_independent_pass": "3/3",
+      "tasks": [
+        {
+          "task_id": "B1_selective_metrics",
+          "seed": 202,
+          "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+          "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+          "ollama_config": {
+            "OLLAMA_THINK": "false",
+            "OLLAMA_NUM_CTX": "16384",
+            "OLLAMA_NUM_PREDICT": "2048",
+            "OLLAMA_SEED": "202"
+          },
+          "success": true,
+          "pipeline_verified": true,
+          "llm_native_completion": true,
+          "fallback_used": false,
+          "verification_status": "ACCEPTED",
+          "rie_status": "ACCEPTED",
+          "turns": 9,
+          "tool_calls_count": 7,
+          "read_file_calls": 3,
+          "unique_files_read": 2,
+          "repeated_file_reads": 1,
+          "edit_calls": 3,
+          "test_command_calls": 1,
+          "invalid_tool_arguments": 0,
+          "context_overflows": 0,
+          "truncated_generations": 1,
+          "input_tokens": 18362,
+          "output_tokens": 2888,
+          "turns_with_thinking": 0,
+          "thinking_chars": 0,
+          "wall_clock_s": 169.77,
+          "initial_file_hashes": {
+            "src/metric_eval.py": "2a09b6069b8e671e51f7162a1c85ffddc4a079fe4dbb63aacafeed3d88566bb2",
+            "test_metric_eval.py": "b62c62f41d5d026a285350d4f1f7de8110c2067d72328eb8a0e4bfe9159798c8"
+          },
+          "final_artifact_hashes": {
+            "src/metric_eval.py": "8beb5ac32feb1a32788a952cc6c92f0f50de1e99d836dc2c252ab637cdcca18f",
+            "test_metric_eval.py": "b62c62f41d5d026a285350d4f1f7de8110c2067d72328eb8a0e4bfe9159798c8"
+          },
+          "diff_summary": {
+            "changed_files": [
+              "src/metric_eval.py"
+            ],
+            "added_lines": 2,
+            "removed_lines": 2,
+            "patches": {
+              "src/metric_eval.py": "--- a/src/metric_eval.py\n+++ b/src/metric_eval.py\n@@ -15,7 +15,7 @@\n     for i in range(n):\n         for j in range(i + 1, n):\n             # BUG 1: does not check if i or j was abstained (labels_pred == -1) in pred_same\n-            pred_same = (labels_pred[i] == labels_pred[j])\n+            pred_same = (labels_pred[i] == labels_pred[j] and labels_pred[i] != -1)\n             true_same = (labels_true[i] >= 0 and labels_true[j] >= 0 and labels_true[i] == labels_true[j])\n             if pred_same and true_same:\n                 tp += 1\n@@ -25,7 +25,7 @@\n                 fn += 1\n \n     # BUG 2: denominator uses tp - fp instead of tp + fp, and zero-decision precision should be 0.0\n-    precision = tp / (tp - fp) if (tp - fp) > 0 else 1.0\n+    precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0\n     recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0\n     f1 = (2 * precision * recall / (precision + recall)) if (precision + recall) > 0 else 0.0\n     fdp = fp / (tp + fp) if (tp + fp) > 0 else 0.0\n"
+            }
+          },
+          "turn_trajectory": [
+            {
+              "turn": 1,
+              "input_tokens": 1134,
+              "output_tokens": 21,
+              "prompt_eval_cached_tokens": 621,
+              "eval_duration_s": 1.0567,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "src/metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 2,
+              "input_tokens": 1645,
+              "output_tokens": 2048,
+              "prompt_eval_cached_tokens": 1130,
+              "eval_duration_s": 110.2061,
+              "thinking_chars": 0,
+              "done_reason": "length",
+              "truncated": true,
+              "tool_calls": []
+            },
+            {
+              "turn": 3,
+              "input_tokens": 1730,
+              "output_tokens": 21,
+              "prompt_eval_cached_tokens": 621,
+              "eval_duration_s": 1.0835,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "test_metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 4,
+              "input_tokens": 2042,
+              "output_tokens": 253,
+              "prompt_eval_cached_tokens": 1726,
+              "eval_duration_s": 13.3758,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "patch_file",
+                  "target": "src/metric_eval.py",
+                  "success": false
+                }
+              ]
+            },
+            {
+              "turn": 5,
+              "input_tokens": 2315,
+              "output_tokens": 190,
+              "prompt_eval_cached_tokens": 2042,
+              "eval_duration_s": 10.1205,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "patch_file",
+                  "target": "src/metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 6,
+              "input_tokens": 2091,
+              "output_tokens": 25,
+              "prompt_eval_cached_tokens": 621,
+              "eval_duration_s": 1.2752,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "src/metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 7,
+              "input_tokens": 2370,
+              "output_tokens": 87,
+              "prompt_eval_cached_tokens": 621,
+              "eval_duration_s": 4.5725,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "patch_file",
+                  "target": "src/metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 8,
+              "input_tokens": 2488,
+              "output_tokens": 30,
+              "prompt_eval_cached_tokens": 621,
+              "eval_duration_s": 1.5931,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "run_command",
+                  "target": "python3 -m unittest test_metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 9,
+              "input_tokens": 2547,
+              "output_tokens": 213,
+              "prompt_eval_cached_tokens": 621,
+              "eval_duration_s": 11.6096,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": []
+            }
+          ],
+          "error": null
+        },
+        {
+          "task_id": "B2_ann_rerank",
+          "seed": 202,
+          "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+          "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+          "ollama_config": {
+            "OLLAMA_THINK": "false",
+            "OLLAMA_NUM_CTX": "16384",
+            "OLLAMA_NUM_PREDICT": "2048",
+            "OLLAMA_SEED": "202"
+          },
+          "success": true,
+          "pipeline_verified": true,
+          "llm_native_completion": true,
+          "fallback_used": false,
+          "verification_status": "ACCEPTED",
+          "rie_status": "ACCEPTED",
+          "turns": 6,
+          "tool_calls_count": 4,
+          "read_file_calls": 2,
+          "unique_files_read": 2,
+          "repeated_file_reads": 0,
+          "edit_calls": 1,
+          "test_command_calls": 1,
+          "invalid_tool_arguments": 0,
+          "context_overflows": 0,
+          "truncated_generations": 1,
+          "input_tokens": 10111,
+          "output_tokens": 2313,
+          "turns_with_thinking": 0,
+          "thinking_chars": 0,
+          "wall_clock_s": 137.993,
+          "initial_file_hashes": {
+            "src/ann_index.py": "ca43b17bbe27777b407db23b31dbcdb301f930b1430bb2ec8e9c52c3021c42fc",
+            "test_ann_index.py": "6f0990e620e906d75d0910db033cd33f5c3a38fbb7c181a02cca8ac7dd5dbbab"
+          },
+          "final_artifact_hashes": {
+            "src/ann_index.py": "14006338aacb43e87b007800e30441daa4c610de84c350226b860779f022e072",
+            "test_ann_index.py": "6f0990e620e906d75d0910db033cd33f5c3a38fbb7c181a02cca8ac7dd5dbbab"
+          },
+          "diff_summary": {
+            "changed_files": [
+              "src/ann_index.py"
+            ],
+            "added_lines": 1,
+            "removed_lines": 1,
+            "patches": {
+              "src/ann_index.py": "--- a/src/ann_index.py\n+++ b/src/ann_index.py\n@@ -26,7 +26,7 @@\n         diffs = vectors[cands] - queries[qi]\n         sq_dists = np.sum(diffs * diffs, axis=1)\n         # BUG: sorts in descending order (-sq_dists) instead of ascending (sq_dists)\n-        top_local = np.argsort(-sq_dists)[:k]\n+        top_local = np.argsort(sq_dists)[:k]\n         out_ids[qi] = cands[top_local]\n         out_dists[qi] = sq_dists[top_local]\n \n"
+            }
+          },
+          "turn_trajectory": [
+            {
+              "turn": 1,
+              "input_tokens": 1086,
+              "output_tokens": 21,
+              "prompt_eval_cached_tokens": 0,
+              "eval_duration_s": 1.2306,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "src/ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 2,
+              "input_tokens": 1596,
+              "output_tokens": 33,
+              "prompt_eval_cached_tokens": 1082,
+              "eval_duration_s": 1.9385,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "test_ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 3,
+              "input_tokens": 1845,
+              "output_tokens": 2048,
+              "prompt_eval_cached_tokens": 1596,
+              "eval_duration_s": 116.5946,
+              "thinking_chars": 0,
+              "done_reason": "length",
+              "truncated": true,
+              "tool_calls": []
+            },
+            {
+              "turn": 4,
+              "input_tokens": 1930,
+              "output_tokens": 67,
+              "prompt_eval_cached_tokens": 1840,
+              "eval_duration_s": 3.5915,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "patch_file",
+                  "target": "src/ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 5,
+              "input_tokens": 2023,
+              "output_tokens": 30,
+              "prompt_eval_cached_tokens": 1926,
+              "eval_duration_s": 1.5354,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "run_command",
+                  "target": "python3 -m unittest test_ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 6,
+              "input_tokens": 1631,
+              "output_tokens": 114,
+              "prompt_eval_cached_tokens": 573,
+              "eval_duration_s": 6.0146,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": []
+            }
+          ],
+          "error": null
+        },
+        {
+          "task_id": "B3_research_report_builder",
+          "seed": 202,
+          "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+          "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+          "ollama_config": {
+            "OLLAMA_THINK": "false",
+            "OLLAMA_NUM_CTX": "16384",
+            "OLLAMA_NUM_PREDICT": "2048",
+            "OLLAMA_SEED": "202"
+          },
+          "success": true,
+          "pipeline_verified": true,
+          "llm_native_completion": true,
+          "fallback_used": false,
+          "verification_status": "ACCEPTED",
+          "rie_status": "ACCEPTED",
+          "turns": 1,
+          "tool_calls_count": 0,
+          "read_file_calls": 0,
+          "unique_files_read": 0,
+          "repeated_file_reads": 0,
+          "edit_calls": 0,
+          "test_command_calls": 0,
+          "invalid_tool_arguments": 0,
+          "context_overflows": 0,
+          "truncated_generations": 0,
+          "input_tokens": 1432,
+          "output_tokens": 365,
+          "turns_with_thinking": 0,
+          "thinking_chars": 0,
+          "unverified_numbers_stripped": 0,
+          "wall_clock_s": 41.886,
+          "initial_file_hashes": {
+            "claims.json": "56055e3447dc1ce80d296afbae28a03fa6a4b91196acfe5d31c24e4f33aebbf5"
+          },
+          "final_artifact_hashes": {
+            "research_report.md": "78b012d987151bcbb0778788e1e6c37d9258061ae7099ce9f53fe854fc825a27"
+          },
+          "turn_trajectory": [
+            {
+              "turn": 1,
+              "input_tokens": 1432,
+              "output_tokens": 365,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": []
+            }
+          ],
+          "error": null
+        }
+      ]
+    },
+    {
+      "configuration": "G3",
+      "seed": 101,
+      "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+      "env": {
+        "OLLAMA_THINK": "false",
+        "OLLAMA_NUM_CTX": "16384",
+        "OLLAMA_NUM_PREDICT": "4096",
+        "OLLAMA_SEED": "101"
+      },
+      "model": "gemma4:12b",
+      "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+      "think_enabled": false,
+      "num_ctx": 16384,
+      "num_predict": 4096,
+      "input_budget_tokens": 12288,
+      "tasks_completed": "3/3",
+      "tasks_completed_count": 3,
+      "pipeline_verified_count": 3,
+      "llm_native_completion_count": 3,
+      "fallback_recovery_count": 0,
+      "tasks_total": 3,
+      "invalid_tool_calls": 0,
+      "context_overflows": 0,
+      "truncated_generations": 2,
+      "total_wall_clock_s": 599.658,
+      "mean_wall_clock_s": 199.886,
+      "tokens_per_successful_task": 11635.3,
+      "total_input_tokens": 25049,
+      "total_output_tokens": 9857,
+      "total_thinking_chars": 0,
+      "rie_independent_pass": "3/3",
+      "tasks": [
+        {
+          "task_id": "B1_selective_metrics",
+          "seed": 101,
+          "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+          "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+          "ollama_config": {
+            "OLLAMA_THINK": "false",
+            "OLLAMA_NUM_CTX": "16384",
+            "OLLAMA_NUM_PREDICT": "4096",
+            "OLLAMA_SEED": "101"
+          },
+          "success": true,
+          "pipeline_verified": true,
+          "llm_native_completion": true,
+          "fallback_used": false,
+          "verification_status": "ACCEPTED",
+          "rie_status": "ACCEPTED",
+          "turns": 7,
+          "tool_calls_count": 5,
+          "read_file_calls": 2,
+          "unique_files_read": 2,
+          "repeated_file_reads": 0,
+          "edit_calls": 2,
+          "test_command_calls": 1,
+          "invalid_tool_arguments": 0,
+          "context_overflows": 0,
+          "truncated_generations": 1,
+          "input_tokens": 13506,
+          "output_tokens": 5135,
+          "turns_with_thinking": 0,
+          "thinking_chars": 0,
+          "wall_clock_s": 310.98,
+          "initial_file_hashes": {
+            "src/metric_eval.py": "2a09b6069b8e671e51f7162a1c85ffddc4a079fe4dbb63aacafeed3d88566bb2",
+            "test_metric_eval.py": "b62c62f41d5d026a285350d4f1f7de8110c2067d72328eb8a0e4bfe9159798c8"
+          },
+          "final_artifact_hashes": {
+            "src/metric_eval.py": "ed492a19b963bd07b1dc51c80b5218bd8e75837b5ac5659237b66649f1198b76",
+            "test_metric_eval.py": "b62c62f41d5d026a285350d4f1f7de8110c2067d72328eb8a0e4bfe9159798c8"
+          },
+          "diff_summary": {
+            "changed_files": [
+              "src/metric_eval.py"
+            ],
+            "added_lines": 2,
+            "removed_lines": 2,
+            "patches": {
+              "src/metric_eval.py": "--- a/src/metric_eval.py\n+++ b/src/metric_eval.py\n@@ -15,7 +15,7 @@\n     for i in range(n):\n         for j in range(i + 1, n):\n             # BUG 1: does not check if i or j was abstained (labels_pred == -1) in pred_same\n-            pred_same = (labels_pred[i] == labels_pred[j])\n+            pred_same = (labels_pred[i] == labels_pred[j]) and (labels_pred[i] != -1)\n             true_same = (labels_true[i] >= 0 and labels_true[j] >= 0 and labels_true[i] == labels_true[j])\n             if pred_same and true_same:\n                 tp += 1\n@@ -25,7 +25,7 @@\n                 fn += 1\n \n     # BUG 2: denominator uses tp - fp instead of tp + fp, and zero-decision precision should be 0.0\n-    precision = tp / (tp - fp) if (tp - fp) > 0 else 1.0\n+    precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0\n     recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0\n     f1 = (2 * precision * recall / (precision + recall)) if (precision + recall) > 0 else 0.0\n     fdp = fp / (tp + fp) if (tp + fp) > 0 else 0.0\n"
+            }
+          },
+          "turn_trajectory": [
+            {
+              "turn": 1,
+              "input_tokens": 1134,
+              "output_tokens": 21,
+              "prompt_eval_cached_tokens": 0,
+              "eval_duration_s": 1.1862,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "src/metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 2,
+              "input_tokens": 1645,
+              "output_tokens": 4096,
+              "prompt_eval_cached_tokens": 1130,
+              "eval_duration_s": 235.9206,
+              "thinking_chars": 0,
+              "done_reason": "length",
+              "truncated": true,
+              "tool_calls": []
+            },
+            {
+              "turn": 3,
+              "input_tokens": 1730,
+              "output_tokens": 21,
+              "prompt_eval_cached_tokens": 1640,
+              "eval_duration_s": 1.0932,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "test_metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 4,
+              "input_tokens": 2042,
+              "output_tokens": 337,
+              "prompt_eval_cached_tokens": 1726,
+              "eval_duration_s": 18.1866,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "patch_file",
+                  "target": "src/metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 5,
+              "input_tokens": 2401,
+              "output_tokens": 421,
+              "prompt_eval_cached_tokens": 2042,
+              "eval_duration_s": 23.6582,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "patch_file",
+                  "target": "src/metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 6,
+              "input_tokens": 2408,
+              "output_tokens": 30,
+              "prompt_eval_cached_tokens": 621,
+              "eval_duration_s": 1.5427,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "run_command",
+                  "target": "python3 -m unittest test_metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 7,
+              "input_tokens": 2146,
+              "output_tokens": 209,
+              "prompt_eval_cached_tokens": 621,
+              "eval_duration_s": 11.5261,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": []
+            }
+          ],
+          "error": null
+        },
+        {
+          "task_id": "B2_ann_rerank",
+          "seed": 101,
+          "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+          "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+          "ollama_config": {
+            "OLLAMA_THINK": "false",
+            "OLLAMA_NUM_CTX": "16384",
+            "OLLAMA_NUM_PREDICT": "4096",
+            "OLLAMA_SEED": "101"
+          },
+          "success": true,
+          "pipeline_verified": true,
+          "llm_native_completion": true,
+          "fallback_used": false,
+          "verification_status": "ACCEPTED",
+          "rie_status": "ACCEPTED",
+          "turns": 6,
+          "tool_calls_count": 4,
+          "read_file_calls": 2,
+          "unique_files_read": 2,
+          "repeated_file_reads": 0,
+          "edit_calls": 1,
+          "test_command_calls": 1,
+          "invalid_tool_arguments": 0,
+          "context_overflows": 0,
+          "truncated_generations": 1,
+          "input_tokens": 10111,
+          "output_tokens": 4392,
+          "turns_with_thinking": 0,
+          "thinking_chars": 0,
+          "wall_clock_s": 249.792,
+          "initial_file_hashes": {
+            "src/ann_index.py": "ca43b17bbe27777b407db23b31dbcdb301f930b1430bb2ec8e9c52c3021c42fc",
+            "test_ann_index.py": "6f0990e620e906d75d0910db033cd33f5c3a38fbb7c181a02cca8ac7dd5dbbab"
+          },
+          "final_artifact_hashes": {
+            "src/ann_index.py": "14006338aacb43e87b007800e30441daa4c610de84c350226b860779f022e072",
+            "test_ann_index.py": "6f0990e620e906d75d0910db033cd33f5c3a38fbb7c181a02cca8ac7dd5dbbab"
+          },
+          "diff_summary": {
+            "changed_files": [
+              "src/ann_index.py"
+            ],
+            "added_lines": 1,
+            "removed_lines": 1,
+            "patches": {
+              "src/ann_index.py": "--- a/src/ann_index.py\n+++ b/src/ann_index.py\n@@ -26,7 +26,7 @@\n         diffs = vectors[cands] - queries[qi]\n         sq_dists = np.sum(diffs * diffs, axis=1)\n         # BUG: sorts in descending order (-sq_dists) instead of ascending (sq_dists)\n-        top_local = np.argsort(-sq_dists)[:k]\n+        top_local = np.argsort(sq_dists)[:k]\n         out_ids[qi] = cands[top_local]\n         out_dists[qi] = sq_dists[top_local]\n \n"
+            }
+          },
+          "turn_trajectory": [
+            {
+              "turn": 1,
+              "input_tokens": 1086,
+              "output_tokens": 21,
+              "prompt_eval_cached_tokens": 621,
+              "eval_duration_s": 1.0445,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "src/ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 2,
+              "input_tokens": 1596,
+              "output_tokens": 33,
+              "prompt_eval_cached_tokens": 1082,
+              "eval_duration_s": 1.687,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "test_ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 3,
+              "input_tokens": 1845,
+              "output_tokens": 4096,
+              "prompt_eval_cached_tokens": 1596,
+              "eval_duration_s": 227.8303,
+              "thinking_chars": 0,
+              "done_reason": "length",
+              "truncated": true,
+              "tool_calls": []
+            },
+            {
+              "turn": 4,
+              "input_tokens": 1930,
+              "output_tokens": 67,
+              "prompt_eval_cached_tokens": 1840,
+              "eval_duration_s": 3.7627,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "patch_file",
+                  "target": "src/ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 5,
+              "input_tokens": 2023,
+              "output_tokens": 30,
+              "prompt_eval_cached_tokens": 1926,
+              "eval_duration_s": 1.6219,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "run_command",
+                  "target": "python3 -m unittest test_ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 6,
+              "input_tokens": 1631,
+              "output_tokens": 145,
+              "prompt_eval_cached_tokens": 621,
+              "eval_duration_s": 8.0474,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": []
+            }
+          ],
+          "error": null
+        },
+        {
+          "task_id": "B3_research_report_builder",
+          "seed": 101,
+          "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+          "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+          "ollama_config": {
+            "OLLAMA_THINK": "false",
+            "OLLAMA_NUM_CTX": "16384",
+            "OLLAMA_NUM_PREDICT": "4096",
+            "OLLAMA_SEED": "101"
+          },
+          "success": true,
+          "pipeline_verified": true,
+          "llm_native_completion": true,
+          "fallback_used": false,
+          "verification_status": "ACCEPTED",
+          "rie_status": "ACCEPTED",
+          "turns": 1,
+          "tool_calls_count": 0,
+          "read_file_calls": 0,
+          "unique_files_read": 0,
+          "repeated_file_reads": 0,
+          "edit_calls": 0,
+          "test_command_calls": 0,
+          "invalid_tool_arguments": 0,
+          "context_overflows": 0,
+          "truncated_generations": 0,
+          "input_tokens": 1432,
+          "output_tokens": 330,
+          "turns_with_thinking": 0,
+          "thinking_chars": 0,
+          "unverified_numbers_stripped": 0,
+          "wall_clock_s": 38.886,
+          "initial_file_hashes": {
+            "claims.json": "56055e3447dc1ce80d296afbae28a03fa6a4b91196acfe5d31c24e4f33aebbf5"
+          },
+          "final_artifact_hashes": {
+            "research_report.md": "c2f2aef240b7d46eaffb8ff4f719cad2a62cc5eab3347488092693beae4593ab"
+          },
+          "turn_trajectory": [
+            {
+              "turn": 1,
+              "input_tokens": 1432,
+              "output_tokens": 330,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": []
+            }
+          ],
+          "error": null
+        }
+      ]
+    },
+    {
+      "configuration": "G3",
+      "seed": 202,
+      "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+      "env": {
+        "OLLAMA_THINK": "false",
+        "OLLAMA_NUM_CTX": "16384",
+        "OLLAMA_NUM_PREDICT": "4096",
+        "OLLAMA_SEED": "202"
+      },
+      "model": "gemma4:12b",
+      "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+      "think_enabled": false,
+      "num_ctx": 16384,
+      "num_predict": 4096,
+      "input_budget_tokens": 12288,
+      "tasks_completed": "3/3",
+      "tasks_completed_count": 3,
+      "pipeline_verified_count": 3,
+      "llm_native_completion_count": 3,
+      "fallback_recovery_count": 0,
+      "tasks_total": 3,
+      "invalid_tool_calls": 0,
+      "context_overflows": 0,
+      "truncated_generations": 2,
+      "total_wall_clock_s": 587.051,
+      "mean_wall_clock_s": 195.684,
+      "tokens_per_successful_task": 11438.0,
+      "total_input_tokens": 24651,
+      "total_output_tokens": 9663,
+      "total_thinking_chars": 0,
+      "rie_independent_pass": "3/3",
+      "tasks": [
+        {
+          "task_id": "B1_selective_metrics",
+          "seed": 202,
+          "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+          "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+          "ollama_config": {
+            "OLLAMA_THINK": "false",
+            "OLLAMA_NUM_CTX": "16384",
+            "OLLAMA_NUM_PREDICT": "4096",
+            "OLLAMA_SEED": "202"
+          },
+          "success": true,
+          "pipeline_verified": true,
+          "llm_native_completion": true,
+          "fallback_used": false,
+          "verification_status": "ACCEPTED",
+          "rie_status": "ACCEPTED",
+          "turns": 7,
+          "tool_calls_count": 5,
+          "read_file_calls": 2,
+          "unique_files_read": 2,
+          "repeated_file_reads": 0,
+          "edit_calls": 2,
+          "test_command_calls": 1,
+          "invalid_tool_arguments": 0,
+          "context_overflows": 0,
+          "truncated_generations": 1,
+          "input_tokens": 13108,
+          "output_tokens": 4942,
+          "turns_with_thinking": 0,
+          "thinking_chars": 0,
+          "wall_clock_s": 299.498,
+          "initial_file_hashes": {
+            "src/metric_eval.py": "2a09b6069b8e671e51f7162a1c85ffddc4a079fe4dbb63aacafeed3d88566bb2",
+            "test_metric_eval.py": "b62c62f41d5d026a285350d4f1f7de8110c2067d72328eb8a0e4bfe9159798c8"
+          },
+          "final_artifact_hashes": {
+            "src/metric_eval.py": "8beb5ac32feb1a32788a952cc6c92f0f50de1e99d836dc2c252ab637cdcca18f",
+            "test_metric_eval.py": "b62c62f41d5d026a285350d4f1f7de8110c2067d72328eb8a0e4bfe9159798c8"
+          },
+          "diff_summary": {
+            "changed_files": [
+              "src/metric_eval.py"
+            ],
+            "added_lines": 2,
+            "removed_lines": 2,
+            "patches": {
+              "src/metric_eval.py": "--- a/src/metric_eval.py\n+++ b/src/metric_eval.py\n@@ -15,7 +15,7 @@\n     for i in range(n):\n         for j in range(i + 1, n):\n             # BUG 1: does not check if i or j was abstained (labels_pred == -1) in pred_same\n-            pred_same = (labels_pred[i] == labels_pred[j])\n+            pred_same = (labels_pred[i] == labels_pred[j] and labels_pred[i] != -1)\n             true_same = (labels_true[i] >= 0 and labels_true[j] >= 0 and labels_true[i] == labels_true[j])\n             if pred_same and true_same:\n                 tp += 1\n@@ -25,7 +25,7 @@\n                 fn += 1\n \n     # BUG 2: denominator uses tp - fp instead of tp + fp, and zero-decision precision should be 0.0\n-    precision = tp / (tp - fp) if (tp - fp) > 0 else 1.0\n+    precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0\n     recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0\n     f1 = (2 * precision * recall / (precision + recall)) if (precision + recall) > 0 else 0.0\n     fdp = fp / (tp + fp) if (tp + fp) > 0 else 0.0\n"
+            }
+          },
+          "turn_trajectory": [
+            {
+              "turn": 1,
+              "input_tokens": 1134,
+              "output_tokens": 21,
+              "prompt_eval_cached_tokens": 621,
+              "eval_duration_s": 1.0783,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "src/metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 2,
+              "input_tokens": 1645,
+              "output_tokens": 4096,
+              "prompt_eval_cached_tokens": 1130,
+              "eval_duration_s": 238.3308,
+              "thinking_chars": 0,
+              "done_reason": "length",
+              "truncated": true,
+              "tool_calls": []
+            },
+            {
+              "turn": 3,
+              "input_tokens": 1730,
+              "output_tokens": 21,
+              "prompt_eval_cached_tokens": 1640,
+              "eval_duration_s": 1.0879,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "test_metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 4,
+              "input_tokens": 2042,
+              "output_tokens": 252,
+              "prompt_eval_cached_tokens": 1726,
+              "eval_duration_s": 15.2672,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "patch_file",
+                  "target": "src/metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 5,
+              "input_tokens": 2316,
+              "output_tokens": 317,
+              "prompt_eval_cached_tokens": 2042,
+              "eval_duration_s": 21.1347,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "patch_file",
+                  "target": "src/metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 6,
+              "input_tokens": 2219,
+              "output_tokens": 30,
+              "prompt_eval_cached_tokens": 621,
+              "eval_duration_s": 1.7089,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "run_command",
+                  "target": "python3 -m unittest test_metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 7,
+              "input_tokens": 2022,
+              "output_tokens": 205,
+              "prompt_eval_cached_tokens": 621,
+              "eval_duration_s": 11.0406,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": []
+            }
+          ],
+          "error": null
+        },
+        {
+          "task_id": "B2_ann_rerank",
+          "seed": 202,
+          "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+          "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+          "ollama_config": {
+            "OLLAMA_THINK": "false",
+            "OLLAMA_NUM_CTX": "16384",
+            "OLLAMA_NUM_PREDICT": "4096",
+            "OLLAMA_SEED": "202"
+          },
+          "success": true,
+          "pipeline_verified": true,
+          "llm_native_completion": true,
+          "fallback_used": false,
+          "verification_status": "ACCEPTED",
+          "rie_status": "ACCEPTED",
+          "turns": 6,
+          "tool_calls_count": 4,
+          "read_file_calls": 2,
+          "unique_files_read": 2,
+          "repeated_file_reads": 0,
+          "edit_calls": 1,
+          "test_command_calls": 1,
+          "invalid_tool_arguments": 0,
+          "context_overflows": 0,
+          "truncated_generations": 1,
+          "input_tokens": 10111,
+          "output_tokens": 4372,
+          "turns_with_thinking": 0,
+          "thinking_chars": 0,
+          "wall_clock_s": 247.753,
+          "initial_file_hashes": {
+            "src/ann_index.py": "ca43b17bbe27777b407db23b31dbcdb301f930b1430bb2ec8e9c52c3021c42fc",
+            "test_ann_index.py": "6f0990e620e906d75d0910db033cd33f5c3a38fbb7c181a02cca8ac7dd5dbbab"
+          },
+          "final_artifact_hashes": {
+            "src/ann_index.py": "14006338aacb43e87b007800e30441daa4c610de84c350226b860779f022e072",
+            "test_ann_index.py": "6f0990e620e906d75d0910db033cd33f5c3a38fbb7c181a02cca8ac7dd5dbbab"
+          },
+          "diff_summary": {
+            "changed_files": [
+              "src/ann_index.py"
+            ],
+            "added_lines": 1,
+            "removed_lines": 1,
+            "patches": {
+              "src/ann_index.py": "--- a/src/ann_index.py\n+++ b/src/ann_index.py\n@@ -26,7 +26,7 @@\n         diffs = vectors[cands] - queries[qi]\n         sq_dists = np.sum(diffs * diffs, axis=1)\n         # BUG: sorts in descending order (-sq_dists) instead of ascending (sq_dists)\n-        top_local = np.argsort(-sq_dists)[:k]\n+        top_local = np.argsort(sq_dists)[:k]\n         out_ids[qi] = cands[top_local]\n         out_dists[qi] = sq_dists[top_local]\n \n"
+            }
+          },
+          "turn_trajectory": [
+            {
+              "turn": 1,
+              "input_tokens": 1086,
+              "output_tokens": 21,
+              "prompt_eval_cached_tokens": 621,
+              "eval_duration_s": 1.0895,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "src/ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 2,
+              "input_tokens": 1596,
+              "output_tokens": 33,
+              "prompt_eval_cached_tokens": 1082,
+              "eval_duration_s": 1.7414,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "test_ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 3,
+              "input_tokens": 1845,
+              "output_tokens": 4096,
+              "prompt_eval_cached_tokens": 1596,
+              "eval_duration_s": 227.1532,
+              "thinking_chars": 0,
+              "done_reason": "length",
+              "truncated": true,
+              "tool_calls": []
+            },
+            {
+              "turn": 4,
+              "input_tokens": 1930,
+              "output_tokens": 67,
+              "prompt_eval_cached_tokens": 1840,
+              "eval_duration_s": 3.4168,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "patch_file",
+                  "target": "src/ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 5,
+              "input_tokens": 2023,
+              "output_tokens": 30,
+              "prompt_eval_cached_tokens": 1926,
+              "eval_duration_s": 1.5121,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "run_command",
+                  "target": "python3 -m unittest test_ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 6,
+              "input_tokens": 1631,
+              "output_tokens": 125,
+              "prompt_eval_cached_tokens": 621,
+              "eval_duration_s": 6.9839,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": []
+            }
+          ],
+          "error": null
+        },
+        {
+          "task_id": "B3_research_report_builder",
+          "seed": 202,
+          "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+          "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+          "ollama_config": {
+            "OLLAMA_THINK": "false",
+            "OLLAMA_NUM_CTX": "16384",
+            "OLLAMA_NUM_PREDICT": "4096",
+            "OLLAMA_SEED": "202"
+          },
+          "success": true,
+          "pipeline_verified": true,
+          "llm_native_completion": true,
+          "fallback_used": false,
+          "verification_status": "ACCEPTED",
+          "rie_status": "ACCEPTED",
+          "turns": 1,
+          "tool_calls_count": 0,
+          "read_file_calls": 0,
+          "unique_files_read": 0,
+          "repeated_file_reads": 0,
+          "edit_calls": 0,
+          "test_command_calls": 0,
+          "invalid_tool_arguments": 0,
+          "context_overflows": 0,
+          "truncated_generations": 0,
+          "input_tokens": 1432,
+          "output_tokens": 349,
+          "turns_with_thinking": 0,
+          "thinking_chars": 0,
+          "unverified_numbers_stripped": 0,
+          "wall_clock_s": 39.8,
+          "initial_file_hashes": {
+            "claims.json": "56055e3447dc1ce80d296afbae28a03fa6a4b91196acfe5d31c24e4f33aebbf5"
+          },
+          "final_artifact_hashes": {
+            "research_report.md": "b91e340fe574d40457e52d1f9584a981280f23bede811e8cad76e3c439fc76c6"
+          },
+          "turn_trajectory": [
+            {
+              "turn": 1,
+              "input_tokens": 1432,
+              "output_tokens": 349,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": []
+            }
+          ],
+          "error": null
+        }
+      ]
+    },
+    {
+      "configuration": "G1",
+      "seed": 101,
+      "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+      "env": {
+        "OLLAMA_THINK": "true",
+        "OLLAMA_NUM_CTX": "16384",
+        "OLLAMA_NUM_PREDICT": "2048",
+        "OLLAMA_SEED": "101"
+      },
+      "model": "gemma4:12b",
+      "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+      "think_enabled": true,
+      "num_ctx": 16384,
+      "num_predict": 2048,
+      "input_budget_tokens": 14336,
+      "tasks_completed": "3/3",
+      "tasks_completed_count": 3,
+      "pipeline_verified_count": 3,
+      "llm_native_completion_count": 2,
+      "fallback_recovery_count": 1,
+      "tasks_total": 3,
+      "invalid_tool_calls": 0,
+      "context_overflows": 0,
+      "truncated_generations": 3,
+      "total_wall_clock_s": 1094.394,
+      "mean_wall_clock_s": 364.798,
+      "tokens_per_successful_task": 18504.7,
+      "total_input_tokens": 42825,
+      "total_output_tokens": 12689,
+      "total_thinking_chars": 40395,
+      "rie_independent_pass": "3/3",
+      "tasks": [
+        {
+          "task_id": "B1_selective_metrics",
+          "seed": 101,
+          "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+          "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+          "ollama_config": {
+            "OLLAMA_THINK": "true",
+            "OLLAMA_NUM_CTX": "16384",
+            "OLLAMA_NUM_PREDICT": "2048",
+            "OLLAMA_SEED": "101"
+          },
+          "success": true,
+          "pipeline_verified": true,
+          "llm_native_completion": true,
+          "fallback_used": false,
+          "verification_status": "ACCEPTED",
+          "rie_status": "ACCEPTED",
+          "turns": 12,
+          "tool_calls_count": 7,
+          "read_file_calls": 3,
+          "unique_files_read": 2,
+          "repeated_file_reads": 1,
+          "edit_calls": 2,
+          "test_command_calls": 1,
+          "invalid_tool_arguments": 0,
+          "context_overflows": 0,
+          "truncated_generations": 1,
+          "input_tokens": 21928,
+          "output_tokens": 6298,
+          "turns_with_thinking": 8,
+          "thinking_chars": 16093,
+          "wall_clock_s": 706.792,
+          "initial_file_hashes": {
+            "src/metric_eval.py": "2a09b6069b8e671e51f7162a1c85ffddc4a079fe4dbb63aacafeed3d88566bb2",
+            "test_metric_eval.py": "b62c62f41d5d026a285350d4f1f7de8110c2067d72328eb8a0e4bfe9159798c8"
+          },
+          "final_artifact_hashes": {
+            "src/metric_eval.py": "f04698c2d78d5864105c2de6fea698aa4a0e15826c98a843ee1ee6993db4b3a2",
+            "test_metric_eval.py": "b62c62f41d5d026a285350d4f1f7de8110c2067d72328eb8a0e4bfe9159798c8"
+          },
+          "diff_summary": {
+            "changed_files": [
+              "src/metric_eval.py"
+            ],
+            "added_lines": 2,
+            "removed_lines": 2,
+            "patches": {
+              "src/metric_eval.py": "--- a/src/metric_eval.py\n+++ b/src/metric_eval.py\n@@ -15,7 +15,7 @@\n     for i in range(n):\n         for j in range(i + 1, n):\n             # BUG 1: does not check if i or j was abstained (labels_pred == -1) in pred_same\n-            pred_same = (labels_pred[i] == labels_pred[j])\n+            pred_same = (labels_pred[i] != -1 and labels_pred[j] != -1 and labels_pred[i] == labels_pred[j])\n             true_same = (labels_true[i] >= 0 and labels_true[j] >= 0 and labels_true[i] == labels_true[j])\n             if pred_same and true_same:\n                 tp += 1\n@@ -25,7 +25,7 @@\n                 fn += 1\n \n     # BUG 2: denominator uses tp - fp instead of tp + fp, and zero-decision precision should be 0.0\n-    precision = tp / (tp - fp) if (tp - fp) > 0 else 1.0\n+    precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0\n     recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0\n     f1 = (2 * precision * recall / (precision + recall)) if (precision + recall) > 0 else 0.0\n     fdp = fp / (tp + fp) if (tp + fp) > 0 else 0.0\n"
+            }
+          },
+          "turn_trajectory": [
+            {
+              "turn": 1,
+              "input_tokens": 1213,
+              "output_tokens": 220,
+              "prompt_eval_cached_tokens": 619,
+              "eval_duration_s": 11.7508,
+              "thinking_chars": 626,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "src/metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 2,
+              "input_tokens": 1931,
+              "output_tokens": 2048,
+              "prompt_eval_cached_tokens": 1411,
+              "eval_duration_s": 111.8234,
+              "thinking_chars": 6071,
+              "done_reason": "length",
+              "truncated": true,
+              "tool_calls": []
+            },
+            {
+              "turn": 3,
+              "input_tokens": 1809,
+              "output_tokens": 1238,
+              "prompt_eval_cached_tokens": 619,
+              "eval_duration_s": 67.9582,
+              "thinking_chars": 3527,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "test_metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 4,
+              "input_tokens": 3342,
+              "output_tokens": 1685,
+              "prompt_eval_cached_tokens": 3021,
+              "eval_duration_s": 91.6103,
+              "thinking_chars": 3611,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "patch_file",
+                  "target": "src/metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 5,
+              "input_tokens": 5057,
+              "output_tokens": 458,
+              "prompt_eval_cached_tokens": 4931,
+              "eval_duration_s": 24.2511,
+              "thinking_chars": 1171,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "patch_file",
+                  "target": "src/metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 6,
+              "input_tokens": 3891,
+              "output_tokens": 35,
+              "prompt_eval_cached_tokens": 619,
+              "eval_duration_s": 1.8244,
+              "thinking_chars": 25,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "run_command",
+                  "target": "python3 -m unittest test_metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 7,
+              "input_tokens": 2119,
+              "output_tokens": 302,
+              "prompt_eval_cached_tokens": 619,
+              "eval_duration_s": 15.9453,
+              "thinking_chars": 819,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "src/metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 8,
+              "input_tokens": 2566,
+              "output_tokens": 312,
+              "prompt_eval_cached_tokens": 619,
+              "eval_duration_s": 16.9137,
+              "thinking_chars": 243,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": []
+            }
+          ],
+          "error": null
+        },
+        {
+          "task_id": "B2_ann_rerank",
+          "seed": 101,
+          "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+          "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+          "ollama_config": {
+            "OLLAMA_THINK": "true",
+            "OLLAMA_NUM_CTX": "16384",
+            "OLLAMA_NUM_PREDICT": "2048",
+            "OLLAMA_SEED": "101"
+          },
+          "success": true,
+          "pipeline_verified": true,
+          "llm_native_completion": true,
+          "fallback_used": false,
+          "verification_status": "ACCEPTED",
+          "rie_status": "ACCEPTED",
+          "turns": 9,
+          "tool_calls_count": 7,
+          "read_file_calls": 5,
+          "unique_files_read": 2,
+          "repeated_file_reads": 3,
+          "edit_calls": 1,
+          "test_command_calls": 1,
+          "invalid_tool_arguments": 0,
+          "context_overflows": 0,
+          "truncated_generations": 1,
+          "input_tokens": 19467,
+          "output_tokens": 4343,
+          "turns_with_thinking": 7,
+          "thinking_chars": 14159,
+          "wall_clock_s": 252.921,
+          "initial_file_hashes": {
+            "src/ann_index.py": "ca43b17bbe27777b407db23b31dbcdb301f930b1430bb2ec8e9c52c3021c42fc",
+            "test_ann_index.py": "6f0990e620e906d75d0910db033cd33f5c3a38fbb7c181a02cca8ac7dd5dbbab"
+          },
+          "final_artifact_hashes": {
+            "src/ann_index.py": "b9297e559aff8e262c6a3ced187d909f0a0ccf890865d42a60c176803d0e2857",
+            "test_ann_index.py": "6f0990e620e906d75d0910db033cd33f5c3a38fbb7c181a02cca8ac7dd5dbbab"
+          },
+          "diff_summary": {
+            "changed_files": [
+              "src/ann_index.py"
+            ],
+            "added_lines": 1,
+            "removed_lines": 2,
+            "patches": {
+              "src/ann_index.py": "--- a/src/ann_index.py\n+++ b/src/ann_index.py\n@@ -25,8 +25,7 @@\n         cands = np.array(sorted(cand_set), dtype=np.int64)\n         diffs = vectors[cands] - queries[qi]\n         sq_dists = np.sum(diffs * diffs, axis=1)\n-        # BUG: sorts in descending order (-sq_dists) instead of ascending (sq_dists)\n-        top_local = np.argsort(-sq_dists)[:k]\n+        top_local = np.argsort(sq_dists)[:k]\n         out_ids[qi] = cands[top_local]\n         out_dists[qi] = sq_dists[top_local]\n \n"
+            }
+          },
+          "turn_trajectory": [
+            {
+              "turn": 1,
+              "input_tokens": 1084,
+              "output_tokens": 29,
+              "prompt_eval_cached_tokens": 0,
+              "eval_duration_s": 1.4451,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "src/ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 2,
+              "input_tokens": 1601,
+              "output_tokens": 26,
+              "prompt_eval_cached_tokens": 1084,
+              "eval_duration_s": 1.3411,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "test_ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 3,
+              "input_tokens": 1850,
+              "output_tokens": 2048,
+              "prompt_eval_cached_tokens": 1598,
+              "eval_duration_s": 109.8935,
+              "thinking_chars": 8186,
+              "done_reason": "length",
+              "truncated": true,
+              "tool_calls": []
+            },
+            {
+              "turn": 4,
+              "input_tokens": 1928,
+              "output_tokens": 269,
+              "prompt_eval_cached_tokens": 1845,
+              "eval_duration_s": 14.1056,
+              "thinking_chars": 519,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "patch_file",
+                  "target": "src/ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 5,
+              "input_tokens": 2227,
+              "output_tokens": 40,
+              "prompt_eval_cached_tokens": 2101,
+              "eval_duration_s": 2.0584,
+              "thinking_chars": 49,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "run_command",
+                  "target": "python3 -m unittest test_ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 6,
+              "input_tokens": 1852,
+              "output_tokens": 450,
+              "prompt_eval_cached_tokens": 571,
+              "eval_duration_s": 24.4154,
+              "thinking_chars": 1418,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "src/ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 7,
+              "input_tokens": 2431,
+              "output_tokens": 292,
+              "prompt_eval_cached_tokens": 571,
+              "eval_duration_s": 16.1339,
+              "thinking_chars": 814,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "src/ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 8,
+              "input_tokens": 3184,
+              "output_tokens": 313,
+              "prompt_eval_cached_tokens": 571,
+              "eval_duration_s": 18.7821,
+              "thinking_chars": 869,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "test_ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 9,
+              "input_tokens": 3310,
+              "output_tokens": 876,
+              "prompt_eval_cached_tokens": 571,
+              "eval_duration_s": 47.6461,
+              "thinking_chars": 2304,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": []
+            }
+          ],
+          "error": null
+        },
+        {
+          "task_id": "B3_research_report_builder",
+          "seed": 101,
+          "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+          "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+          "ollama_config": {
+            "OLLAMA_THINK": "true",
+            "OLLAMA_NUM_CTX": "16384",
+            "OLLAMA_NUM_PREDICT": "2048",
+            "OLLAMA_SEED": "101"
+          },
+          "success": true,
+          "pipeline_verified": true,
+          "llm_native_completion": false,
+          "fallback_used": true,
+          "verification_status": "ACCEPTED",
+          "rie_status": "ACCEPTED",
+          "turns": 1,
+          "tool_calls_count": 0,
+          "read_file_calls": 0,
+          "unique_files_read": 0,
+          "repeated_file_reads": 0,
+          "edit_calls": 0,
+          "test_command_calls": 0,
+          "invalid_tool_arguments": 0,
+          "context_overflows": 0,
+          "truncated_generations": 1,
+          "input_tokens": 1430,
+          "output_tokens": 2048,
+          "turns_with_thinking": 1,
+          "thinking_chars": 10143,
+          "unverified_numbers_stripped": 0,
+          "wall_clock_s": 134.681,
+          "initial_file_hashes": {
+            "claims.json": "56055e3447dc1ce80d296afbae28a03fa6a4b91196acfe5d31c24e4f33aebbf5"
+          },
+          "final_artifact_hashes": {
+            "research_report.md": "9754dffc6fd30ca5180bc4c043475ec708e6471a0efe8088c1b00e2b311b2679"
+          },
+          "turn_trajectory": [
+            {
+              "turn": 1,
+              "input_tokens": 1430,
+              "output_tokens": 2048,
+              "thinking_chars": 10143,
+              "done_reason": "length",
+              "truncated": true,
+              "tool_calls": []
+            }
+          ],
+          "error": null
+        }
+      ]
+    },
+    {
+      "configuration": "G1",
+      "seed": 202,
+      "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+      "env": {
+        "OLLAMA_THINK": "true",
+        "OLLAMA_NUM_CTX": "16384",
+        "OLLAMA_NUM_PREDICT": "2048",
+        "OLLAMA_SEED": "202"
+      },
+      "model": "gemma4:12b",
+      "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+      "think_enabled": true,
+      "num_ctx": 16384,
+      "num_predict": 2048,
+      "input_budget_tokens": 14336,
+      "tasks_completed": "3/3",
+      "tasks_completed_count": 3,
+      "pipeline_verified_count": 3,
+      "llm_native_completion_count": 2,
+      "fallback_recovery_count": 1,
+      "tasks_total": 3,
+      "invalid_tool_calls": 0,
+      "context_overflows": 0,
+      "truncated_generations": 3,
+      "total_wall_clock_s": 1259.51,
+      "mean_wall_clock_s": 419.837,
+      "tokens_per_successful_task": 12358.3,
+      "total_input_tokens": 27760,
+      "total_output_tokens": 9315,
+      "total_thinking_chars": 26846,
+      "rie_independent_pass": "3/3",
+      "tasks": [
+        {
+          "task_id": "B1_selective_metrics",
+          "seed": 202,
+          "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+          "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+          "ollama_config": {
+            "OLLAMA_THINK": "true",
+            "OLLAMA_NUM_CTX": "16384",
+            "OLLAMA_NUM_PREDICT": "2048",
+            "OLLAMA_SEED": "202"
+          },
+          "success": true,
+          "pipeline_verified": true,
+          "llm_native_completion": true,
+          "fallback_used": false,
+          "verification_status": "ACCEPTED",
+          "rie_status": "ACCEPTED",
+          "turns": 16,
+          "tool_calls_count": 7,
+          "read_file_calls": 2,
+          "unique_files_read": 2,
+          "repeated_file_reads": 0,
+          "edit_calls": 2,
+          "test_command_calls": 1,
+          "invalid_tool_arguments": 0,
+          "context_overflows": 0,
+          "truncated_generations": 2,
+          "input_tokens": 18279,
+          "output_tokens": 6869,
+          "turns_with_thinking": 7,
+          "thinking_chars": 17639,
+          "wall_clock_s": 1099.114,
+          "initial_file_hashes": {
+            "src/metric_eval.py": "2a09b6069b8e671e51f7162a1c85ffddc4a079fe4dbb63aacafeed3d88566bb2",
+            "test_metric_eval.py": "b62c62f41d5d026a285350d4f1f7de8110c2067d72328eb8a0e4bfe9159798c8"
+          },
+          "final_artifact_hashes": {
+            "src/metric_eval.py": "f04698c2d78d5864105c2de6fea698aa4a0e15826c98a843ee1ee6993db4b3a2",
+            "test_metric_eval.py": "b62c62f41d5d026a285350d4f1f7de8110c2067d72328eb8a0e4bfe9159798c8"
+          },
+          "diff_summary": {
+            "changed_files": [
+              "src/metric_eval.py"
+            ],
+            "added_lines": 2,
+            "removed_lines": 2,
+            "patches": {
+              "src/metric_eval.py": "--- a/src/metric_eval.py\n+++ b/src/metric_eval.py\n@@ -15,7 +15,7 @@\n     for i in range(n):\n         for j in range(i + 1, n):\n             # BUG 1: does not check if i or j was abstained (labels_pred == -1) in pred_same\n-            pred_same = (labels_pred[i] == labels_pred[j])\n+            pred_same = (labels_pred[i] != -1 and labels_pred[j] != -1 and labels_pred[i] == labels_pred[j])\n             true_same = (labels_true[i] >= 0 and labels_true[j] >= 0 and labels_true[i] == labels_true[j])\n             if pred_same and true_same:\n                 tp += 1\n@@ -25,7 +25,7 @@\n                 fn += 1\n \n     # BUG 2: denominator uses tp - fp instead of tp + fp, and zero-decision precision should be 0.0\n-    precision = tp / (tp - fp) if (tp - fp) > 0 else 1.0\n+    precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0\n     recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0\n     f1 = (2 * precision * recall / (precision + recall)) if (precision + recall) > 0 else 0.0\n     fdp = fp / (tp + fp) if (tp + fp) > 0 else 0.0\n"
+            }
+          },
+          "turn_trajectory": [
+            {
+              "turn": 1,
+              "input_tokens": 1213,
+              "output_tokens": 220,
+              "prompt_eval_cached_tokens": 619,
+              "eval_duration_s": 11.5301,
+              "thinking_chars": 626,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "src/metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 2,
+              "input_tokens": 1931,
+              "output_tokens": 2048,
+              "prompt_eval_cached_tokens": 1411,
+              "eval_duration_s": 108.9664,
+              "thinking_chars": 5889,
+              "done_reason": "length",
+              "truncated": true,
+              "tool_calls": []
+            },
+            {
+              "turn": 3,
+              "input_tokens": 1809,
+              "output_tokens": 1343,
+              "prompt_eval_cached_tokens": 1804,
+              "eval_duration_s": 71.6569,
+              "thinking_chars": 3772,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "test_metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 4,
+              "input_tokens": 3447,
+              "output_tokens": 2048,
+              "prompt_eval_cached_tokens": 3126,
+              "eval_duration_s": 118.7904,
+              "thinking_chars": 4700,
+              "done_reason": "length",
+              "truncated": true,
+              "tool_calls": []
+            },
+            {
+              "turn": 5,
+              "input_tokens": 2206,
+              "output_tokens": 851,
+              "prompt_eval_cached_tokens": 619,
+              "eval_duration_s": 47.5179,
+              "thinking_chars": 2117,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "patch_file",
+                  "target": "src/metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 6,
+              "input_tokens": 3087,
+              "output_tokens": 82,
+              "prompt_eval_cached_tokens": 2961,
+              "eval_duration_s": 4.2832,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "patch_file",
+                  "target": "src/metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 7,
+              "input_tokens": 2758,
+              "output_tokens": 40,
+              "prompt_eval_cached_tokens": 619,
+              "eval_duration_s": 2.0534,
+              "thinking_chars": 56,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "run_command",
+                  "target": "python3 -m unittest test_metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 8,
+              "input_tokens": 1828,
+              "output_tokens": 237,
+              "prompt_eval_cached_tokens": 619,
+              "eval_duration_s": 12.446,
+              "thinking_chars": 479,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": []
+            }
+          ],
+          "error": null
+        },
+        {
+          "task_id": "B2_ann_rerank",
+          "seed": 202,
+          "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+          "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+          "ollama_config": {
+            "OLLAMA_THINK": "true",
+            "OLLAMA_NUM_CTX": "16384",
+            "OLLAMA_NUM_PREDICT": "2048",
+            "OLLAMA_SEED": "202"
+          },
+          "success": true,
+          "pipeline_verified": true,
+          "llm_native_completion": true,
+          "fallback_used": false,
+          "verification_status": "ACCEPTED",
+          "rie_status": "ACCEPTED",
+          "turns": 5,
+          "tool_calls_count": 4,
+          "read_file_calls": 2,
+          "unique_files_read": 2,
+          "repeated_file_reads": 0,
+          "edit_calls": 1,
+          "test_command_calls": 1,
+          "invalid_tool_arguments": 0,
+          "context_overflows": 0,
+          "truncated_generations": 0,
+          "input_tokens": 8051,
+          "output_tokens": 398,
+          "turns_with_thinking": 1,
+          "thinking_chars": 17,
+          "wall_clock_s": 26.146,
+          "initial_file_hashes": {
+            "src/ann_index.py": "ca43b17bbe27777b407db23b31dbcdb301f930b1430bb2ec8e9c52c3021c42fc",
+            "test_ann_index.py": "6f0990e620e906d75d0910db033cd33f5c3a38fbb7c181a02cca8ac7dd5dbbab"
+          },
+          "final_artifact_hashes": {
+            "src/ann_index.py": "14006338aacb43e87b007800e30441daa4c610de84c350226b860779f022e072",
+            "test_ann_index.py": "6f0990e620e906d75d0910db033cd33f5c3a38fbb7c181a02cca8ac7dd5dbbab"
+          },
+          "diff_summary": {
+            "changed_files": [
+              "src/ann_index.py"
+            ],
+            "added_lines": 1,
+            "removed_lines": 1,
+            "patches": {
+              "src/ann_index.py": "--- a/src/ann_index.py\n+++ b/src/ann_index.py\n@@ -26,7 +26,7 @@\n         diffs = vectors[cands] - queries[qi]\n         sq_dists = np.sum(diffs * diffs, axis=1)\n         # BUG: sorts in descending order (-sq_dists) instead of ascending (sq_dists)\n-        top_local = np.argsort(-sq_dists)[:k]\n+        top_local = np.argsort(sq_dists)[:k]\n         out_ids[qi] = cands[top_local]\n         out_dists[qi] = sq_dists[top_local]\n \n"
+            }
+          },
+          "turn_trajectory": [
+            {
+              "turn": 1,
+              "input_tokens": 1084,
+              "output_tokens": 25,
+              "prompt_eval_cached_tokens": 571,
+              "eval_duration_s": 1.2811,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "src/ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 2,
+              "input_tokens": 1601,
+              "output_tokens": 26,
+              "prompt_eval_cached_tokens": 1084,
+              "eval_duration_s": 1.3404,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "test_ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 3,
+              "input_tokens": 1850,
+              "output_tokens": 75,
+              "prompt_eval_cached_tokens": 1598,
+              "eval_duration_s": 3.9629,
+              "thinking_chars": 17,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "patch_file",
+                  "target": "src/ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 4,
+              "input_tokens": 1954,
+              "output_tokens": 31,
+              "prompt_eval_cached_tokens": 1854,
+              "eval_duration_s": 1.6394,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "run_command",
+                  "target": "python3 -m unittest test_ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 5,
+              "input_tokens": 1562,
+              "output_tokens": 241,
+              "prompt_eval_cached_tokens": 571,
+              "eval_duration_s": 12.9035,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": []
+            }
+          ],
+          "error": null
+        },
+        {
+          "task_id": "B3_research_report_builder",
+          "seed": 202,
+          "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+          "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+          "ollama_config": {
+            "OLLAMA_THINK": "true",
+            "OLLAMA_NUM_CTX": "16384",
+            "OLLAMA_NUM_PREDICT": "2048",
+            "OLLAMA_SEED": "202"
+          },
+          "success": true,
+          "pipeline_verified": true,
+          "llm_native_completion": false,
+          "fallback_used": true,
+          "verification_status": "ACCEPTED",
+          "rie_status": "ACCEPTED",
+          "turns": 1,
+          "tool_calls_count": 0,
+          "read_file_calls": 0,
+          "unique_files_read": 0,
+          "repeated_file_reads": 0,
+          "edit_calls": 0,
+          "test_command_calls": 0,
+          "invalid_tool_arguments": 0,
+          "context_overflows": 0,
+          "truncated_generations": 1,
+          "input_tokens": 1430,
+          "output_tokens": 2048,
+          "turns_with_thinking": 1,
+          "thinking_chars": 9190,
+          "unverified_numbers_stripped": 0,
+          "wall_clock_s": 134.25,
+          "initial_file_hashes": {
+            "claims.json": "56055e3447dc1ce80d296afbae28a03fa6a4b91196acfe5d31c24e4f33aebbf5"
+          },
+          "final_artifact_hashes": {
+            "research_report.md": "9754dffc6fd30ca5180bc4c043475ec708e6471a0efe8088c1b00e2b311b2679"
+          },
+          "turn_trajectory": [
+            {
+              "turn": 1,
+              "input_tokens": 1430,
+              "output_tokens": 2048,
+              "thinking_chars": 9190,
+              "done_reason": "length",
+              "truncated": true,
+              "tool_calls": []
+            }
+          ],
+          "error": null
+        }
+      ]
+    },
+    {
+      "configuration": "G2",
+      "seed": 101,
+      "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+      "env": {
+        "OLLAMA_THINK": "true",
+        "OLLAMA_NUM_CTX": "16384",
+        "OLLAMA_NUM_PREDICT": "4096",
+        "OLLAMA_SEED": "101"
+      },
+      "model": "gemma4:12b",
+      "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+      "think_enabled": true,
+      "num_ctx": 16384,
+      "num_predict": 4096,
+      "input_budget_tokens": 12288,
+      "tasks_completed": "3/3",
+      "tasks_completed_count": 3,
+      "pipeline_verified_count": 3,
+      "llm_native_completion_count": 2,
+      "fallback_recovery_count": 1,
+      "tasks_total": 3,
+      "invalid_tool_calls": 0,
+      "context_overflows": 0,
+      "truncated_generations": 3,
+      "total_wall_clock_s": 930.924,
+      "mean_wall_clock_s": 310.308,
+      "tokens_per_successful_task": 15127.7,
+      "total_input_tokens": 29134,
+      "total_output_tokens": 16249,
+      "total_thinking_chars": 42245,
+      "rie_independent_pass": "3/3",
+      "tasks": [
+        {
+          "task_id": "B1_selective_metrics",
+          "seed": 101,
+          "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+          "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+          "ollama_config": {
+            "OLLAMA_THINK": "true",
+            "OLLAMA_NUM_CTX": "16384",
+            "OLLAMA_NUM_PREDICT": "4096",
+            "OLLAMA_SEED": "101"
+          },
+          "success": true,
+          "pipeline_verified": true,
+          "llm_native_completion": true,
+          "fallback_used": false,
+          "verification_status": "ACCEPTED",
+          "rie_status": "ACCEPTED",
+          "turns": 6,
+          "tool_calls_count": 4,
+          "read_file_calls": 1,
+          "unique_files_read": 1,
+          "repeated_file_reads": 0,
+          "edit_calls": 2,
+          "test_command_calls": 1,
+          "invalid_tool_arguments": 0,
+          "context_overflows": 0,
+          "truncated_generations": 1,
+          "input_tokens": 15065,
+          "output_tokens": 7446,
+          "turns_with_thinking": 6,
+          "thinking_chars": 20408,
+          "wall_clock_s": 410.936,
+          "initial_file_hashes": {
+            "src/metric_eval.py": "2a09b6069b8e671e51f7162a1c85ffddc4a079fe4dbb63aacafeed3d88566bb2",
+            "test_metric_eval.py": "b62c62f41d5d026a285350d4f1f7de8110c2067d72328eb8a0e4bfe9159798c8"
+          },
+          "final_artifact_hashes": {
+            "src/metric_eval.py": "103e4480d6a03574616f57bebc727e2cbd0e34d8365d491e6005e9c8103b6f4a",
+            "test_metric_eval.py": "b62c62f41d5d026a285350d4f1f7de8110c2067d72328eb8a0e4bfe9159798c8"
+          },
+          "diff_summary": {
+            "changed_files": [
+              "src/metric_eval.py"
+            ],
+            "added_lines": 3,
+            "removed_lines": 3,
+            "patches": {
+              "src/metric_eval.py": "--- a/src/metric_eval.py\n+++ b/src/metric_eval.py\n@@ -15,7 +15,7 @@\n     for i in range(n):\n         for j in range(i + 1, n):\n             # BUG 1: does not check if i or j was abstained (labels_pred == -1) in pred_same\n-            pred_same = (labels_pred[i] == labels_pred[j])\n+            pred_same = (labels_pred[i] != -1 and labels_pred[j] != -1 and labels_pred[i] == labels_pred[j])\n             true_same = (labels_true[i] >= 0 and labels_true[j] >= 0 and labels_true[i] == labels_true[j])\n             if pred_same and true_same:\n                 tp += 1\n@@ -24,8 +24,8 @@\n             elif not pred_same and true_same:\n                 fn += 1\n \n-    # BUG 2: denominator uses tp - fp instead of tp + fp, and zero-decision precision should be 0.0\n-    precision = tp / (tp - fp) if (tp - fp) > 0 else 1.0\n+    # BUG 2: denominator uses tp + fp, and zero-decision precision should be 0.0\n+    precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0\n     recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0\n     f1 = (2 * precision * recall / (precision + recall)) if (precision + recall) > 0 else 0.0\n     fdp = fp / (tp + fp) if (tp + fp) > 0 else 0.0\n"
+            }
+          },
+          "turn_trajectory": [
+            {
+              "turn": 1,
+              "input_tokens": 1132,
+              "output_tokens": 220,
+              "prompt_eval_cached_tokens": 619,
+              "eval_duration_s": 11.7519,
+              "thinking_chars": 602,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "src/metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 2,
+              "input_tokens": 1850,
+              "output_tokens": 4096,
+              "prompt_eval_cached_tokens": 1330,
+              "eval_duration_s": 221.4188,
+              "thinking_chars": 11583,
+              "done_reason": "length",
+              "truncated": true,
+              "tool_calls": []
+            },
+            {
+              "turn": 3,
+              "input_tokens": 1728,
+              "output_tokens": 2212,
+              "prompt_eval_cached_tokens": 619,
+              "eval_duration_s": 120.9101,
+              "thinking_chars": 6269,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "patch_file",
+                  "target": "src/metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 4,
+              "input_tokens": 3974,
+              "output_tokens": 435,
+              "prompt_eval_cached_tokens": 3846,
+              "eval_duration_s": 23.9565,
+              "thinking_chars": 979,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "patch_file",
+                  "target": "src/metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 5,
+              "input_tokens": 4443,
+              "output_tokens": 34,
+              "prompt_eval_cached_tokens": 4272,
+              "eval_duration_s": 1.7719,
+              "thinking_chars": 25,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "run_command",
+                  "target": "python3 -m unittest test_metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 6,
+              "input_tokens": 1938,
+              "output_tokens": 449,
+              "prompt_eval_cached_tokens": 619,
+              "eval_duration_s": 23.6199,
+              "thinking_chars": 950,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": []
+            }
+          ],
+          "error": null
+        },
+        {
+          "task_id": "B2_ann_rerank",
+          "seed": 101,
+          "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+          "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+          "ollama_config": {
+            "OLLAMA_THINK": "true",
+            "OLLAMA_NUM_CTX": "16384",
+            "OLLAMA_NUM_PREDICT": "4096",
+            "OLLAMA_SEED": "101"
+          },
+          "success": true,
+          "pipeline_verified": true,
+          "llm_native_completion": true,
+          "fallback_used": false,
+          "verification_status": "ACCEPTED",
+          "rie_status": "ACCEPTED",
+          "turns": 7,
+          "tool_calls_count": 5,
+          "read_file_calls": 3,
+          "unique_files_read": 2,
+          "repeated_file_reads": 1,
+          "edit_calls": 1,
+          "test_command_calls": 1,
+          "invalid_tool_arguments": 0,
+          "context_overflows": 0,
+          "truncated_generations": 1,
+          "input_tokens": 12639,
+          "output_tokens": 4707,
+          "turns_with_thinking": 5,
+          "thinking_chars": 5425,
+          "wall_clock_s": 277.99,
+          "initial_file_hashes": {
+            "src/ann_index.py": "ca43b17bbe27777b407db23b31dbcdb301f930b1430bb2ec8e9c52c3021c42fc",
+            "test_ann_index.py": "6f0990e620e906d75d0910db033cd33f5c3a38fbb7c181a02cca8ac7dd5dbbab"
+          },
+          "final_artifact_hashes": {
+            "src/ann_index.py": "14006338aacb43e87b007800e30441daa4c610de84c350226b860779f022e072",
+            "test_ann_index.py": "6f0990e620e906d75d0910db033cd33f5c3a38fbb7c181a02cca8ac7dd5dbbab"
+          },
+          "diff_summary": {
+            "changed_files": [
+              "src/ann_index.py"
+            ],
+            "added_lines": 1,
+            "removed_lines": 1,
+            "patches": {
+              "src/ann_index.py": "--- a/src/ann_index.py\n+++ b/src/ann_index.py\n@@ -26,7 +26,7 @@\n         diffs = vectors[cands] - queries[qi]\n         sq_dists = np.sum(diffs * diffs, axis=1)\n         # BUG: sorts in descending order (-sq_dists) instead of ascending (sq_dists)\n-        top_local = np.argsort(-sq_dists)[:k]\n+        top_local = np.argsort(sq_dists)[:k]\n         out_ids[qi] = cands[top_local]\n         out_dists[qi] = sq_dists[top_local]\n \n"
+            }
+          },
+          "turn_trajectory": [
+            {
+              "turn": 1,
+              "input_tokens": 1084,
+              "output_tokens": 25,
+              "prompt_eval_cached_tokens": 571,
+              "eval_duration_s": 1.2838,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "src/ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 2,
+              "input_tokens": 1601,
+              "output_tokens": 26,
+              "prompt_eval_cached_tokens": 1084,
+              "eval_duration_s": 1.3444,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "test_ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 3,
+              "input_tokens": 1850,
+              "output_tokens": 4096,
+              "prompt_eval_cached_tokens": 1598,
+              "eval_duration_s": 233.1307,
+              "thinking_chars": 4201,
+              "done_reason": "length",
+              "truncated": true,
+              "tool_calls": []
+            },
+            {
+              "turn": 4,
+              "input_tokens": 1928,
+              "output_tokens": 250,
+              "prompt_eval_cached_tokens": 571,
+              "eval_duration_s": 14.5523,
+              "thinking_chars": 552,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "patch_file",
+                  "target": "src/ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 5,
+              "input_tokens": 2208,
+              "output_tokens": 40,
+              "prompt_eval_cached_tokens": 2106,
+              "eval_duration_s": 2.3093,
+              "thinking_chars": 52,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "run_command",
+                  "target": "python3 -m unittest test_ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 6,
+              "input_tokens": 1833,
+              "output_tokens": 154,
+              "prompt_eval_cached_tokens": 1339,
+              "eval_duration_s": 8.8861,
+              "thinking_chars": 465,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "src/ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 7,
+              "input_tokens": 2135,
+              "output_tokens": 116,
+              "prompt_eval_cached_tokens": 571,
+              "eval_duration_s": 6.7466,
+              "thinking_chars": 155,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": []
+            }
+          ],
+          "error": null
+        },
+        {
+          "task_id": "B3_research_report_builder",
+          "seed": 101,
+          "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+          "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+          "ollama_config": {
+            "OLLAMA_THINK": "true",
+            "OLLAMA_NUM_CTX": "16384",
+            "OLLAMA_NUM_PREDICT": "4096",
+            "OLLAMA_SEED": "101"
+          },
+          "success": true,
+          "pipeline_verified": true,
+          "llm_native_completion": false,
+          "fallback_used": true,
+          "verification_status": "ACCEPTED",
+          "rie_status": "ACCEPTED",
+          "turns": 1,
+          "tool_calls_count": 0,
+          "read_file_calls": 0,
+          "unique_files_read": 0,
+          "repeated_file_reads": 0,
+          "edit_calls": 0,
+          "test_command_calls": 0,
+          "invalid_tool_arguments": 0,
+          "context_overflows": 0,
+          "truncated_generations": 1,
+          "input_tokens": 1430,
+          "output_tokens": 4096,
+          "turns_with_thinking": 1,
+          "thinking_chars": 16412,
+          "unverified_numbers_stripped": 0,
+          "wall_clock_s": 241.998,
+          "initial_file_hashes": {
+            "claims.json": "56055e3447dc1ce80d296afbae28a03fa6a4b91196acfe5d31c24e4f33aebbf5"
+          },
+          "final_artifact_hashes": {
+            "research_report.md": "9754dffc6fd30ca5180bc4c043475ec708e6471a0efe8088c1b00e2b311b2679"
+          },
+          "turn_trajectory": [
+            {
+              "turn": 1,
+              "input_tokens": 1430,
+              "output_tokens": 4096,
+              "thinking_chars": 16412,
+              "done_reason": "length",
+              "truncated": true,
+              "tool_calls": []
+            }
+          ],
+          "error": null
+        }
+      ]
+    },
+    {
+      "configuration": "G2",
+      "seed": 202,
+      "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+      "env": {
+        "OLLAMA_THINK": "true",
+        "OLLAMA_NUM_CTX": "16384",
+        "OLLAMA_NUM_PREDICT": "4096",
+        "OLLAMA_SEED": "202"
+      },
+      "model": "gemma4:12b",
+      "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+      "think_enabled": true,
+      "num_ctx": 16384,
+      "num_predict": 4096,
+      "input_budget_tokens": 12288,
+      "tasks_completed": "3/3",
+      "tasks_completed_count": 3,
+      "pipeline_verified_count": 3,
+      "llm_native_completion_count": 2,
+      "fallback_recovery_count": 1,
+      "tasks_total": 3,
+      "invalid_tool_calls": 0,
+      "context_overflows": 0,
+      "truncated_generations": 4,
+      "total_wall_clock_s": 1318.723,
+      "mean_wall_clock_s": 439.574,
+      "tokens_per_successful_task": 21082.7,
+      "total_input_tokens": 40861,
+      "total_output_tokens": 22387,
+      "total_thinking_chars": 52600,
+      "rie_independent_pass": "3/3",
+      "tasks": [
+        {
+          "task_id": "B1_selective_metrics",
+          "seed": 202,
+          "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+          "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+          "ollama_config": {
+            "OLLAMA_THINK": "true",
+            "OLLAMA_NUM_CTX": "16384",
+            "OLLAMA_NUM_PREDICT": "4096",
+            "OLLAMA_SEED": "202"
+          },
+          "success": true,
+          "pipeline_verified": true,
+          "llm_native_completion": true,
+          "fallback_used": false,
+          "verification_status": "ACCEPTED",
+          "rie_status": "ACCEPTED",
+          "turns": 9,
+          "tool_calls_count": 6,
+          "read_file_calls": 2,
+          "unique_files_read": 2,
+          "repeated_file_reads": 0,
+          "edit_calls": 2,
+          "test_command_calls": 2,
+          "invalid_tool_arguments": 0,
+          "context_overflows": 0,
+          "truncated_generations": 2,
+          "input_tokens": 26716,
+          "output_tokens": 13537,
+          "turns_with_thinking": 9,
+          "thinking_chars": 35581,
+          "wall_clock_s": 791.336,
+          "initial_file_hashes": {
+            "src/metric_eval.py": "2a09b6069b8e671e51f7162a1c85ffddc4a079fe4dbb63aacafeed3d88566bb2",
+            "test_metric_eval.py": "b62c62f41d5d026a285350d4f1f7de8110c2067d72328eb8a0e4bfe9159798c8"
+          },
+          "final_artifact_hashes": {
+            "src/metric_eval.py": "8beb5ac32feb1a32788a952cc6c92f0f50de1e99d836dc2c252ab637cdcca18f",
+            "test_metric_eval.py": "b62c62f41d5d026a285350d4f1f7de8110c2067d72328eb8a0e4bfe9159798c8"
+          },
+          "diff_summary": {
+            "changed_files": [
+              "src/metric_eval.py"
+            ],
+            "added_lines": 2,
+            "removed_lines": 2,
+            "patches": {
+              "src/metric_eval.py": "--- a/src/metric_eval.py\n+++ b/src/metric_eval.py\n@@ -15,7 +15,7 @@\n     for i in range(n):\n         for j in range(i + 1, n):\n             # BUG 1: does not check if i or j was abstained (labels_pred == -1) in pred_same\n-            pred_same = (labels_pred[i] == labels_pred[j])\n+            pred_same = (labels_pred[i] == labels_pred[j] and labels_pred[i] != -1)\n             true_same = (labels_true[i] >= 0 and labels_true[j] >= 0 and labels_true[i] == labels_true[j])\n             if pred_same and true_same:\n                 tp += 1\n@@ -25,7 +25,7 @@\n                 fn += 1\n \n     # BUG 2: denominator uses tp - fp instead of tp + fp, and zero-decision precision should be 0.0\n-    precision = tp / (tp - fp) if (tp - fp) > 0 else 1.0\n+    precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0\n     recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0\n     f1 = (2 * precision * recall / (precision + recall)) if (precision + recall) > 0 else 0.0\n     fdp = fp / (tp + fp) if (tp + fp) > 0 else 0.0\n"
+            }
+          },
+          "turn_trajectory": [
+            {
+              "turn": 1,
+              "input_tokens": 1132,
+              "output_tokens": 222,
+              "prompt_eval_cached_tokens": 619,
+              "eval_duration_s": 11.8665,
+              "thinking_chars": 634,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "src/metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 2,
+              "input_tokens": 1852,
+              "output_tokens": 2357,
+              "prompt_eval_cached_tokens": 1332,
+              "eval_duration_s": 132.4413,
+              "thinking_chars": 6566,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "run_command",
+                  "target": "python3 -m unittest test_metric_eval.py",
+                  "success": false
+                }
+              ]
+            },
+            {
+              "turn": 3,
+              "input_tokens": 4603,
+              "output_tokens": 53,
+              "prompt_eval_cached_tokens": 4179,
+              "eval_duration_s": 2.834,
+              "thinking_chars": 97,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "test_metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 4,
+              "input_tokens": 4954,
+              "output_tokens": 4096,
+              "prompt_eval_cached_tokens": 4655,
+              "eval_duration_s": 245.8714,
+              "thinking_chars": 11304,
+              "done_reason": "length",
+              "truncated": true,
+              "tool_calls": []
+            },
+            {
+              "turn": 5,
+              "input_tokens": 2465,
+              "output_tokens": 4096,
+              "prompt_eval_cached_tokens": 619,
+              "eval_duration_s": 231.6466,
+              "thinking_chars": 10630,
+              "done_reason": "length",
+              "truncated": true,
+              "tool_calls": []
+            },
+            {
+              "turn": 6,
+              "input_tokens": 2541,
+              "output_tokens": 1646,
+              "prompt_eval_cached_tokens": 2460,
+              "eval_duration_s": 92.0396,
+              "thinking_chars": 4003,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "patch_file",
+                  "target": "src/metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 7,
+              "input_tokens": 3777,
+              "output_tokens": 95,
+              "prompt_eval_cached_tokens": 619,
+              "eval_duration_s": 5.0381,
+              "thinking_chars": 44,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "patch_file",
+                  "target": "src/metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 8,
+              "input_tokens": 3568,
+              "output_tokens": 36,
+              "prompt_eval_cached_tokens": 619,
+              "eval_duration_s": 1.854,
+              "thinking_chars": 35,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "run_command",
+                  "target": "python3 -m unittest test_metric_eval.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 9,
+              "input_tokens": 1824,
+              "output_tokens": 936,
+              "prompt_eval_cached_tokens": 619,
+              "eval_duration_s": 50.2316,
+              "thinking_chars": 2268,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": []
+            }
+          ],
+          "error": null
+        },
+        {
+          "task_id": "B2_ann_rerank",
+          "seed": 202,
+          "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+          "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+          "ollama_config": {
+            "OLLAMA_THINK": "true",
+            "OLLAMA_NUM_CTX": "16384",
+            "OLLAMA_NUM_PREDICT": "4096",
+            "OLLAMA_SEED": "202"
+          },
+          "success": true,
+          "pipeline_verified": true,
+          "llm_native_completion": true,
+          "fallback_used": false,
+          "verification_status": "ACCEPTED",
+          "rie_status": "ACCEPTED",
+          "turns": 7,
+          "tool_calls_count": 5,
+          "read_file_calls": 3,
+          "unique_files_read": 2,
+          "repeated_file_reads": 1,
+          "edit_calls": 1,
+          "test_command_calls": 1,
+          "invalid_tool_arguments": 0,
+          "context_overflows": 0,
+          "truncated_generations": 1,
+          "input_tokens": 12715,
+          "output_tokens": 4754,
+          "turns_with_thinking": 5,
+          "thinking_chars": 1273,
+          "wall_clock_s": 270.566,
+          "initial_file_hashes": {
+            "src/ann_index.py": "ca43b17bbe27777b407db23b31dbcdb301f930b1430bb2ec8e9c52c3021c42fc",
+            "test_ann_index.py": "6f0990e620e906d75d0910db033cd33f5c3a38fbb7c181a02cca8ac7dd5dbbab"
+          },
+          "final_artifact_hashes": {
+            "src/ann_index.py": "b9297e559aff8e262c6a3ced187d909f0a0ccf890865d42a60c176803d0e2857",
+            "test_ann_index.py": "6f0990e620e906d75d0910db033cd33f5c3a38fbb7c181a02cca8ac7dd5dbbab"
+          },
+          "diff_summary": {
+            "changed_files": [
+              "src/ann_index.py"
+            ],
+            "added_lines": 1,
+            "removed_lines": 2,
+            "patches": {
+              "src/ann_index.py": "--- a/src/ann_index.py\n+++ b/src/ann_index.py\n@@ -25,8 +25,7 @@\n         cands = np.array(sorted(cand_set), dtype=np.int64)\n         diffs = vectors[cands] - queries[qi]\n         sq_dists = np.sum(diffs * diffs, axis=1)\n-        # BUG: sorts in descending order (-sq_dists) instead of ascending (sq_dists)\n-        top_local = np.argsort(-sq_dists)[:k]\n+        top_local = np.argsort(sq_dists)[:k]\n         out_ids[qi] = cands[top_local]\n         out_dists[qi] = sq_dists[top_local]\n \n"
+            }
+          },
+          "turn_trajectory": [
+            {
+              "turn": 1,
+              "input_tokens": 1084,
+              "output_tokens": 25,
+              "prompt_eval_cached_tokens": 1049,
+              "eval_duration_s": 1.2619,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "src/ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 2,
+              "input_tokens": 1601,
+              "output_tokens": 26,
+              "prompt_eval_cached_tokens": 1084,
+              "eval_duration_s": 1.3718,
+              "thinking_chars": 0,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "test_ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 3,
+              "input_tokens": 1850,
+              "output_tokens": 4096,
+              "prompt_eval_cached_tokens": 1598,
+              "eval_duration_s": 225.4618,
+              "thinking_chars": 34,
+              "done_reason": "length",
+              "truncated": true,
+              "tool_calls": []
+            },
+            {
+              "turn": 4,
+              "input_tokens": 1928,
+              "output_tokens": 270,
+              "prompt_eval_cached_tokens": 571,
+              "eval_duration_s": 14.5393,
+              "thinking_chars": 525,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "patch_file",
+                  "target": "src/ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 5,
+              "input_tokens": 2228,
+              "output_tokens": 41,
+              "prompt_eval_cached_tokens": 2102,
+              "eval_duration_s": 2.304,
+              "thinking_chars": 59,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "run_command",
+                  "target": "python3 -m unittest test_ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 6,
+              "input_tokens": 1854,
+              "output_tokens": 188,
+              "prompt_eval_cached_tokens": 571,
+              "eval_duration_s": 10.3107,
+              "thinking_chars": 482,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": [
+                {
+                  "name": "read_file",
+                  "target": "src/ann_index.py",
+                  "success": true
+                }
+              ]
+            },
+            {
+              "turn": 7,
+              "input_tokens": 2170,
+              "output_tokens": 108,
+              "prompt_eval_cached_tokens": 571,
+              "eval_duration_s": 5.7384,
+              "thinking_chars": 173,
+              "done_reason": "stop",
+              "truncated": false,
+              "tool_calls": []
+            }
+          ],
+          "error": null
+        },
+        {
+          "task_id": "B3_research_report_builder",
+          "seed": 202,
+          "git_commit": "779cb45e05f1e2651e9377f3e3e03f73836a2a20",
+          "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+          "ollama_config": {
+            "OLLAMA_THINK": "true",
+            "OLLAMA_NUM_CTX": "16384",
+            "OLLAMA_NUM_PREDICT": "4096",
+            "OLLAMA_SEED": "202"
+          },
+          "success": true,
+          "pipeline_verified": true,
+          "llm_native_completion": false,
+          "fallback_used": true,
+          "verification_status": "ACCEPTED",
+          "rie_status": "ACCEPTED",
+          "turns": 1,
+          "tool_calls_count": 0,
+          "read_file_calls": 0,
+          "unique_files_read": 0,
+          "repeated_file_reads": 0,
+          "edit_calls": 0,
+          "test_command_calls": 0,
+          "invalid_tool_arguments": 0,
+          "context_overflows": 0,
+          "truncated_generations": 1,
+          "input_tokens": 1430,
+          "output_tokens": 4096,
+          "turns_with_thinking": 1,
+          "thinking_chars": 15746,
+          "unverified_numbers_stripped": 0,
+          "wall_clock_s": 256.821,
+          "initial_file_hashes": {
+            "claims.json": "56055e3447dc1ce80d296afbae28a03fa6a4b91196acfe5d31c24e4f33aebbf5"
+          },
+          "final_artifact_hashes": {
+            "research_report.md": "9754dffc6fd30ca5180bc4c043475ec708e6471a0efe8088c1b00e2b311b2679"
+          },
+          "turn_trajectory": [
+            {
+              "turn": 1,
+              "input_tokens": 1430,
+              "output_tokens": 4096,
+              "thinking_chars": 15746,
+              "done_reason": "length",
+              "truncated": true,
+              "tool_calls": []
+            }
+          ],
+          "error": null
+        }
+      ]
+    }
+  ]
+}

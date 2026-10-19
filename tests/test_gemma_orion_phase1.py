@@ -753,3 +753,565 @@ def test_t11_phase2a_native_vs_fallback_and_trajectory_telemetry(
         assert clean_res.fallback_used is False
         assert clean_res.verification_status == "ACCEPTED"
 
+
+def test_t12_phase2b_p1_truncation_recovery_and_attempt_limits(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, tool_suite: WorkspaceToolSuite
+):
+    """T12: P1 RecoveryController preserves read evidence on truncation and enforces attempt limits."""
+    monkeypatch.setenv("OLLAMA_THINK", "false")
+    monkeypatch.setenv("OLLAMA_NUM_PREDICT", "2048")
+    monkeypatch.setenv("OLLAMA_RECOVERY_POLICY", "P1")
+
+    (tmp_path / "mod.py").write_text("def inc(x):\n    return x - 1\n", encoding="utf-8")
+    (tmp_path / "test_mod.py").write_text("from mod import inc\ndef test_inc():\n    assert inc(1) == 2\n", encoding="utf-8")
+
+    sent_messages: List[List[Dict[str, Any]]] = []
+    responses = [
+        {
+            "message": {
+                "role": "assistant",
+                "content": "",
+                "tool_calls": [{"function": {"name": "read_file", "arguments": {"path": "mod.py"}}}],
+            },
+            "done": True,
+            "done_reason": "stop",
+            "prompt_eval_count": 120,
+            "eval_count": 20,
+        },
+        {
+            "message": {
+                "role": "assistant",
+                "content": "",
+                "tool_calls": [{"function": {"name": "read_file", "arguments": {"path": "test_mod.py"}}}],
+            },
+            "done": True,
+            "done_reason": "stop",
+            "prompt_eval_count": 150,
+            "eval_count": 20,
+        },
+        # Turn 3: Runaway truncated prose turn without a tool call
+        {
+            "message": {
+                "role": "assistant",
+                "content": "Let me analyze the function carefully and write out the full reasoning..." * 20,
+            },
+            "done": True,
+            "done_reason": "length",
+            "prompt_eval_count": 190,
+            "eval_count": 2048,
+        },
+        # Turn 4: After P1 action-oriented recovery prompt, model patches directly without re-reading
+        {
+            "message": {
+                "role": "assistant",
+                "content": "",
+                "tool_calls": [
+                    {
+                        "function": {
+                            "name": "patch_file",
+                            "arguments": {
+                                "path": "mod.py",
+                                "target_content": "return x - 1",
+                                "replacement_content": "return x + 1",
+                            },
+                        }
+                    }
+                ],
+            },
+            "done": True,
+            "done_reason": "stop",
+            "prompt_eval_count": 230,
+            "eval_count": 35,
+        },
+        # Turn 5: Model runs verification command
+        {
+            "message": {
+                "role": "assistant",
+                "content": "",
+                "tool_calls": [
+                    {
+                        "function": {
+                            "name": "run_command",
+                            "arguments": {"command": 'python3 -c "import mod; assert mod.inc(1) == 2"'},
+                        }
+                    }
+                ],
+            },
+            "done": True,
+            "done_reason": "stop",
+            "prompt_eval_count": 260,
+            "eval_count": 25,
+        },
+        # Turn 6: Final summary
+        {
+            "message": {
+                "role": "assistant",
+                "content": "Fixed `inc` in `mod.py` and verified.",
+            },
+            "done": True,
+            "done_reason": "stop",
+            "prompt_eval_count": 280,
+            "eval_count": 15,
+        },
+    ]
+
+    client = WorkforceClient(base_url="http://127.0.0.1:11434", model="gemma4:12b")
+    monkeypatch.setattr(client, "get_model_digest", lambda: "sha256:gemma4")
+
+    def fake_post(url: str, payload: Dict[str, Any], **kwargs: Any) -> Dict[str, Any]:
+        sent_messages.append(json.loads(json.dumps(payload["messages"])))
+        return responses.pop(0)
+
+    monkeypatch.setattr(client, "_post_json", fake_post)
+    worker = AutonomousWorker(client=client)
+    subtask = SubTask(
+        id="t12",
+        title="Fix mod.inc",
+        input_files=["mod.py", "test_mod.py"],
+        affected_files=["mod.py"],
+        verification_command='python3 -c "import mod; assert mod.inc(1) == 2"',
+    )
+    res = worker.execute_subtask(subtask, tool_suite)
+
+    assert res.success is True
+    assert res.metadata["recovery_policy"] == "P1"
+    assert res.metadata["recovery_attempts"] == 1
+    assert res.metadata["recovery_events"][0]["reason"] == "truncated_generation"
+    # Verify Turn 4 prompt contained the P1 recovery directive forbidding re-reads
+    turn4_user_msg = sent_messages[3][-1]["content"]
+    assert "[RECOVERY CONTROLLER (1/3) — truncated_generation]" in turn4_user_msg
+    assert "mod.py, test_mod.py" in turn4_user_msg
+    assert "Do NOT call `read_file` again" in turn4_user_msg
+
+    # Verify explicit limit on recovery attempts (3 truncations -> abort on 4th)
+    always_truncated = [
+        {
+            "message": {"role": "assistant", "content": "long prose..."},
+            "done": True,
+            "done_reason": "length",
+            "prompt_eval_count": 100,
+            "eval_count": 2048,
+        }
+        for _ in range(5)
+    ]
+    monkeypatch.setattr(client, "_post_json", lambda u, p, **kw: always_truncated.pop(0))
+    res_fail = worker.execute_subtask(subtask, tool_suite)
+    assert res_fail.success is False
+    assert res_fail.metadata["recovery_attempts"] == 3
+    assert any(ev["reason"] == "recovery_limit_exceeded" for ev in res_fail.metadata["recovery_events"])
+
+
+def test_t13_phase2b_p1_repeated_file_read_detection(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, tool_suite: WorkspaceToolSuite
+):
+    """T13: P1 detects repeated file reads on unmodified files and injects stage guidance."""
+    monkeypatch.setenv("OLLAMA_THINK", "false")
+    monkeypatch.setenv("OLLAMA_RECOVERY_POLICY", "P1")
+
+    (tmp_path / "a.py").write_text("val = 0\n", encoding="utf-8")
+    (tmp_path / "b.py").write_text("assert val == 1\n", encoding="utf-8")
+
+    captured_messages: List[List[Dict[str, Any]]] = []
+    responses = [
+        {
+            "message": {
+                "role": "assistant",
+                "content": "",
+                "tool_calls": [{"function": {"name": "read_file", "arguments": {"path": "a.py"}}}],
+            },
+            "done": True,
+            "done_reason": "stop",
+            "prompt_eval_count": 100,
+            "eval_count": 20,
+        },
+        {
+            "message": {
+                "role": "assistant",
+                "content": "",
+                "tool_calls": [{"function": {"name": "read_file", "arguments": {"path": "b.py"}}}],
+            },
+            "done": True,
+            "done_reason": "stop",
+            "prompt_eval_count": 120,
+            "eval_count": 20,
+        },
+        # Re-reads a.py without modifying it
+        {
+            "message": {
+                "role": "assistant",
+                "content": "",
+                "tool_calls": [{"function": {"name": "read_file", "arguments": {"path": "a.py"}}}],
+            },
+            "done": True,
+            "done_reason": "stop",
+            "prompt_eval_count": 140,
+            "eval_count": 20,
+        },
+        {
+            "message": {
+                "role": "assistant",
+                "content": "",
+                "tool_calls": [
+                    {
+                        "function": {
+                            "name": "patch_file",
+                            "arguments": {"path": "a.py", "target_content": "val = 0", "replacement_content": "val = 1"},
+                        }
+                    }
+                ],
+            },
+            "done": True,
+            "done_reason": "stop",
+            "prompt_eval_count": 160,
+            "eval_count": 25,
+        },
+        {
+            "message": {
+                "role": "assistant",
+                "content": "Patched a.py.",
+            },
+            "done": True,
+            "done_reason": "stop",
+            "prompt_eval_count": 180,
+            "eval_count": 10,
+        },
+    ]
+
+    client = WorkforceClient(base_url="http://127.0.0.1:11434", model="gemma4:12b")
+    monkeypatch.setattr(client, "get_model_digest", lambda: "sha256:gemma4")
+
+    def fake_post(url: str, payload: Dict[str, Any], **kwargs: Any) -> Dict[str, Any]:
+        captured_messages.append(json.loads(json.dumps(payload["messages"])))
+        return responses.pop(0)
+
+    monkeypatch.setattr(client, "_post_json", fake_post)
+    worker = AutonomousWorker(client=client)
+    res = worker.execute_subtask(
+        SubTask(id="t13", title="Patch a.py", input_files=["a.py", "b.py"], affected_files=["a.py"]),
+        tool_suite,
+    )
+
+    assert res.success is True
+    assert res.metadata["repeated_file_reads"] == 1
+    assert any(ev["reason"] == "repeated_file_read" for ev in res.metadata["recovery_events"])
+    # Check that the tool observation after the repeated read of a.py contains the recovery warning
+    tool_obs_after_reread = captured_messages[3][-1]["content"]
+    assert "RECOVERY CONTROLLER: `a.py` was already read and unchanged" in tool_obs_after_reread
+
+
+def test_t14_phase2b_p1_missing_tool_call_before_verification(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, tool_suite: WorkspaceToolSuite
+):
+    """T14: P1 catches premature non-truncated text turn when required verification has not run."""
+    monkeypatch.setenv("OLLAMA_THINK", "false")
+    monkeypatch.setenv("OLLAMA_RECOVERY_POLICY", "P1")
+
+    (tmp_path / "svc.py").write_text("def status():\n    return 'down'\n", encoding="utf-8")
+
+    responses = [
+        {
+            "message": {
+                "role": "assistant",
+                "content": "",
+                "tool_calls": [{"function": {"name": "read_file", "arguments": {"path": "svc.py"}}}],
+            },
+            "done": True,
+            "done_reason": "stop",
+            "prompt_eval_count": 100,
+            "eval_count": 20,
+        },
+        # Turn 2: Model emits prose without a tool call even though verification_command hasn't run!
+        {
+            "message": {
+                "role": "assistant",
+                "content": "I see that `status()` returns 'down' instead of 'ok'.",
+            },
+            "done": True,
+            "done_reason": "stop",
+            "prompt_eval_count": 120,
+            "eval_count": 25,
+        },
+        # Turn 3: RecoveryController prompts for patch_file -> model patches svc.py
+        {
+            "message": {
+                "role": "assistant",
+                "content": "",
+                "tool_calls": [
+                    {
+                        "function": {
+                            "name": "patch_file",
+                            "arguments": {
+                                "path": "svc.py",
+                                "target_content": "return 'down'",
+                                "replacement_content": "return 'ok'",
+                            },
+                        }
+                    }
+                ],
+            },
+            "done": True,
+            "done_reason": "stop",
+            "prompt_eval_count": 150,
+            "eval_count": 30,
+        },
+        # Turn 4: Model runs verification command
+        {
+            "message": {
+                "role": "assistant",
+                "content": "",
+                "tool_calls": [
+                    {
+                        "function": {
+                            "name": "run_command",
+                            "arguments": {"command": 'python3 -c "import svc; assert svc.status() == \'ok\'"'},
+                        }
+                    }
+                ],
+            },
+            "done": True,
+            "done_reason": "stop",
+            "prompt_eval_count": 180,
+            "eval_count": 25,
+        },
+        # Turn 5: Final summary after verification passes
+        {
+            "message": {
+                "role": "assistant",
+                "content": "Updated `status()` to return 'ok' and verified.",
+            },
+            "done": True,
+            "done_reason": "stop",
+            "prompt_eval_count": 200,
+            "eval_count": 15,
+        },
+    ]
+
+    client = WorkforceClient(base_url="http://127.0.0.1:11434", model="gemma4:12b")
+    monkeypatch.setattr(client, "get_model_digest", lambda: "sha256:gemma4")
+    monkeypatch.setattr(client, "_post_json", lambda u, p, **kw: responses.pop(0))
+
+    worker = AutonomousWorker(client=client)
+    res = worker.execute_subtask(
+        SubTask(
+            id="t14",
+            title="Fix svc.status",
+            input_files=["svc.py"],
+            affected_files=["svc.py"],
+            verification_command='python3 -c "import svc; assert svc.status() == \'ok\'"',
+        ),
+        tool_suite,
+    )
+
+    assert res.success is True
+    assert res.turns == 5
+    assert res.metadata["successful_verifications"] == 1
+    assert any(
+        ev["reason"] == "missing_tool_call_before_verification"
+        for ev in res.metadata["recovery_events"]
+    )
+
+
+def test_t15_phase2b_p1_failed_test_recovery_preserves_evidence(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, tool_suite: WorkspaceToolSuite
+):
+    """T15: P1 preserves failed verification command evidence across recovery turns."""
+    monkeypatch.setenv("OLLAMA_THINK", "false")
+    monkeypatch.setenv("OLLAMA_RECOVERY_POLICY", "P1")
+
+    (tmp_path / "math_util.py").write_text("def double(n):\n    return n + 1\n", encoding="utf-8")
+    sent_payloads: List[List[Dict[str, Any]]] = []
+
+    responses = [
+        # Turn 1: Read file
+        {
+            "message": {
+                "role": "assistant",
+                "content": "",
+                "tool_calls": [{"function": {"name": "read_file", "arguments": {"path": "math_util.py"}}}],
+            },
+            "done": True,
+            "done_reason": "stop",
+            "prompt_eval_count": 100,
+            "eval_count": 20,
+        },
+        # Turn 2: Run verification command (fails because bug not fixed yet)
+        {
+            "message": {
+                "role": "assistant",
+                "content": "",
+                "tool_calls": [
+                    {
+                        "function": {
+                            "name": "run_command",
+                            "arguments": {"command": 'python3 -c "import math_util; assert math_util.double(3) == 6, (\'got_wrong_double\',)[0]"'.replace("\\'", "'")},
+                        }
+                    }
+                ],
+            },
+            "done": True,
+            "done_reason": "stop",
+            "prompt_eval_count": 130,
+            "eval_count": 25,
+        },
+        # Turn 3: Model truncates while ruminating on the test failure
+        {
+            "message": {
+                "role": "assistant",
+                "content": "Analyzing test failure got_wrong_double..." * 30,
+            },
+            "done": True,
+            "done_reason": "length",
+            "prompt_eval_count": 160,
+            "eval_count": 2048,
+        },
+        # Turn 4: Model patches file
+        {
+            "message": {
+                "role": "assistant",
+                "content": "",
+                "tool_calls": [
+                    {
+                        "function": {
+                            "name": "patch_file",
+                            "arguments": {
+                                "path": "math_util.py",
+                                "target_content": "return n + 1",
+                                "replacement_content": "return 2 * n  # fixed",
+                            },
+                        }
+                    }
+                ],
+            },
+            "done": True,
+            "done_reason": "stop",
+            "prompt_eval_count": 200,
+            "eval_count": 30,
+        },
+        # Turn 5: Re-runs verification command (now passes)
+        {
+            "message": {
+                "role": "assistant",
+                "content": "",
+                "tool_calls": [
+                    {
+                        "function": {
+                            "name": "run_command",
+                            "arguments": {"command": 'python3 -c "import math_util; assert math_util.double(3) == 6, (\'got_wrong_double\',)[0]"'.replace("\\'", "'")},
+                        }
+                    }
+                ],
+            },
+            "done": True,
+            "done_reason": "stop",
+            "prompt_eval_count": 230,
+            "eval_count": 25,
+        },
+        # Turn 6: Final summary
+        {
+            "message": {
+                "role": "assistant",
+                "content": "Fixed `double(n)` to return `n * 2` and verified.",
+            },
+            "done": True,
+            "done_reason": "stop",
+            "prompt_eval_count": 250,
+            "eval_count": 15,
+        },
+    ]
+
+    client = WorkforceClient(base_url="http://127.0.0.1:11434", model="gemma4:12b")
+    monkeypatch.setattr(client, "get_model_digest", lambda: "sha256:gemma4")
+
+    def fake_post(url: str, payload: Dict[str, Any], **kwargs: Any) -> Dict[str, Any]:
+        sent_payloads.append(json.loads(json.dumps(payload["messages"])))
+        return responses.pop(0)
+
+    monkeypatch.setattr(client, "_post_json", fake_post)
+    worker = AutonomousWorker(client=client)
+    res = worker.execute_subtask(
+        SubTask(
+            id="t15",
+            title="Fix double",
+            input_files=["math_util.py"],
+            affected_files=["math_util.py"],
+            verification_command='python3 -c "import math_util; assert math_util.double(3) == 6, \'got_wrong_double\'"',
+        ),
+        tool_suite,
+    )
+
+    assert res.success is True
+    assert any(ev["reason"] == "failed_verification_command" for ev in res.metadata["recovery_events"])
+    assert any(ev["reason"] == "truncated_generation" for ev in res.metadata["recovery_events"])
+    # Check that Turn 4 recovery prompt preserved the failed verification status
+    turn4_prompt = sent_payloads[3][-1]["content"]
+    assert "FAILED" in turn4_prompt
+    assert "got_wrong_double" in turn4_prompt
+
+
+def test_t16_phase2b_loop_detection_and_p0_backward_compatibility(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, tool_suite: WorkspaceToolSuite
+):
+    """T16: Verifies unproductive loop detection under P1 and backward-compatible P0 baseline."""
+    monkeypatch.setenv("OLLAMA_THINK", "false")
+    monkeypatch.setenv("OLLAMA_RECOVERY_POLICY", "P1")
+
+    (tmp_path / "loop_mod.py").write_text("x = 1\n", encoding="utf-8")
+
+    # Unproductive loop: model repeatedly reads the same file with identical output
+    loop_responses = [
+        {
+            "message": {
+                "role": "assistant",
+                "content": "",
+                "tool_calls": [{"function": {"name": "read_file", "arguments": {"path": "loop_mod.py"}}}],
+            },
+            "done": True,
+            "done_reason": "stop",
+            "prompt_eval_count": 100,
+            "eval_count": 20,
+        }
+        for _ in range(5)
+    ]
+
+    client = WorkforceClient(base_url="http://127.0.0.1:11434", model="gemma4:12b")
+    monkeypatch.setattr(client, "get_model_digest", lambda: "sha256:gemma4")
+    monkeypatch.setattr(client, "_post_json", lambda u, p, **kw: loop_responses.pop(0))
+
+    worker = AutonomousWorker(client=client)
+    res_loop = worker.execute_subtask(
+        SubTask(id="t16_loop", title="Loop test", input_files=["loop_mod.py"]),
+        tool_suite,
+    )
+    assert res_loop.success is False
+    assert res_loop.metadata.get("stalled") is True
+    assert "cycle" in (res_loop.error or "").lower()
+
+    # P0 baseline check: does not trigger missing_tool_call_before_verification on non-truncated prose
+    monkeypatch.setenv("OLLAMA_RECOVERY_POLICY", "P0")
+    p0_responses = [
+        {
+            "message": {
+                "role": "assistant",
+                "content": "Completed directly in P0.",
+            },
+            "done": True,
+            "done_reason": "stop",
+            "prompt_eval_count": 80,
+            "eval_count": 10,
+        }
+    ]
+    monkeypatch.setattr(client, "_post_json", lambda u, p, **kw: p0_responses.pop(0))
+    res_p0 = worker.execute_subtask(
+        SubTask(
+            id="t16_p0",
+            title="P0 baseline check",
+            verification_command='python3 -c "assert True"',
+        ),
+        tool_suite,
+    )
+    assert res_p0.success is True
+    assert res_p0.metadata["recovery_policy"] == "P0"
+    assert res_p0.metadata["recovery_attempts"] == 0
+
+
+

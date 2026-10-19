@@ -1,0 +1,2365 @@
+{
+  "experiment": "GEMMA-ORION Phase 2B Recovery Controller PoC (P0 vs P1)",
+  "timestamp_utc": "2026-10-19T10:57:46Z",
+  "git_commit": "779cb45",
+  "seeds": [
+    303,
+    404
+  ],
+  "task_deadline_s": 300.0,
+  "policies": {
+    "P0": {
+      "label": "P0 (Baseline G0: think=false, predict=2048, basic recovery)",
+      "env": {
+        "OLLAMA_THINK": "false",
+        "OLLAMA_NUM_CTX": "16384",
+        "OLLAMA_NUM_PREDICT": "2048",
+        "OLLAMA_RECOVERY_POLICY": "P0"
+      },
+      "seed_runs": [
+        {
+          "seed": 303,
+          "tasks": [
+            {
+              "task_id": "H1_fdr_step_up_fix",
+              "policy_id": "P0",
+              "seed": 303,
+              "worker_reported_success": true,
+              "independently_verified": true,
+              "pipeline_verified": true,
+              "llm_native_completion": true,
+              "fallback_used": false,
+              "turns": 6,
+              "tool_calls_count": 4,
+              "tool_call_efficiency": 1.0,
+              "wall_clock_s": 150.7219,
+              "peak_vram_mib": 7832,
+              "error": null,
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 11027,
+                "output_tokens": 2586,
+                "prompt_eval_cached_tokens": 7852,
+                "eval_duration_s": 143.9622,
+                "prompt_eval_duration_s": 5.173,
+                "wall_clock_s": 150.7218,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 4,
+                "read_file_calls": 2,
+                "unique_files_read": 2,
+                "repeated_file_reads": 0,
+                "edit_calls": 1,
+                "test_command_calls": 1,
+                "invalid_tool_arguments": 0,
+                "context_overflows": 0,
+                "truncated_generations": 1,
+                "compacted_messages": 2,
+                "successful_verifications": 1,
+                "recovery_policy": "P0",
+                "recovery_attempts": 1,
+                "recovery_events": [
+                  {
+                    "turn": 3,
+                    "attempt": 1,
+                    "reason": "p0_truncated_or_empty_nudge",
+                    "detail": "Your previous response hit the num_predict (2048 tokens) generation limit and was truncated before completing a tool call or final answer.",
+                    "action_recommended": "generic_nudge",
+                    "files_in_context": [
+                      "fdr_control.py",
+                      "test_fdr_control.py"
+                    ],
+                    "edits_applied": [],
+                    "verification_passed": false
+                  }
+                ],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1111,
+                    "output_tokens": 20,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 1.1603,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "fdr_control.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1619,
+                    "output_tokens": 26,
+                    "prompt_eval_cached_tokens": 1107,
+                    "eval_duration_s": 1.4632,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_fdr_control.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1931,
+                    "output_tokens": 2048,
+                    "prompt_eval_cached_tokens": 1619,
+                    "eval_duration_s": 114.7725,
+                    "thinking_chars": 0,
+                    "done_reason": "length",
+                    "truncated": true,
+                    "tool_calls": [],
+                    "recovery_triggered": true,
+                    "recovery_reason": "p0_truncated_or_empty_nudge"
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 2016,
+                    "output_tokens": 335,
+                    "prompt_eval_cached_tokens": 1926,
+                    "eval_duration_s": 18.3733,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "patch_file",
+                        "target": "fdr_control.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 2372,
+                    "output_tokens": 25,
+                    "prompt_eval_cached_tokens": 2012,
+                    "eval_duration_s": 1.2896,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 6,
+                    "input_tokens": 1978,
+                    "output_tokens": 132,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 6.9032,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": []
+                  }
+                ],
+                "seed": 303,
+                "policy_id": "P0",
+                "visible_tests_passed": true,
+                "holdout_tests_passed": true,
+                "pipeline_verified": true,
+                "llm_native_completion": true,
+                "fallback_used": false,
+                "tool_call_efficiency": 1.0,
+                "initial_workspace_sha256": "1d1b3cfddf9f3791336b41cee06ae8f9afca7100797c2e34409588ee439f92d5",
+                "final_workspace_sha256": "d9d0e08a3c21e4b9a06e4d102b5b956b6837cfb8e83294472b12ad53ddc305d0",
+                "workspace_modified": true,
+                "workspace_diff": "--- a/fdr_control.py\n+++ b/fdr_control.py\n@@ -18,15 +18,26 @@\n     if m == 0:\n         return FdrDecision(rejected_mask=[], num_rejected=0, critical_threshold=0.0)\n     indexed = sorted(enumerate(p_values), key=lambda pair: pair[1])\n-    # BUG: uses 0-based index i instead of 1-based rank (i + 1) and filters\n-    # pointwise instead of finding the largest step-up rank k_max.\n+    # Corrected: use 1-based rank k = i + 1\n     rejected = [False] * m\n     crit = 0.0\n+    k_max = 0\n     for i, (orig_idx, p_val) in enumerate(indexed):\n-        thresh = (i / m) * alpha\n-        if p_val < thresh:\n-            rejected[orig_idx] = True\n+        k = i + 1\n+        thresh = (k / m) * alpha\n+        if p_val <= thresh:\n+            k_max = k\n             crit = thresh\n+    \n+    # All ranks 1..k_max are rejected\n+    for i in range(k_max):\n+        rejected[indexed[i][0]] = True\n+    \n+    return FdrDecision(\n+        rejected_mask=rejected,\n+        num_rejected=k_max,\n+        critical_threshold=round(crit, 10),\n+    )\n     return FdrDecision(\n         rejected_mask=rejected,\n         num_rejected=sum(rejected),\n"
+              }
+            },
+            {
+              "task_id": "H2_pareto_judge_fix",
+              "policy_id": "P0",
+              "seed": 303,
+              "worker_reported_success": true,
+              "independently_verified": true,
+              "pipeline_verified": true,
+              "llm_native_completion": true,
+              "fallback_used": false,
+              "turns": 7,
+              "tool_calls_count": 5,
+              "tool_call_efficiency": 1.0,
+              "wall_clock_s": 161.7602,
+              "peak_vram_mib": 7832,
+              "error": null,
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 11682,
+                "output_tokens": 2732,
+                "prompt_eval_cached_tokens": 7409,
+                "eval_duration_s": 153.7278,
+                "prompt_eval_duration_s": 6.7701,
+                "wall_clock_s": 161.7601,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 5,
+                "read_file_calls": 2,
+                "unique_files_read": 2,
+                "repeated_file_reads": 0,
+                "edit_calls": 2,
+                "test_command_calls": 1,
+                "invalid_tool_arguments": 0,
+                "context_overflows": 0,
+                "truncated_generations": 1,
+                "compacted_messages": 6,
+                "successful_verifications": 1,
+                "recovery_policy": "P0",
+                "recovery_attempts": 1,
+                "recovery_events": [
+                  {
+                    "turn": 3,
+                    "attempt": 1,
+                    "reason": "p0_truncated_or_empty_nudge",
+                    "detail": "Your previous response hit the num_predict (2048 tokens) generation limit and was truncated before completing a tool call or final answer.",
+                    "action_recommended": "generic_nudge",
+                    "files_in_context": [
+                      "candidate_spec.py",
+                      "pareto_judge.py"
+                    ],
+                    "edits_applied": [],
+                    "verification_passed": false
+                  }
+                ],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1099,
+                    "output_tokens": 19,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 0.9352,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "candidate_spec.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1194,
+                    "output_tokens": 24,
+                    "prompt_eval_cached_tokens": 1095,
+                    "eval_duration_s": 1.1934,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "pareto_judge.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1631,
+                    "output_tokens": 2048,
+                    "prompt_eval_cached_tokens": 1194,
+                    "eval_duration_s": 117.2251,
+                    "thinking_chars": 0,
+                    "done_reason": "length",
+                    "truncated": true,
+                    "tool_calls": [],
+                    "recovery_triggered": true,
+                    "recovery_reason": "p0_truncated_or_empty_nudge"
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 1716,
+                    "output_tokens": 184,
+                    "prompt_eval_cached_tokens": 1626,
+                    "eval_duration_s": 9.7024,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "patch_file",
+                        "target": "pareto_judge.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 1925,
+                    "output_tokens": 296,
+                    "prompt_eval_cached_tokens": 1712,
+                    "eval_duration_s": 15.6689,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "patch_file",
+                        "target": "pareto_judge.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 6,
+                    "input_tokens": 2221,
+                    "output_tokens": 25,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 1.2844,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 7,
+                    "input_tokens": 1896,
+                    "output_tokens": 136,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 7.7184,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": []
+                  }
+                ],
+                "seed": 303,
+                "policy_id": "P0",
+                "visible_tests_passed": true,
+                "holdout_tests_passed": true,
+                "pipeline_verified": true,
+                "llm_native_completion": true,
+                "fallback_used": false,
+                "tool_call_efficiency": 1.0,
+                "initial_workspace_sha256": "abf4ee7ef4dda4f64a00d02b2cc1536cc7c70ca52c1e3329f1f01ce2baac41e3",
+                "final_workspace_sha256": "b13455e93f042e80fb8404d45a5c39eca9918ec5be685f4c22d90a50b98ae45a",
+                "workspace_modified": true,
+                "workspace_diff": "--- a/pareto_judge.py\n+++ b/pareto_judge.py\n@@ -10,17 +10,20 @@\n     \"\"\"\n     # BUG: requires strict inequality on all three metrics, failing when two metrics tie.\n     return (\n-        a.wall_clock_s < b.wall_clock_s\n-        and a.total_tokens < b.total_tokens\n-        and a.tool_errors < b.tool_errors\n+        a.wall_clock_s <= b.wall_clock_s\n+        and a.total_tokens <= b.total_tokens\n+        and a.tool_errors <= b.tool_errors\n+        and (a.wall_clock_s < b.wall_clock_s\n+              or a.total_tokens < b.total_tokens\n+              or a.tool_errors < b.tool_errors)\n     )\n \n def select_pareto_frontier(candidates: Sequence[HarnessCandidate]) -> List[str]:\n     \"\"\"Filter to `rie_accepted=True` candidates, then return IDs on the non-dominated Pareto frontier,\n     sorted by (wall_clock_s, total_tokens, tool_errors, candidate_id) ascending.\n     \"\"\"\n-    # BUG: forgets to filter out rie_accepted == False candidates before dominance check!\n-    pool = list(candidates)\n+    # Filter out candidates not accepted by RIE.\n+    pool = [c for c in candidates if c.rie_accepted]\n     frontier = []\n     for cand in pool:\n         if not any(dominates(other, cand) for other in pool if other.candidate_id != cand.candidate_id):\n"
+              }
+            },
+            {
+              "task_id": "H3_group_kfold_leakage_fix",
+              "policy_id": "P0",
+              "seed": 303,
+              "worker_reported_success": true,
+              "independently_verified": true,
+              "pipeline_verified": true,
+              "llm_native_completion": true,
+              "fallback_used": false,
+              "turns": 7,
+              "tool_calls_count": 5,
+              "tool_call_efficiency": 1.0,
+              "wall_clock_s": 158.305,
+              "peak_vram_mib": 7832,
+              "error": null,
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 13365,
+                "output_tokens": 2755,
+                "prompt_eval_cached_tokens": 8236,
+                "eval_duration_s": 149.2743,
+                "prompt_eval_duration_s": 7.4411,
+                "wall_clock_s": 158.3049,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 5,
+                "read_file_calls": 3,
+                "unique_files_read": 3,
+                "repeated_file_reads": 0,
+                "edit_calls": 1,
+                "test_command_calls": 1,
+                "invalid_tool_arguments": 0,
+                "context_overflows": 0,
+                "truncated_generations": 1,
+                "compacted_messages": 6,
+                "successful_verifications": 1,
+                "recovery_policy": "P0",
+                "recovery_attempts": 1,
+                "recovery_events": [
+                  {
+                    "turn": 4,
+                    "attempt": 1,
+                    "reason": "p0_truncated_or_empty_nudge",
+                    "detail": "Your previous response hit the num_predict (2048 tokens) generation limit and was truncated before completing a tool call or final answer.",
+                    "action_recommended": "generic_nudge",
+                    "files_in_context": [
+                      "group_splitter.py",
+                      "sample_record.py",
+                      "test_group_splitter.py"
+                    ],
+                    "edits_applied": [],
+                    "verification_passed": false
+                  }
+                ],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1100,
+                    "output_tokens": 19,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 0.9942,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "group_splitter.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1571,
+                    "output_tokens": 23,
+                    "prompt_eval_cached_tokens": 1096,
+                    "eval_duration_s": 1.2083,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "sample_record.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1658,
+                    "output_tokens": 25,
+                    "prompt_eval_cached_tokens": 1571,
+                    "eval_duration_s": 1.2568,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_group_splitter.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 2134,
+                    "output_tokens": 2048,
+                    "prompt_eval_cached_tokens": 1658,
+                    "eval_duration_s": 112.283,
+                    "thinking_chars": 0,
+                    "done_reason": "length",
+                    "truncated": true,
+                    "tool_calls": [],
+                    "recovery_triggered": true,
+                    "recovery_reason": "p0_truncated_or_empty_nudge"
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 2219,
+                    "output_tokens": 483,
+                    "prompt_eval_cached_tokens": 2129,
+                    "eval_duration_s": 25.4409,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "patch_file",
+                        "target": "group_splitter.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 6,
+                    "input_tokens": 2325,
+                    "output_tokens": 25,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 1.2957,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 7,
+                    "input_tokens": 2358,
+                    "output_tokens": 132,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 6.7954,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": []
+                  }
+                ],
+                "seed": 303,
+                "policy_id": "P0",
+                "visible_tests_passed": true,
+                "holdout_tests_passed": true,
+                "pipeline_verified": true,
+                "llm_native_completion": true,
+                "fallback_used": false,
+                "tool_call_efficiency": 1.0,
+                "initial_workspace_sha256": "625b6ac0299a7dca7143120df362b8b2044e57ad2e01bd8689fd0a24b5745c9f",
+                "final_workspace_sha256": "99b2b30baf9eb0219f382e24d9929301ecffeed8a09db29737a4359b92bdfdd7",
+                "workspace_modified": true,
+                "workspace_diff": "--- a/group_splitter.py\n+++ b/group_splitter.py\n@@ -18,11 +18,22 @@\n     \"\"\"\n     if n_splits < 2:\n         raise ValueError('n_splits must be >= 2')\n-    # BUG: splits by record index i % n_splits instead of grouping by unique group_id,\n-    # causing records from the same group_id to leak between train and test!\n+    \n+    unique_groups = []\n+    seen_groups = set()\n+    for r in records:\n+        if r.group_id not in seen_groups:\n+            unique_groups.append(r.group_id)\n+            seen_groups.add(r.group_id)\n+            \n+    if len(unique_groups) < n_splits:\n+        raise ValueError(f'Number of unique groups ({len(unique_groups)}) must be >= n_splits ({n_splits})')\n+\n+    group_to_fold = {group_id: i % n_splits for i, group_id in enumerate(unique_groups)}\n+    \n     folds: List[Tuple[List[int], List[int]]] = []\n     for k in range(n_splits):\n-        test_ids = [r.sample_id for i, r in enumerate(records) if i % n_splits == k]\n-        train_ids = [r.sample_id for i, r in enumerate(records) if i % n_splits != k]\n+        test_ids = [r.sample_id for r in records if group_to_fold[r.group_id] == k]\n+        train_ids = [r.sample_id for r in records if group_to_fold[r.group_id] != k]\n         folds.append((train_ids, test_ids))\n     return folds\n"
+              }
+            }
+          ],
+          "aggregate": {
+            "tasks_total": 3,
+            "pipeline_verified_count": 3,
+            "pipeline_verified_rate": 1.0,
+            "llm_native_completion_count": 3,
+            "llm_native_completion_rate": 1.0,
+            "fallback_used_count": 0,
+            "total_input_tokens": 36074,
+            "total_output_tokens": 8073,
+            "total_tokens": 44147,
+            "total_wall_clock_s": 470.7871,
+            "truncated_generations": 3,
+            "recovery_attempts": 3,
+            "repeated_file_reads": 0,
+            "peak_vram_mib": 7832
+          }
+        },
+        {
+          "seed": 404,
+          "tasks": [
+            {
+              "task_id": "H1_fdr_step_up_fix",
+              "policy_id": "P0",
+              "seed": 404,
+              "worker_reported_success": true,
+              "independently_verified": true,
+              "pipeline_verified": true,
+              "llm_native_completion": true,
+              "fallback_used": false,
+              "turns": 5,
+              "tool_calls_count": 4,
+              "tool_call_efficiency": 1.0,
+              "wall_clock_s": 49.2062,
+              "peak_vram_mib": 7832,
+              "error": null,
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 8933,
+                "output_tokens": 824,
+                "prompt_eval_cached_tokens": 5845,
+                "eval_duration_s": 43.5858,
+                "prompt_eval_duration_s": 4.5615,
+                "wall_clock_s": 49.2062,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 4,
+                "read_file_calls": 2,
+                "unique_files_read": 2,
+                "repeated_file_reads": 0,
+                "edit_calls": 1,
+                "test_command_calls": 1,
+                "invalid_tool_arguments": 0,
+                "context_overflows": 0,
+                "truncated_generations": 0,
+                "compacted_messages": 2,
+                "successful_verifications": 1,
+                "recovery_policy": "P0",
+                "recovery_attempts": 0,
+                "recovery_events": [],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1111,
+                    "output_tokens": 20,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 0.9617,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "fdr_control.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1619,
+                    "output_tokens": 26,
+                    "prompt_eval_cached_tokens": 1107,
+                    "eval_duration_s": 1.2998,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_fdr_control.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1931,
+                    "output_tokens": 377,
+                    "prompt_eval_cached_tokens": 1619,
+                    "eval_duration_s": 19.8999,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "patch_file",
+                        "target": "fdr_control.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 2333,
+                    "output_tokens": 29,
+                    "prompt_eval_cached_tokens": 1931,
+                    "eval_duration_s": 1.5732,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 1939,
+                    "output_tokens": 372,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 19.8512,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": []
+                  }
+                ],
+                "seed": 404,
+                "policy_id": "P0",
+                "visible_tests_passed": true,
+                "holdout_tests_passed": true,
+                "pipeline_verified": true,
+                "llm_native_completion": true,
+                "fallback_used": false,
+                "tool_call_efficiency": 1.0,
+                "initial_workspace_sha256": "1d1b3cfddf9f3791336b41cee06ae8f9afca7100797c2e34409588ee439f92d5",
+                "final_workspace_sha256": "58f1a36666d05006fe5663bfc0a97a207b06441054dad8868d8f7c485c66b6ee",
+                "workspace_modified": true,
+                "workspace_diff": "--- a/fdr_control.py\n+++ b/fdr_control.py\n@@ -18,15 +18,29 @@\n     if m == 0:\n         return FdrDecision(rejected_mask=[], num_rejected=0, critical_threshold=0.0)\n     indexed = sorted(enumerate(p_values), key=lambda pair: pair[1])\n-    # BUG: uses 0-based index i instead of 1-based rank (i + 1) and filters\n-    # pointwise instead of finding the largest step-up rank k_max.\n+    # Find the largest k such that p_(k) <= (k / m) * alpha\n+    # where k is the 1-based rank.\n+    k_max = -1\n+    current_crit = 0.0\n+    for i, (orig_idx, p_val) in enumerate(indexed):\n+        rank = i + 1\n+        thresh = (rank / m) * alpha\n+        if p_val <= thresh:\n+            k_max = rank\n+            current_crit = thresh\n+    \n     rejected = [False] * m\n-    crit = 0.0\n-    for i, (orig_idx, p_val) in enumerate(indexed):\n-        thresh = (i / m) * alpha\n-        if p_val < thresh:\n+    if k_max != -1:\n+        # All ranks 1..k_max are rejected\n+        for i in range(k_max):\n+            orig_idx = indexed[i][0]\n             rejected[orig_idx] = True\n-            crit = thresh\n+    \n+    return FdrDecision(\n+        rejected_mask=rejected,\n+        num_rejected=sum(rejected),\n+        critical_threshold=round(current_crit, 10),\n+    )\n     return FdrDecision(\n         rejected_mask=rejected,\n         num_rejected=sum(rejected),\n"
+              }
+            },
+            {
+              "task_id": "H2_pareto_judge_fix",
+              "policy_id": "P0",
+              "seed": 404,
+              "worker_reported_success": true,
+              "independently_verified": true,
+              "pipeline_verified": true,
+              "llm_native_completion": true,
+              "fallback_used": false,
+              "turns": 7,
+              "tool_calls_count": 5,
+              "tool_call_efficiency": 1.0,
+              "wall_clock_s": 153.1449,
+              "peak_vram_mib": 7832,
+              "error": null,
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 11682,
+                "output_tokens": 2741,
+                "prompt_eval_cached_tokens": 7409,
+                "eval_duration_s": 145.4292,
+                "prompt_eval_duration_s": 6.5738,
+                "wall_clock_s": 153.1448,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 5,
+                "read_file_calls": 2,
+                "unique_files_read": 2,
+                "repeated_file_reads": 0,
+                "edit_calls": 2,
+                "test_command_calls": 1,
+                "invalid_tool_arguments": 0,
+                "context_overflows": 0,
+                "truncated_generations": 1,
+                "compacted_messages": 6,
+                "successful_verifications": 1,
+                "recovery_policy": "P0",
+                "recovery_attempts": 1,
+                "recovery_events": [
+                  {
+                    "turn": 3,
+                    "attempt": 1,
+                    "reason": "p0_truncated_or_empty_nudge",
+                    "detail": "Your previous response hit the num_predict (2048 tokens) generation limit and was truncated before completing a tool call or final answer.",
+                    "action_recommended": "generic_nudge",
+                    "files_in_context": [
+                      "candidate_spec.py",
+                      "pareto_judge.py"
+                    ],
+                    "edits_applied": [],
+                    "verification_passed": false
+                  }
+                ],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1099,
+                    "output_tokens": 19,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 0.9586,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "candidate_spec.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1194,
+                    "output_tokens": 24,
+                    "prompt_eval_cached_tokens": 1095,
+                    "eval_duration_s": 1.1934,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "pareto_judge.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1631,
+                    "output_tokens": 2048,
+                    "prompt_eval_cached_tokens": 1194,
+                    "eval_duration_s": 109.453,
+                    "thinking_chars": 0,
+                    "done_reason": "length",
+                    "truncated": true,
+                    "tool_calls": [],
+                    "recovery_triggered": true,
+                    "recovery_reason": "p0_truncated_or_empty_nudge"
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 1716,
+                    "output_tokens": 184,
+                    "prompt_eval_cached_tokens": 1626,
+                    "eval_duration_s": 9.4714,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "patch_file",
+                        "target": "pareto_judge.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 1925,
+                    "output_tokens": 296,
+                    "prompt_eval_cached_tokens": 1712,
+                    "eval_duration_s": 15.4769,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "patch_file",
+                        "target": "pareto_judge.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 6,
+                    "input_tokens": 2221,
+                    "output_tokens": 25,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 1.2482,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 7,
+                    "input_tokens": 1896,
+                    "output_tokens": 145,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 7.6276,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": []
+                  }
+                ],
+                "seed": 404,
+                "policy_id": "P0",
+                "visible_tests_passed": true,
+                "holdout_tests_passed": true,
+                "pipeline_verified": true,
+                "llm_native_completion": true,
+                "fallback_used": false,
+                "tool_call_efficiency": 1.0,
+                "initial_workspace_sha256": "abf4ee7ef4dda4f64a00d02b2cc1536cc7c70ca52c1e3329f1f01ce2baac41e3",
+                "final_workspace_sha256": "b13455e93f042e80fb8404d45a5c39eca9918ec5be685f4c22d90a50b98ae45a",
+                "workspace_modified": true,
+                "workspace_diff": "--- a/pareto_judge.py\n+++ b/pareto_judge.py\n@@ -10,17 +10,20 @@\n     \"\"\"\n     # BUG: requires strict inequality on all three metrics, failing when two metrics tie.\n     return (\n-        a.wall_clock_s < b.wall_clock_s\n-        and a.total_tokens < b.total_tokens\n-        and a.tool_errors < b.tool_errors\n+        a.wall_clock_s <= b.wall_clock_s\n+        and a.total_tokens <= b.total_tokens\n+        and a.tool_errors <= b.tool_errors\n+        and (a.wall_clock_s < b.wall_clock_s\n+              or a.total_tokens < b.total_tokens\n+              or a.tool_errors < b.tool_errors)\n     )\n \n def select_pareto_frontier(candidates: Sequence[HarnessCandidate]) -> List[str]:\n     \"\"\"Filter to `rie_accepted=True` candidates, then return IDs on the non-dominated Pareto frontier,\n     sorted by (wall_clock_s, total_tokens, tool_errors, candidate_id) ascending.\n     \"\"\"\n-    # BUG: forgets to filter out rie_accepted == False candidates before dominance check!\n-    pool = list(candidates)\n+    # Filter out candidates not accepted by RIE.\n+    pool = [c for c in candidates if c.rie_accepted]\n     frontier = []\n     for cand in pool:\n         if not any(dominates(other, cand) for other in pool if other.candidate_id != cand.candidate_id):\n"
+              }
+            },
+            {
+              "task_id": "H3_group_kfold_leakage_fix",
+              "policy_id": "P0",
+              "seed": 404,
+              "worker_reported_success": true,
+              "independently_verified": true,
+              "pipeline_verified": true,
+              "llm_native_completion": true,
+              "fallback_used": false,
+              "turns": 7,
+              "tool_calls_count": 5,
+              "tool_call_efficiency": 1.0,
+              "wall_clock_s": 167.0984,
+              "peak_vram_mib": 7832,
+              "error": null,
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 13222,
+                "output_tokens": 2928,
+                "prompt_eval_cached_tokens": 7835,
+                "eval_duration_s": 157.3719,
+                "prompt_eval_duration_s": 7.5681,
+                "wall_clock_s": 167.0983,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 5,
+                "read_file_calls": 3,
+                "unique_files_read": 3,
+                "repeated_file_reads": 0,
+                "edit_calls": 1,
+                "test_command_calls": 1,
+                "invalid_tool_arguments": 0,
+                "context_overflows": 0,
+                "truncated_generations": 1,
+                "compacted_messages": 6,
+                "successful_verifications": 1,
+                "recovery_policy": "P0",
+                "recovery_attempts": 1,
+                "recovery_events": [
+                  {
+                    "turn": 2,
+                    "attempt": 1,
+                    "reason": "p0_truncated_or_empty_nudge",
+                    "detail": "Your previous response hit the num_predict (2048 tokens) generation limit and was truncated before completing a tool call or final answer.",
+                    "action_recommended": "generic_nudge",
+                    "files_in_context": [
+                      "group_splitter.py"
+                    ],
+                    "edits_applied": [],
+                    "verification_passed": false
+                  }
+                ],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1100,
+                    "output_tokens": 19,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 0.9417,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "group_splitter.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1571,
+                    "output_tokens": 2048,
+                    "prompt_eval_cached_tokens": 1096,
+                    "eval_duration_s": 109.5049,
+                    "thinking_chars": 0,
+                    "done_reason": "length",
+                    "truncated": true,
+                    "tool_calls": [],
+                    "recovery_triggered": true,
+                    "recovery_reason": "p0_truncated_or_empty_nudge"
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1656,
+                    "output_tokens": 23,
+                    "prompt_eval_cached_tokens": 1566,
+                    "eval_duration_s": 1.1311,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "sample_record.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 1739,
+                    "output_tokens": 25,
+                    "prompt_eval_cached_tokens": 1652,
+                    "eval_duration_s": 1.2372,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_group_splitter.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 2215,
+                    "output_tokens": 611,
+                    "prompt_eval_cached_tokens": 1739,
+                    "eval_duration_s": 33.2974,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "write_file",
+                        "target": "group_splitter.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 6,
+                    "input_tokens": 2454,
+                    "output_tokens": 25,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 1.3959,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 7,
+                    "input_tokens": 2487,
+                    "output_tokens": 177,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 9.8637,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": []
+                  }
+                ],
+                "seed": 404,
+                "policy_id": "P0",
+                "visible_tests_passed": true,
+                "holdout_tests_passed": true,
+                "pipeline_verified": true,
+                "llm_native_completion": true,
+                "fallback_used": false,
+                "tool_call_efficiency": 1.0,
+                "initial_workspace_sha256": "625b6ac0299a7dca7143120df362b8b2044e57ad2e01bd8689fd0a24b5745c9f",
+                "final_workspace_sha256": "daa2043b5f5d5e76887c9aacfeb7cb024352b939f48327925aa47f327e6fc7e4",
+                "workspace_modified": true,
+                "workspace_diff": "--- a/group_splitter.py\n+++ b/group_splitter.py\n@@ -18,11 +18,32 @@\n     \"\"\"\n     if n_splits < 2:\n         raise ValueError('n_splits must be >= 2')\n-    # BUG: splits by record index i % n_splits instead of grouping by unique group_id,\n-    # causing records from the same group_id to leak between train and test!\n+\n+    # Identify unique groups in order of first appearance\n+    unique_groups = []\n+    seen_groups = set()\n+    for r in records:\n+        if r.group_id not in seen_groups:\n+            unique_groups.append(r.group_id)\n+            seen_groups.add(r.group_id)\n+\n+    if len(unique_groups) < n_splits:\n+        raise ValueError(f\"Number of unique groups ({len(unique_groups)}) must be >= n_splits ({n_splits})\")\n+\n+    # Map each group_id to its fold index\n+    group_to_fold = {\n+        group_id: i % n_splits\n+        for i, group_id in enumerate(unique_groups)\n+    }\n+\n     folds: List[Tuple[List[int], List[int]]] = []\n     for k in range(n_splits):\n-        test_ids = [r.sample_id for i, r in enumerate(records) if i % n_splits == k]\n-        train_ids = [r.sample_id for i, r in enumerate(records) if i % n_splits != k]\n+        test_ids = []\n+        train_ids = []\n+        for r in records:\n+            if group_to_fold[r.group_id] == k:\n+                test_ids.append(r.sample_id)\n+            else:\n+                train_ids.append(r.sample_id)\n         folds.append((train_ids, test_ids))\n     return folds\n"
+              }
+            }
+          ],
+          "aggregate": {
+            "tasks_total": 3,
+            "pipeline_verified_count": 3,
+            "pipeline_verified_rate": 1.0,
+            "llm_native_completion_count": 3,
+            "llm_native_completion_rate": 1.0,
+            "fallback_used_count": 0,
+            "total_input_tokens": 33837,
+            "total_output_tokens": 6493,
+            "total_tokens": 40330,
+            "total_wall_clock_s": 369.4495,
+            "truncated_generations": 2,
+            "recovery_attempts": 2,
+            "repeated_file_reads": 0,
+            "peak_vram_mib": 7832
+          }
+        }
+      ],
+      "summary_across_seeds": {
+        "pipeline_verified_rate": {
+          "mean": 1.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "llm_native_completion_rate": {
+          "mean": 1.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "total_wall_clock_s": {
+          "mean": 420.1183,
+          "pstdev": 50.6688,
+          "sample_stdev": 71.6565,
+          "min": 369.4495,
+          "max": 470.7871
+        },
+        "total_tokens": {
+          "mean": 42238.5,
+          "pstdev": 1908.5,
+          "sample_stdev": 2699.0266,
+          "min": 40330.0,
+          "max": 44147.0
+        },
+        "truncated_generations": {
+          "mean": 2.5,
+          "pstdev": 0.5,
+          "sample_stdev": 0.7071,
+          "min": 2.0,
+          "max": 3.0
+        },
+        "recovery_attempts": {
+          "mean": 2.5,
+          "pstdev": 0.5,
+          "sample_stdev": 0.7071,
+          "min": 2.0,
+          "max": 3.0
+        },
+        "repeated_file_reads": {
+          "mean": 0.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        }
+      }
+    },
+    "P1": {
+      "label": "P1 (Enhanced RecoveryController: think=false, predict=2048, stage-aware recovery)",
+      "env": {
+        "OLLAMA_THINK": "false",
+        "OLLAMA_NUM_CTX": "16384",
+        "OLLAMA_NUM_PREDICT": "2048",
+        "OLLAMA_RECOVERY_POLICY": "P1"
+      },
+      "seed_runs": [
+        {
+          "seed": 303,
+          "tasks": [
+            {
+              "task_id": "H1_fdr_step_up_fix",
+              "policy_id": "P1",
+              "seed": 303,
+              "worker_reported_success": true,
+              "independently_verified": true,
+              "pipeline_verified": true,
+              "llm_native_completion": true,
+              "fallback_used": false,
+              "turns": 8,
+              "tool_calls_count": 7,
+              "tool_call_efficiency": 0.8571,
+              "wall_clock_s": 62.6256,
+              "peak_vram_mib": 7832,
+              "error": null,
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 17220,
+                "output_tokens": 840,
+                "prompt_eval_cached_tokens": 7482,
+                "eval_duration_s": 48.1471,
+                "prompt_eval_duration_s": 12.437,
+                "wall_clock_s": 62.6255,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 7,
+                "read_file_calls": 4,
+                "unique_files_read": 3,
+                "repeated_file_reads": 1,
+                "edit_calls": 1,
+                "test_command_calls": 2,
+                "invalid_tool_arguments": 0,
+                "context_overflows": 0,
+                "truncated_generations": 0,
+                "compacted_messages": 20,
+                "successful_verifications": 1,
+                "recovery_policy": "P1",
+                "recovery_attempts": 0,
+                "recovery_events": [
+                  {
+                    "turn": 4,
+                    "attempt": 0,
+                    "reason": "failed_verification_command",
+                    "detail": "Command 'python3 -m unittest -q test_fdr_control.py' failed: ======================================================================\nFAIL: test_step_up_monotone_rejection (test_fdr_control.TestFdrControl.test_step_up_monot",
+                    "action_recommended": "All input files are already in context (['fdr_control.py', 'fdr_types.py', 'test_fdr_control.py']). Do NOT call `read_file` again. Call `patch_file` (or `write_file`) on `fdr_control.py` with ONE minimal fix.",
+                    "files_in_context": [
+                      "fdr_control.py",
+                      "fdr_types.py",
+                      "test_fdr_control.py"
+                    ],
+                    "edits_applied": [],
+                    "verification_passed": false
+                  },
+                  {
+                    "turn": 5,
+                    "attempt": 0,
+                    "reason": "repeated_file_read",
+                    "detail": "File 'fdr_control.py' was re-read without intervening edits.",
+                    "action_recommended": "All input files are already in context (['fdr_control.py', 'fdr_types.py', 'test_fdr_control.py']). Do NOT call `read_file` again. Call `patch_file` (or `write_file`) on `fdr_control.py` with ONE minimal fix.",
+                    "files_in_context": [
+                      "fdr_control.py",
+                      "fdr_types.py",
+                      "test_fdr_control.py"
+                    ],
+                    "edits_applied": [],
+                    "verification_passed": false
+                  }
+                ],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1111,
+                    "output_tokens": 20,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 1.091,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "fdr_control.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1645,
+                    "output_tokens": 24,
+                    "prompt_eval_cached_tokens": 1107,
+                    "eval_duration_s": 1.5269,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "fdr_types.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1760,
+                    "output_tokens": 26,
+                    "prompt_eval_cached_tokens": 1645,
+                    "eval_duration_s": 1.4235,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_fdr_control.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 2147,
+                    "output_tokens": 33,
+                    "prompt_eval_cached_tokens": 1760,
+                    "eval_duration_s": 1.7351,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_fdr_control.py",
+                        "success": false
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 2056,
+                    "output_tokens": 24,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 1.416,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "fdr_control.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 6,
+                    "input_tokens": 2632,
+                    "output_tokens": 580,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 33.6227,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "write_file",
+                        "target": "fdr_control.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 7,
+                    "input_tokens": 3030,
+                    "output_tokens": 37,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 2.1604,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_fdr_control.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 8,
+                    "input_tokens": 2839,
+                    "output_tokens": 96,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 5.1714,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": []
+                  }
+                ],
+                "seed": 303,
+                "policy_id": "P1",
+                "visible_tests_passed": true,
+                "holdout_tests_passed": true,
+                "pipeline_verified": true,
+                "llm_native_completion": true,
+                "fallback_used": false,
+                "tool_call_efficiency": 0.8571,
+                "initial_workspace_sha256": "1d1b3cfddf9f3791336b41cee06ae8f9afca7100797c2e34409588ee439f92d5",
+                "final_workspace_sha256": "2754eced904e12452417b88e22159ad1ee3937e28f6659d355cc77c7c17d8b9b",
+                "workspace_modified": true,
+                "workspace_diff": "--- a/fdr_control.py\n+++ b/fdr_control.py\n@@ -18,15 +18,25 @@\n     if m == 0:\n         return FdrDecision(rejected_mask=[], num_rejected=0, critical_threshold=0.0)\n     indexed = sorted(enumerate(p_values), key=lambda pair: pair[1])\n-    # BUG: uses 0-based index i instead of 1-based rank (i + 1) and filters\n-    # pointwise instead of finding the largest step-up rank k_max.\n+    \n+    k_max = -1\n+    crit = 0.0\n+    \n+    for i, (orig_idx, p_val) in enumerate(indexed):\n+        # i is 0-based, so rank k = i + 1\n+        k = i + 1\n+        thresh = (k / m) * alpha\n+        if p_val <= thresh:\n+            k_max = i\n+            crit = thresh\n+            \n     rejected = [False] * m\n-    crit = 0.0\n-    for i, (orig_idx, p_val) in enumerate(indexed):\n-        thresh = (i / m) * alpha\n-        if p_val < thresh:\n+    if k_max != -1:\n+        # Reject all with rank 1 to k_max (indices 0 to k_max)\n+        for i in range(k_max + 1):\n+            orig_idx = indexed[i][0]\n             rejected[orig_idx] = True\n-            crit = thresh\n+            \n     return FdrDecision(\n         rejected_mask=rejected,\n         num_rejected=sum(rejected),\n"
+              }
+            },
+            {
+              "task_id": "H2_pareto_judge_fix",
+              "policy_id": "P1",
+              "seed": 303,
+              "worker_reported_success": true,
+              "independently_verified": true,
+              "pipeline_verified": true,
+              "llm_native_completion": true,
+              "fallback_used": false,
+              "turns": 7,
+              "tool_calls_count": 6,
+              "tool_call_efficiency": 1.0,
+              "wall_clock_s": 45.8802,
+              "peak_vram_mib": 7832,
+              "error": null,
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 12550,
+                "output_tokens": 635,
+                "prompt_eval_cached_tokens": 6376,
+                "eval_duration_s": 36.1202,
+                "prompt_eval_duration_s": 8.5585,
+                "wall_clock_s": 45.8801,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 6,
+                "read_file_calls": 3,
+                "unique_files_read": 3,
+                "repeated_file_reads": 0,
+                "edit_calls": 2,
+                "test_command_calls": 1,
+                "invalid_tool_arguments": 0,
+                "context_overflows": 0,
+                "truncated_generations": 0,
+                "compacted_messages": 12,
+                "successful_verifications": 1,
+                "recovery_policy": "P1",
+                "recovery_attempts": 0,
+                "recovery_events": [],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1099,
+                    "output_tokens": 19,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 0.9626,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "candidate_spec.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1220,
+                    "output_tokens": 24,
+                    "prompt_eval_cached_tokens": 1095,
+                    "eval_duration_s": 1.2069,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "pareto_judge.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1685,
+                    "output_tokens": 26,
+                    "prompt_eval_cached_tokens": 1220,
+                    "eval_duration_s": 1.5722,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_pareto_judge.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 2054,
+                    "output_tokens": 188,
+                    "prompt_eval_cached_tokens": 1685,
+                    "eval_duration_s": 10.6095,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "patch_file",
+                        "target": "pareto_judge.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 2253,
+                    "output_tokens": 298,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 17.4125,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "patch_file",
+                        "target": "pareto_judge.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 6,
+                    "input_tokens": 2222,
+                    "output_tokens": 25,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 1.3425,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 7,
+                    "input_tokens": 2017,
+                    "output_tokens": 55,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 3.014,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": []
+                  }
+                ],
+                "seed": 303,
+                "policy_id": "P1",
+                "visible_tests_passed": true,
+                "holdout_tests_passed": true,
+                "pipeline_verified": true,
+                "llm_native_completion": true,
+                "fallback_used": false,
+                "tool_call_efficiency": 1.0,
+                "initial_workspace_sha256": "abf4ee7ef4dda4f64a00d02b2cc1536cc7c70ca52c1e3329f1f01ce2baac41e3",
+                "final_workspace_sha256": "0f444eadd6ab953675a60f2c7718740a45239d1fd0feacc0e2edaf7d9eb6afda",
+                "workspace_modified": true,
+                "workspace_diff": "--- a/pareto_judge.py\n+++ b/pareto_judge.py\n@@ -10,17 +10,20 @@\n     \"\"\"\n     # BUG: requires strict inequality on all three metrics, failing when two metrics tie.\n     return (\n-        a.wall_clock_s < b.wall_clock_s\n-        and a.total_tokens < b.total_tokens\n-        and a.tool_errors < b.tool_errors\n+        a.wall_clock_s <= b.wall_clock_s\n+        and a.total_tokens <= b.total_tokens\n+        and a.tool_errors <= b.tool_errors\n+        and (a.wall_clock_s < b.wall_clock_s\n+              or a.total_tokens < b.total_tokens\n+              or a.tool_errors < b.tool_errors)\n     )\n \n def select_pareto_frontier(candidates: Sequence[HarnessCandidate]) -> List[str]:\n     \"\"\"Filter to `rie_accepted=True` candidates, then return IDs on the non-dominated Pareto frontier,\n     sorted by (wall_clock_s, total_tokens, tool_errors, candidate_id) ascending.\n     \"\"\"\n-    # BUG: forgets to filter out rie_accepted == False candidates before dominance check!\n-    pool = list(candidates)\n+    # Filter out candidates that are not RIE-accepted.\n+    pool = [c for c in candidates if c.rie_accepted]\n     frontier = []\n     for cand in pool:\n         if not any(dominates(other, cand) for other in pool if other.candidate_id != cand.candidate_id):\n"
+              }
+            },
+            {
+              "task_id": "H3_group_kfold_leakage_fix",
+              "policy_id": "P1",
+              "seed": 303,
+              "worker_reported_success": true,
+              "independently_verified": true,
+              "pipeline_verified": true,
+              "llm_native_completion": true,
+              "fallback_used": false,
+              "turns": 6,
+              "tool_calls_count": 5,
+              "tool_call_efficiency": 1.0,
+              "wall_clock_s": 52.974,
+              "peak_vram_mib": 7832,
+              "error": null,
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 11720,
+                "output_tokens": 780,
+                "prompt_eval_cached_tokens": 6184,
+                "eval_duration_s": 43.8155,
+                "prompt_eval_duration_s": 7.4155,
+                "wall_clock_s": 52.9739,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 5,
+                "read_file_calls": 3,
+                "unique_files_read": 3,
+                "repeated_file_reads": 0,
+                "edit_calls": 1,
+                "test_command_calls": 1,
+                "invalid_tool_arguments": 0,
+                "context_overflows": 0,
+                "truncated_generations": 0,
+                "compacted_messages": 6,
+                "successful_verifications": 1,
+                "recovery_policy": "P1",
+                "recovery_attempts": 0,
+                "recovery_events": [],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1100,
+                    "output_tokens": 19,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 0.9665,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "group_splitter.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1596,
+                    "output_tokens": 23,
+                    "prompt_eval_cached_tokens": 1096,
+                    "eval_duration_s": 1.2305,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "sample_record.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1710,
+                    "output_tokens": 25,
+                    "prompt_eval_cached_tokens": 1596,
+                    "eval_duration_s": 1.4523,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_group_splitter.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 2257,
+                    "output_tokens": 620,
+                    "prompt_eval_cached_tokens": 1710,
+                    "eval_duration_s": 35.0416,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "write_file",
+                        "target": "group_splitter.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 2508,
+                    "output_tokens": 25,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 1.4029,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 6,
+                    "input_tokens": 2549,
+                    "output_tokens": 68,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 3.7217,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": []
+                  }
+                ],
+                "seed": 303,
+                "policy_id": "P1",
+                "visible_tests_passed": true,
+                "holdout_tests_passed": true,
+                "pipeline_verified": true,
+                "llm_native_completion": true,
+                "fallback_used": false,
+                "tool_call_efficiency": 1.0,
+                "initial_workspace_sha256": "625b6ac0299a7dca7143120df362b8b2044e57ad2e01bd8689fd0a24b5745c9f",
+                "final_workspace_sha256": "6d1058b6f2938c8f0a025458f9bc998a4e8bcdd2fe2aebe694bd75d63c6df4ce",
+                "workspace_modified": true,
+                "workspace_diff": "--- a/group_splitter.py\n+++ b/group_splitter.py\n@@ -18,11 +18,32 @@\n     \"\"\"\n     if n_splits < 2:\n         raise ValueError('n_splits must be >= 2')\n-    # BUG: splits by record index i % n_splits instead of grouping by unique group_id,\n-    # causing records from the same group_id to leak between train and test!\n+\n+    # Identify unique groups in order of first appearance\n+    unique_groups = []\n+    seen_groups = set()\n+    for r in records:\n+        if r.group_id not in seen_groups:\n+            unique_groups.append(r.group_id)\n+            seen_groups.add(r.group_id)\n+\n+    if len(unique_groups) < n_splits:\n+        raise ValueError(f\"Number of unique groups ({len(unique_groups)}) must be >= n_splits ({n_splits})\")\n+\n+    # Map each group_id to its assigned fold index\n+    group_to_fold = {\n+        group_id: i % n_splits\n+        for i, group_id in enumerate(unique_groups)\n+    }\n+\n     folds: List[Tuple[List[int], List[int]]] = []\n     for k in range(n_splits):\n-        test_ids = [r.sample_id for i, r in enumerate(records) if i % n_splits == k]\n-        train_ids = [r.sample_id for i, r in enumerate(records) if i % n_splits != k]\n+        test_ids = []\n+        train_ids = []\n+        for r in records:\n+            if group_to_fold[r.group_id] == k:\n+                test_ids.append(r.sample_id)\n+            else:\n+                train_ids.append(r.sample_id)\n         folds.append((train_ids, test_ids))\n     return folds\n"
+              }
+            }
+          ],
+          "aggregate": {
+            "tasks_total": 3,
+            "pipeline_verified_count": 3,
+            "pipeline_verified_rate": 1.0,
+            "llm_native_completion_count": 3,
+            "llm_native_completion_rate": 1.0,
+            "fallback_used_count": 0,
+            "total_input_tokens": 41490,
+            "total_output_tokens": 2255,
+            "total_tokens": 43745,
+            "total_wall_clock_s": 161.4798,
+            "truncated_generations": 0,
+            "recovery_attempts": 0,
+            "repeated_file_reads": 1,
+            "peak_vram_mib": 7832
+          }
+        },
+        {
+          "seed": 404,
+          "tasks": [
+            {
+              "task_id": "H1_fdr_step_up_fix",
+              "policy_id": "P1",
+              "seed": 404,
+              "worker_reported_success": true,
+              "independently_verified": true,
+              "pipeline_verified": true,
+              "llm_native_completion": true,
+              "fallback_used": false,
+              "turns": 8,
+              "tool_calls_count": 7,
+              "tool_call_efficiency": 0.8571,
+              "wall_clock_s": 59.0986,
+              "peak_vram_mib": 7832,
+              "error": null,
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 17170,
+                "output_tokens": 815,
+                "prompt_eval_cached_tokens": 7482,
+                "eval_duration_s": 44.8742,
+                "prompt_eval_duration_s": 12.4155,
+                "wall_clock_s": 59.0986,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 7,
+                "read_file_calls": 4,
+                "unique_files_read": 3,
+                "repeated_file_reads": 1,
+                "edit_calls": 1,
+                "test_command_calls": 2,
+                "invalid_tool_arguments": 0,
+                "context_overflows": 0,
+                "truncated_generations": 0,
+                "compacted_messages": 20,
+                "successful_verifications": 1,
+                "recovery_policy": "P1",
+                "recovery_attempts": 0,
+                "recovery_events": [
+                  {
+                    "turn": 4,
+                    "attempt": 0,
+                    "reason": "failed_verification_command",
+                    "detail": "Command 'python3 -m unittest -q test_fdr_control.py' failed: ======================================================================\nFAIL: test_step_up_monotone_rejection (test_fdr_control.TestFdrControl.test_step_up_monot",
+                    "action_recommended": "All input files are already in context (['fdr_control.py', 'fdr_types.py', 'test_fdr_control.py']). Do NOT call `read_file` again. Call `patch_file` (or `write_file`) on `fdr_control.py` with ONE minimal fix.",
+                    "files_in_context": [
+                      "fdr_control.py",
+                      "fdr_types.py",
+                      "test_fdr_control.py"
+                    ],
+                    "edits_applied": [],
+                    "verification_passed": false
+                  },
+                  {
+                    "turn": 5,
+                    "attempt": 0,
+                    "reason": "repeated_file_read",
+                    "detail": "File 'fdr_control.py' was re-read without intervening edits.",
+                    "action_recommended": "All input files are already in context (['fdr_control.py', 'fdr_types.py', 'test_fdr_control.py']). Do NOT call `read_file` again. Call `patch_file` (or `write_file`) on `fdr_control.py` with ONE minimal fix.",
+                    "files_in_context": [
+                      "fdr_control.py",
+                      "fdr_types.py",
+                      "test_fdr_control.py"
+                    ],
+                    "edits_applied": [],
+                    "verification_passed": false
+                  }
+                ],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1111,
+                    "output_tokens": 20,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 1.0199,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "fdr_control.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1645,
+                    "output_tokens": 24,
+                    "prompt_eval_cached_tokens": 1107,
+                    "eval_duration_s": 1.2894,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "fdr_types.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1760,
+                    "output_tokens": 26,
+                    "prompt_eval_cached_tokens": 1645,
+                    "eval_duration_s": 1.3595,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_fdr_control.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 2147,
+                    "output_tokens": 33,
+                    "prompt_eval_cached_tokens": 1760,
+                    "eval_duration_s": 1.8924,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_fdr_control.py",
+                        "success": false
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 2054,
+                    "output_tokens": 32,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 1.7061,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "fdr_control.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 6,
+                    "input_tokens": 2630,
+                    "output_tokens": 558,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 30.5472,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "write_file",
+                        "target": "fdr_control.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 7,
+                    "input_tokens": 3006,
+                    "output_tokens": 37,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 2.0967,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q test_fdr_control.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 8,
+                    "input_tokens": 2817,
+                    "output_tokens": 85,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 4.963,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": []
+                  }
+                ],
+                "seed": 404,
+                "policy_id": "P1",
+                "visible_tests_passed": true,
+                "holdout_tests_passed": true,
+                "pipeline_verified": true,
+                "llm_native_completion": true,
+                "fallback_used": false,
+                "tool_call_efficiency": 0.8571,
+                "initial_workspace_sha256": "1d1b3cfddf9f3791336b41cee06ae8f9afca7100797c2e34409588ee439f92d5",
+                "final_workspace_sha256": "e1ef7bc596a5082309e01769fdf05ad16a2102564368cf5c4bd0bd9baf6801b4",
+                "workspace_modified": true,
+                "workspace_diff": "--- a/fdr_control.py\n+++ b/fdr_control.py\n@@ -18,15 +18,24 @@\n     if m == 0:\n         return FdrDecision(rejected_mask=[], num_rejected=0, critical_threshold=0.0)\n     indexed = sorted(enumerate(p_values), key=lambda pair: pair[1])\n-    # BUG: uses 0-based index i instead of 1-based rank (i + 1) and filters\n-    # pointwise instead of finding the largest step-up rank k_max.\n+    \n+    k_max = -1\n+    crit = 0.0\n+    \n+    for i, (orig_idx, p_val) in enumerate(indexed):\n+        # i is 0-based, so rank k = i + 1\n+        k = i + 1\n+        thresh = (k / m) * alpha\n+        if p_val <= thresh:\n+            k_max = i\n+            crit = thresh\n+            \n     rejected = [False] * m\n-    crit = 0.0\n-    for i, (orig_idx, p_val) in enumerate(indexed):\n-        thresh = (i / m) * alpha\n-        if p_val < thresh:\n+    if k_max != -1:\n+        for i in range(k_max + 1):\n+            orig_idx = indexed[i][0]\n             rejected[orig_idx] = True\n-            crit = thresh\n+            \n     return FdrDecision(\n         rejected_mask=rejected,\n         num_rejected=sum(rejected),\n"
+              }
+            },
+            {
+              "task_id": "H2_pareto_judge_fix",
+              "policy_id": "P1",
+              "seed": 404,
+              "worker_reported_success": true,
+              "independently_verified": true,
+              "pipeline_verified": true,
+              "llm_native_completion": true,
+              "fallback_used": false,
+              "turns": 7,
+              "tool_calls_count": 6,
+              "tool_call_efficiency": 1.0,
+              "wall_clock_s": 46.4042,
+              "peak_vram_mib": 7832,
+              "error": null,
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 12550,
+                "output_tokens": 652,
+                "prompt_eval_cached_tokens": 6376,
+                "eval_duration_s": 36.7066,
+                "prompt_eval_duration_s": 8.4033,
+                "wall_clock_s": 46.4041,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 6,
+                "read_file_calls": 3,
+                "unique_files_read": 3,
+                "repeated_file_reads": 0,
+                "edit_calls": 2,
+                "test_command_calls": 1,
+                "invalid_tool_arguments": 0,
+                "context_overflows": 0,
+                "truncated_generations": 0,
+                "compacted_messages": 12,
+                "successful_verifications": 1,
+                "recovery_policy": "P1",
+                "recovery_attempts": 0,
+                "recovery_events": [],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1099,
+                    "output_tokens": 19,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 0.9996,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "candidate_spec.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1220,
+                    "output_tokens": 24,
+                    "prompt_eval_cached_tokens": 1095,
+                    "eval_duration_s": 1.2956,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "pareto_judge.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1685,
+                    "output_tokens": 26,
+                    "prompt_eval_cached_tokens": 1220,
+                    "eval_duration_s": 1.3919,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_pareto_judge.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 2054,
+                    "output_tokens": 188,
+                    "prompt_eval_cached_tokens": 1685,
+                    "eval_duration_s": 10.5754,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "patch_file",
+                        "target": "pareto_judge.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 2253,
+                    "output_tokens": 298,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 16.7531,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "patch_file",
+                        "target": "pareto_judge.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 6,
+                    "input_tokens": 2222,
+                    "output_tokens": 25,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 1.4486,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 7,
+                    "input_tokens": 2017,
+                    "output_tokens": 72,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 4.2423,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": []
+                  }
+                ],
+                "seed": 404,
+                "policy_id": "P1",
+                "visible_tests_passed": true,
+                "holdout_tests_passed": true,
+                "pipeline_verified": true,
+                "llm_native_completion": true,
+                "fallback_used": false,
+                "tool_call_efficiency": 1.0,
+                "initial_workspace_sha256": "abf4ee7ef4dda4f64a00d02b2cc1536cc7c70ca52c1e3329f1f01ce2baac41e3",
+                "final_workspace_sha256": "c695f84a3d2ee96183d1029cb714cff9c6b1b7eb178f95ab1a7676d546be0295",
+                "workspace_modified": true,
+                "workspace_diff": "--- a/pareto_judge.py\n+++ b/pareto_judge.py\n@@ -10,17 +10,20 @@\n     \"\"\"\n     # BUG: requires strict inequality on all three metrics, failing when two metrics tie.\n     return (\n-        a.wall_clock_s < b.wall_clock_s\n-        and a.total_tokens < b.total_tokens\n-        and a.tool_errors < b.tool_errors\n+        a.wall_clock_s <= b.wall_clock_s\n+        and a.total_tokens <= b.total_tokens\n+        and a.tool_errors <= b.tool_errors\n+        and (a.wall_clock_s < b.wall_clock_s\n+              or a.total_tokens < b.total_tokens\n+              or a.tool_errors < b.tool_errors)\n     )\n \n def select_pareto_frontier(candidates: Sequence[HarnessCandidate]) -> List[str]:\n     \"\"\"Filter to `rie_accepted=True` candidates, then return IDs on the non-dominated Pareto frontier,\n     sorted by (wall_clock_s, total_tokens, tool_errors, candidate_id) ascending.\n     \"\"\"\n-    # BUG: forgets to filter out rie_accepted == False candidates before dominance check!\n-    pool = list(candidates)\n+    # Filter out candidates that were not accepted by RIE.\n+    pool = [c for c in candidates if c.rie_accepted]\n     frontier = []\n     for cand in pool:\n         if not any(dominates(other, cand) for other in pool if other.candidate_id != cand.candidate_id):\n"
+              }
+            },
+            {
+              "task_id": "H3_group_kfold_leakage_fix",
+              "policy_id": "P1",
+              "seed": 404,
+              "worker_reported_success": true,
+              "independently_verified": true,
+              "pipeline_verified": true,
+              "llm_native_completion": true,
+              "fallback_used": false,
+              "turns": 6,
+              "tool_calls_count": 5,
+              "tool_call_efficiency": 1.0,
+              "wall_clock_s": 52.4506,
+              "peak_vram_mib": 7832,
+              "error": null,
+              "metadata": {
+                "model": "gemma4:12b",
+                "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+                "backend": "ollama_native_tools",
+                "think_enabled": false,
+                "num_ctx": 16384,
+                "num_predict": 2048,
+                "input_budget_tokens": 14336,
+                "input_tokens": 11720,
+                "output_tokens": 780,
+                "prompt_eval_cached_tokens": 6184,
+                "eval_duration_s": 43.0748,
+                "prompt_eval_duration_s": 7.5924,
+                "wall_clock_s": 52.4505,
+                "turns_with_thinking": 0,
+                "thinking_chars": 0,
+                "tool_calls_count": 5,
+                "read_file_calls": 3,
+                "unique_files_read": 3,
+                "repeated_file_reads": 0,
+                "edit_calls": 1,
+                "test_command_calls": 1,
+                "invalid_tool_arguments": 0,
+                "context_overflows": 0,
+                "truncated_generations": 0,
+                "compacted_messages": 6,
+                "successful_verifications": 1,
+                "recovery_policy": "P1",
+                "recovery_attempts": 0,
+                "recovery_events": [],
+                "turn_trajectory": [
+                  {
+                    "turn": 1,
+                    "input_tokens": 1100,
+                    "output_tokens": 19,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 0.9903,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "group_splitter.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 2,
+                    "input_tokens": 1596,
+                    "output_tokens": 23,
+                    "prompt_eval_cached_tokens": 1096,
+                    "eval_duration_s": 1.286,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "sample_record.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 3,
+                    "input_tokens": 1710,
+                    "output_tokens": 25,
+                    "prompt_eval_cached_tokens": 1596,
+                    "eval_duration_s": 1.393,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "read_file",
+                        "target": "test_group_splitter.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 4,
+                    "input_tokens": 2257,
+                    "output_tokens": 620,
+                    "prompt_eval_cached_tokens": 1710,
+                    "eval_duration_s": 34.096,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "write_file",
+                        "target": "group_splitter.py",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 5,
+                    "input_tokens": 2508,
+                    "output_tokens": 25,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 1.378,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": [
+                      {
+                        "name": "run_command",
+                        "target": "python3 -m unittest -q",
+                        "success": true
+                      }
+                    ]
+                  },
+                  {
+                    "turn": 6,
+                    "input_tokens": 2549,
+                    "output_tokens": 68,
+                    "prompt_eval_cached_tokens": 594,
+                    "eval_duration_s": 3.9315,
+                    "thinking_chars": 0,
+                    "done_reason": "stop",
+                    "truncated": false,
+                    "tool_calls": []
+                  }
+                ],
+                "seed": 404,
+                "policy_id": "P1",
+                "visible_tests_passed": true,
+                "holdout_tests_passed": true,
+                "pipeline_verified": true,
+                "llm_native_completion": true,
+                "fallback_used": false,
+                "tool_call_efficiency": 1.0,
+                "initial_workspace_sha256": "625b6ac0299a7dca7143120df362b8b2044e57ad2e01bd8689fd0a24b5745c9f",
+                "final_workspace_sha256": "5b763e5313bf712bf7c84a2fe092d17acd4ec7b32ab1fd82eb513eec2b7df911",
+                "workspace_modified": true,
+                "workspace_diff": "--- a/group_splitter.py\n+++ b/group_splitter.py\n@@ -18,11 +18,32 @@\n     \"\"\"\n     if n_splits < 2:\n         raise ValueError('n_splits must be >= 2')\n-    # BUG: splits by record index i % n_splits instead of grouping by unique group_id,\n-    # causing records from the same group_id to leak between train and test!\n+\n+    # Identify unique groups in order of first appearance\n+    unique_groups = []\n+    seen_groups = set()\n+    for r in records:\n+        if r.group_id not in seen_groups:\n+            unique_groups.append(r.group_id)\n+            seen_groups.add(r.group_id)\n+\n+    if len(unique_groups) < n_splits:\n+        raise ValueError(f'Number of unique groups ({len(unique_groups)}) must be >= n_splits ({n_splits})')\n+\n+    # Map each group_id to its assigned fold index\n+    group_to_fold = {\n+        group_id: i % n_splits\n+        for i, group_id in enumerate(unique_groups)\n+    }\n+\n     folds: List[Tuple[List[int], List[int]]] = []\n     for k in range(n_splits):\n-        test_ids = [r.sample_id for i, r in enumerate(records) if i % n_splits == k]\n-        train_ids = [r.sample_id for i, r in enumerate(records) if i % n_splits != k]\n+        test_ids = []\n+        train_ids = []\n+        for r in records:\n+            if group_to_fold[r.group_id] == k:\n+                test_ids.append(r.sample_id)\n+            else:\n+                train_ids.append(r.sample_id)\n         folds.append((train_ids, test_ids))\n     return folds\n"
+              }
+            }
+          ],
+          "aggregate": {
+            "tasks_total": 3,
+            "pipeline_verified_count": 3,
+            "pipeline_verified_rate": 1.0,
+            "llm_native_completion_count": 3,
+            "llm_native_completion_rate": 1.0,
+            "fallback_used_count": 0,
+            "total_input_tokens": 41440,
+            "total_output_tokens": 2247,
+            "total_tokens": 43687,
+            "total_wall_clock_s": 157.9534,
+            "truncated_generations": 0,
+            "recovery_attempts": 0,
+            "repeated_file_reads": 1,
+            "peak_vram_mib": 7832
+          }
+        }
+      ],
+      "summary_across_seeds": {
+        "pipeline_verified_rate": {
+          "mean": 1.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "llm_native_completion_rate": {
+          "mean": 1.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "total_wall_clock_s": {
+          "mean": 159.7166,
+          "pstdev": 1.7632,
+          "sample_stdev": 2.4935,
+          "min": 157.9534,
+          "max": 161.4798
+        },
+        "total_tokens": {
+          "mean": 43716.0,
+          "pstdev": 29.0,
+          "sample_stdev": 41.0122,
+          "min": 43687.0,
+          "max": 43745.0
+        },
+        "truncated_generations": {
+          "mean": 0.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "recovery_attempts": {
+          "mean": 0.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "repeated_file_reads": {
+          "mean": 1.0,
+          "pstdev": 0.0,
+          "sample_stdev": 0.0,
+          "min": 1.0,
+          "max": 1.0
+        }
+      }
+    }
+  }
+}
