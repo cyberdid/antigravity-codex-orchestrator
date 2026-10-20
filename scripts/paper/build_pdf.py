@@ -31,6 +31,7 @@ PREAMBLE = r"""\documentclass[11pt]{article}
 \newcolumntype{R}{>{\raggedleft\arraybackslash}X}
 \newcolumntype{L}{>{\raggedright\arraybackslash}X}
 \newcommand{\code}[1]{\texttt{#1}}
+\graphicspath{{./}{../}}
 \begin{document}
 """
 
@@ -129,7 +130,7 @@ def convert(md):
             png = (PAPER / m.group(1)).read_bytes()
             inches = min(6.1, struct.unpack(">I", png[16:20])[0] / 300 * 1.25)
             out.append(r"\begin{figure}[tbp]\centering\includegraphics[width=" + f"{inches:.2f}in" + r",height=0.42\textheight,keepaspectratio]{"
-                       + str(path) + r"}\par\vspace{4pt}{\small " + caption + r"\par}\end{figure}")
+                       + str(path.relative_to(PAPER)) + r"}\par\vspace{4pt}{\small " + caption + r"\par}\end{figure}")
             continue
         if re.match(r"\s*(- |\d+\. )", line):
             ordered = bool(re.match(r"\s*\d+\. ", line))
