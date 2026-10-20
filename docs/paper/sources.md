@@ -19,7 +19,7 @@ Every `[E…]` tag in the manuscript points to a repository record below; every 
 | E11 | benchmark JSON metadata (`model_digest`, `num_ctx`, `num_predict`, `think_enabled`); host (`nvidia-smi`, `free -g`, `ollama --version` on 2026-10-20) | — | model digest `4eb23ef187e2…`, 16,384 context, 2,048/4,096 tokens, think off, RTX 4060 Laptop 8 GB, 31 GB RAM, Ollama 0.33.3 | 2026-10-20 | |
 | E12 | `antigravity_hybrid_orchestrator/engine/spec_tests.py` (`PROMPT`, `validate_contract_tests`, `SpecTestWriter.generate`), `antigravity_hybrid_orchestrator/privacy/assist_payload.py` (`describe_contract`) | — | payload content, prompt, static validation, reuse across seeds | 2026-10-20 | |
 | E13 | `antigravity_hybrid_orchestrator/architect/client.py` (`agy` backend, default model); `agy --version` = 1.4.3 on 2026-10-20 | — | cloud backend; exact model identifier **not recorded** | 2026-10-20 | |
-| E14 | `scripts/analysis/paper_figures.py` → `docs/paper/figures/fig{1,2,3}.{pdf,png}` | — | Figures 1–3, computed from E5, E6, E8 | 2026-10-20 | |
+| E14 | `scripts/analysis/paper_figures.py`, `scripts/analysis/paper_diagram.py` → `docs/paper/figures/` | — | Figure 1 (diagram of E12), Figures 2–4 computed from E5, E6, E8 | 2026-10-20 | |
 
 ## External sources
 

@@ -1,6 +1,6 @@
 """Figures for docs/paper/manuscript.md, computed from the benchmark files.
 
-Usage: python scripts/analysis/paper_figures.py  -> docs/paper/figures/fig{1,2,3}.{pdf,png}
+Usage: python scripts/analysis/paper_figures.py  -> docs/paper/figures/fig{2,3,4}_*.{pdf,png}
 """
 import json
 from pathlib import Path
@@ -59,7 +59,7 @@ def fig1(r4, r5):
     ax.scatter([], [], s=36, facecolor="white", edgecolor=BASE, lw=1.6, marker="o", label="baseline")
     ax.scatter([], [], s=30, color=SPEC, marker="s", label="contract tests (SPECTESTS)")
     ax.legend(loc="lower center", bbox_to_anchor=(0.5, 1.0), ncol=2, frameon=False, fontsize=7.5, handletextpad=0.3)
-    save(fig, "fig1_per_task")
+    save(fig, "fig2_per_task")
 
 
 def fig2():
@@ -87,7 +87,7 @@ def fig2():
     ax.set_xlabel("holdout-killed mutants also killed")
     ax.grid(axis="x", color=GRID, lw=0.8)
     ax.set_axisbelow(True)
-    save(fig, "fig2_mutation")
+    save(fig, "fig4_mutation")
 
 
 def fig3(r4, r5):

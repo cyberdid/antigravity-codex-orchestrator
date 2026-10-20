@@ -2,7 +2,8 @@
 
 # Beyond Passing Tests: Specification-Only Contract Tests Against Silent Failures of a Local Coding Agent
 
-**Author(s):** [UNRESOLVED — names, affiliations, order, CRediT roles to be set by the author(s)]
+**Oleksandr Pylypenko** (Researcher) — ORCID [0009-0004-9610-9242](https://orcid.org/0009-0004-9610-9242)  
+[UNRESOLVED: affiliation line and contact e-mail as the author wants them printed; CRediT roles]
 
 ## Abstract
 
@@ -52,6 +53,10 @@ V and H are evaluated after the run by the benchmark, on the task's own test mod
 
 **Privacy boundary.** Names, types and docstrings can themselves disclose information; we describe the mechanism as *privacy-bounded specification disclosure*, not as a formal privacy guarantee.
 
+![Figure 1](figures/fig1_architecture.png)
+
+**Figure 1.** Information flow. Only the interface (signatures, docstrings, data-type fields) crosses the boundary to the cloud, and only a statically validated unit-test module comes back; the agent edits the code locally until its visible tests and the contract tests pass. Acceptance is decided after the run by the task's own visible tests and a hidden holdout that neither model sees. Script `scripts/analysis/paper_diagram.py` [E12, E14].
+
 ## 5. Experimental design
 
 All runs use the same agent loop, deadline and attempt limit in each arm, three seeds (303, 404, 505) per task, and alternate the order of arms per seed [E4]. Tasks are small Python repair tasks (one or two modules) in which the visible tests cover only part of the docstring; each was checked offline so that the original code and partial fixes fail and only a complete fix passes both visible and hidden checks [E1].
@@ -90,7 +95,7 @@ On six tasks not used before, verified completion was 4/18 for the baseline and 
 
 ### 6.4 All 19 tasks with corrected measurement (R4 + R5)
 
-R5 repeated the R3 comparison on H1–H13 with the corrected measurement: 28/39 versus 37/39 (10 wins, 1 loss, run-level p = 0.012), silent false successes 11/39 versus 0/39, and 26 of 27 SPECTESTS runs verified on the nine tasks the baseline solves 3/3 (one H6 loss) [E6]. R5 was interrupted after 36 of 78 runs by a planned shutdown and resumed from its saved results with the same generated tests [E6]. Pooled over R4 and R5 (19 tasks, identical engine and checks): verified completion 32/57 versus 48/57, silent false successes 25/57 versus 3/57 [E5, E6]. Table 2 gives the task-level analysis.
+R5 repeated the R3 comparison on H1–H13 with the corrected measurement: 28/39 versus 37/39 (10 wins, 1 loss, run-level p = 0.012), silent false successes 11/39 versus 0/39, and 26 of 27 SPECTESTS runs verified on the nine tasks the baseline solves 3/3 (one H6 loss) [E6]. R5 was interrupted after 36 of 78 runs by a planned shutdown and resumed from its saved results with the same generated tests [E6]. Pooled over R4 and R5 (19 tasks, identical engine and checks): verified completion 32/57 versus 48/57, silent false successes 25/57 versus 3/57 [E5, E6]. Table 2 and Figure 2 give the task-level picture; Figure 3 shows silent false successes.
 
 **Table 2. Task-level analysis (unit = task; difference in verified rate over three seeds) [E7].**
 
@@ -102,9 +107,9 @@ R5 repeated the R3 comparison on H1–H13 with the corrected measurement: 28/39 
 
 The gain is concentrated in seven tasks whose rules are stated only in docstrings (H9, H10, H12, H13, H14, H15, H16); eleven tasks are unchanged and one (H6) lost one of three runs [E7].
 
-![Figure 1](figures/fig1_per_task.png)
+![Figure 2](figures/fig2_per_task.png)
 
-**Figure 1.** Verified completion per task (three seeds) for the baseline (open circles) and with contract tests (filled squares); lines join the two arms where they differ. Tasks below the dashed line are the fresh tasks of the pre-registered run R4; tasks above are from R5. Data: E5, E6; script `scripts/analysis/paper_figures.py` [E14].
+**Figure 2.** Verified completion per task (three seeds) for the baseline (open circles) and with contract tests (filled squares); lines join the two arms where they differ. Tasks below the dashed line are the fresh tasks of the pre-registered run R4; tasks above are from R5. Data: E5, E6; script `scripts/analysis/paper_figures.py` [E14].
 
 ![Figure 3](figures/fig3_silent.png)
 
@@ -112,11 +117,11 @@ The gain is concentrated in seven tasks whose rules are stated only in docstring
 
 ### 6.5 Quality of the generated tests
 
-The generated tests were examined without the agent [E8]. **Over-constraint.** Forty-seven distinct implementations that passed both the visible tests and the hidden evaluation in runs *without* contract tests were reconstructed from recorded diffs (initial-state hashes checked) and run against the v2 contract modules: 6 of 91 implementation–module pairs failed, all on H4 (a negative weight must raise) and H9 (a `+` sign or a non-ASCII prerelease character must be rejected). In each case the docstring states the rule and the implementation violates it; the hidden evaluation does not test it. We found no contract test that requires behaviour the docstring does not state. **Mutation coverage.** Of 448 single-point AST mutants of reference implementations (19 tasks), the hidden evaluation killed 333; of those, the visible tests killed 205 (61.6%) and the v2 contract modules killed all (469 of 469 mutant–module pairs). A further 84 mutants survived the hidden evaluation but were killed by contract tests; each violates a docstring rule on inspection. Thirty-one mutants survived every check. For H14–H16 the reference was a holdout-passing implementation from a SPECTESTS run, because no baseline run solved those tasks. A consequence is that the hidden evaluations are weaker than the specifications, so "verified" overstates correctness in both arms; since the contract tests enforce the missed rules, this bias favours the baseline.
+The generated tests were examined without the agent [E8]. **Over-constraint.** Forty-seven distinct implementations that passed both the visible tests and the hidden evaluation in runs *without* contract tests were reconstructed from recorded diffs (initial-state hashes checked) and run against the v2 contract modules: 6 of 91 implementation–module pairs failed, all on H4 (a negative weight must raise) and H9 (a `+` sign or a non-ASCII prerelease character must be rejected). In each case the docstring states the rule and the implementation violates it; the hidden evaluation does not test it. We found no contract test that requires behaviour the docstring does not state. **Mutation coverage.** Of 448 single-point AST mutants of reference implementations (19 tasks), the hidden evaluation killed 333; of those, the visible tests killed 205 (61.6%) and the v2 contract modules killed all (469 of 469 mutant–module pairs). (Figure 4.) A further 84 mutants survived the hidden evaluation but were killed by contract tests; each violates a docstring rule on inspection. Thirty-one mutants survived every check. For H14–H16 the reference was a holdout-passing implementation from a SPECTESTS run, because no baseline run solved those tasks. A consequence is that the hidden evaluations are weaker than the specifications, so "verified" overstates correctness in both arms; since the contract tests enforce the missed rules, this bias favours the baseline.
 
-![Figure 2](figures/fig2_mutation.png)
+![Figure 4](figures/fig4_mutation.png)
 
-**Figure 2.** Of the single-point mutants that the hidden evaluation kills, the share also killed by the task's visible tests and by the v2 contract tests (contract counts are mutant–module pairs). Data: E8 [E14].
+**Figure 4.** Of the single-point mutants that the hidden evaluation kills, the share also killed by the task's visible tests and by the v2 contract tests (contract counts are mutant–module pairs). Data: E8 [E14].
 
 ### 6.6 Measurement correction and cost
 
@@ -162,7 +167,7 @@ The planned confirmatory campaign (`docs/PAPER_I_PLAN.md`) addresses the main th
 - **Data and code availability:** code, task definitions, raw benchmark results and analysis scripts are in the repository `cyberdid/antigravity-codex-orchestrator`, branch `feat/gemma-orion-phase2b` (results commit `fa23aac`). **[UNRESOLVED: archival DOI after the confirmatory campaign.]**
 - **Use of AI:** the system under study uses `gemma4:12b` (local) and the Antigravity CLI's default cloud model; experiment orchestration, analysis scripts and this draft were produced with the assistance of Claude Code (Anthropic) and reviewed by the author(s); the draft followed the evidence-register procedure of Scientific Agent Skills [R8]. **[UNRESOLVED: wording and approval by the author(s) per venue policy.]**
 - **Funding, conflicts of interest, ethics:** **[UNRESOLVED]** (no human participants or personal data are involved in the experiments).
-- **Author contributions:** **[UNRESOLVED]**
+- **Author contributions:** O. Pylypenko — sole author. **[UNRESOLVED: CRediT roles; confirm wording]**
 
 ## References
 
