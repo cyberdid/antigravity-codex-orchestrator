@@ -41,3 +41,230 @@ Resuming: 6 completed runs loaded from benchmarks/campaign_a.partial.backup.json
   -> Task P2_wrap_words ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=65.9127s
   -> Task P3_days_in_month ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=57.0119s
   -> Task P4_letter_grade ...[16:15:15] STOPPED by owner request; timers restored; resume: bash scripts/run_campaign_a.sh
+[19:52:21] paused archive-index timers
+[19:52:21] campaign A at 45a83a3 chore(bench): Campaign A paused at 28/225 runs (owner request)
+[19:52:21] start benchmarks/campaign_a.json (P1_STAGE_ADAPTIVE,P1_STAGE_ADAPTIVE_SPECTESTS,P1_STAGE_ADAPTIVE_CHECKLIST, seeds 303,404,505) --resume-from benchmarks/campaign_a.partial.backup.json
+Resuming: 28 completed runs loaded from benchmarks/campaign_a.partial.backup.json
+
+=== Running Seed 303 | Policy P1_STAGE_ADAPTIVE ===
+
+=== Running Seed 303 | Policy P1_STAGE_ADAPTIVE_SPECTESTS ===
+  -> Task P4_letter_grade ... verified=True native=True turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=54.97s
+  -> Task P5_convert_temperature ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=43.95s
+  -> Task P6_chunk_indices ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=37.9284s
+  -> Task P7_parse_csv_line ... verified=True native=False turns=51 tools=52 trunc=0 rec_attempts=0 stage_hints=51 wall=574.3083s
+  -> Task P8_compare_versions ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=48.3164s
+  -> Task P9_order_total ... verified=True native=True turns=9 tools=8 trunc=0 rec_attempts=0 stage_hints=8 wall=47.4546s
+  -> Task P10_total_distance ... verified=True native=True turns=16 tools=15 trunc=0 rec_attempts=0 stage_hints=15 wall=86.3037s
+  -> Task P11_can_book ... verified=True native=False turns=51 tools=50 trunc=0 rec_attempts=0 stage_hints=49 wall=433.4458s
+  -> Task P12_trimmed_mean ... verified=True native=False turns=102 tools=100 trunc=0 rec_attempts=0 stage_hints=100 wall=600.0931s
+  -> Task P13_load_settings ... verified=True native=True turns=12 tools=11 trunc=0 rec_attempts=0 stage_hints=11 wall=58.9511s
+  -> Task P14_matmul ... verified=False native=False turns=57 tools=57 trunc=0 rec_attempts=0 stage_hints=55 wall=332.5166s
+  -> Task P15_next_task ... verified=True native=True turns=10 tools=9 trunc=0 rec_attempts=0 stage_hints=9 wall=36.5602s
+  -> Task P16_make_slug ... verified=True native=True turns=23 tools=22 trunc=0 rec_attempts=0 stage_hints=22 wall=162.4363s
+  -> Task P17_rate_limiter ... verified=True native=True turns=10 tools=9 trunc=0 rec_attempts=0 stage_hints=9 wall=55.3429s
+  -> Task P18_format_money ... verified=False native=False turns=9 tools=7 trunc=1 rec_attempts=0 stage_hints=7 wall=153.6753s
+  -> Task P19_dedupe ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=31.4374s
+  -> Task P20_median ... verified=True native=True turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=35.2486s
+  -> Task P21_capitalize_words ... verified=True native=True turns=10 tools=8 trunc=1 rec_attempts=0 stage_hints=8 wall=160.3508s
+  -> Task P22_clamp ... verified=True native=True turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=26.7211s
+  -> Task P23_flatten_once ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=31.6298s
+  -> Task P24_word_count ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=29.4888s
+  -> Task P25_safe_div ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=30.8645s
+
+=== Running Seed 303 | Policy P1_STAGE_ADAPTIVE_CHECKLIST ===
+  -> Task P1_split_amount ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=35.7136s
+  -> Task P2_wrap_words ... verified=True native=True turns=7 tools=5 trunc=1 rec_attempts=1 stage_hints=5 wall=156.0278s
+  -> Task P3_days_in_month ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=38.5777s
+  -> Task P4_letter_grade ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=34.8065s
+  -> Task P5_convert_temperature ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=61.3768s
+  -> Task P6_chunk_indices ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=35.2029s
+  -> Task P7_parse_csv_line ... verified=False native=False turns=12 tools=8 trunc=2 rec_attempts=0 stage_hints=8 wall=600.1412s
+  -> Task P8_compare_versions ... verified=True native=True turns=7 tools=5 trunc=1 rec_attempts=1 stage_hints=5 wall=154.5438s
+  -> Task P9_order_total ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=56.8541s
+  -> Task P10_total_distance ... verified=True native=True turns=10 tools=8 trunc=1 rec_attempts=1 stage_hints=8 wall=185.4664s
+  -> Task P11_can_book ... verified=True native=True turns=11 tools=10 trunc=0 rec_attempts=0 stage_hints=10 wall=112.6534s
+  -> Task P12_trimmed_mean ... verified=False native=False turns=12 tools=11 trunc=0 rec_attempts=0 stage_hints=11 wall=51.2937s
+  -> Task P13_load_settings ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=62.3809s
+  -> Task P14_matmul ... verified=True native=True turns=12 tools=11 trunc=0 rec_attempts=0 stage_hints=11 wall=66.6434s
+  -> Task P15_next_task ... verified=True native=True turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=28.1499s
+  -> Task P16_make_slug ... verified=True native=True turns=9 tools=8 trunc=0 rec_attempts=0 stage_hints=8 wall=62.5409s
+  -> Task P17_rate_limiter ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=32.7371s
+  -> Task P18_format_money ... verified=True native=True turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=41.9491s
+  -> Task P19_dedupe ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=21.7364s
+  -> Task P20_median ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=24.2556s
+  -> Task P21_capitalize_words ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=23.7493s
+  -> Task P22_clamp ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=25.8437s
+  -> Task P23_flatten_once ... verified=True native=True turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=24.3856s
+  -> Task P24_word_count ... verified=True native=True turns=7 tools=5 trunc=1 rec_attempts=1 stage_hints=5 wall=128.633s
+  -> Task P25_safe_div ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=20.8148s
+
+=== Running Seed 404 | Policy P1_STAGE_ADAPTIVE_CHECKLIST ===
+  -> Task P1_split_amount ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=36.5663s
+  -> Task P2_wrap_words ... verified=True native=True turns=7 tools=5 trunc=1 rec_attempts=1 stage_hints=5 wall=152.3219s
+  -> Task P3_days_in_month ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=39.724s
+  -> Task P4_letter_grade ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=33.4328s
+  -> Task P5_convert_temperature ... verified=True native=True turns=5 tools=4 trunc=0 rec_attempts=0 stage_hints=4 wall=41.8768s
+  -> Task P6_chunk_indices ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=30.0648s
+  -> Task P7_parse_csv_line ... verified=False native=False turns=17 tools=14 trunc=2 rec_attempts=0 stage_hints=14 wall=600.0967s
+  -> Task P8_compare_versions ... verified=True native=True turns=7 tools=5 trunc=1 rec_attempts=1 stage_hints=5 wall=154.4568s
+  -> Task P9_order_total ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=49.3848s
+  -> Task P10_total_distance ... verified=True native=True turns=10 tools=8 trunc=1 rec_attempts=1 stage_hints=8 wall=184.297s
+  -> Task P11_can_book ... verified=True native=True turns=11 tools=10 trunc=0 rec_attempts=0 stage_hints=10 wall=120.7669s
+  -> Task P12_trimmed_mean ... verified=True native=True turns=15 tools=14 trunc=0 rec_attempts=0 stage_hints=14 wall=92.8868s
+  -> Task P13_load_settings ... verified=True native=True turns=14 tools=13 trunc=0 rec_attempts=0 stage_hints=13 wall=118.3154s
+  -> Task P14_matmul ... verified=True native=True turns=12 tools=11 trunc=0 rec_attempts=0 stage_hints=11 wall=74.9727s
+  -> Task P15_next_task ... verified=True native=True turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=38.881s
+  -> Task P16_make_slug ... verified=True native=True turns=9 tools=8 trunc=0 rec_attempts=0 stage_hints=8 wall=80.2717s
+  -> Task P17_rate_limiter ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=40.8039s
+  -> Task P18_format_money ... verified=True native=True turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=55.4996s
+  -> Task P19_dedupe ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=30.4258s
+  -> Task P20_median ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=25.3896s
+  -> Task P21_capitalize_words ... verified=True native=True turns=7 tools=5 trunc=1 rec_attempts=1 stage_hints=5 wall=140.8546s
+  -> Task P22_clamp ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=19.5216s
+  -> Task P23_flatten_once ... verified=True native=True turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=25.3606s
+  -> Task P24_word_count ... verified=True native=True turns=12 tools=10 trunc=1 rec_attempts=1 stage_hints=10 wall=156.6902s
+  -> Task P25_safe_div ... verified=True native=True turns=7 tools=5 trunc=1 rec_attempts=1 stage_hints=5 wall=128.4053s
+
+=== Running Seed 404 | Policy P1_STAGE_ADAPTIVE_SPECTESTS ===
+  -> Task P1_split_amount ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=46.1684s
+  -> Task P2_wrap_words ... verified=True native=True turns=10 tools=8 trunc=1 rec_attempts=0 stage_hints=8 wall=215.8713s
+  -> Task P3_days_in_month ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=61.632s
+  -> Task P4_letter_grade ... verified=True native=True turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=47.4217s
+  -> Task P5_convert_temperature ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=45.0485s
+  -> Task P6_chunk_indices ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=45.5004s
+  -> Task P7_parse_csv_line ... verified=True native=True turns=9 tools=8 trunc=1 rec_attempts=0 stage_hints=8 wall=274.4145s
+  -> Task P8_compare_versions ... verified=True native=True turns=9 tools=8 trunc=0 rec_attempts=0 stage_hints=8 wall=103.7945s
+  -> Task P9_order_total ... verified=True native=True turns=9 tools=8 trunc=0 rec_attempts=0 stage_hints=8 wall=61.4511s
+  -> Task P10_total_distance ... verified=True native=True turns=17 tools=16 trunc=0 rec_attempts=0 stage_hints=16 wall=107.4115s
+  -> Task P11_can_book ... verified=True native=False turns=75 tools=73 trunc=0 rec_attempts=0 stage_hints=73 wall=600.1369s
+  -> Task P12_trimmed_mean ... verified=True native=False turns=101 tools=99 trunc=0 rec_attempts=0 stage_hints=99 wall=600.0762s
+  -> Task P13_load_settings ... verified=True native=True turns=22 tools=21 trunc=0 rec_attempts=0 stage_hints=21 wall=124.9587s
+  -> Task P14_matmul ... verified=False native=False turns=39 tools=39 trunc=0 rec_attempts=0 stage_hints=37 wall=209.2094s
+  -> Task P15_next_task ... verified=True native=True turns=9 tools=8 trunc=0 rec_attempts=0 stage_hints=8 wall=42.3199s
+  -> Task P16_make_slug ... verified=True native=True turns=21 tools=20 trunc=0 rec_attempts=0 stage_hints=20 wall=178.9734s
+  -> Task P17_rate_limiter ... verified=True native=True turns=10 tools=9 trunc=0 rec_attempts=0 stage_hints=9 wall=59.736s
+  -> Task P18_format_money ... verified=True native=True turns=10 tools=9 trunc=1 rec_attempts=0 stage_hints=9 wall=286.7832s
+  -> Task P19_dedupe ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=38.4935s
+  -> Task P20_median ... verified=True native=True turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=41.8183s
+  -> Task P21_capitalize_words ... verified=True native=True turns=9 tools=8 trunc=0 rec_attempts=0 stage_hints=8 wall=49.4455s
+  -> Task P22_clamp ... verified=True native=True turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=30.3479s
+  -> Task P23_flatten_once ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=38.6556s
+  -> Task P24_word_count ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=34.6516s
+  -> Task P25_safe_div ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=36.4856s
+
+=== Running Seed 404 | Policy P1_STAGE_ADAPTIVE ===
+  -> Task P1_split_amount ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=38.6686s
+  -> Task P2_wrap_words ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=80.9082s
+  -> Task P3_days_in_month ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=44.8012s
+  -> Task P4_letter_grade ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=39.1752s
+  -> Task P5_convert_temperature ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=51.6151s
+  -> Task P6_chunk_indices ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=33.7434s
+  -> Task P7_parse_csv_line ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=94.2185s
+  -> Task P8_compare_versions ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=44.6696s
+  -> Task P9_order_total ... verified=True native=True turns=11 tools=10 trunc=0 rec_attempts=0 stage_hints=10 wall=67.9535s
+  -> Task P10_total_distance ... verified=False native=False turns=33 tools=33 trunc=0 rec_attempts=0 stage_hints=31 wall=156.4008s
+  -> Task P11_can_book ... verified=True native=True turns=11 tools=10 trunc=0 rec_attempts=0 stage_hints=10 wall=73.1089s
+  -> Task P12_trimmed_mean ... verified=True native=True turns=10 tools=9 trunc=0 rec_attempts=0 stage_hints=9 wall=57.2331s
+  -> Task P13_load_settings ... verified=False native=False turns=73 tools=72 trunc=0 rec_attempts=0 stage_hints=71 wall=421.1429s
+  -> Task P14_matmul ... verified=False native=False turns=43 tools=43 trunc=0 rec_attempts=0 stage_hints=41 wall=278.6881s
+  -> Task P15_next_task ... verified=False native=False turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=33.3166s
+  -> Task P16_make_slug ... verified=False native=False turns=13 tools=12 trunc=0 rec_attempts=0 stage_hints=12 wall=102.7558s
+  -> Task P17_rate_limiter ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=49.7945s
+  -> Task P18_format_money ... verified=False native=False turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=82.6218s
+  -> Task P19_dedupe ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=25.1853s
+  -> Task P20_median ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=29.4123s
+  -> Task P21_capitalize_words ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=23.792s
+  -> Task P22_clamp ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=22.373s
+  -> Task P23_flatten_once ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=25.087s
+  -> Task P24_word_count ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=21.4327s
+  -> Task P25_safe_div ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=22.6037s
+
+=== Running Seed 505 | Policy P1_STAGE_ADAPTIVE ===
+  -> Task P1_split_amount ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=39.1551s
+  -> Task P2_wrap_words ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=70.0052s
+  -> Task P3_days_in_month ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=44.6099s
+  -> Task P4_letter_grade ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=40.9534s
+  -> Task P5_convert_temperature ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=52.6982s
+  -> Task P6_chunk_indices ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=33.0705s
+  -> Task P7_parse_csv_line ... verified=True native=True turns=5 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=127.0254s
+  -> Task P8_compare_versions ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=42.1361s
+  -> Task P9_order_total ... verified=True native=True turns=11 tools=10 trunc=0 rec_attempts=0 stage_hints=10 wall=92.8704s
+  -> Task P10_total_distance ... verified=False native=False turns=40 tools=40 trunc=0 rec_attempts=0 stage_hints=38 wall=197.727s
+  -> Task P11_can_book ... verified=True native=True turns=16 tools=15 trunc=0 rec_attempts=0 stage_hints=15 wall=141.4494s
+  -> Task P12_trimmed_mean ... verified=False native=False turns=25 tools=25 trunc=0 rec_attempts=0 stage_hints=23 wall=134.5367s
+  -> Task P13_load_settings ... verified=False native=False turns=96 tools=94 trunc=0 rec_attempts=0 stage_hints=94 wall=600.1128s
+  -> Task P14_matmul ... verified=True native=True turns=23 tools=22 trunc=0 rec_attempts=0 stage_hints=21 wall=125.205s
+  -> Task P15_next_task ... verified=False native=False turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=32.4943s
+  -> Task P16_make_slug ... verified=False native=False turns=10 tools=9 trunc=0 rec_attempts=0 stage_hints=9 wall=71.9796s
+  -> Task P17_rate_limiter ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=48.1948s
+  -> Task P18_format_money ... verified=False native=False turns=40 tools=40 trunc=0 rec_attempts=0 stage_hints=38 wall=321.6019s
+  -> Task P19_dedupe ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=24.7145s
+  -> Task P20_median ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=29.5879s
+  -> Task P21_capitalize_words ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=24.3449s
+  -> Task P22_clamp ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=21.9345s
+  -> Task P23_flatten_once ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=23.6765s
+  -> Task P24_word_count ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=20.7956s
+  -> Task P25_safe_div ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=22.6496s
+
+=== Running Seed 505 | Policy P1_STAGE_ADAPTIVE_SPECTESTS ===
+  -> Task P1_split_amount ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=58.9136s
+  -> Task P2_wrap_words ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=69.3255s
+  -> Task P3_days_in_month ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=61.2908s
+  -> Task P4_letter_grade ... verified=True native=True turns=9 tools=8 trunc=0 rec_attempts=0 stage_hints=8 wall=78.9153s
+  -> Task P5_convert_temperature ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=58.4048s
+  -> Task P6_chunk_indices ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=48.0939s
+  -> Task P7_parse_csv_line ... verified=True native=True turns=7 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=159.1346s
+  -> Task P8_compare_versions ... verified=True native=True turns=10 tools=9 trunc=0 rec_attempts=0 stage_hints=9 wall=74.7279s
+  -> Task P9_order_total ... verified=True native=True turns=9 tools=8 trunc=0 rec_attempts=0 stage_hints=8 wall=60.2836s
+  -> Task P10_total_distance ... verified=True native=True turns=20 tools=19 trunc=0 rec_attempts=0 stage_hints=19 wall=159.9259s
+  -> Task P11_can_book ... verified=True native=False turns=53 tools=52 trunc=0 rec_attempts=0 stage_hints=51 wall=462.156s
+  -> Task P12_trimmed_mean ... verified=True native=False turns=40 tools=40 trunc=0 rec_attempts=0 stage_hints=38 wall=259.8762s
+  -> Task P13_load_settings ... verified=True native=True turns=11 tools=10 trunc=0 rec_attempts=0 stage_hints=10 wall=70.2048s
+  -> Task P14_matmul ... verified=False native=False turns=28 tools=25 trunc=2 rec_attempts=2 stage_hints=24 wall=393.5478s
+  -> Task P15_next_task ... verified=True native=True turns=9 tools=8 trunc=0 rec_attempts=0 stage_hints=8 wall=39.4733s
+  -> Task P16_make_slug ... verified=True native=True turns=28 tools=27 trunc=0 rec_attempts=0 stage_hints=26 wall=150.8422s
+  -> Task P17_rate_limiter ... verified=True native=True turns=12 tools=11 trunc=0 rec_attempts=0 stage_hints=11 wall=79.915s
+  -> Task P18_format_money ... verified=True native=True turns=6 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=128.707s
+  -> Task P19_dedupe ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=39.9321s
+  -> Task P20_median ... verified=True native=True turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=41.808s
+  -> Task P21_capitalize_words ... verified=True native=True turns=17 tools=14 trunc=1 rec_attempts=0 stage_hints=14 wall=330.2919s
+  -> Task P22_clamp ... verified=True native=True turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=32.0305s
+  -> Task P23_flatten_once ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=38.6456s
+  -> Task P24_word_count ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=34.371s
+  -> Task P25_safe_div ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=37.7515s
+
+=== Running Seed 505 | Policy P1_STAGE_ADAPTIVE_CHECKLIST ===
+  -> Task P1_split_amount ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=44.1037s
+  -> Task P2_wrap_words ... verified=True native=True turns=7 tools=5 trunc=1 rec_attempts=1 stage_hints=5 wall=193.2298s
+  -> Task P3_days_in_month ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=46.3139s
+  -> Task P4_letter_grade ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=39.6389s
+  -> Task P5_convert_temperature ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=63.1682s
+  -> Task P6_chunk_indices ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=35.8525s
+  -> Task P7_parse_csv_line ... verified=False native=False turns=38 tools=36 trunc=0 rec_attempts=0 stage_hints=36 wall=600.142s
+  -> Task P8_compare_versions ... verified=True native=True turns=7 tools=5 trunc=1 rec_attempts=1 stage_hints=5 wall=184.4055s
+  -> Task P9_order_total ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=57.1976s
+  -> Task P10_total_distance ... verified=True native=True turns=10 tools=8 trunc=1 rec_attempts=1 stage_hints=8 wall=189.1999s
+  -> Task P11_can_book ... verified=True native=True turns=11 tools=10 trunc=0 rec_attempts=0 stage_hints=10 wall=129.0315s
+  -> Task P12_trimmed_mean ... verified=True native=True turns=11 tools=10 trunc=0 rec_attempts=0 stage_hints=10 wall=78.0796s
+  -> Task P13_load_settings ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=45.5222s
+  -> Task P14_matmul ... verified=True native=True turns=12 tools=11 trunc=0 rec_attempts=0 stage_hints=11 wall=70.0478s
+  -> Task P15_next_task ... verified=True native=True turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=33.6502s
+  -> Task P16_make_slug ... verified=True native=True turns=9 tools=8 trunc=0 rec_attempts=0 stage_hints=8 wall=73.0638s
+  -> Task P17_rate_limiter ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=38.7346s
+  -> Task P18_format_money ... verified=True native=True turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=53.0337s
+  -> Task P19_dedupe ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=25.7385s
+  -> Task P20_median ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=28.9684s
+  -> Task P21_capitalize_words ... verified=True native=True turns=7 tools=5 trunc=1 rec_attempts=1 stage_hints=5 wall=161.908s
+  -> Task P22_clamp ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=23.6203s
+  -> Task P23_flatten_once ... verified=True native=True turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=29.4083s
+  -> Task P24_word_count ... verified=True native=True turns=7 tools=5 trunc=1 rec_attempts=1 stage_hints=5 wall=156.576s
+  -> Task P25_safe_div ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=24.6896s
+
+Saved Phase 2B benchmark results to benchmarks/campaign_a.json
+[01:56:08] benchmarks/campaign_a.json exited rc=0
+[01:56:08] start benchmarks/campaign_a_ablation.json (P1_STAGE_ADAPTIVE_SPECTESTS_SIG,P1_STAGE_ADAPTIVE_SPECTESTS_DOC, seeds 303) 
+
+=== Running Seed 303 | Policy P1_STAGE_ADAPTIVE_SPECTESTS_SIG ===
+  -> Task P1_split_amount ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=50.6935s
+  -> Task P2_wrap_words ...

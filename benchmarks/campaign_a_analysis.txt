@@ -1,0 +1,44 @@
+tasks 25; arms ['P1_STAGE_ADAPTIVE', 'P1_STAGE_ADAPTIVE_CHECKLIST', 'P1_STAGE_ADAPTIVE_SPECTESTS']
+
+Arm | verified runs | silent false successes | wall s (runs) | generation wall s (one-time) | cloud tokens
+P1_STAGE_ADAPTIVE | 58/75 | 9/75 | 6675 | 0 | 0
+P1_STAGE_ADAPTIVE_SPECTESTS | 71/75 | 1/75 | 9630 | 626 | 627787
+P1_STAGE_ADAPTIVE_CHECKLIST | 71/75 | 1/75 | 6983 | 477 | 550901
+
+PRIMARY (H1): SPECTESTS vs baseline, task level
+  verified: tasks better/worse/equal 6/1/18; sign test p = 0.1250; permutation p = 0.0625; mean diff +0.173 [+0.040, +0.333]
+Secondary:
+  H3 SPECTESTS vs CHECKLIST: tasks better/worse/equal 2/2/21; sign test p = 1.0000; permutation p = 1.0000; mean diff +0.000 [-0.120, +0.120]
+  CHECKLIST vs baseline: tasks better/worse/equal 6/1/18; sign test p = 0.1250; permutation p = 0.1250; mean diff +0.173 [+0.000, +0.360]
+  H2 silent false successes, tasks lower/higher with SPECTESTS 3/0; sign test p = 0.2500
+  category single (8 tasks): tasks better/worse/equal 0/0/8; sign test p = 1.0000; permutation p = 1.0000; mean diff +0.000 [+0.000, +0.000]
+  category multi-file (10 tasks): tasks better/worse/equal 6/1/3; sign test p = 0.1250; permutation p = 0.0625; mean diff +0.433 [+0.133, +0.733]
+  category underspecified (7 tasks): tasks better/worse/equal 0/0/7; sign test p = 1.0000; permutation p = 1.0000; mean diff +0.000 [+0.000, +0.000]
+  harm on tasks without hidden failing rules: none
+
+Per task (baseline / SPECTESTS / CHECKLIST verified rate; hidden failing rules):
+  P1_split_amount            1.00 / 1.00 / 1.00   hidden_failing=4 [single]
+  P2_wrap_words              1.00 / 1.00 / 1.00   hidden_failing=2 [single]
+  P3_days_in_month           1.00 / 1.00 / 1.00   hidden_failing=1 [single]
+  P4_letter_grade            1.00 / 1.00 / 1.00   hidden_failing=2 [single]
+  P5_convert_temperature     1.00 / 1.00 / 1.00   hidden_failing=1 [single]
+  P6_chunk_indices           1.00 / 1.00 / 1.00   hidden_failing=1 [single]
+  P7_parse_csv_line          1.00 / 1.00 / 0.00   hidden_failing=1 [single]
+  P8_compare_versions        1.00 / 1.00 / 1.00   hidden_failing=4 [single]
+  P9_order_total             1.00 / 1.00 / 1.00   hidden_failing=2 [multi-file]
+  P10_total_distance         0.00 / 1.00 / 1.00   hidden_failing=3 [multi-file]
+  P11_can_book               1.00 / 1.00 / 1.00   hidden_failing=2 [multi-file]
+  P12_trimmed_mean           0.67 / 1.00 / 0.67   hidden_failing=3 [multi-file]
+  P13_load_settings          0.00 / 1.00 / 1.00   hidden_failing=2 [multi-file]
+  P14_matmul                 0.33 / 0.00 / 1.00   hidden_failing=4 [multi-file]
+  P15_next_task              0.00 / 1.00 / 1.00   hidden_failing=2 [multi-file]
+  P16_make_slug              0.00 / 1.00 / 1.00   hidden_failing=3 [multi-file]
+  P17_rate_limiter           1.00 / 1.00 / 1.00   hidden_failing=2 [multi-file]
+  P18_format_money           0.33 / 0.67 / 1.00   hidden_failing=3 [multi-file]
+  P19_dedupe                 1.00 / 1.00 / 1.00   hidden_failing=0 [underspecified]
+  P20_median                 1.00 / 1.00 / 1.00   hidden_failing=0 [underspecified]
+  P21_capitalize_words       1.00 / 1.00 / 1.00   hidden_failing=0 [underspecified]
+  P22_clamp                  1.00 / 1.00 / 1.00   hidden_failing=2 [underspecified]
+  P23_flatten_once           1.00 / 1.00 / 1.00   hidden_failing=0 [underspecified]
+  P24_word_count             1.00 / 1.00 / 1.00   hidden_failing=0 [underspecified]
+  P25_safe_div               1.00 / 1.00 / 1.00   hidden_failing=1 [underspecified]

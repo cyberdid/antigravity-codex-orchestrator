@@ -1,0 +1,201 @@
+[
+ {
+  "policy": "P1_STAGE_ADAPTIVE_SPECTESTS",
+  "task": "P1_split_amount",
+  "reference_ok": 12,
+  "reference_failing": [],
+  "buggy_ok": 3,
+  "buggy_failing": 15
+ },
+ {
+  "policy": "P1_STAGE_ADAPTIVE_SPECTESTS",
+  "task": "P2_wrap_words",
+  "reference_ok": 18,
+  "reference_failing": [],
+  "buggy_ok": 6,
+  "buggy_failing": 12
+ },
+ {
+  "policy": "P1_STAGE_ADAPTIVE_SPECTESTS",
+  "task": "P3_days_in_month",
+  "reference_ok": 14,
+  "reference_failing": [],
+  "buggy_ok": 6,
+  "buggy_failing": 30
+ },
+ {
+  "policy": "P1_STAGE_ADAPTIVE_SPECTESTS",
+  "task": "P4_letter_grade",
+  "reference_ok": 10,
+  "reference_failing": [],
+  "buggy_ok": 1,
+  "buggy_failing": 21
+ },
+ {
+  "policy": "P1_STAGE_ADAPTIVE_SPECTESTS",
+  "task": "P5_convert_temperature",
+  "reference_ok": 12,
+  "reference_failing": [],
+  "buggy_ok": 2,
+  "buggy_failing": 24
+ },
+ {
+  "policy": "P1_STAGE_ADAPTIVE_SPECTESTS",
+  "task": "P6_chunk_indices",
+  "reference_ok": 12,
+  "reference_failing": [],
+  "buggy_ok": 5,
+  "buggy_failing": 7
+ },
+ {
+  "policy": "P1_STAGE_ADAPTIVE_SPECTESTS",
+  "task": "P7_parse_csv_line",
+  "reference_ok": 11,
+  "reference_failing": [],
+  "buggy_ok": 5,
+  "buggy_failing": 6
+ },
+ {
+  "policy": "P1_STAGE_ADAPTIVE_SPECTESTS",
+  "task": "P8_compare_versions",
+  "reference_ok": 9,
+  "reference_failing": [],
+  "buggy_ok": 2,
+  "buggy_failing": 24
+ },
+ {
+  "policy": "P1_STAGE_ADAPTIVE_SPECTESTS",
+  "task": "P9_order_total",
+  "reference_ok": 20,
+  "reference_failing": [],
+  "buggy_ok": 10,
+  "buggy_failing": 10
+ },
+ {
+  "policy": "P1_STAGE_ADAPTIVE_SPECTESTS",
+  "task": "P10_total_distance",
+  "reference_ok": 7,
+  "reference_failing": [
+   "test_total_distance_empty_route"
+  ],
+  "buggy_ok": 0,
+  "buggy_failing": 17
+ },
+ {
+  "policy": "P1_STAGE_ADAPTIVE_SPECTESTS",
+  "task": "P11_can_book",
+  "reference_ok": 20,
+  "reference_failing": [],
+  "buggy_ok": 8,
+  "buggy_failing": 35
+ },
+ {
+  "policy": "P1_STAGE_ADAPTIVE_SPECTESTS",
+  "task": "P12_trimmed_mean",
+  "reference_ok": 14,
+  "reference_failing": [
+   "test_trimmed_mean_delegates_to_statcore_mean"
+  ],
+  "buggy_ok": 1,
+  "buggy_failing": 14
+ },
+ {
+  "policy": "P1_STAGE_ADAPTIVE_SPECTESTS",
+  "task": "P13_load_settings",
+  "reference_ok": 12,
+  "reference_failing": [],
+  "buggy_ok": 2,
+  "buggy_failing": 10
+ },
+ {
+  "policy": "P1_STAGE_ADAPTIVE_SPECTESTS",
+  "task": "P14_matmul",
+  "reference_ok": 21,
+  "reference_failing": [],
+  "buggy_ok": 5,
+  "buggy_failing": 16
+ },
+ {
+  "policy": "P1_STAGE_ADAPTIVE_SPECTESTS",
+  "task": "P15_next_task",
+  "reference_ok": 8,
+  "reference_failing": [],
+  "buggy_ok": 2,
+  "buggy_failing": 6
+ },
+ {
+  "policy": "P1_STAGE_ADAPTIVE_SPECTESTS",
+  "task": "P16_make_slug",
+  "reference_ok": 11,
+  "reference_failing": [],
+  "buggy_ok": 3,
+  "buggy_failing": 8
+ },
+ {
+  "policy": "P1_STAGE_ADAPTIVE_SPECTESTS",
+  "task": "P17_rate_limiter",
+  "reference_ok": 14,
+  "reference_failing": [],
+  "buggy_ok": 6,
+  "buggy_failing": 8
+ },
+ {
+  "policy": "P1_STAGE_ADAPTIVE_SPECTESTS",
+  "task": "P19_dedupe",
+  "reference_ok": 9,
+  "reference_failing": [],
+  "buggy_ok": 4,
+  "buggy_failing": 5
+ },
+ {
+  "policy": "P1_STAGE_ADAPTIVE_SPECTESTS",
+  "task": "P20_median",
+  "reference_ok": 10,
+  "reference_failing": [
+   "test_empty_list_raises_value_error",
+   "test_return_type_is_float"
+  ],
+  "buggy_ok": 6,
+  "buggy_failing": 6
+ },
+ {
+  "policy": "P1_STAGE_ADAPTIVE_SPECTESTS",
+  "task": "P21_capitalize_words",
+  "reference_ok": 8,
+  "reference_failing": [],
+  "buggy_ok": 3,
+  "buggy_failing": 5
+ },
+ {
+  "policy": "P1_STAGE_ADAPTIVE_SPECTESTS",
+  "task": "P22_clamp",
+  "reference_ok": 6,
+  "reference_failing": [],
+  "buggy_ok": 3,
+  "buggy_failing": 3
+ },
+ {
+  "policy": "P1_STAGE_ADAPTIVE_SPECTESTS",
+  "task": "P23_flatten_once",
+  "reference_ok": 7,
+  "reference_failing": [],
+  "buggy_ok": 5,
+  "buggy_failing": 2
+ },
+ {
+  "policy": "P1_STAGE_ADAPTIVE_SPECTESTS",
+  "task": "P24_word_count",
+  "reference_ok": 9,
+  "reference_failing": [],
+  "buggy_ok": 4,
+  "buggy_failing": 5
+ },
+ {
+  "policy": "P1_STAGE_ADAPTIVE_SPECTESTS",
+  "task": "P25_safe_div",
+  "reference_ok": 13,
+  "reference_failing": [],
+  "buggy_ok": 8,
+  "buggy_failing": 5
+ }
+]
