@@ -1679,6 +1679,12 @@ TASKS: List[Tuple[str, Callable[[Path], SubTask], Callable[[Path], bool]]] = [
     ("H19_parse_cell_multi_defect_fix", setup_h19_workspace, verify_h19_holdout),
 ]
 
+# Paper I confirmatory task set P1-P25 (rule tasks with seeded visible-rule choice; scripts/paper_tasks).
+sys.path.insert(0, str(Path(__file__).resolve().parent / "paper_tasks"))
+from registry import benchmark_tasks as _paper_tasks  # noqa: E402
+
+TASKS += _paper_tasks(_run_holdout, SubTask)
+
 
 _SUMMED_METADATA = (
     "input_tokens", "output_tokens", "prompt_eval_cached_tokens", "eval_duration_s",
