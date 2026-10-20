@@ -12,7 +12,8 @@ run_phase() {  # output, policies, seeds
   local out=$1 policies=$2 seeds=$3 resume=()
   [ -f "$out" ] && { echo "[$(date +%T)] $out already complete" >> "$LOG"; return; }
   local partial="${out%.json}.partial.json"
-  [ -f "$partial" ] && resume=(--resume-from "$partial")
+  # Resume from a copy: the run rewrites its own .partial.json as it goes.
+  [ -f "$partial" ] && cp "$partial" "${partial%.json}.backup.json" && resume=(--resume-from "${partial%.json}.backup.json")
   echo "[$(date +%T)] start $out ($policies, seeds $seeds) ${resume[*]}" >> "$LOG"
   .venv/bin/python3 scripts/benchmark_gemma_orion_phase2b.py --policies "$policies" --seeds "$seeds" \
     "${COMMON[@]}" "${resume[@]}" --output "$out" >> "$LOG" 2>&1

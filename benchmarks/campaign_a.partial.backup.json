@@ -1,0 +1,1266 @@
+{
+ "complete": false,
+ "git_commit": "b835894-dirty",
+ "runs": [
+  {
+   "task_id": "P1_split_amount",
+   "policy_id": "P1_STAGE_ADAPTIVE",
+   "seed": 303,
+   "worker_reported_success": true,
+   "independently_verified": true,
+   "pipeline_verified": true,
+   "llm_native_completion": true,
+   "fallback_used": false,
+   "turns": 6,
+   "tool_calls_count": 5,
+   "tool_call_efficiency": 1.0,
+   "wall_clock_s": 33.5227,
+   "peak_vram_mib": 6947,
+   "error": null,
+   "metadata": {
+    "model": "gemma4:12b",
+    "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+    "backend": "ollama_native_tools",
+    "think_enabled": false,
+    "num_ctx": 16384,
+    "num_predict": 2048,
+    "input_budget_tokens": 14336,
+    "input_tokens": 9854,
+    "output_tokens": 460,
+    "prompt_eval_cached_tokens": 5333,
+    "eval_duration_s": 24.9881,
+    "prompt_eval_duration_s": 6.7862,
+    "wall_clock_s": 33.4641,
+    "turns_with_thinking": 0,
+    "thinking_chars": 0,
+    "tool_calls_count": 5,
+    "read_file_calls": 2,
+    "unique_files_read": 2,
+    "repeated_file_reads": 0,
+    "total_repeated_file_reads": 0,
+    "edit_calls": 1,
+    "test_command_calls": 2,
+    "invalid_tool_arguments": 0,
+    "context_overflows": 0,
+    "truncated_generations": 0,
+    "budget_escalations": 0,
+    "discarded_truncated_tool_calls": 0,
+    "compacted_messages": 6,
+    "successful_verifications": 1,
+    "recovery_policy": "P1_STAGE",
+    "reactive_recovery_enabled": false,
+    "stage_hints_enabled": true,
+    "recovery_attempts": 0,
+    "stage_hints_emitted": 5,
+    "repeated_unchanged_reads": 0,
+    "recovery_events": [],
+    "turn_trajectory": [
+     {
+      "turn": 1,
+      "input_tokens": 1016,
+      "output_tokens": 17,
+      "prompt_eval_cached_tokens": 559,
+      "eval_duration_s": 0.8718,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "read_file",
+        "target": "money.py",
+        "success": true,
+        "error": ""
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 2,
+      "input_tokens": 1218,
+      "output_tokens": 23,
+      "prompt_eval_cached_tokens": 1011,
+      "eval_duration_s": 1.169,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "read_file",
+        "target": "test_money.py",
+        "success": true,
+        "error": ""
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 3,
+      "input_tokens": 1427,
+      "output_tokens": 30,
+      "prompt_eval_cached_tokens": 1218,
+      "eval_duration_s": 1.5704,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "run_command",
+        "target": "python3 -m unittest -q test_money.py",
+        "success": false,
+        "error": "y29m8g0e/test_money.py\", line 13, in test_non_int_rejected\n    with self.assertRaises(ValueError):\n         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 2 tests in 0.001s\n\nFAILED (failures=1, errors=1)"
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 4,
+      "input_tokens": 1890,
+      "output_tokens": 278,
+      "prompt_eval_cached_tokens": 1427,
+      "eval_duration_s": 15.1547,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "write_file",
+        "target": "money.py",
+        "success": true,
+        "error": ""
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 5,
+      "input_tokens": 2178,
+      "output_tokens": 30,
+      "prompt_eval_cached_tokens": 559,
+      "eval_duration_s": 1.6796,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "run_command",
+        "target": "python3 -m unittest -q test_money.py",
+        "success": true,
+        "error": ""
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 6,
+      "input_tokens": 2125,
+      "output_tokens": 82,
+      "prompt_eval_cached_tokens": 559,
+      "eval_duration_s": 4.5426,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [],
+      "attempt": 1
+     }
+    ],
+    "attempts_detail": [
+     {
+      "think": null,
+      "had_cloud_guidance": false,
+      "success": true,
+      "error": null
+     }
+    ],
+    "think_retry_used": false,
+    "ladder_steps_used": [],
+    "cloud_assist_calls": 0,
+    "solved_with_cloud_assist": false,
+    "seed": 303,
+    "policy_id": "P1_STAGE_ADAPTIVE",
+    "visible_tests_passed": true,
+    "holdout_tests_passed": true,
+    "pipeline_verified": true,
+    "llm_native_completion": true,
+    "fallback_used": false,
+    "tool_call_efficiency": 1.0,
+    "initial_workspace_sha256": "b55297640e1bce98e3f24a6797579507c632b85d2e7453b378a5fd3b3b9cca7d",
+    "final_workspace_sha256": "846cede165d6314f128174979c7ad369a96c9e4fc2b718e22fbef96115754ebf",
+    "workspace_modified": true,
+    "workspace_diff": "--- a/money.py\n+++ b/money.py\n@@ -10,7 +10,15 @@\n     3. Raise ValueError if parts < 1 or total_cents < 0.\n     4. Both arguments must be int; bool is not accepted (raise ValueError).\n     \"\"\"\n+    if not isinstance(total_cents, int) or isinstance(total_cents, bool):\n+        raise ValueError(\"total_cents must be an integer\")\n+    if not isinstance(parts, int) or isinstance(parts, bool):\n+        raise ValueError(\"parts must be an integer\")\n+    if parts < 1 or total_cents < 0:\n+        raise ValueError(\"Invalid input values\")\n+\n     share = total_cents // parts\n-    result = [share] * parts\n-    result[-1] += total_cents - share * parts\n+    remainder = total_cents % parts\n+    \n+    result = [share + 1] * remainder + [share] * (parts - remainder)\n     return result\n",
+    "visible_test_output": "----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK\n\n",
+    "attempts_used": 1,
+    "cloud_assist_tokens": 0,
+    "cloud_assist_events": []
+   }
+  },
+  {
+   "task_id": "P2_wrap_words",
+   "policy_id": "P1_STAGE_ADAPTIVE",
+   "seed": 303,
+   "worker_reported_success": true,
+   "independently_verified": true,
+   "pipeline_verified": true,
+   "llm_native_completion": true,
+   "fallback_used": false,
+   "turns": 8,
+   "tool_calls_count": 7,
+   "tool_call_efficiency": 0.8571,
+   "wall_clock_s": 106.792,
+   "peak_vram_mib": 6949,
+   "error": null,
+   "metadata": {
+    "model": "gemma4:12b",
+    "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+    "backend": "ollama_native_tools",
+    "think_enabled": false,
+    "num_ctx": 16384,
+    "num_predict": 2048,
+    "input_budget_tokens": 14336,
+    "input_tokens": 15953,
+    "output_tokens": 1537,
+    "prompt_eval_cached_tokens": 6658,
+    "eval_duration_s": 92.3492,
+    "prompt_eval_duration_s": 11.7766,
+    "wall_clock_s": 106.7314,
+    "turns_with_thinking": 0,
+    "thinking_chars": 0,
+    "tool_calls_count": 7,
+    "read_file_calls": 3,
+    "unique_files_read": 2,
+    "repeated_file_reads": 1,
+    "total_repeated_file_reads": 1,
+    "edit_calls": 2,
+    "test_command_calls": 2,
+    "invalid_tool_arguments": 0,
+    "context_overflows": 0,
+    "truncated_generations": 0,
+    "budget_escalations": 0,
+    "discarded_truncated_tool_calls": 0,
+    "compacted_messages": 21,
+    "successful_verifications": 1,
+    "recovery_policy": "P1_STAGE",
+    "reactive_recovery_enabled": false,
+    "stage_hints_enabled": true,
+    "recovery_attempts": 0,
+    "stage_hints_emitted": 7,
+    "repeated_unchanged_reads": 1,
+    "recovery_events": [],
+    "turn_trajectory": [
+     {
+      "turn": 1,
+      "input_tokens": 1028,
+      "output_tokens": 19,
+      "prompt_eval_cached_tokens": 559,
+      "eval_duration_s": 0.9885,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "read_file",
+        "target": "textwrap2.py",
+        "success": true,
+        "error": ""
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 2,
+      "input_tokens": 1324,
+      "output_tokens": 25,
+      "prompt_eval_cached_tokens": 1023,
+      "eval_duration_s": 1.3804,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "read_file",
+        "target": "test_textwrap2.py",
+        "success": true,
+        "error": ""
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 3,
+      "input_tokens": 1516,
+      "output_tokens": 32,
+      "prompt_eval_cached_tokens": 1324,
+      "eval_duration_s": 1.7533,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "run_command",
+        "target": "python3 -m unittest -q test_textwrap2.py",
+        "success": false,
+        "error": "~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Lists differ: ['a   b  '] != ['a b']\n\nFirst differing element 0:\n'a   b  '\n'a b'\n\n- ['a   b  ']\n?     -- --\n\n+ ['a b']\n\n----------------------------------------------------------------------\nRan 1 test in 0.001s\n\nFAILED (failures=1)"
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 4,
+      "input_tokens": 1844,
+      "output_tokens": 27,
+      "prompt_eval_cached_tokens": 1516,
+      "eval_duration_s": 1.459,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "read_file",
+        "target": "textwrap2.py",
+        "success": true,
+        "error": ""
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 5,
+      "input_tokens": 1965,
+      "output_tokens": 730,
+      "prompt_eval_cached_tokens": 559,
+      "eval_duration_s": 42.9516,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "write_file",
+        "target": "textwrap2.py",
+        "success": true,
+        "error": ""
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 6,
+      "input_tokens": 2699,
+      "output_tokens": 614,
+      "prompt_eval_cached_tokens": 559,
+      "eval_duration_s": 38.7585,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "write_file",
+        "target": "textwrap2.py",
+        "success": true,
+        "error": ""
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 7,
+      "input_tokens": 3183,
+      "output_tokens": 32,
+      "prompt_eval_cached_tokens": 559,
+      "eval_duration_s": 1.7751,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "run_command",
+        "target": "python3 -m unittest -q test_textwrap2.py",
+        "success": true,
+        "error": ""
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 8,
+      "input_tokens": 2394,
+      "output_tokens": 58,
+      "prompt_eval_cached_tokens": 559,
+      "eval_duration_s": 3.2828,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [],
+      "attempt": 1
+     }
+    ],
+    "attempts_detail": [
+     {
+      "think": null,
+      "had_cloud_guidance": false,
+      "success": true,
+      "error": null
+     }
+    ],
+    "think_retry_used": false,
+    "ladder_steps_used": [],
+    "cloud_assist_calls": 0,
+    "solved_with_cloud_assist": false,
+    "seed": 303,
+    "policy_id": "P1_STAGE_ADAPTIVE",
+    "visible_tests_passed": true,
+    "holdout_tests_passed": true,
+    "pipeline_verified": true,
+    "llm_native_completion": true,
+    "fallback_used": false,
+    "tool_call_efficiency": 0.8571,
+    "initial_workspace_sha256": "c24465619e55ec1bbeb374d827ff532a693700327734a0445203a3c5c89ba91a",
+    "final_workspace_sha256": "65ec7d2524e84e01f7fcd2b3737dfd437759aabee9da4982e631ca07e1599dc6",
+    "workspace_modified": true,
+    "workspace_diff": "--- a/textwrap2.py\n+++ b/textwrap2.py\n@@ -12,13 +12,47 @@\n     4. Empty or all-whitespace text gives [].\n     5. Raise ValueError if width < 1.\n     \"\"\"\n-    lines, current = [], \"\"\n-    for word in text.split(\" \"):\n-        if len(current) + len(word) + 1 > width and current:\n-            lines.append(current)\n-            current = word\n+    if width < 1:\n+        raise ValueError(\"Width must be at least 1\")\n+\n+    # Rule 1: Words are separated by any run of whitespace; leading/trailing ignored.\n+    words = text.split()\n+    \n+    # Rule 3: Handle words longer than width.\n+    processed_words = []\n+    for word in words:\n+        if len(word) > width:\n+            for i in range(0, len(word), width):\n+                processed_words.append(word[i:i + width])\n         else:\n-            current = (current + \" \" + word) if current else word\n-    if current:\n-        lines.append(current)\n+            processed_words.append(word)\n+\n+    lines = []\n+    current_line_words = []\n+    current_line_len = 0\n+\n+    for word in processed_words:\n+        # If current_line_words is empty, the length is just len(word)\n+        # If not empty, the length is current_line_len + 1 (for space) + len(word)\n+        space_needed = 1 if current_line_words else 0\n+        \n+        if current_line_len + space_needed + len(word) > width:\n+            # Current word doesn't fit on current line\n+            if current_line_words:\n+                lines.append(\" \".join(current_line_words))\n+                current_line_words = [word]\n+                current_line_len = len(word)\n+            else:\n+                # This case shouldn't happen with processed_words logic unless word > width\n+                # but we already split those.\n+                lines.append(word)\n+                current_line_words = []\n+                current_line_len = 0\n+        else:\n+            current_line_words.append(word)\n+            current_line_len += space_needed + len(word)\n+\n+    if current_line_words:\n+        lines.append(\" \".join(current_line_words))\n+    \n     return lines\n",
+    "visible_test_output": "----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n\n",
+    "attempts_used": 1,
+    "cloud_assist_tokens": 0,
+    "cloud_assist_events": []
+   }
+  },
+  {
+   "task_id": "P3_days_in_month",
+   "policy_id": "P1_STAGE_ADAPTIVE",
+   "seed": 303,
+   "worker_reported_success": true,
+   "independently_verified": true,
+   "pipeline_verified": true,
+   "llm_native_completion": true,
+   "fallback_used": false,
+   "turns": 6,
+   "tool_calls_count": 5,
+   "tool_call_efficiency": 1.0,
+   "wall_clock_s": 39.0867,
+   "peak_vram_mib": 6949,
+   "error": null,
+   "metadata": {
+    "model": "gemma4:12b",
+    "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+    "backend": "ollama_native_tools",
+    "think_enabled": false,
+    "num_ctx": 16384,
+    "num_predict": 2048,
+    "input_budget_tokens": 14336,
+    "input_tokens": 10909,
+    "output_tokens": 528,
+    "prompt_eval_cached_tokens": 5630,
+    "eval_duration_s": 29.9038,
+    "prompt_eval_duration_s": 7.3048,
+    "wall_clock_s": 39.0418,
+    "turns_with_thinking": 0,
+    "thinking_chars": 0,
+    "tool_calls_count": 5,
+    "read_file_calls": 2,
+    "unique_files_read": 2,
+    "repeated_file_reads": 0,
+    "total_repeated_file_reads": 0,
+    "edit_calls": 1,
+    "test_command_calls": 2,
+    "invalid_tool_arguments": 0,
+    "context_overflows": 0,
+    "truncated_generations": 0,
+    "budget_escalations": 0,
+    "discarded_truncated_tool_calls": 0,
+    "compacted_messages": 6,
+    "successful_verifications": 1,
+    "recovery_policy": "P1_STAGE",
+    "reactive_recovery_enabled": false,
+    "stage_hints_enabled": true,
+    "recovery_attempts": 0,
+    "stage_hints_emitted": 5,
+    "repeated_unchanged_reads": 0,
+    "recovery_events": [],
+    "turn_trajectory": [
+     {
+      "turn": 1,
+      "input_tokens": 1026,
+      "output_tokens": 18,
+      "prompt_eval_cached_tokens": 559,
+      "eval_duration_s": 1.0177,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "read_file",
+        "target": "calendar2.py",
+        "success": true,
+        "error": ""
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 2,
+      "input_tokens": 1300,
+      "output_tokens": 24,
+      "prompt_eval_cached_tokens": 1021,
+      "eval_duration_s": 1.3034,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "read_file",
+        "target": "test_calendar2.py",
+        "success": true,
+        "error": ""
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 3,
+      "input_tokens": 1632,
+      "output_tokens": 31,
+      "prompt_eval_cached_tokens": 1300,
+      "eval_duration_s": 1.7376,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "run_command",
+        "target": "python3 -m unittest -q test_calendar2.py",
+        "success": false,
+        "error": "in_month_zlu2plf1/test_calendar2.py\", line 12, in test_invalid_month\n    with self.assertRaises(ValueError):\n         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 3 tests in 0.002s\n\nFAILED (failures=3)"
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 4,
+      "input_tokens": 2166,
+      "output_tokens": 364,
+      "prompt_eval_cached_tokens": 1632,
+      "eval_duration_s": 20.8284,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "write_file",
+        "target": "calendar2.py",
+        "success": true,
+        "error": ""
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 5,
+      "input_tokens": 2479,
+      "output_tokens": 31,
+      "prompt_eval_cached_tokens": 559,
+      "eval_duration_s": 1.6435,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "run_command",
+        "target": "python3 -m unittest -q test_calendar2.py",
+        "success": true,
+        "error": ""
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 6,
+      "input_tokens": 2306,
+      "output_tokens": 60,
+      "prompt_eval_cached_tokens": 559,
+      "eval_duration_s": 3.3731,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [],
+      "attempt": 1
+     }
+    ],
+    "attempts_detail": [
+     {
+      "think": null,
+      "had_cloud_guidance": false,
+      "success": true,
+      "error": null
+     }
+    ],
+    "think_retry_used": false,
+    "ladder_steps_used": [],
+    "cloud_assist_calls": 0,
+    "solved_with_cloud_assist": false,
+    "seed": 303,
+    "policy_id": "P1_STAGE_ADAPTIVE",
+    "visible_tests_passed": true,
+    "holdout_tests_passed": true,
+    "pipeline_verified": true,
+    "llm_native_completion": true,
+    "fallback_used": false,
+    "tool_call_efficiency": 1.0,
+    "initial_workspace_sha256": "22a37481ad75df4b5d7cb3625b70e7fec7adfbf934595bf3706265198569c813",
+    "final_workspace_sha256": "751d81f9afbe508fd3fd4034d07370f0434a900b91c0b076628279635bfb8081",
+    "workspace_modified": true,
+    "workspace_diff": "--- a/calendar2.py\n+++ b/calendar2.py\n@@ -12,6 +12,15 @@\n     3. Raise ValueError unless 1 <= month <= 12 and year >= 1.\n     4. Both arguments must be int; bool is not accepted (raise ValueError).\n     \"\"\"\n+    if not isinstance(year, int) or isinstance(year, bool):\n+        raise ValueError(\"year must be an int\")\n+    if not isinstance(month, int) or isinstance(month, bool):\n+        raise ValueError(\"month must be an int\")\n+    if not (1 <= month <= 12) or year < 1:\n+        raise ValueError(\"invalid month or year\")\n+\n     if month == 2:\n-        return 29 if year % 4 == 0 else 28\n+        if year % 4 == 0 and (year % 100 != 0 or year % 400 == 0):\n+            return 29\n+        return 28\n     return 30 if month in (4, 6, 9, 11) else 31\n",
+    "visible_test_output": "----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n\n",
+    "attempts_used": 1,
+    "cloud_assist_tokens": 0,
+    "cloud_assist_events": []
+   }
+  },
+  {
+   "task_id": "P4_letter_grade",
+   "policy_id": "P1_STAGE_ADAPTIVE",
+   "seed": 303,
+   "worker_reported_success": true,
+   "independently_verified": true,
+   "pipeline_verified": true,
+   "llm_native_completion": true,
+   "fallback_used": false,
+   "turns": 6,
+   "tool_calls_count": 5,
+   "tool_call_efficiency": 1.0,
+   "wall_clock_s": 35.3506,
+   "peak_vram_mib": 6949,
+   "error": null,
+   "metadata": {
+    "model": "gemma4:12b",
+    "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+    "backend": "ollama_native_tools",
+    "think_enabled": false,
+    "num_ctx": 16384,
+    "num_predict": 2048,
+    "input_budget_tokens": 14336,
+    "input_tokens": 9770,
+    "output_tokens": 488,
+    "prompt_eval_cached_tokens": 5412,
+    "eval_duration_s": 26.9717,
+    "prompt_eval_duration_s": 6.4382,
+    "wall_clock_s": 35.2902,
+    "turns_with_thinking": 0,
+    "thinking_chars": 0,
+    "tool_calls_count": 5,
+    "read_file_calls": 2,
+    "unique_files_read": 2,
+    "repeated_file_reads": 0,
+    "total_repeated_file_reads": 0,
+    "edit_calls": 1,
+    "test_command_calls": 2,
+    "invalid_tool_arguments": 0,
+    "context_overflows": 0,
+    "truncated_generations": 0,
+    "budget_escalations": 0,
+    "discarded_truncated_tool_calls": 0,
+    "compacted_messages": 6,
+    "successful_verifications": 1,
+    "recovery_policy": "P1_STAGE",
+    "reactive_recovery_enabled": false,
+    "stage_hints_enabled": true,
+    "recovery_attempts": 0,
+    "stage_hints_emitted": 5,
+    "repeated_unchanged_reads": 0,
+    "recovery_events": [],
+    "turn_trajectory": [
+     {
+      "turn": 1,
+      "input_tokens": 1016,
+      "output_tokens": 17,
+      "prompt_eval_cached_tokens": 559,
+      "eval_duration_s": 0.8586,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "read_file",
+        "target": "grades.py",
+        "success": true,
+        "error": ""
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 2,
+      "input_tokens": 1260,
+      "output_tokens": 23,
+      "prompt_eval_cached_tokens": 1011,
+      "eval_duration_s": 1.1761,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "read_file",
+        "target": "test_grades.py",
+        "success": true,
+        "error": ""
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 3,
+      "input_tokens": 1464,
+      "output_tokens": 30,
+      "prompt_eval_cached_tokens": 1260,
+      "eval_duration_s": 1.5776,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "run_command",
+        "target": "python3 -m unittest -q test_grades.py",
+        "success": false,
+        "error": "_letter_grade_1il1kpzb/test_grades.py\", line 7, in test_out_of_range\n    with self.assertRaises(ValueError):\n         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 2 tests in 0.001s\n\nFAILED (failures=2)"
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 4,
+      "input_tokens": 1840,
+      "output_tokens": 321,
+      "prompt_eval_cached_tokens": 1464,
+      "eval_duration_s": 17.9031,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "write_file",
+        "target": "grades.py",
+        "success": true,
+        "error": ""
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 5,
+      "input_tokens": 2123,
+      "output_tokens": 30,
+      "prompt_eval_cached_tokens": 559,
+      "eval_duration_s": 1.7712,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "run_command",
+        "target": "python3 -m unittest -q test_grades.py",
+        "success": true,
+        "error": ""
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 6,
+      "input_tokens": 2067,
+      "output_tokens": 67,
+      "prompt_eval_cached_tokens": 559,
+      "eval_duration_s": 3.6853,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [],
+      "attempt": 1
+     }
+    ],
+    "attempts_detail": [
+     {
+      "think": null,
+      "had_cloud_guidance": false,
+      "success": true,
+      "error": null
+     }
+    ],
+    "think_retry_used": false,
+    "ladder_steps_used": [],
+    "cloud_assist_calls": 0,
+    "solved_with_cloud_assist": false,
+    "seed": 303,
+    "policy_id": "P1_STAGE_ADAPTIVE",
+    "visible_tests_passed": true,
+    "holdout_tests_passed": true,
+    "pipeline_verified": true,
+    "llm_native_completion": true,
+    "fallback_used": false,
+    "tool_call_efficiency": 1.0,
+    "initial_workspace_sha256": "8c4ded8096119bf52bc0258d9601c010b5c361a77f2b06148ce0f5f110a63e48",
+    "final_workspace_sha256": "e94e9000b8da9cc475e14e67bf280088ee8b380f53891a20c4f5dfb3297a5112",
+    "workspace_modified": true,
+    "workspace_diff": "--- a/grades.py\n+++ b/grades.py\n@@ -10,12 +10,22 @@\n     2. Raise ValueError unless 0 <= score <= 100; NaN is invalid.\n     3. score must be an int or float; bool is not accepted (raise ValueError).\n     \"\"\"\n-    if score > 90:\n+    if not isinstance(score, (int, float)) or isinstance(score, bool):\n+        raise ValueError(\"Score must be an int or float, not a bool.\")\n+    \n+    import math\n+    if math.isnan(score):\n+        raise ValueError(\"NaN is not a valid score.\")\n+        \n+    if not (0 <= score <= 100):\n+        raise ValueError(\"Score must be between 0 and 100.\")\n+\n+    if score >= 90:\n         return \"A\"\n-    if score > 80:\n+    if score >= 80:\n         return \"B\"\n-    if score > 70:\n+    if score >= 70:\n         return \"C\"\n-    if score > 60:\n+    if score >= 60:\n         return \"D\"\n     return \"F\"\n",
+    "visible_test_output": "----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK\n\n",
+    "attempts_used": 1,
+    "cloud_assist_tokens": 0,
+    "cloud_assist_events": []
+   }
+  },
+  {
+   "task_id": "P5_convert_temperature",
+   "policy_id": "P1_STAGE_ADAPTIVE",
+   "seed": 303,
+   "worker_reported_success": true,
+   "independently_verified": true,
+   "pipeline_verified": true,
+   "llm_native_completion": true,
+   "fallback_used": false,
+   "turns": 6,
+   "tool_calls_count": 5,
+   "tool_call_efficiency": 1.0,
+   "wall_clock_s": 49.4521,
+   "peak_vram_mib": 6949,
+   "error": null,
+   "metadata": {
+    "model": "gemma4:12b",
+    "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+    "backend": "ollama_native_tools",
+    "think_enabled": false,
+    "num_ctx": 16384,
+    "num_predict": 2048,
+    "input_budget_tokens": 14336,
+    "input_tokens": 11410,
+    "output_tokens": 691,
+    "prompt_eval_cached_tokens": 5664,
+    "eval_duration_s": 39.4751,
+    "prompt_eval_duration_s": 7.8861,
+    "wall_clock_s": 49.3965,
+    "turns_with_thinking": 0,
+    "thinking_chars": 0,
+    "tool_calls_count": 5,
+    "read_file_calls": 2,
+    "unique_files_read": 2,
+    "repeated_file_reads": 0,
+    "total_repeated_file_reads": 0,
+    "edit_calls": 1,
+    "test_command_calls": 2,
+    "invalid_tool_arguments": 0,
+    "context_overflows": 0,
+    "truncated_generations": 0,
+    "budget_escalations": 0,
+    "discarded_truncated_tool_calls": 0,
+    "compacted_messages": 6,
+    "successful_verifications": 1,
+    "recovery_policy": "P1_STAGE",
+    "reactive_recovery_enabled": false,
+    "stage_hints_enabled": true,
+    "recovery_attempts": 0,
+    "stage_hints_emitted": 5,
+    "repeated_unchanged_reads": 0,
+    "recovery_events": [],
+    "turn_trajectory": [
+     {
+      "turn": 1,
+      "input_tokens": 1016,
+      "output_tokens": 17,
+      "prompt_eval_cached_tokens": 559,
+      "eval_duration_s": 0.9034,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "read_file",
+        "target": "temps.py",
+        "success": true,
+        "error": ""
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 2,
+      "input_tokens": 1285,
+      "output_tokens": 23,
+      "prompt_eval_cached_tokens": 1011,
+      "eval_duration_s": 1.2083,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "read_file",
+        "target": "test_temps.py",
+        "success": true,
+        "error": ""
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 3,
+      "input_tokens": 1691,
+      "output_tokens": 30,
+      "prompt_eval_cached_tokens": 1285,
+      "eval_duration_s": 1.6332,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "run_command",
+        "target": "python3 -m unittest -q test_temps.py",
+        "success": false,
+        "error": "ert_temperature_r5yq7yiz/test_temps.py\", line 24, in test_unit_names\n    with self.assertRaises(ValueError):\n         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 5 tests in 0.001s\n\nFAILED (failures=3)"
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 4,
+      "input_tokens": 2228,
+      "output_tokens": 535,
+      "prompt_eval_cached_tokens": 1691,
+      "eval_duration_s": 30.6693,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "write_file",
+        "target": "temps.py",
+        "success": true,
+        "error": ""
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 5,
+      "input_tokens": 2721,
+      "output_tokens": 30,
+      "prompt_eval_cached_tokens": 559,
+      "eval_duration_s": 1.8045,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "run_command",
+        "target": "python3 -m unittest -q test_temps.py",
+        "success": true,
+        "error": ""
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 6,
+      "input_tokens": 2469,
+      "output_tokens": 56,
+      "prompt_eval_cached_tokens": 559,
+      "eval_duration_s": 3.2564,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [],
+      "attempt": 1
+     }
+    ],
+    "attempts_detail": [
+     {
+      "think": null,
+      "had_cloud_guidance": false,
+      "success": true,
+      "error": null
+     }
+    ],
+    "think_retry_used": false,
+    "ladder_steps_used": [],
+    "cloud_assist_calls": 0,
+    "solved_with_cloud_assist": false,
+    "seed": 303,
+    "policy_id": "P1_STAGE_ADAPTIVE",
+    "visible_tests_passed": true,
+    "holdout_tests_passed": true,
+    "pipeline_verified": true,
+    "llm_native_completion": true,
+    "fallback_used": false,
+    "tool_call_efficiency": 1.0,
+    "initial_workspace_sha256": "a62725171eace2504ea9b15beb049868f65a83865b5010661365247794fe78e7",
+    "final_workspace_sha256": "bb9a6cfe1230cd3aeb901b1e67d3f597055891b6221852f93e44140c81e3a339",
+    "workspace_modified": true,
+    "workspace_diff": "--- a/temps.py\n+++ b/temps.py\n@@ -10,8 +10,38 @@\n     3. Raise ValueError if `value` is below absolute zero in `from_unit` (-273.15 C, -459.67 F, 0 K).\n     4. Converting to the same unit returns the rounded value.\n     \"\"\"\n-    if from_unit == \"C\" and to_unit == \"F\":\n-        return value * 9 / 5 + 32\n-    if from_unit == \"F\" and to_unit == \"C\":\n-        return (value - 32) * 5 / 9\n-    return value\n+    valid_units = {\"C\", \"F\", \"K\"}\n+    if from_unit not in valid_units or to_unit not in valid_units:\n+        raise ValueError(\"Units must be 'C', 'F', or 'K'.\")\n+\n+    # Check absolute zero\n+    if from_unit == \"C\" and value < -273.15:\n+        raise ValueError(\"Below absolute zero.\")\n+    if from_unit == \"F\" and value < -459.67:\n+        raise ValueError(\"Below absolute zero.\")\n+    if from_unit == \"K\" and value < 0:\n+        raise ValueError(\"Below absolute zero.\")\n+\n+    # Conversion logic\n+    # Convert to Celsius first as a base\n+    if from_unit == \"C\":\n+        c_val = value\n+    elif from_unit == \"F\":\n+        c_val = (value - 32) * 5 / 9\n+    elif from_unit == \"K\":\n+        c_val = value - 273.15\n+    else:\n+        # This part should not be reachable due to the check above\n+        c_val = value\n+\n+    # Convert from Celsius to target unit\n+    if to_unit == \"C\":\n+        result = c_val\n+    elif to_unit == \"F\":\n+        result = c_val * 9 / 5 + 32\n+    elif to_unit == \"K\":\n+        result = c_val + 273.15\n+    else:\n+        result = c_val\n+\n+    return round(result, 2)\n",
+    "visible_test_output": "----------------------------------------------------------------------\nRan 5 tests in 0.000s\n\nOK\n\n",
+    "attempts_used": 1,
+    "cloud_assist_tokens": 0,
+    "cloud_assist_events": []
+   }
+  },
+  {
+   "task_id": "P6_chunk_indices",
+   "policy_id": "P1_STAGE_ADAPTIVE",
+   "seed": 303,
+   "worker_reported_success": true,
+   "independently_verified": true,
+   "pipeline_verified": true,
+   "llm_native_completion": true,
+   "fallback_used": false,
+   "turns": 6,
+   "tool_calls_count": 5,
+   "tool_call_efficiency": 1.0,
+   "wall_clock_s": 29.0314,
+   "peak_vram_mib": 6949,
+   "error": null,
+   "metadata": {
+    "model": "gemma4:12b",
+    "model_digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+    "backend": "ollama_native_tools",
+    "think_enabled": false,
+    "num_ctx": 16384,
+    "num_predict": 2048,
+    "input_budget_tokens": 14336,
+    "input_tokens": 9795,
+    "output_tokens": 384,
+    "prompt_eval_cached_tokens": 5349,
+    "eval_duration_s": 20.875,
+    "prompt_eval_duration_s": 6.317,
+    "wall_clock_s": 28.9659,
+    "turns_with_thinking": 0,
+    "thinking_chars": 0,
+    "tool_calls_count": 5,
+    "read_file_calls": 2,
+    "unique_files_read": 2,
+    "repeated_file_reads": 0,
+    "total_repeated_file_reads": 0,
+    "edit_calls": 1,
+    "test_command_calls": 2,
+    "invalid_tool_arguments": 0,
+    "context_overflows": 0,
+    "truncated_generations": 0,
+    "budget_escalations": 0,
+    "discarded_truncated_tool_calls": 0,
+    "compacted_messages": 6,
+    "successful_verifications": 1,
+    "recovery_policy": "P1_STAGE",
+    "reactive_recovery_enabled": false,
+    "stage_hints_enabled": true,
+    "recovery_attempts": 0,
+    "stage_hints_emitted": 5,
+    "repeated_unchanged_reads": 0,
+    "recovery_events": [],
+    "turn_trajectory": [
+     {
+      "turn": 1,
+      "input_tokens": 1016,
+      "output_tokens": 17,
+      "prompt_eval_cached_tokens": 559,
+      "eval_duration_s": 0.8646,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "read_file",
+        "target": "chunks.py",
+        "success": true,
+        "error": ""
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 2,
+      "input_tokens": 1197,
+      "output_tokens": 23,
+      "prompt_eval_cached_tokens": 1011,
+      "eval_duration_s": 1.1667,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "read_file",
+        "target": "test_chunks.py",
+        "success": true,
+        "error": ""
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 3,
+      "input_tokens": 1464,
+      "output_tokens": 30,
+      "prompt_eval_cached_tokens": 1197,
+      "eval_duration_s": 1.5871,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "run_command",
+        "target": "python3 -m unittest -q test_chunks.py",
+        "success": false,
+        "error": "First differing element 3:\n(9, 12)\n(9, 10)\n\n- [(0, 3), (3, 6), (6, 9), (9, 12)]\n?                               ^\n\n+ [(0, 3), (3, 6), (6, 9), (9, 10)]\n?                               ^\n\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nFAILED (failures=1)"
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 4,
+      "input_tokens": 1898,
+      "output_tokens": 218,
+      "prompt_eval_cached_tokens": 1464,
+      "eval_duration_s": 11.9505,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "write_file",
+        "target": "chunks.py",
+        "success": true,
+        "error": ""
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 5,
+      "input_tokens": 2165,
+      "output_tokens": 30,
+      "prompt_eval_cached_tokens": 559,
+      "eval_duration_s": 1.6504,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [
+       {
+        "name": "run_command",
+        "target": "python3 -m unittest -q test_chunks.py",
+        "success": true,
+        "error": ""
+       }
+      ],
+      "attempt": 1
+     },
+     {
+      "turn": 6,
+      "input_tokens": 2055,
+      "output_tokens": 66,
+      "prompt_eval_cached_tokens": 559,
+      "eval_duration_s": 3.6557,
+      "thinking_chars": 0,
+      "done_reason": "stop",
+      "truncated": false,
+      "num_predict": 2048,
+      "budget_escalated": false,
+      "tool_calls": [],
+      "attempt": 1
+     }
+    ],
+    "attempts_detail": [
+     {
+      "think": null,
+      "had_cloud_guidance": false,
+      "success": true,
+      "error": null
+     }
+    ],
+    "think_retry_used": false,
+    "ladder_steps_used": [],
+    "cloud_assist_calls": 0,
+    "solved_with_cloud_assist": false,
+    "seed": 303,
+    "policy_id": "P1_STAGE_ADAPTIVE",
+    "visible_tests_passed": true,
+    "holdout_tests_passed": true,
+    "pipeline_verified": true,
+    "llm_native_completion": true,
+    "fallback_used": false,
+    "tool_call_efficiency": 1.0,
+    "initial_workspace_sha256": "f7a1a1d2db21fe63b488a845561f08758908a5ac3371f68632201b20834df71e",
+    "final_workspace_sha256": "64b3fc080cea2669048516ac8c1742176ac8c7a4a553424940fcd6eaa5f54411",
+    "workspace_modified": true,
+    "workspace_diff": "--- a/chunks.py\n+++ b/chunks.py\n@@ -9,4 +9,11 @@\n     2. n == 0 gives [].\n     3. Raise ValueError if size < 1 or n < 0.\n     \"\"\"\n-    return [(start, start + size) for start in range(0, n, size)]\n+    if size < 1 or n < 0:\n+        raise ValueError(\"size must be >= 1 and n must be >= 0\")\n+    \n+    indices = []\n+    for start in range(0, n, size):\n+        end = min(start + size, n)\n+        indices.append((start, end))\n+    return indices\n",
+    "visible_test_output": "----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n\n",
+    "attempts_used": 1,
+    "cloud_assist_tokens": 0,
+    "cloud_assist_events": []
+   }
+  }
+ ]
+}

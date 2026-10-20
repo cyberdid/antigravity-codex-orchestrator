@@ -1,0 +1,12 @@
+[12:52:51] paused archive-index timers
+[12:52:51] campaign A at b835894 chore(bench): Campaign A runner (resumable, pauses indexing timers)
+[12:52:51] start benchmarks/campaign_a.json (P1_STAGE_ADAPTIVE,P1_STAGE_ADAPTIVE_SPECTESTS,P1_STAGE_ADAPTIVE_CHECKLIST, seeds 303,404,505) 
+
+=== Running Seed 303 | Policy P1_STAGE_ADAPTIVE ===
+  -> Task P1_split_amount ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=33.5227s
+  -> Task P2_wrap_words ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=106.792s
+  -> Task P3_days_in_month ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=39.0867s
+  -> Task P4_letter_grade ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=35.3506s
+  -> Task P5_convert_temperature ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=49.4521s
+  -> Task P6_chunk_indices ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=29.0314s
+  -> Task P7_parse_csv_line ...[13:02:08] STOPPED by owner request (moving); timers restored; resume: bash scripts/run_campaign_a.sh
