@@ -230,4 +230,101 @@ def test_resume_prefills_completed_runs_and_contract_tests(tmp_path):
     assert done == {("P1_STAGE_ADAPTIVE", 303, "H1_fdr_step_up_fix"),
                     ("P1_STAGE_ADAPTIVE_SPECTESTS", 303, "H2_pareto_judge_fix")}
     assert len(prefill["P1_STAGE_ADAPTIVE"][303]) == 1 and prefill["P1_STAGE_ADAPTIVE"][404] == []
-    assert bench.SPEC_TEST_CACHE["H2_pareto_judge_fix"]["source"] == "SRC"
+    assert bench.SPEC_TEST_CACHE["H2_pareto_judge_fix", "full"]["source"] == "SRC"
+
+
+# --- disclosure ablation and checklist control --------------------------------------
+
+TYPES_MODULE = (
+    "from dataclasses import dataclass\n\n"
+    "@dataclass\nclass Decision:\n    \"\"\"Outcome of a test.\"\"\"\n    rejected: bool\n\n"
+    "def decide(p: float) -> Decision:\n    \"\"\"Reject when p < 0.05.\"\"\"\n    return Decision(p < 0.05)\n"
+)
+
+
+@pytest.mark.parametrize("level, docs, fields", [("signatures", False, False), ("docstrings", True, False), ("full", True, True)])
+def test_describe_contract_disclosure_levels(tmp_path, level, docs, fields):
+    from antigravity_hybrid_orchestrator.privacy.assist_payload import describe_contract
+
+    (tmp_path / "mod.py").write_text(TYPES_MODULE)
+    text = describe_contract(tmp_path, ["mod.py"], level=level)
+    assert "class Decision" in text and "def decide(p: float) -> Decision" in text
+    assert ("Reject when p < 0.05." in text) is docs
+    assert ("    rejected: bool" in text) is fields
+    assert "return Decision" not in text
+
+
+def test_describe_contract_rejects_unknown_level(tmp_path):
+    from antigravity_hybrid_orchestrator.privacy.assist_payload import describe_contract
+
+    with pytest.raises(ValueError):
+        describe_contract(tmp_path, [], level="bodies")
+
+
+def test_writer_uses_requested_disclosure(tmp_path):
+    from antigravity_hybrid_orchestrator.engine.spec_tests import SpecTestWriter
+
+    subtask = setup_h6_workspace(tmp_path)
+    prompts = []
+    writer = SpecTestWriter(lambda p: (prompts.append(p) or ("```python\n" + GOOD_TESTS + "```", 1, 1)),
+                            disclosure="signatures")
+    assert writer.generate(tmp_path, subtask) == GOOD_TESTS
+    assert "def parse_duration" in prompts[0] and "Units are h (3600 s)" not in prompts[0]
+
+
+CHECKLIST_REPLY = "Rules:\n1. \"1h\" returns 3600.\n2. Units must appear in the order h, m, s.\n3) An empty string raises ValueError.\n"
+
+
+def test_checklist_writer_returns_numbered_rules_and_installs_them(tmp_path):
+    from antigravity_hybrid_orchestrator.engine.spec_tests import SpecChecklistWriter
+
+    subtask = setup_h6_workspace(tmp_path)
+    prompts, events = [], []
+    writer = SpecChecklistWriter(lambda p: (prompts.append(p) or (CHECKLIST_REPLY, 10, 5)),
+                                 audit=lambda e, p: events.append(e))
+    checklist = writer.generate(tmp_path, subtask)
+    assert checklist.splitlines() == ['1. "1h" returns 3600.', "2. Units must appear in the order h, m, s.",
+                                      "3) An empty string raises ValueError."]
+    assert writer.tokens_used == 15
+    assert "Units are h (3600 s)" in prompts[0] and "Do not use any tools" in prompts[0]
+    assert "re.findall" not in prompts[0]
+    assert events == ["spec_checklist_request", "spec_checklist_response"]
+    before = subtask.description
+    SpecChecklistWriter.install(subtask, checklist)
+    assert subtask.description.startswith(before) and checklist in subtask.description
+
+
+def test_checklist_writer_rejects_code_and_empty_replies(tmp_path):
+    from antigravity_hybrid_orchestrator.engine.spec_tests import SpecChecklistWriter
+
+    subtask = setup_h6_workspace(tmp_path)
+    replies = ["```python\nprint(1)\n```\n1. x", "no numbered rules here"]
+    assert SpecChecklistWriter(lambda p: (replies.pop(0), 1, 1)).generate(tmp_path, subtask) is None
+
+
+def test_benchmark_registers_control_and_ablation_arms():
+    import benchmark_gemma_orion_phase2b as bench
+
+    assert bench.POLICIES["P1_STAGE_ADAPTIVE_CHECKLIST"].get("spec_checklist") is True
+    assert bench.POLICIES["P1_STAGE_ADAPTIVE_SPECTESTS_SIG"]["disclosure"] == "signatures"
+    assert bench.POLICIES["P1_STAGE_ADAPTIVE_SPECTESTS_DOC"]["disclosure"] == "docstrings"
+    assert bench.POLICIES["P1_STAGE_ADAPTIVE_SPECTESTS"].get("disclosure", "full") == "full"
+
+
+def test_install_spec_tests_caches_per_disclosure_level(tmp_path):
+    import benchmark_gemma_orion_phase2b as bench
+
+    calls = []
+
+    class Cloud:
+        def complete(self, prompt):
+            calls.append(prompt)
+            return "```python\n" + GOOD_TESTS + "```", 1, 1
+
+    bench.SPEC_TEST_CACHE.clear()
+    for level in ("full", "signatures", "full"):
+        ws = tmp_path / f"ws{len(calls)}_{level}"
+        ws.mkdir()
+        meta = bench._install_spec_tests("H6_x", setup_h6_workspace, ws, setup_h6_workspace(ws), Cloud(), level)
+        assert meta["spec_tests_disclosure"] == level and meta["spec_tests_wall_s"] is not None
+    assert len(calls) == 2

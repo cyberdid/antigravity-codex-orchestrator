@@ -19,6 +19,8 @@ from antigravity_hybrid_orchestrator.planner.dag import SubTask
 from antigravity_hybrid_orchestrator.privacy.verifier import SecurityInvariantViolationError
 
 MAX_PAYLOAD_BYTES = 8192
+# How much of the interface leaves the machine: signatures only, plus docstrings, plus type fields.
+DISCLOSURE_LEVELS = ("signatures", "docstrings", "full")
 
 _SECRET_PATTERNS = [
     re.compile(r"-----BEGIN [A-Z ]*PRIVATE KEY-----"),
@@ -48,7 +50,7 @@ def _signature(node: ast.AST) -> str:
     return f"{prefix} {node.name}({ast.unparse(args)}){returns}"
 
 
-def _describe_file(workspace: Path, relative: str) -> List[str]:
+def _describe_file(workspace: Path, relative: str, level: str = "full") -> List[str]:
     path = (workspace / relative).resolve()
     if path.suffix != ".py" or not path.is_relative_to(workspace) or not path.is_file():
         return []
@@ -64,10 +66,10 @@ def _describe_file(workspace: Path, relative: str) -> List[str]:
             lines.append(_signature(node))
         else:
             continue
-        doc = ast.get_docstring(node)
+        doc = ast.get_docstring(node) if level != "signatures" else None
         if doc:
             lines.extend("    " + line for line in doc.splitlines())
-        if isinstance(node, ast.ClassDef):
+        if isinstance(node, ast.ClassDef) and level == "full":
             # Field names and types are interface, not implementation; defaults are dropped.
             for item in node.body:
                 if isinstance(item, ast.AnnAssign) and isinstance(item.target, ast.Name):
@@ -75,12 +77,14 @@ def _describe_file(workspace: Path, relative: str) -> List[str]:
     return lines
 
 
-def describe_contract(workspace: Path, files: List[str]) -> str:
+def describe_contract(workspace: Path, files: List[str], level: str = "full") -> str:
     """Signatures and docstrings of the given files (the specification, never bodies)."""
+    if level not in DISCLOSURE_LEVELS:
+        raise ValueError(f"unknown disclosure level {level!r}")
     workspace = Path(workspace).resolve()
     lines: List[str] = []
     for relative in files or []:
-        lines.extend(_describe_file(workspace, str(relative)))
+        lines.extend(_describe_file(workspace, str(relative), level))
     return "\n".join(lines)
 
 

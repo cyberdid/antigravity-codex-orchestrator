@@ -79,10 +79,11 @@ def _extract_python(text: str) -> Optional[str]:
 
 class SpecTestWriter:
     def __init__(self, complete: Callable[[str], Any],
-                 audit: Optional[Callable[[str, Dict[str, Any]], None]] = None) -> None:
+                 audit: Optional[Callable[[str, Dict[str, Any]], None]] = None, disclosure: str = "full") -> None:
         self.complete = complete
         self.audit = audit or (lambda event, payload: None)
         self.tokens_used = 0
+        self.disclosure = disclosure
 
     def generate(self, workspace: Path, subtask: SubTask, attempts: int = 2) -> Optional[str]:
         affected = [str(f) for f in subtask.affected_files or []]
@@ -92,7 +93,7 @@ class SpecTestWriter:
                 if str(f).endswith(".py") and not Path(f).name.startswith("test_") and str(f) not in affected]
         files = affected + deps
         modules = [Path(f).stem for f in files if f.endswith(".py")]
-        contract = describe_contract(Path(workspace), files)
+        contract = describe_contract(Path(workspace), files, self.disclosure)
         if not contract.strip():
             self.audit("spec_tests_skipped", {"reason": "no signatures or docstrings"})
             return None
@@ -134,3 +135,73 @@ class SpecTestWriter:
         if TEST_FILE not in subtask.input_files:
             subtask.input_files = [*subtask.input_files, TEST_FILE]
         return path
+
+
+CHECKLIST_PROMPT = """\
+You review a specification. Below are the signatures and docstrings of Python functions; their
+implementation is hidden from you and may be wrong.
+List EVERY rule the docstrings state that a correct implementation must satisfy: results for
+representative valid inputs (including edge values) and each kind of invalid input that must raise
+ValueError. Only list behaviour the docstrings state explicitly.
+Reply with a numbered plain-text list, one rule per line, at most 40 lines. Do not write code.
+Answer directly in plain text. Do not use any tools: do not run commands, do not read or write
+files and do not browse. Everything you can know is in this message.
+
+SPECIFICATION
+{contract}
+"""
+_NUMBERED = re.compile(r"^\s*\d+[.)]\s+\S")
+
+
+class SpecChecklistWriter:
+    """Control arm for contract tests: same cloud model, same interface, a rule checklist instead of tests."""
+
+    def __init__(self, complete: Callable[[str], Any],
+                 audit: Optional[Callable[[str, Dict[str, Any]], None]] = None, disclosure: str = "full") -> None:
+        self.complete = complete
+        self.audit = audit or (lambda event, payload: None)
+        self.tokens_used = 0
+        self.disclosure = disclosure
+
+    def generate(self, workspace: Path, subtask: SubTask, attempts: int = 2) -> Optional[str]:
+        affected = [str(f) for f in subtask.affected_files or []]
+        deps = [str(f) for f in subtask.input_files or []
+                if str(f).endswith(".py") and not Path(f).name.startswith("test_") and str(f) not in affected]
+        contract = describe_contract(Path(workspace), affected + deps, self.disclosure)
+        if not contract.strip():
+            self.audit("spec_checklist_skipped", {"reason": "no signatures or docstrings"})
+            return None
+        try:
+            verify_assist_payload(contract)
+        except SecurityInvariantViolationError as exc:
+            self.audit("spec_checklist_blocked", {"reason": str(exc)})
+            return None
+        error = ""
+        for _ in range(attempts):
+            prompt = CHECKLIST_PROMPT.format(contract=contract)
+            if error:
+                prompt += f"\nYOUR PREVIOUS REPLY WAS REJECTED: {error}\n"
+            self.audit("spec_checklist_request", {"prompt": prompt})
+            try:
+                text, t_in, t_out = self.complete(prompt)
+            except Exception as exc:
+                self.audit("spec_checklist_failed", {"error": str(exc)})
+                return None
+            self.tokens_used += int(t_in) + int(t_out)
+            self.audit("spec_checklist_response", {"response": text, "input_tokens": int(t_in),
+                                                   "output_tokens": int(t_out)})
+            if "```" in (text or ""):
+                error = "the checklist must not contain code"
+                continue
+            rules = [line.strip() for line in (text or "").splitlines() if _NUMBERED.match(line)][:40]
+            if not rules:
+                error = "no numbered rules found"
+                continue
+            return "\n".join(rules)
+        self.audit("spec_checklist_rejected", {"error": error})
+        return None
+
+    @staticmethod
+    def install(subtask: SubTask, checklist: str) -> None:
+        subtask.description = (f"{subtask.description}\n\nSPECIFICATION CHECKLIST (written by a reviewer who saw only the "
+                               f"interface; your code must satisfy every item):\n{checklist}")

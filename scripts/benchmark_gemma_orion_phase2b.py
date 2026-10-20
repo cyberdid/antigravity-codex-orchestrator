@@ -113,6 +113,36 @@ POLICIES: Dict[str, Dict[str, Any]] = {
         "OLLAMA_ADAPTIVE_NUM_PREDICT": "1",
         "spec_tests": True,
     },
+    # Paper I final campaign: control arm (same cloud input, checklist instead of tests) and disclosure ablation.
+    "P1_STAGE_ADAPTIVE_CHECKLIST": {
+        "label": "P1_STAGE_ADAPTIVE + cloud-written rule checklist from the same interface (no tests)",
+        "OLLAMA_THINK": "false",
+        "OLLAMA_NUM_CTX": "16384",
+        "OLLAMA_NUM_PREDICT": "2048",
+        "OLLAMA_RECOVERY_POLICY": "P1_STAGE",
+        "OLLAMA_ADAPTIVE_NUM_PREDICT": "1",
+        "spec_checklist": True,
+    },
+    "P1_STAGE_ADAPTIVE_SPECTESTS_SIG": {
+        "label": "SPECTESTS with signatures only (no docstrings, no type fields)",
+        "OLLAMA_THINK": "false",
+        "OLLAMA_NUM_CTX": "16384",
+        "OLLAMA_NUM_PREDICT": "2048",
+        "OLLAMA_RECOVERY_POLICY": "P1_STAGE",
+        "OLLAMA_ADAPTIVE_NUM_PREDICT": "1",
+        "spec_tests": True,
+        "disclosure": "signatures",
+    },
+    "P1_STAGE_ADAPTIVE_SPECTESTS_DOC": {
+        "label": "SPECTESTS with signatures and docstrings (no type fields)",
+        "OLLAMA_THINK": "false",
+        "OLLAMA_NUM_CTX": "16384",
+        "OLLAMA_NUM_PREDICT": "2048",
+        "OLLAMA_RECOVERY_POLICY": "P1_STAGE",
+        "OLLAMA_ADAPTIVE_NUM_PREDICT": "1",
+        "spec_tests": True,
+        "disclosure": "docstrings",
+    },
     "P1_STAGE_ADAPTIVE_ASSIST": {
         "label": "P1_STAGE_ADAPTIVE + cloud guidance (spec level) before the retry attempt",
         "OLLAMA_THINK": "false",
@@ -1716,10 +1746,17 @@ def _load_resume(path: Path, policies: List[str], seeds: List[int]):
         prefill[pol][seed].append(run)
         done.add((pol, seed, task_id))
         meta = run.get("metadata", {}) or {}
-        if meta.get("spec_tests_source") and task_id not in SPEC_TEST_CACHE:
-            SPEC_TEST_CACHE[task_id] = {"source": meta["spec_tests_source"],
-                                        "tokens": meta.get("spec_tests_tokens", 0),
-                                        "events": meta.get("spec_tests_events", [])}
+        key = (task_id, meta.get("spec_tests_disclosure", "full"))
+        if meta.get("spec_tests_source") and key not in SPEC_TEST_CACHE:
+            SPEC_TEST_CACHE[key] = {"source": meta["spec_tests_source"],
+                                    "tokens": meta.get("spec_tests_tokens", 0),
+                                    "events": meta.get("spec_tests_events", []),
+                                    "wall_s": meta.get("spec_tests_wall_s")}
+        if meta.get("spec_checklist_source") and task_id not in SPEC_CHECKLIST_CACHE:
+            SPEC_CHECKLIST_CACHE[task_id] = {"source": meta["spec_checklist_source"],
+                                             "tokens": meta.get("spec_checklist_tokens", 0),
+                                             "events": meta.get("spec_checklist_events", []),
+                                             "wall_s": meta.get("spec_checklist_wall_s")}
     return done, prefill
 
 
@@ -1742,16 +1779,20 @@ def _independent_checks(ws: Path, visible_modules: List[str], holdout_fn, timeou
     return visible, held, output
 
 
-SPEC_TEST_CACHE: Dict[str, Dict[str, Any]] = {}
+SPEC_TEST_CACHE: Dict[Tuple[str, str], Dict[str, Any]] = {}
+SPEC_CHECKLIST_CACHE: Dict[str, Dict[str, Any]] = {}
 
 
-def _install_spec_tests(task_id: str, setup_fn, ws: Path, subtask: SubTask, cloud_client: Any) -> Dict[str, Any]:
-    """Generate contract tests once per task (fresh workspace), install them in every run."""
+def _install_spec_tests(task_id: str, setup_fn, ws: Path, subtask: SubTask, cloud_client: Any,
+                        disclosure: str = "full") -> Dict[str, Any]:
+    """Generate contract tests once per task and disclosure level (fresh workspace), install them in every run."""
     from antigravity_hybrid_orchestrator.engine.spec_tests import SpecTestWriter
 
-    if task_id not in SPEC_TEST_CACHE:
+    key = (task_id, disclosure)
+    if key not in SPEC_TEST_CACHE:
         events: List[Dict[str, Any]] = []
-        writer = SpecTestWriter(cloud_client.complete, audit=lambda e, p: events.append({"event": e, **p}))
+        writer = SpecTestWriter(cloud_client.complete, audit=lambda e, p: events.append({"event": e, **p}),
+                                disclosure=disclosure)
         fresh = Path(tempfile.mkdtemp(prefix=f"spec_{task_id}_"))
         started = time.monotonic()
         try:
@@ -1759,9 +1800,9 @@ def _install_spec_tests(task_id: str, setup_fn, ws: Path, subtask: SubTask, clou
         finally:
             shutil.rmtree(fresh, ignore_errors=True)
         # One-time cost per task, outside the per-run wall clock; reported separately.
-        SPEC_TEST_CACHE[task_id] = {"source": source, "tokens": writer.tokens_used, "events": events,
-                                    "wall_s": round(time.monotonic() - started, 3)}
-    cached = SPEC_TEST_CACHE[task_id]
+        SPEC_TEST_CACHE[key] = {"source": source, "tokens": writer.tokens_used, "events": events,
+                                "wall_s": round(time.monotonic() - started, 3)}
+    cached = SPEC_TEST_CACHE[key]
     if cached["source"]:
         from antigravity_hybrid_orchestrator.engine.spec_tests import SpecTestWriter
 
@@ -1771,7 +1812,35 @@ def _install_spec_tests(task_id: str, setup_fn, ws: Path, subtask: SubTask, clou
         "spec_tests_source": cached["source"],
         "spec_tests_tokens": cached["tokens"],
         "spec_tests_wall_s": cached.get("wall_s"),
+        "spec_tests_disclosure": disclosure,
         "spec_tests_events": cached["events"],
+    }
+
+
+def _install_spec_checklist(task_id: str, setup_fn, subtask: SubTask, cloud_client: Any) -> Dict[str, Any]:
+    """Generate the rule checklist once per task (fresh workspace) and append it to the task description."""
+    from antigravity_hybrid_orchestrator.engine.spec_tests import SpecChecklistWriter
+
+    if task_id not in SPEC_CHECKLIST_CACHE:
+        events: List[Dict[str, Any]] = []
+        writer = SpecChecklistWriter(cloud_client.complete, audit=lambda e, p: events.append({"event": e, **p}))
+        fresh = Path(tempfile.mkdtemp(prefix=f"checklist_{task_id}_"))
+        started = time.monotonic()
+        try:
+            source = writer.generate(fresh, setup_fn(fresh))
+        finally:
+            shutil.rmtree(fresh, ignore_errors=True)
+        SPEC_CHECKLIST_CACHE[task_id] = {"source": source, "tokens": writer.tokens_used, "events": events,
+                                         "wall_s": round(time.monotonic() - started, 3)}
+    cached = SPEC_CHECKLIST_CACHE[task_id]
+    if cached["source"]:
+        SpecChecklistWriter.install(subtask, cached["source"])
+    return {
+        "spec_checklist_installed": bool(cached["source"]),
+        "spec_checklist_source": cached["source"],
+        "spec_checklist_tokens": cached["tokens"],
+        "spec_checklist_wall_s": cached.get("wall_s"),
+        "spec_checklist_events": cached["events"],
     }
 
 
@@ -1792,7 +1861,10 @@ def run_single_task(
         visible_modules = [Path(f).stem for f in subtask.input_files if Path(f).name.startswith("test_")]
         spec_meta: Dict[str, Any] = {}
         if POLICIES[policy_id].get("spec_tests"):
-            spec_meta = _install_spec_tests(task_id, setup_fn, ws, subtask, cloud_client)
+            spec_meta = _install_spec_tests(task_id, setup_fn, ws, subtask, cloud_client,
+                                            POLICIES[policy_id].get("disclosure", "full"))
+        if POLICIES[policy_id].get("spec_checklist"):
+            spec_meta = _install_spec_checklist(task_id, setup_fn, subtask, cloud_client)
         before_snap = _snapshot_files(ws)
         initial_sha = _hash_snapshot(before_snap)
 
@@ -1938,7 +2010,8 @@ def main() -> None:
 
     selected_policies = [p.strip().upper() for p in args.policies.split(",") if p.strip()]
     cloud_client = None
-    if any(POLICIES[p].get("cloud_assist") or POLICIES[p].get("spec_tests") for p in selected_policies):
+    if any(POLICIES[p].get("cloud_assist") or POLICIES[p].get("spec_tests") or POLICIES[p].get("spec_checklist")
+           for p in selected_policies):
         if any(POLICIES[p].get("cloud_assist") for p in selected_policies) and args.attempts < 2:
             parser.error("cloud-assist policies need --attempts 2 or more")
         from antigravity_hybrid_orchestrator.architect.client import CloudArchitectClient
