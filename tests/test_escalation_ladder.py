@@ -277,3 +277,40 @@ def test_assist_after_timeout_uses_a_fresh_verification_run(tmp_path):
     _make_loop(tmp_path, TimeoutThenPassWorker(), EscalationLadder(cloud_assist=assist)
                ).execute_subtask_with_retry(_assert_subtask())
     assert "AssertionError: ok file missing" in assist.calls[0]["excerpt"]
+
+
+class StallThenPassWorker(RecordingWorker):
+    """Attempt 1 is stopped by the worker's tool-cycle detector; attempt 2 succeeds."""
+
+    def execute_subtask(self, subtask, tool_suite, feedback_context=None, deadline=None, think=None):
+        self.calls.append({"think": think, "feedback_context": feedback_context})
+        if len(self.calls) == 1:
+            return SubtaskResult(subtask_id=subtask.id, success=False, turns=8,
+                                 error="Execution stalled: a tool-action cycle repeated without new evidence (cycle length 1)",
+                                 metadata={"stalled": True})
+        (Path(tool_suite.workspace_root) / "ok").write_text("1")
+        return SubtaskResult(subtask_id=subtask.id, success=True, turns=2)
+
+
+def test_single_stall_without_replanner_gets_a_fresh_attempt(tmp_path):
+    worker = StallThenPassWorker()
+    result = _make_loop(tmp_path, worker).execute_subtask_with_retry(_assert_subtask())
+    assert result.success is True
+    assert len(worker.calls) == 2
+    assert "repeated without new evidence" in worker.calls[1]["feedback_context"]
+
+
+class AlwaysStallWorker(RecordingWorker):
+    def execute_subtask(self, subtask, tool_suite, feedback_context=None, deadline=None, think=None):
+        self.calls.append({"feedback_context": feedback_context})
+        return SubtaskResult(subtask_id=subtask.id, success=False, turns=8,
+                             error="Execution stalled: a tool-action cycle repeated without new evidence (cycle length 1)",
+                             metadata={"stalled": True})
+
+
+def test_identical_repeated_stalls_still_stop(tmp_path, monkeypatch):
+    monkeypatch.setenv("RD_MAX_REPAIR_ATTEMPTS", "10")
+    worker = AlwaysStallWorker()
+    result = _make_loop(tmp_path, worker).execute_subtask_with_retry(_assert_subtask())
+    assert result.success is False and result.metadata.get("stalled") is True
+    assert len(worker.calls) == 3

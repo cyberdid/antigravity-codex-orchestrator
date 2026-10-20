@@ -1207,6 +1207,426 @@ def verify_h13_holdout(ws: Path) -> bool:
     ))
 
 
+# ---------------------------------------------------------------------------
+# Fresh Task H14: Clock time parsing (spec-heavy; added for the confirmatory run)
+# ---------------------------------------------------------------------------
+def setup_h14_workspace(ws: Path) -> SubTask:
+    (ws / "clock.py").write_text(
+        '"""Clock time parsing."""\n'
+        "def parse_clock(text: str) -> int:\n"
+        '    """Parse a 24-hour time "HH:MM" or "HH:MM:SS" into seconds since midnight.\n'
+        "\n"
+        "    HH is 00 to 23, MM and SS are 00 to 59, and each is written with exactly\n"
+        "    two ASCII digits. No whitespace or other characters are allowed. Raise\n"
+        "    ValueError otherwise.\n"
+        '    """\n'
+        "    parts = text.split(':')\n"
+        "    h, m = int(parts[0]), int(parts[1])\n"
+        "    s = int(parts[2]) if len(parts) > 2 else 0\n"
+        "    return h * 3600 + m * 60 + s\n"
+        ,
+        encoding="utf-8",
+    )
+    (ws / "test_clock.py").write_text(
+        "import unittest\n"
+        "from clock import parse_clock\n\n"
+        "class TestParseClock(unittest.TestCase):\n"
+        "    def test_hour_range(self):\n"
+        "        with self.assertRaises(ValueError):\n"
+        "            parse_clock('24:00')\n"
+        "\n"
+        "    def test_two_digits(self):\n"
+        "        with self.assertRaises(ValueError):\n"
+        "            parse_clock('1:05')\n"
+        "\n"
+        "    def test_minute_range(self):\n"
+        "        with self.assertRaises(ValueError):\n"
+        "            parse_clock('12:60')\n"
+        "\n"
+        "\nif __name__ == '__main__':\n"
+        "    unittest.main()\n",
+        encoding="utf-8",
+    )
+    return SubTask(
+        id="H14_parse_clock_multi_defect_fix",
+        title="Fix parse_clock",
+        description=(
+            "Inspect `clock.py` and `test_clock.py`. Fix `parse_clock` in `clock.py` so it "
+            "satisfies its docstring specification and passes `python3 -m unittest -q`."
+        ),
+        input_files=["clock.py", "test_clock.py"],
+        affected_files=["clock.py"],
+        verification_command="python3 -m unittest -q",
+    )
+
+
+def verify_h14_holdout(ws: Path) -> bool:
+    return _run_holdout(ws, (
+        "from clock import parse_clock\n"
+        "assert parse_clock('00:00') == 0\n"
+        "assert parse_clock('23:59:59') == 86399\n"
+        "assert parse_clock('07:05') == 25500\n"
+        "for bad in ('12:00:60', ' 12:00', '12:00 ', '12-00', '12:00:00:00', '+1:00', '\u0661\u0662:00', '12:5', ''):\n"
+        "    try:\n"
+        "        parse_clock(bad)\n"
+        "    except ValueError:\n"
+        "        pass\n"
+        "    else:\n"
+        "        raise AssertionError(f'{bad!r} must raise ValueError')\n"
+    ))
+
+
+# ---------------------------------------------------------------------------
+# Fresh Task H15: Byte size parsing (spec-heavy; added for the confirmatory run)
+# ---------------------------------------------------------------------------
+def setup_h15_workspace(ws: Path) -> SubTask:
+    (ws / "sizes.py").write_text(
+        '"""Byte size parsing."""\n'
+        "def parse_size(text: str) -> int:\n"
+        '    """Parse a size such as "512B", "4KB", "1.5MB" or "2GB" into bytes.\n'
+        "\n"
+        "    Units are B, KB, MB and GB with 1 KB = 1024 B; the unit is required and\n"
+        "    case-sensitive. The number is a non-negative decimal written with ASCII\n"
+        "    digits and an optional fractional part (e.g. 1.5); the result is rounded\n"
+        "    down to whole bytes. No whitespace or other characters are allowed. Raise\n"
+        "    ValueError otherwise.\n"
+        '    """\n'
+        "    units = {'B': 1, 'KB': 1000, 'MB': 1000 ** 2, 'GB': 1000 ** 3}\n"
+        "    for u in ('KB', 'MB', 'GB', 'B'):\n"
+        "        if text.endswith(u):\n"
+        "            return int(float(text[:-len(u)]) * units[u])\n"
+        "    return int(text)\n"
+        ,
+        encoding="utf-8",
+    )
+    (ws / "test_sizes.py").write_text(
+        "import unittest\n"
+        "from sizes import parse_size\n\n"
+        "class TestParseSize(unittest.TestCase):\n"
+        "    def test_binary_units(self):\n"
+        "        self.assertEqual(parse_size('4KB'), 4096)\n"
+        "\n"
+        "    def test_unit_required(self):\n"
+        "        with self.assertRaises(ValueError):\n"
+        "            parse_size('512')\n"
+        "\n"
+        "    def test_negative_raises(self):\n"
+        "        with self.assertRaises(ValueError):\n"
+        "            parse_size('-1KB')\n"
+        "\n"
+        "\nif __name__ == '__main__':\n"
+        "    unittest.main()\n",
+        encoding="utf-8",
+    )
+    return SubTask(
+        id="H15_parse_size_multi_defect_fix",
+        title="Fix parse_size",
+        description=(
+            "Inspect `sizes.py` and `test_sizes.py`. Fix `parse_size` in `sizes.py` so it "
+            "satisfies its docstring specification and passes `python3 -m unittest -q`."
+        ),
+        input_files=["sizes.py", "test_sizes.py"],
+        affected_files=["sizes.py"],
+        verification_command="python3 -m unittest -q",
+    )
+
+
+def verify_h15_holdout(ws: Path) -> bool:
+    return _run_holdout(ws, (
+        "from sizes import parse_size\n"
+        "assert parse_size('0B') == 0\n"
+        "assert parse_size('1GB') == 1073741824\n"
+        "assert parse_size('1.5KB') == 1536\n"
+        "assert parse_size('0.5B') == 0\n"
+        "for bad in ('1kb', '1 KB', ' 1KB', '1e3B', 'nanKB', 'infGB', '1.2.3MB', 'KB', '+1KB', '1TB'):\n"
+        "    try:\n"
+        "        parse_size(bad)\n"
+        "    except ValueError:\n"
+        "        pass\n"
+        "    else:\n"
+        "        raise AssertionError(f'{bad!r} must raise ValueError')\n"
+    ))
+
+
+# ---------------------------------------------------------------------------
+# Fresh Task H16: Roman numeral parsing (spec-heavy; added for the confirmatory run)
+# ---------------------------------------------------------------------------
+def setup_h16_workspace(ws: Path) -> SubTask:
+    (ws / "roman.py").write_text(
+        '"""Roman numeral parsing."""\n'
+        "def roman_to_int(text: str) -> int:\n"
+        '    """Convert an uppercase Roman numeral in canonical form to an int (1 to 3999).\n'
+        "\n"
+        "    Letters are I, V, X, L, C, D, M. Canonical form uses subtractive pairs only\n"
+        "    as IV, IX, XL, XC, CD and CM, never repeats V, L or D, and never has more\n"
+        "    than three I, X, C or M in a row. Raise ValueError for anything else,\n"
+        "    including lowercase letters and an empty string.\n"
+        '    """\n'
+        "    values = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}\n"
+        "    total = 0\n"
+        "    for ch in text.upper():\n"
+        "        total += values[ch]\n"
+        "    return total\n"
+        ,
+        encoding="utf-8",
+    )
+    (ws / "test_roman.py").write_text(
+        "import unittest\n"
+        "from roman import roman_to_int\n\n"
+        "class TestRomanToInt(unittest.TestCase):\n"
+        "    def test_subtractive(self):\n"
+        "        self.assertEqual(roman_to_int('XIV'), 14)\n"
+        "\n"
+        "    def test_lowercase_raises(self):\n"
+        "        with self.assertRaises(ValueError):\n"
+        "            roman_to_int('xiv')\n"
+        "\n"
+        "    def test_invalid_letter_raises(self):\n"
+        "        with self.assertRaises(ValueError):\n"
+        "            roman_to_int('XIA')\n"
+        "\n"
+        "\nif __name__ == '__main__':\n"
+        "    unittest.main()\n",
+        encoding="utf-8",
+    )
+    return SubTask(
+        id="H16_roman_to_int_multi_defect_fix",
+        title="Fix roman_to_int",
+        description=(
+            "Inspect `roman.py` and `test_roman.py`. Fix `roman_to_int` in `roman.py` so it "
+            "satisfies its docstring specification and passes `python3 -m unittest -q`."
+        ),
+        input_files=["roman.py", "test_roman.py"],
+        affected_files=["roman.py"],
+        verification_command="python3 -m unittest -q",
+    )
+
+
+def verify_h16_holdout(ws: Path) -> bool:
+    return _run_holdout(ws, (
+        "from roman import roman_to_int\n"
+        "assert roman_to_int('MMMCMXCIX') == 3999\n"
+        "assert roman_to_int('I') == 1\n"
+        "assert roman_to_int('MCMXCIV') == 1994\n"
+        "assert roman_to_int('XL') == 40\n"
+        "for bad in ('IIII', 'VV', 'IC', 'IL', 'XM', 'MMMM', '', 'VX', 'IIV', ' X'):\n"
+        "    try:\n"
+        "        roman_to_int(bad)\n"
+        "    except ValueError:\n"
+        "        pass\n"
+        "    else:\n"
+        "        raise AssertionError(f'{bad!r} must raise ValueError')\n"
+    ))
+
+
+# ---------------------------------------------------------------------------
+# Fresh Task H17: Key-value pair parsing (spec-heavy; added for the confirmatory run)
+# ---------------------------------------------------------------------------
+def setup_h17_workspace(ws: Path) -> SubTask:
+    (ws / "kvpairs.py").write_text(
+        '"""Key-value pair parsing."""\n'
+        "def parse_kv(text: str) -> dict:\n"
+        '    """Parse "key=value" pairs separated by ";" into a dict, e.g. "a=1;b=two".\n'
+        "\n"
+        "    Keys are non-empty and use only ASCII letters, digits and underscores.\n"
+        "    Values may be empty and may contain any character except ';' (including\n"
+        "    '='). Whitespace around keys and values is stripped. An empty or\n"
+        "    all-whitespace string gives {}. Raise ValueError for a pair without '=',\n"
+        "    an invalid key, or a key that appears twice.\n"
+        '    """\n'
+        "    result = {}\n"
+        "    for pair in text.split(';'):\n"
+        "        key, value = pair.split('=')\n"
+        "        result[key] = value\n"
+        "    return result\n"
+        ,
+        encoding="utf-8",
+    )
+    (ws / "test_kvpairs.py").write_text(
+        "import unittest\n"
+        "from kvpairs import parse_kv\n\n"
+        "class TestParseKv(unittest.TestCase):\n"
+        "    def test_strips_whitespace(self):\n"
+        "        self.assertEqual(parse_kv(' a = 1 ; b=2'), {'a': '1', 'b': '2'})\n"
+        "\n"
+        "    def test_empty_string(self):\n"
+        "        self.assertEqual(parse_kv(''), {})\n"
+        "\n"
+        "    def test_duplicate_key_raises(self):\n"
+        "        with self.assertRaises(ValueError):\n"
+        "            parse_kv('a=1;a=2')\n"
+        "\n"
+        "\nif __name__ == '__main__':\n"
+        "    unittest.main()\n",
+        encoding="utf-8",
+    )
+    return SubTask(
+        id="H17_parse_kv_multi_defect_fix",
+        title="Fix parse_kv",
+        description=(
+            "Inspect `kvpairs.py` and `test_kvpairs.py`. Fix `parse_kv` in `kvpairs.py` so it "
+            "satisfies its docstring specification and passes `python3 -m unittest -q`."
+        ),
+        input_files=["kvpairs.py", "test_kvpairs.py"],
+        affected_files=["kvpairs.py"],
+        verification_command="python3 -m unittest -q",
+    )
+
+
+def verify_h17_holdout(ws: Path) -> bool:
+    return _run_holdout(ws, (
+        "from kvpairs import parse_kv\n"
+        "assert parse_kv('x=') == {'x': ''}\n"
+        "assert parse_kv('a=b=c') == {'a': 'b=c'}\n"
+        "assert parse_kv('   ') == {}\n"
+        "assert parse_kv('k_1=v') == {'k_1': 'v'}\n"
+        "for bad in ('novalue', '=1', 'a-b=1', 'a=1;;b=2', 'a b=1', 'a=1;'):\n"
+        "    try:\n"
+        "        parse_kv(bad)\n"
+        "    except ValueError:\n"
+        "        pass\n"
+        "    else:\n"
+        "        raise AssertionError(f'{bad!r} must raise ValueError')\n"
+    ))
+
+
+# ---------------------------------------------------------------------------
+# Fresh Task H18: Percentage parsing (spec-heavy; added for the confirmatory run)
+# ---------------------------------------------------------------------------
+def setup_h18_workspace(ws: Path) -> SubTask:
+    (ws / "percent.py").write_text(
+        '"""Percentage parsing."""\n'
+        "def percent_to_fraction(text: str) -> float:\n"
+        '    """Convert a percentage such as "12.5%" to a fraction (0.125).\n'
+        "\n"
+        "    The number is a decimal from 0 to 100 inclusive, written with ASCII digits\n"
+        "    and an optional fractional part, immediately followed by '%'. No\n"
+        "    whitespace, signs or other characters are allowed. Raise ValueError\n"
+        "    otherwise.\n"
+        '    """\n'
+        "    return float(text.rstrip('%')) / 100\n"
+        ,
+        encoding="utf-8",
+    )
+    (ws / "test_percent.py").write_text(
+        "import unittest\n"
+        "from percent import percent_to_fraction\n\n"
+        "class TestPercentToFraction(unittest.TestCase):\n"
+        "    def test_percent_sign_required(self):\n"
+        "        with self.assertRaises(ValueError):\n"
+        "            percent_to_fraction('50')\n"
+        "\n"
+        "    def test_range(self):\n"
+        "        with self.assertRaises(ValueError):\n"
+        "            percent_to_fraction('150%')\n"
+        "\n"
+        "    def test_sign_rejected(self):\n"
+        "        with self.assertRaises(ValueError):\n"
+        "            percent_to_fraction('+5%')\n"
+        "\n"
+        "\nif __name__ == '__main__':\n"
+        "    unittest.main()\n",
+        encoding="utf-8",
+    )
+    return SubTask(
+        id="H18_percent_to_fraction_multi_defect_fix",
+        title="Fix percent_to_fraction",
+        description=(
+            "Inspect `percent.py` and `test_percent.py`. Fix `percent_to_fraction` in `percent.py` so it "
+            "satisfies its docstring specification and passes `python3 -m unittest -q`."
+        ),
+        input_files=["percent.py", "test_percent.py"],
+        affected_files=["percent.py"],
+        verification_command="python3 -m unittest -q",
+    )
+
+
+def verify_h18_holdout(ws: Path) -> bool:
+    return _run_holdout(ws, (
+        "from percent import percent_to_fraction\n"
+        "assert percent_to_fraction('0%') == 0.0\n"
+        "assert percent_to_fraction('100%') == 1.0\n"
+        "assert abs(percent_to_fraction('12.5%') - 0.125) < 1e-12\n"
+        "assert abs(percent_to_fraction('7%') - 0.07) < 1e-12\n"
+        "for bad in ('100.1%', '-1%', ' 5%', '5 %', '5%%', '1e1%', 'nan%', '%', '\uff15%'):\n"
+        "    try:\n"
+        "        percent_to_fraction(bad)\n"
+        "    except ValueError:\n"
+        "        pass\n"
+        "    else:\n"
+        "        raise AssertionError(f'{bad!r} must raise ValueError')\n"
+    ))
+
+
+# ---------------------------------------------------------------------------
+# Fresh Task H19: Grid coordinate parsing (spec-heavy; added for the confirmatory run)
+# ---------------------------------------------------------------------------
+def setup_h19_workspace(ws: Path) -> SubTask:
+    (ws / "cells.py").write_text(
+        '"""Grid coordinate parsing."""\n'
+        "def parse_cell(text: str) -> tuple:\n"
+        '    """Parse a spreadsheet cell such as "B3" or "AA10" into (column, row).\n'
+        "\n"
+        "    The column is one or two uppercase ASCII letters (A=1 ... Z=26, AA=27 ...\n"
+        "    ZZ=702) and the row is a positive decimal integer without leading zeros.\n"
+        "    Return (column_number, row_number). Lowercase letters, whitespace and any\n"
+        "    other characters are not allowed. Raise ValueError otherwise.\n"
+        '    """\n'
+        "    col = ord(text[0].upper()) - ord('A') + 1\n"
+        "    row = int(text[1:])\n"
+        "    return col, row\n"
+        ,
+        encoding="utf-8",
+    )
+    (ws / "test_cells.py").write_text(
+        "import unittest\n"
+        "from cells import parse_cell\n\n"
+        "class TestParseCell(unittest.TestCase):\n"
+        "    def test_two_letter_column(self):\n"
+        "        self.assertEqual(parse_cell('AA10'), (27, 10))\n"
+        "\n"
+        "    def test_lowercase_raises(self):\n"
+        "        with self.assertRaises(ValueError):\n"
+        "            parse_cell('b3')\n"
+        "\n"
+        "    def test_row_zero_raises(self):\n"
+        "        with self.assertRaises(ValueError):\n"
+        "            parse_cell('C0')\n"
+        "\n"
+        "\nif __name__ == '__main__':\n"
+        "    unittest.main()\n",
+        encoding="utf-8",
+    )
+    return SubTask(
+        id="H19_parse_cell_multi_defect_fix",
+        title="Fix parse_cell",
+        description=(
+            "Inspect `cells.py` and `test_cells.py`. Fix `parse_cell` in `cells.py` so it "
+            "satisfies its docstring specification and passes `python3 -m unittest -q`."
+        ),
+        input_files=["cells.py", "test_cells.py"],
+        affected_files=["cells.py"],
+        verification_command="python3 -m unittest -q",
+    )
+
+
+def verify_h19_holdout(ws: Path) -> bool:
+    return _run_holdout(ws, (
+        "from cells import parse_cell\n"
+        "assert parse_cell('A1') == (1, 1)\n"
+        "assert parse_cell('Z99') == (26, 99)\n"
+        "assert parse_cell('ZZ702') == (702, 702)\n"
+        "assert parse_cell('B3') == (2, 3)\n"
+        "for bad in ('A01', 'AAA1', '1A', 'A', ' A1', 'A1 ', 'A-1', 'A+1', '', '\u00c11'):\n"
+        "    try:\n"
+        "        parse_cell(bad)\n"
+        "    except ValueError:\n"
+        "        pass\n"
+        "    else:\n"
+        "        raise AssertionError(f'{bad!r} must raise ValueError')\n"
+    ))
+
+
 TASKS: List[Tuple[str, Callable[[Path], SubTask], Callable[[Path], bool]]] = [
     ("H1_fdr_step_up_fix", setup_h1_workspace, verify_h1_holdout),
     ("H2_pareto_judge_fix", setup_h2_workspace, verify_h2_holdout),
@@ -1221,6 +1641,12 @@ TASKS: List[Tuple[str, Callable[[Path], SubTask], Callable[[Path], bool]]] = [
     ("H11_parse_bool_multi_defect_fix", setup_h11_workspace, verify_h11_holdout),
     ("H12_parse_hex_color_multi_defect_fix", setup_h12_workspace, verify_h12_holdout),
     ("H13_parse_range_multi_defect_fix", setup_h13_workspace, verify_h13_holdout),
+    ("H14_parse_clock_multi_defect_fix", setup_h14_workspace, verify_h14_holdout),
+    ("H15_parse_size_multi_defect_fix", setup_h15_workspace, verify_h15_holdout),
+    ("H16_roman_to_int_multi_defect_fix", setup_h16_workspace, verify_h16_holdout),
+    ("H17_parse_kv_multi_defect_fix", setup_h17_workspace, verify_h17_holdout),
+    ("H18_percent_to_fraction_multi_defect_fix", setup_h18_workspace, verify_h18_holdout),
+    ("H19_parse_cell_multi_defect_fix", setup_h19_workspace, verify_h19_holdout),
 ]
 
 

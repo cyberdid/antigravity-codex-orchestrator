@@ -430,6 +430,17 @@ class SelfCorrectionLoop:
                             "inspect the current workspace and execute the revised scope."
                         )
                         continue
+                    if repeated_failure_count < 2:
+                        # One in-attempt stall (the worker's tool-cycle detector) is not
+                        # evidence the task is stuck: give the next attempt a fresh context.
+                        # Identical repeated failures still stop the subtask below.
+                        attempt += 1
+                        feedback_context = (
+                            f"The previous attempt was stopped: {worker_res.error}. Start from the "
+                            "current workspace, run the verification command once, read its full "
+                            "output, and change the approach instead of repeating the same action."
+                        )
+                        continue
                     subtask.status = SubtaskExecutionState.BLOCKED.value
                     self._emit("subtask_stalled", subtask.id, {
                         "error": worker_res.error,
