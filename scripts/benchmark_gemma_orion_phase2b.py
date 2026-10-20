@@ -1685,6 +1685,13 @@ from registry import benchmark_tasks as _paper_tasks  # noqa: E402
 
 TASKS += _paper_tasks(_run_holdout, SubTask)
 
+# Campaign B: the same specifications with bugs written by the local model (frozen in natural_tasks.json).
+if (Path(__file__).resolve().parent / "paper_tasks" / "natural_tasks.json").exists():
+    from natural import load_tasks as _natural_tasks  # noqa: E402
+    from registry import adapt as _adapt  # noqa: E402
+
+    TASKS += _adapt(_natural_tasks(), _run_holdout, SubTask)
+
 
 _SUMMED_METADATA = (
     "input_tokens", "output_tokens", "prompt_eval_cached_tokens", "eval_duration_s",

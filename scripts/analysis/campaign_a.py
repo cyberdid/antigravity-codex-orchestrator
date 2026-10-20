@@ -1,4 +1,4 @@
-"""Pre-registered analysis of Paper I campaign A (docs/paper/PREREGISTRATION_CAMPAIGN_A.md).
+"""Pre-registered analysis of Paper I campaigns A and B (docs/paper/PREREGISTRATION_CAMPAIGN_{A,B}.md).
 
 Usage: python scripts/analysis/campaign_a.py RESULTS.json [ABLATION.json]
 Unit of inference: task. Per-task verified rate = verified runs / seeds.
@@ -64,8 +64,14 @@ def compare(runs, tasks, a, b, label):
 
 def main(path, ablation=None):
     sys.path.insert(0, str(ROOT / "scripts" / "paper_tasks"))
-    manifest = json.loads((ROOT / "scripts/paper_tasks/manifest.json").read_text())
     runs = load(path)
+    if any(task.startswith("N") for _, task in runs):
+        # Campaign B: natural-bug tasks, summarised the same way as the frozen Campaign A manifest.
+        import framework as F
+        from natural import load_tasks
+        manifest = {t.id: F.summary(t) for t in load_tasks()}
+    else:
+        manifest = json.loads((ROOT / "scripts/paper_tasks/manifest.json").read_text())
     tasks = sorted(manifest, key=lambda t: int(t.split("_")[0][1:]))
     print(f"tasks {len(tasks)}; arms {sorted({p for p, _ in runs})}")
     print("\nArm | verified runs | silent false successes | wall s (runs) | generation wall s (one-time) | cloud tokens")

@@ -42,12 +42,18 @@ def freeze() -> dict:
 def benchmark_tasks(run_holdout, subtask_cls) -> list:
     """(task_id, setup_fn, holdout_fn) tuples in the benchmark's format, from the frozen manifest."""
     manifest = json.loads(MANIFEST.read_text())
-    out = []
     for task in ALL:
         entry = manifest[task.id]
         if entry["sha256"] != digest(task):
             raise RuntimeError(f"{task.id} changed after freezing; re-run registry.py and re-register")
         task.visible = entry["visible_rules"]
+    return adapt(ALL, run_holdout, subtask_cls)
+
+
+def adapt(tasks, run_holdout, subtask_cls) -> list:
+    """Benchmark tuples for RuleTasks whose visible rules are already fixed."""
+    out = []
+    for task in tasks:
         test_file = f"test_{Path(task.affected[0]).stem}.py"
 
         def setup(ws: Path, task=task, test_file=test_file):
