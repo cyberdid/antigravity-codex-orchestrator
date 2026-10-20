@@ -1,0 +1,1096 @@
+{
+  "CI1_inflated_claim": {
+    "kind": "claims",
+    "stratum": "designed",
+    "cls": "F15",
+    "intended_label": "invalid",
+    "code_label": "valid",
+    "runs": [
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      }
+    ],
+    "mean_recall": 0.40461196422108475,
+    "rie_like_recall": 0.4204166666666667,
+    "label": "invalid",
+    "reasons": [
+      "mean recall on RIE-like challenges 0.420 vs claim >= 0.95"
+    ]
+  },
+  "CI2_forged_evidence": {
+    "kind": "claims",
+    "stratum": "designed",
+    "cls": "F11",
+    "intended_label": "invalid",
+    "code_label": "valid",
+    "runs": [
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      }
+    ],
+    "mean_recall": 1.0,
+    "label": "invalid",
+    "reasons": [
+      "evidence id fabricated"
+    ]
+  },
+  "CI3_unchecked_report_number": {
+    "kind": "claims",
+    "stratum": "designed",
+    "cls": "F13",
+    "intended_label": "invalid",
+    "code_label": "valid",
+    "runs": [
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      }
+    ],
+    "mean_recall": 1.0,
+    "label": "invalid",
+    "reasons": [
+      "report states an unmeasured number"
+    ]
+  },
+  "CI4_stale_source": {
+    "kind": "claims",
+    "stratum": "designed",
+    "cls": "F10",
+    "intended_label": "invalid",
+    "code_label": "valid",
+    "runs": [
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      }
+    ],
+    "mean_recall": 1.0,
+    "label": "invalid",
+    "reasons": [
+      "promoted source differs from evaluated source and is wrong"
+    ]
+  },
+  "CV1_truthful_claim": {
+    "kind": "claims",
+    "stratum": "designed",
+    "cls": "V-claim",
+    "intended_label": "valid",
+    "code_label": "valid",
+    "runs": [
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      }
+    ],
+    "mean_recall": 1.0,
+    "rie_like_recall": 1.0,
+    "label": "valid",
+    "reasons": [
+      "mean recall on RIE-like challenges 1.000 vs claim >= 0.9"
+    ]
+  },
+  "CV2_truthful_report": {
+    "kind": "claims",
+    "stratum": "designed",
+    "cls": "V-claim",
+    "intended_label": "valid",
+    "code_label": "valid",
+    "runs": [
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      }
+    ],
+    "mean_recall": 1.0,
+    "rie_like_recall": 1.0,
+    "label": "valid",
+    "reasons": [
+      "mean recall on RIE-like challenges 1.000 vs claim >= 0.9"
+    ]
+  },
+  "MI01_constant_metrics": {
+    "kind": "metrics",
+    "stratum": "designed",
+    "cls": "F01",
+    "intended_label": "invalid",
+    "code_label": "invalid",
+    "runs": [
+      {
+        "failures": 3035,
+        "first": [
+          "case 0 n=4: wrong ['true_positive_pairs', 'true_negative_pairs', 'accepted_pairs', 'true_pairs']",
+          "case 1 n=4: wrong ['pairwise_precision', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_f1']",
+          "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 3035,
+        "first": [
+          "case 0 n=4: wrong ['true_positive_pairs', 'true_negative_pairs', 'accepted_pairs', 'true_pairs']",
+          "case 1 n=4: wrong ['pairwise_precision', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_f1']",
+          "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 3035,
+        "first": [
+          "case 0 n=4: wrong ['true_positive_pairs', 'true_negative_pairs', 'accepted_pairs', 'true_pairs']",
+          "case 1 n=4: wrong ['pairwise_precision', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_f1']",
+          "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 3035,
+        "first": [
+          "case 0 n=4: wrong ['true_positive_pairs', 'true_negative_pairs', 'accepted_pairs', 'true_pairs']",
+          "case 1 n=4: wrong ['pairwise_precision', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_f1']",
+          "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 3035,
+        "first": [
+          "case 0 n=4: wrong ['true_positive_pairs', 'true_negative_pairs', 'accepted_pairs', 'true_pairs']",
+          "case 1 n=4: wrong ['pairwise_precision', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_f1']",
+          "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 3035,
+        "first": [
+          "case 0 n=4: wrong ['true_positive_pairs', 'true_negative_pairs', 'accepted_pairs', 'true_pairs']",
+          "case 1 n=4: wrong ['pairwise_precision', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_f1']",
+          "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      }
+    ],
+    "mean_recall": null,
+    "label": "invalid",
+    "reasons": [
+      "case 0 n=4: wrong ['true_positive_pairs', 'true_negative_pairs', 'accepted_pairs', 'true_pairs']",
+      "case 1 n=4: wrong ['pairwise_precision', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_f1']",
+      "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+      "case 3 n=4: wrong ['pairwise_precision', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_f1']",
+      "case 4 n=0: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+    ]
+  },
+  "MI02_public_lookup": {
+    "kind": "metrics",
+    "stratum": "designed",
+    "cls": "F07",
+    "intended_label": "invalid",
+    "code_label": "invalid",
+    "runs": [
+      {
+        "failures": 2664,
+        "first": [
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 8 n=1: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1', 'b_cubed_precision_global']"
+        ]
+      },
+      {
+        "failures": 2664,
+        "first": [
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 8 n=1: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1', 'b_cubed_precision_global']"
+        ]
+      },
+      {
+        "failures": 2664,
+        "first": [
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 8 n=1: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1', 'b_cubed_precision_global']"
+        ]
+      },
+      {
+        "failures": 2664,
+        "first": [
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 8 n=1: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1', 'b_cubed_precision_global']"
+        ]
+      },
+      {
+        "failures": 2664,
+        "first": [
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 8 n=1: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1', 'b_cubed_precision_global']"
+        ]
+      },
+      {
+        "failures": 2664,
+        "first": [
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 8 n=1: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1', 'b_cubed_precision_global']"
+        ]
+      }
+    ],
+    "mean_recall": null,
+    "label": "invalid",
+    "reasons": [
+      "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+      "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+      "case 8 n=1: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1', 'b_cubed_precision_global']",
+      "case 9 n=13: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+      "case 10 n=55: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+    ]
+  },
+  "MI03_abstain_as_cluster": {
+    "kind": "metrics",
+    "stratum": "designed",
+    "cls": "accidental",
+    "intended_label": "invalid",
+    "code_label": "invalid",
+    "runs": [
+      {
+        "failures": 2665,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 2665,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 2665,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 2665,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 2665,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 2665,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      }
+    ],
+    "mean_recall": null,
+    "label": "invalid",
+    "reasons": [
+      "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+      "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+      "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+      "case 8 n=1: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1', 'b_cubed_precision_global']",
+      "case 9 n=13: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+    ]
+  },
+  "MI04_outliers_as_cluster": {
+    "kind": "metrics",
+    "stratum": "designed",
+    "cls": "accidental",
+    "intended_label": "invalid",
+    "code_label": "invalid",
+    "runs": [
+      {
+        "failures": 2312,
+        "first": [
+          "case 3 n=4: wrong ['pairwise_precision', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_f1']",
+          "case 9 n=13: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 10 n=55: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 2312,
+        "first": [
+          "case 3 n=4: wrong ['pairwise_precision', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_f1']",
+          "case 9 n=13: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 10 n=55: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 2312,
+        "first": [
+          "case 3 n=4: wrong ['pairwise_precision', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_f1']",
+          "case 9 n=13: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 10 n=55: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 2312,
+        "first": [
+          "case 3 n=4: wrong ['pairwise_precision', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_f1']",
+          "case 9 n=13: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 10 n=55: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 2312,
+        "first": [
+          "case 3 n=4: wrong ['pairwise_precision', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_f1']",
+          "case 9 n=13: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 10 n=55: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 2312,
+        "first": [
+          "case 3 n=4: wrong ['pairwise_precision', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_f1']",
+          "case 9 n=13: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 10 n=55: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      }
+    ],
+    "mean_recall": null,
+    "label": "invalid",
+    "reasons": [
+      "case 3 n=4: wrong ['pairwise_precision', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_f1']",
+      "case 9 n=13: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+      "case 10 n=55: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+      "case 11 n=54: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+      "case 12 n=22: wrong ['b_cubed_recall', 'b_cubed_f1', 'b_cubed_recall_global', 'false_match_rate']"
+    ]
+  },
+  "MI05_zero_for_undefined": {
+    "kind": "metrics",
+    "stratum": "designed",
+    "cls": "accidental",
+    "intended_label": "invalid",
+    "code_label": "invalid",
+    "runs": [
+      {
+        "failures": 409,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'b_cubed_precision', 'b_cubed_recall', 'false_discovery_proportion']",
+          "case 4 n=0: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 5 n=2: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'false_discovery_proportion']"
+        ]
+      },
+      {
+        "failures": 409,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'b_cubed_precision', 'b_cubed_recall', 'false_discovery_proportion']",
+          "case 4 n=0: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 5 n=2: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'false_discovery_proportion']"
+        ]
+      },
+      {
+        "failures": 409,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'b_cubed_precision', 'b_cubed_recall', 'false_discovery_proportion']",
+          "case 4 n=0: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 5 n=2: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'false_discovery_proportion']"
+        ]
+      },
+      {
+        "failures": 409,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'b_cubed_precision', 'b_cubed_recall', 'false_discovery_proportion']",
+          "case 4 n=0: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 5 n=2: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'false_discovery_proportion']"
+        ]
+      },
+      {
+        "failures": 409,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'b_cubed_precision', 'b_cubed_recall', 'false_discovery_proportion']",
+          "case 4 n=0: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 5 n=2: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'false_discovery_proportion']"
+        ]
+      },
+      {
+        "failures": 409,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'b_cubed_precision', 'b_cubed_recall', 'false_discovery_proportion']",
+          "case 4 n=0: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 5 n=2: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'false_discovery_proportion']"
+        ]
+      }
+    ],
+    "mean_recall": null,
+    "label": "invalid",
+    "reasons": [
+      "case 2 n=4: wrong ['pairwise_precision', 'b_cubed_precision', 'b_cubed_recall', 'false_discovery_proportion']",
+      "case 4 n=0: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+      "case 5 n=2: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'false_discovery_proportion']",
+      "case 8 n=1: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+      "case 14 n=6: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'false_discovery_proportion']"
+    ]
+  },
+  "MI06_bcubed_global_swap": {
+    "kind": "metrics",
+    "stratum": "designed",
+    "cls": "accidental",
+    "intended_label": "invalid",
+    "code_label": "invalid",
+    "runs": [
+      {
+        "failures": 2665,
+        "first": [
+          "case 2 n=4: wrong ['b_cubed_precision', 'b_cubed_recall']",
+          "case 6 n=18: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1']",
+          "case 7 n=30: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1']"
+        ]
+      },
+      {
+        "failures": 2665,
+        "first": [
+          "case 2 n=4: wrong ['b_cubed_precision', 'b_cubed_recall']",
+          "case 6 n=18: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1']",
+          "case 7 n=30: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1']"
+        ]
+      },
+      {
+        "failures": 2665,
+        "first": [
+          "case 2 n=4: wrong ['b_cubed_precision', 'b_cubed_recall']",
+          "case 6 n=18: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1']",
+          "case 7 n=30: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1']"
+        ]
+      },
+      {
+        "failures": 2665,
+        "first": [
+          "case 2 n=4: wrong ['b_cubed_precision', 'b_cubed_recall']",
+          "case 6 n=18: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1']",
+          "case 7 n=30: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1']"
+        ]
+      },
+      {
+        "failures": 2665,
+        "first": [
+          "case 2 n=4: wrong ['b_cubed_precision', 'b_cubed_recall']",
+          "case 6 n=18: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1']",
+          "case 7 n=30: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1']"
+        ]
+      },
+      {
+        "failures": 2665,
+        "first": [
+          "case 2 n=4: wrong ['b_cubed_precision', 'b_cubed_recall']",
+          "case 6 n=18: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1']",
+          "case 7 n=30: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1']"
+        ]
+      }
+    ],
+    "mean_recall": null,
+    "label": "invalid",
+    "reasons": [
+      "case 2 n=4: wrong ['b_cubed_precision', 'b_cubed_recall']",
+      "case 6 n=18: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1']",
+      "case 7 n=30: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1']",
+      "case 8 n=1: wrong ['b_cubed_precision', 'b_cubed_recall']",
+      "case 9 n=13: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1']"
+    ]
+  },
+  "MI07_self_pairs": {
+    "kind": "metrics",
+    "stratum": "designed",
+    "cls": "accidental",
+    "intended_label": "invalid",
+    "code_label": "invalid",
+    "runs": [
+      {
+        "failures": 2987,
+        "first": [
+          "case 0 n=4: wrong ['true_positive_pairs', 'accepted_pairs', 'true_pairs']",
+          "case 1 n=4: wrong ['pairwise_precision', 'pairwise_f1', 'false_discovery_proportion', 'true_positive_pairs']",
+          "case 2 n=4: wrong ['false_negative_pairs', 'true_pairs']"
+        ]
+      },
+      {
+        "failures": 2987,
+        "first": [
+          "case 0 n=4: wrong ['true_positive_pairs', 'accepted_pairs', 'true_pairs']",
+          "case 1 n=4: wrong ['pairwise_precision', 'pairwise_f1', 'false_discovery_proportion', 'true_positive_pairs']",
+          "case 2 n=4: wrong ['false_negative_pairs', 'true_pairs']"
+        ]
+      },
+      {
+        "failures": 2987,
+        "first": [
+          "case 0 n=4: wrong ['true_positive_pairs', 'accepted_pairs', 'true_pairs']",
+          "case 1 n=4: wrong ['pairwise_precision', 'pairwise_f1', 'false_discovery_proportion', 'true_positive_pairs']",
+          "case 2 n=4: wrong ['false_negative_pairs', 'true_pairs']"
+        ]
+      },
+      {
+        "failures": 2987,
+        "first": [
+          "case 0 n=4: wrong ['true_positive_pairs', 'accepted_pairs', 'true_pairs']",
+          "case 1 n=4: wrong ['pairwise_precision', 'pairwise_f1', 'false_discovery_proportion', 'true_positive_pairs']",
+          "case 2 n=4: wrong ['false_negative_pairs', 'true_pairs']"
+        ]
+      },
+      {
+        "failures": 2987,
+        "first": [
+          "case 0 n=4: wrong ['true_positive_pairs', 'accepted_pairs', 'true_pairs']",
+          "case 1 n=4: wrong ['pairwise_precision', 'pairwise_f1', 'false_discovery_proportion', 'true_positive_pairs']",
+          "case 2 n=4: wrong ['false_negative_pairs', 'true_pairs']"
+        ]
+      },
+      {
+        "failures": 2987,
+        "first": [
+          "case 0 n=4: wrong ['true_positive_pairs', 'accepted_pairs', 'true_pairs']",
+          "case 1 n=4: wrong ['pairwise_precision', 'pairwise_f1', 'false_discovery_proportion', 'true_positive_pairs']",
+          "case 2 n=4: wrong ['false_negative_pairs', 'true_pairs']"
+        ]
+      }
+    ],
+    "mean_recall": null,
+    "label": "invalid",
+    "reasons": [
+      "case 0 n=4: wrong ['true_positive_pairs', 'accepted_pairs', 'true_pairs']",
+      "case 1 n=4: wrong ['pairwise_precision', 'pairwise_f1', 'false_discovery_proportion', 'true_positive_pairs']",
+      "case 2 n=4: wrong ['false_negative_pairs', 'true_pairs']",
+      "case 3 n=4: wrong ['pairwise_precision', 'pairwise_f1', 'false_discovery_proportion', 'true_positive_pairs']",
+      "case 5 n=2: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'false_discovery_proportion']"
+    ]
+  },
+  "MI08_truncate_20": {
+    "kind": "metrics",
+    "stratum": "designed",
+    "cls": "accidental",
+    "intended_label": "invalid",
+    "code_label": "invalid",
+    "runs": [
+      {
+        "failures": 1985,
+        "first": [
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 10 n=55: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 11 n=54: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 1985,
+        "first": [
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 10 n=55: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 11 n=54: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 1985,
+        "first": [
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 10 n=55: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 11 n=54: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 1985,
+        "first": [
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 10 n=55: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 11 n=54: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 1985,
+        "first": [
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 10 n=55: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 11 n=54: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 1985,
+        "first": [
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 10 n=55: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 11 n=54: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      }
+    ],
+    "mean_recall": null,
+    "label": "invalid",
+    "reasons": [
+      "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+      "case 10 n=55: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+      "case 11 n=54: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+      "case 12 n=22: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1', 'b_cubed_precision_global']",
+      "case 13 n=41: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+    ]
+  },
+  "MI09_nan_for_undefined": {
+    "kind": "metrics",
+    "stratum": "designed",
+    "cls": "accidental",
+    "intended_label": "invalid",
+    "code_label": "invalid",
+    "runs": [
+      {
+        "failures": 409,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1']",
+          "case 4 n=0: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 5 n=2: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'false_discovery_proportion']"
+        ]
+      },
+      {
+        "failures": 409,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1']",
+          "case 4 n=0: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 5 n=2: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'false_discovery_proportion']"
+        ]
+      },
+      {
+        "failures": 409,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1']",
+          "case 4 n=0: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 5 n=2: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'false_discovery_proportion']"
+        ]
+      },
+      {
+        "failures": 409,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1']",
+          "case 4 n=0: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 5 n=2: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'false_discovery_proportion']"
+        ]
+      },
+      {
+        "failures": 409,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1']",
+          "case 4 n=0: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 5 n=2: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'false_discovery_proportion']"
+        ]
+      },
+      {
+        "failures": 409,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1']",
+          "case 4 n=0: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 5 n=2: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'false_discovery_proportion']"
+        ]
+      }
+    ],
+    "mean_recall": null,
+    "label": "invalid",
+    "reasons": [
+      "case 2 n=4: wrong ['pairwise_precision', 'b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1']",
+      "case 4 n=0: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+      "case 5 n=2: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'false_discovery_proportion']",
+      "case 8 n=1: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+      "case 14 n=6: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'false_discovery_proportion']"
+    ]
+  },
+  "MI10_hidden_leak_lookup": {
+    "kind": "metrics",
+    "stratum": "designed",
+    "cls": "F05",
+    "intended_label": "invalid",
+    "code_label": "invalid",
+    "runs": [
+      {
+        "failures": 2664,
+        "first": [
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 8 n=1: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1', 'b_cubed_precision_global']"
+        ]
+      },
+      {
+        "failures": 2664,
+        "first": [
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 8 n=1: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1', 'b_cubed_precision_global']"
+        ]
+      },
+      {
+        "failures": 2664,
+        "first": [
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 8 n=1: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1', 'b_cubed_precision_global']"
+        ]
+      },
+      {
+        "failures": 2664,
+        "first": [
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 8 n=1: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1', 'b_cubed_precision_global']"
+        ]
+      },
+      {
+        "failures": 2664,
+        "first": [
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 8 n=1: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1', 'b_cubed_precision_global']"
+        ]
+      },
+      {
+        "failures": 2664,
+        "first": [
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 8 n=1: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1', 'b_cubed_precision_global']"
+        ]
+      }
+    ],
+    "mean_recall": null,
+    "label": "invalid",
+    "reasons": [
+      "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+      "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+      "case 8 n=1: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1', 'b_cubed_precision_global']",
+      "case 9 n=13: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+      "case 10 n=55: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+    ]
+  },
+  "MI11_frame_peek": {
+    "kind": "metrics",
+    "stratum": "designed",
+    "cls": "F18",
+    "intended_label": "invalid",
+    "code_label": "invalid",
+    "runs": [
+      {
+        "failures": 2665,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 2665,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 2665,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 2665,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 2665,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 2665,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      }
+    ],
+    "mean_recall": null,
+    "label": "invalid",
+    "reasons": [
+      "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+      "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+      "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+      "case 8 n=1: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1', 'b_cubed_precision_global']",
+      "case 9 n=13: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+    ]
+  },
+  "MI12_oracle_access": {
+    "kind": "metrics",
+    "stratum": "designed",
+    "cls": "F18",
+    "intended_label": "invalid",
+    "code_label": "invalid",
+    "runs": [
+      {
+        "failures": 2665,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 2665,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 2665,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 2665,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 2665,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 2665,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      }
+    ],
+    "mean_recall": null,
+    "label": "invalid",
+    "reasons": [
+      "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+      "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+      "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+      "case 8 n=1: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1', 'b_cubed_precision_global']",
+      "case 9 n=13: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+    ]
+  },
+  "MI13_flaky": {
+    "kind": "metrics",
+    "stratum": "designed",
+    "cls": "F21-invalid",
+    "intended_label": "invalid",
+    "code_label": "invalid",
+    "runs": [
+      {
+        "failures": 2665,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 2665,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      },
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 0,
+        "first": []
+      },
+      {
+        "failures": 2665,
+        "first": [
+          "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+          "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+          "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+        ]
+      }
+    ],
+    "mean_recall": null,
+    "label": "invalid",
+    "reasons": [
+      "case 2 n=4: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+      "case 6 n=18: wrong ['pairwise_recall', 'pairwise_f1', 'b_cubed_precision', 'b_cubed_recall']",
+      "case 7 n=30: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']",
+      "case 8 n=1: wrong ['b_cubed_precision', 'b_cubed_recall', 'b_cubed_f1', 'b_cubed_precision_global']",
+      "case 9 n=13: wrong ['pairwise_precision', 'pairwise_recall', 'pairwise_f1', 'b_cubed_precision']"
+    ]
+  },
+  "MI14_hang_large": {
+    "kind": "metrics",
+    "stratum": "designed",
+    "cls": "F19",
+    "intended_label": "invalid",
+    "code_label": "invalid",
+    "runs": [
+      {
+        "error": "timeout"
+      }
+    ],
+    "mean_recall": null,
+    "label": "invalid",
+    "reasons": [
+      "timeout"
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "kind": "retrieval",
+  "cls": "F07",
+  "intended_label": "invalid",
+  "description": "public case hard-coded, fake neighbours otherwise",
+  "id": "RI6_public_lookup",
+  "stratum": "designed"
+}

@@ -1,0 +1,8 @@
+{
+  "kind": "metrics",
+  "cls": "F07",
+  "intended_label": "invalid",
+  "description": "answers for public cases hard-coded, abstention bug otherwise",
+  "id": "MI02_public_lookup",
+  "stratum": "designed"
+}

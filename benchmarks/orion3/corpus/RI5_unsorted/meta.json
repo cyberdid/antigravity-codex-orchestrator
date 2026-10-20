@@ -1,0 +1,8 @@
+{
+  "kind": "retrieval",
+  "cls": "accidental",
+  "intended_label": "invalid",
+  "description": "neighbours returned in index order",
+  "id": "RI5_unsorted",
+  "stratum": "designed"
+}

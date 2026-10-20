@@ -1,0 +1,8 @@
+{
+  "kind": "retrieval",
+  "cls": "F08",
+  "intended_label": "invalid",
+  "description": "distances in the wrong unit",
+  "id": "RI3_euclidean_not_squared",
+  "stratum": "designed"
+}

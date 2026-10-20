@@ -1753,11 +1753,14 @@ def _install_spec_tests(task_id: str, setup_fn, ws: Path, subtask: SubTask, clou
         events: List[Dict[str, Any]] = []
         writer = SpecTestWriter(cloud_client.complete, audit=lambda e, p: events.append({"event": e, **p}))
         fresh = Path(tempfile.mkdtemp(prefix=f"spec_{task_id}_"))
+        started = time.monotonic()
         try:
             source = writer.generate(fresh, setup_fn(fresh))
         finally:
             shutil.rmtree(fresh, ignore_errors=True)
-        SPEC_TEST_CACHE[task_id] = {"source": source, "tokens": writer.tokens_used, "events": events}
+        # One-time cost per task, outside the per-run wall clock; reported separately.
+        SPEC_TEST_CACHE[task_id] = {"source": source, "tokens": writer.tokens_used, "events": events,
+                                    "wall_s": round(time.monotonic() - started, 3)}
     cached = SPEC_TEST_CACHE[task_id]
     if cached["source"]:
         from antigravity_hybrid_orchestrator.engine.spec_tests import SpecTestWriter
@@ -1767,6 +1770,7 @@ def _install_spec_tests(task_id: str, setup_fn, ws: Path, subtask: SubTask, clou
         "spec_tests_installed": bool(cached["source"]),
         "spec_tests_source": cached["source"],
         "spec_tests_tokens": cached["tokens"],
+        "spec_tests_wall_s": cached.get("wall_s"),
         "spec_tests_events": cached["events"],
     }
 

@@ -1,0 +1,8 @@
+[11:50:54] paused archive-index timers
+NM01_gemma length 6144 386.4 s
+NM02_gemma stop 2387 146.1 s
+NM03_gemma stop 5820 352.1 s
+NM04_gemma stop 4359 268.3 s
+[12:12:27] exited rc=0
+[12:12:27] restored archive-index timers
+[12:12:27] DONE

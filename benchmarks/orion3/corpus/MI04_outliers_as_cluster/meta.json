@@ -1,0 +1,8 @@
+{
+  "kind": "metrics",
+  "cls": "accidental",
+  "intended_label": "invalid",
+  "description": "true outliers (-1) treated as one identity",
+  "id": "MI04_outliers_as_cluster",
+  "stratum": "designed"
+}

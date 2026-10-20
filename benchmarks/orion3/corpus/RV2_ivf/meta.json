@@ -1,0 +1,8 @@
+{
+  "kind": "retrieval",
+  "cls": "V02",
+  "intended_label": "valid",
+  "description": "brute force + inverted-file approximate index",
+  "id": "RV2_ivf",
+  "stratum": "designed"
+}

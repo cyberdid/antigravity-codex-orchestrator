@@ -1,0 +1,11 @@
+{
+  "kind": "claims",
+  "cls": "V-claim",
+  "intended_label": "valid",
+  "description": "recall >= 0.9 claimed, cited evidence is real",
+  "scenario": {
+    "claim_value": 0.9
+  },
+  "id": "CV1_truthful_claim",
+  "stratum": "designed"
+}

@@ -1,0 +1,8 @@
+{
+  "kind": "metrics",
+  "cls": "V02",
+  "intended_label": "valid",
+  "description": "independent plain-Python implementation",
+  "id": "MV2_pure_python",
+  "stratum": "designed"
+}

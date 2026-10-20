@@ -1,0 +1,8 @@
+{
+  "kind": "metrics",
+  "cls": "accidental",
+  "intended_label": "invalid",
+  "description": "selective B-cubed divided by n",
+  "id": "MI06_bcubed_global_swap",
+  "stratum": "designed"
+}

@@ -1,0 +1,8 @@
+{
+  "kind": "metrics",
+  "cls": "accidental",
+  "intended_label": "invalid",
+  "description": "pair counts include i == j",
+  "id": "MI07_self_pairs",
+  "stratum": "designed"
+}

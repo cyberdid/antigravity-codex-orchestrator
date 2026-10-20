@@ -1,0 +1,8 @@
+{
+  "kind": "metrics",
+  "cls": "F05",
+  "intended_label": "invalid",
+  "description": "answers for the static hidden set hard-coded (leaked through feedback)",
+  "id": "MI10_hidden_leak_lookup",
+  "stratum": "designed"
+}

@@ -1,0 +1,8 @@
+{
+  "kind": "metrics",
+  "cls": "accidental",
+  "intended_label": "invalid",
+  "description": "only the first 20 observations are used",
+  "id": "MI08_truncate_20",
+  "stratum": "designed"
+}

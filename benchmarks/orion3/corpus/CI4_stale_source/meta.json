@@ -1,0 +1,11 @@
+{
+  "kind": "claims",
+  "cls": "F10",
+  "intended_label": "invalid",
+  "description": "exact search replaced by a buggy version after evaluation",
+  "scenario": {
+    "mutate_after": "\nimport numpy as np\n\n\ndef _check(vectors, queries, k):\n    x = np.asarray(vectors, dtype=float)\n    q = np.asarray(queries, dtype=float)\n    if x.ndim != 2 or q.ndim != 2 or x.shape[1] != q.shape[1] or not 1 <= int(k) <= len(x):\n        raise ValueError('bad inputs')\n    return x, q, int(k)\n\n\ndef _sq(x, q):\n    return ((q[:, None, :] - x[None, :, :]) ** 2).sum(axis=2)\n\n\ndef exact_knn(vectors, queries, k):\n    x, q, k = _check(vectors, queries, k)\n    d = _sq(x, q)\n    idx = np.argsort(d, axis=1, kind='stable')[:, 1:k + 1] if d.shape[1] > k else np.argsort(d, axis=1, kind='stable')[:, :k]\n    return idx, np.take_along_axis(d, idx, axis=1)\n\n\napproximate_knn = exact_knn\n"
+  },
+  "id": "CI4_stale_source",
+  "stratum": "designed"
+}

@@ -1,0 +1,8 @@
+{
+  "kind": "metrics",
+  "cls": "F19",
+  "intended_label": "invalid",
+  "description": "never returns for n > 25",
+  "id": "MI14_hang_large",
+  "stratum": "designed"
+}

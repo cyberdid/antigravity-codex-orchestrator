@@ -1,0 +1,8 @@
+{
+  "kind": "retrieval",
+  "cls": "V01",
+  "intended_label": "valid",
+  "description": "reference blocked exact + projection-window approximate",
+  "id": "RV1_reference",
+  "stratum": "designed"
+}

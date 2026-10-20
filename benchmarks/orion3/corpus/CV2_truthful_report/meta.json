@@ -1,0 +1,12 @@
+{
+  "kind": "claims",
+  "cls": "V-claim",
+  "intended_label": "valid",
+  "description": "truthful claim and a report citing it",
+  "scenario": {
+    "claim_value": 0.9,
+    "report": true
+  },
+  "id": "CV2_truthful_report",
+  "stratum": "designed"
+}

@@ -1,0 +1,8 @@
+{
+  "kind": "retrieval",
+  "cls": "F20",
+  "intended_label": "valid",
+  "description": "random-hyperplane LSH with exact re-rank",
+  "id": "RV3_lsh",
+  "stratum": "designed"
+}

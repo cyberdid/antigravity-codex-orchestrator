@@ -1,0 +1,8 @@
+{
+  "kind": "metrics",
+  "cls": "accidental",
+  "intended_label": "invalid",
+  "description": "abstained (-1) predictions treated as one cluster",
+  "id": "MI03_abstain_as_cluster",
+  "stratum": "designed"
+}

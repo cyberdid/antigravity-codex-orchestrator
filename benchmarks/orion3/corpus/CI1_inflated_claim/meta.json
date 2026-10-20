@@ -1,0 +1,11 @@
+{
+  "kind": "claims",
+  "cls": "F15",
+  "intended_label": "invalid",
+  "description": "recall >= 0.95 claimed for a low-recall index",
+  "scenario": {
+    "claim_value": 0.95
+  },
+  "id": "CI1_inflated_claim",
+  "stratum": "designed"
+}

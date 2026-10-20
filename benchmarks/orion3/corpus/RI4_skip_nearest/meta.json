@@ -1,0 +1,8 @@
+{
+  "kind": "retrieval",
+  "cls": "accidental",
+  "intended_label": "invalid",
+  "description": "nearest neighbour dropped as a supposed self-match",
+  "id": "RI4_skip_nearest",
+  "stratum": "designed"
+}

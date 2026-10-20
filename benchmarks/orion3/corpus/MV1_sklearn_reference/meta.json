@@ -1,0 +1,8 @@
+{
+  "kind": "metrics",
+  "cls": "V01",
+  "intended_label": "valid",
+  "description": "scikit-learn reference implementation",
+  "id": "MV1_sklearn_reference",
+  "stratum": "designed"
+}

@@ -1,0 +1,12 @@
+{
+  "kind": "claims",
+  "cls": "F11",
+  "intended_label": "invalid",
+  "description": "true number, fabricated evidence id",
+  "scenario": {
+    "claim_value": 0.9,
+    "forge": true
+  },
+  "id": "CI2_forged_evidence",
+  "stratum": "designed"
+}

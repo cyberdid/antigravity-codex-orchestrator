@@ -1,0 +1,8 @@
+{
+  "kind": "metrics",
+  "cls": "V03",
+  "intended_label": "valid",
+  "description": "O(n^2) pair enumeration",
+  "id": "MV3_slow_pairs",
+  "stratum": "designed"
+}

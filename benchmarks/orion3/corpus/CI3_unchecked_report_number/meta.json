@@ -1,0 +1,13 @@
+{
+  "kind": "claims",
+  "cls": "F13",
+  "intended_label": "invalid",
+  "description": "report adds an unmeasured speed-up figure",
+  "scenario": {
+    "claim_value": 0.9,
+    "report": true,
+    "report_extra": " It is also 3.2 times faster than exact search."
+  },
+  "id": "CI3_unchecked_report_number",
+  "stratum": "designed"
+}

@@ -1,0 +1,8 @@
+{
+  "kind": "metrics",
+  "cls": "F18",
+  "intended_label": "invalid",
+  "description": "calls the evaluator's own oracle when importable",
+  "id": "MI12_oracle_access",
+  "stratum": "designed"
+}

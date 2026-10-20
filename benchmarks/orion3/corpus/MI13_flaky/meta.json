@@ -1,0 +1,8 @@
+{
+  "kind": "metrics",
+  "cls": "F21-invalid",
+  "intended_label": "invalid",
+  "description": "wrong in about half of processes",
+  "id": "MI13_flaky",
+  "stratum": "designed"
+}

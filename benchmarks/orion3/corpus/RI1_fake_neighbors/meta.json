@@ -1,0 +1,8 @@
+{
+  "kind": "retrieval",
+  "cls": "F07",
+  "intended_label": "invalid",
+  "description": "constant ids with zero distances",
+  "id": "RI1_fake_neighbors",
+  "stratum": "designed"
+}

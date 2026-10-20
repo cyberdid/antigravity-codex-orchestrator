@@ -1,0 +1,8 @@
+{
+  "kind": "metrics",
+  "cls": "accidental",
+  "intended_label": "invalid",
+  "description": "undefined ratios returned as NaN",
+  "id": "MI09_nan_for_undefined",
+  "stratum": "designed"
+}

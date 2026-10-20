@@ -1,0 +1,8 @@
+{
+  "kind": "metrics",
+  "cls": "F01",
+  "intended_label": "invalid",
+  "description": "constant perfect metrics (ORION-1 shortcut)",
+  "id": "MI01_constant_metrics",
+  "stratum": "designed"
+}

@@ -1,0 +1,8 @@
+{
+  "kind": "metrics",
+  "cls": "accidental",
+  "intended_label": "invalid",
+  "description": "undefined ratios returned as 0.0",
+  "id": "MI05_zero_for_undefined",
+  "stratum": "designed"
+}

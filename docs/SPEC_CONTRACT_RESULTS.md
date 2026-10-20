@@ -1,6 +1,6 @@
 # Specification Coverage for a Local 12B Coding Worker — Results (2026-10-19/20)
 
-> **Abstract.** On specification-heavy repair tasks, `gemma4:12b` passes the visible tests and silently violates rules written only in the docstring. Contract tests written by a cloud model from signatures, docstrings and data-type fields alone (no implementation) raise verified completion on such tasks from 2/12 to 10/12 (paired 8–0, p = 0.0078; replicates a first run at 16/18 vs 7/18, p = 0.012) and eliminate silent false successes (10/39 → 0/39). They must see the full interface: without data-type fields they produced impossible tests that hurt already-solved tasks (p = 0.031). Self-checks by the same 12B model and guidance after failure did not help. A pre-registered confirmatory run on six fresh tasks reproduced the effect (4/18 → 11/18, p = 0.039). With corrected measurement over all 19 tasks, verified completion is 32/57 → 48/57 (18 wins, 2 losses, p = 0.0004), silent false successes fall from 25/57 to 3/57, on the nine earlier tasks the baseline solves 26 of 27 SPECTESTS runs stay verified (one H6 loss), and none of the 19 generated test modules contains a wrong test; cost is 1.7–4.3× wall time. Details: sections "Confirmatory run" and "Secondary run".
+> **Abstract.** On specification-heavy repair tasks, `gemma4:12b` passes the visible tests and silently violates rules written only in the docstring. Contract tests written by a cloud model from signatures, docstrings and data-type fields alone (no implementation) raise verified completion on such tasks from 2/12 to 10/12 (paired 8–0, p = 0.0078; replicates a first run at 16/18 vs 7/18, p = 0.012) and eliminate silent false successes (10/39 → 0/39). They must see the full interface: without data-type fields they produced impossible tests that hurt already-solved tasks (p = 0.031). Self-checks by the same 12B model and guidance after failure did not help. A pre-registered confirmatory run on six fresh tasks reproduced the effect at run level (4/18 → 11/18, p = 0.039), but at task level only 3 of 6 tasks improved (none worse, p = 0.25), so on its own it does not confirm generalisation to new tasks. With corrected measurement over all 19 tasks, verified completion is 32/57 → 48/57 (run level 18 wins, 2 losses; task level 7 tasks better, 1 worse, permutation p = 0.023, mean gain +0.28 with cluster-bootstrap 95% CI 0.09–0.49), silent false successes fall from 25/57 to 3/57, on the nine earlier tasks the baseline solves 26 of 27 SPECTESTS runs stay verified (one H6 loss), and none of the 19 generated test modules contains a wrong test; cost is at least 1.7–4.3× wall time (the cloud test-generation time was not timed). Details: sections "Confirmatory run", "Secondary run" and "Task-level analysis".
 
 ## Question
 
@@ -176,3 +176,19 @@ Data: `benchmarks/spec_contract_confirm_all.json`. 2 policies × 13 tasks × see
 ### All runs with the corrected checks (19 tasks)
 
 Pooling the confirmatory run (H14–H19) and this run (H1–H13), both with identical engine code and checks: baseline **32/57**, SPECTESTS **48/57**; 18 wins, 2 losses (p = 0.0004; secondary endpoint, pre-registered); silent false successes **25/57 → 3/57** (the 3 are the ambiguous H17 cases).
+
+## Task-level analysis and cost accounting (added 2026-10-20 after an external review)
+
+**Seeds are not independent trials.** Runs of one task with different seeds follow similar trajectories, so the run-level sign tests above (including the pre-registered p = 0.039) overstate how well the effect generalises to *new tasks*. Treating the task as the unit (`scripts/analysis/clustered_spec.py`):
+
+| Set | Tasks better / worse / equal | Task-level sign test | Sign-flip permutation | Mean gain in verified rate (cluster bootstrap 95% CI) |
+|---|---|---:|---:|---|
+| Fresh H14–H19 (confirmatory) | 3 / 0 / 3 | p = 0.25 | p = 0.25 | +0.39 [+0.06, +0.72] |
+| H1–H13 (secondary) | 4 / 1 / 8 | p = 0.38 | p = 0.13 | +0.23 [+0.03, +0.46] |
+| All 19 tasks | 7 / 1 / 11 | p = 0.070 | p = 0.023 | +0.28 [+0.09, +0.49] |
+
+The direction is consistent and the pooled task-level permutation test is significant, but the gain is concentrated in 7 of 19 tasks (those whose rules live only in the docstring), and six fresh tasks are too few for a task-level confirmation on their own. A confirmatory claim about new tasks needs a larger independent task set (order of 40–60 tasks, sized by a power analysis on the per-task differences above).
+
+**Cost of generating the contract tests was not in the wall-clock figures.** `wall_clock_s` starts after the tests are installed; the cloud generation call (one per task, reused across seeds) was recorded only in tokens (~11–20k per task), not in time. The benchmark now records `spec_tests_wall_s`; earlier ratios (1.7–4.3×) are therefore **lower bounds** on end-to-end cost.
+
+**Other limits raised by the review and accepted:** grading generated tests on one reference implementation does not exclude over-constrained tests (alternative valid implementations and mutation testing are needed); the cloud payload removes function bodies but names, types and docstrings can still disclose information ("privacy-bounded specification disclosure", not a formal guarantee); generated tests are statically validated, not sandboxed beyond the benchmark's process isolation.

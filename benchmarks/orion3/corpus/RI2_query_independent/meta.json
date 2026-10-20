@@ -1,0 +1,8 @@
+{
+  "kind": "retrieval",
+  "cls": "gaming",
+  "intended_label": "invalid",
+  "description": "approximate ignores the query",
+  "id": "RI2_query_independent",
+  "stratum": "designed"
+}
