@@ -10,3 +10,34 @@
   -> Task P5_convert_temperature ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=49.4521s
   -> Task P6_chunk_indices ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=29.0314s
   -> Task P7_parse_csv_line ...[13:02:08] STOPPED by owner request (moving); timers restored; resume: bash scripts/run_campaign_a.sh
+[15:35:50] paused archive-index timers
+[15:35:50] campaign A at 847c2f6 chore(bench): Campaign A paused by owner after 6 runs; resume from a backup copy
+[15:35:50] start benchmarks/campaign_a.json (P1_STAGE_ADAPTIVE,P1_STAGE_ADAPTIVE_SPECTESTS,P1_STAGE_ADAPTIVE_CHECKLIST, seeds 303,404,505) --resume-from benchmarks/campaign_a.partial.backup.json
+Resuming: 6 completed runs loaded from benchmarks/campaign_a.partial.backup.json
+
+=== Running Seed 303 | Policy P1_STAGE_ADAPTIVE ===
+  -> Task P7_parse_csv_line ... verified=True native=True turns=5 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=120.6727s
+  -> Task P8_compare_versions ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=37.2944s
+  -> Task P9_order_total ... verified=True native=True turns=12 tools=12 trunc=0 rec_attempts=0 stage_hints=12 wall=66.8689s
+  -> Task P10_total_distance ... verified=False native=False turns=34 tools=34 trunc=0 rec_attempts=0 stage_hints=32 wall=154.6233s
+  -> Task P11_can_book ... verified=True native=True turns=14 tools=13 trunc=0 rec_attempts=0 stage_hints=13 wall=140.4647s
+  -> Task P12_trimmed_mean ... verified=True native=True turns=10 tools=9 trunc=0 rec_attempts=0 stage_hints=9 wall=49.9966s
+  -> Task P13_load_settings ... verified=False native=False turns=87 tools=85 trunc=0 rec_attempts=0 stage_hints=85 wall=600.1396s
+  -> Task P14_matmul ... verified=False native=False turns=39 tools=39 trunc=0 rec_attempts=0 stage_hints=37 wall=323.2912s
+  -> Task P15_next_task ... verified=False native=False turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=46.6548s
+  -> Task P16_make_slug ... verified=False native=False turns=10 tools=9 trunc=0 rec_attempts=0 stage_hints=9 wall=88.4909s
+  -> Task P17_rate_limiter ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=72.4404s
+  -> Task P18_format_money ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=126.7501s
+  -> Task P19_dedupe ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=36.9391s
+  -> Task P20_median ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=43.32s
+  -> Task P21_capitalize_words ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=35.898s
+  -> Task P22_clamp ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=32.3723s
+  -> Task P23_flatten_once ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=36.2361s
+  -> Task P24_word_count ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=30.2072s
+  -> Task P25_safe_div ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=34.7221s
+
+=== Running Seed 303 | Policy P1_STAGE_ADAPTIVE_SPECTESTS ===
+  -> Task P1_split_amount ... verified=True native=True turns=9 tools=8 trunc=0 rec_attempts=0 stage_hints=8 wall=85.2979s
+  -> Task P2_wrap_words ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=65.9127s
+  -> Task P3_days_in_month ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=57.0119s
+  -> Task P4_letter_grade ...[16:15:15] STOPPED by owner request; timers restored; resume: bash scripts/run_campaign_a.sh
