@@ -154,6 +154,7 @@ def main():
     tex.write_text(convert((PAPER / "manuscript.md").read_text()))
     subprocess.run(["tectonic", "--keep-logs", "--outdir", str(BUILD), str(tex)], check=True)
     shutil.copy(BUILD / "manuscript.pdf", PAPER / "manuscript.pdf")
+    shutil.copy(tex, PAPER / "manuscript.tex")
     print("written", PAPER / "manuscript.pdf")
 
 
