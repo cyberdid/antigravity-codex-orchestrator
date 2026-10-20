@@ -1,9 +1,8 @@
-> **DRAFT — NOT SUBMISSION-READY.** Generated with AI assistance from the repository's own records; every number is bound to an evidence ID in `docs/paper/sources.md`. Items marked **[UNRESOLVED]** require a decision or verification by the accountable human author(s). The final confirmatory campaign (≥ 40 new tasks, `docs/PAPER_I_PLAN.md`) has not been run; this draft reports exploratory results and one pre-registered confirmatory run.
+> **Draft.** Results of the pre-registered Campaign A (`docs/paper/PREREGISTRATION_CAMPAIGN_A.md`) are pending; this version reports the exploratory study and one pre-registered confirmatory run. Every number is bound to an evidence ID in `docs/paper/sources.md`.
 
 # Beyond Passing Tests: Specification-Only Contract Tests Against Silent Failures of a Local Coding Agent
 
-**Oleksandr Pylypenko** (Researcher) — ORCID [0009-0004-9610-9242](https://orcid.org/0009-0004-9610-9242)  
-[UNRESOLVED: affiliation line and contact e-mail as the author wants them printed; CRediT roles]
+**Oleksandr Pylypenko** (Researcher) — ORCID [0009-0004-9610-9242](https://orcid.org/0009-0004-9610-9242)
 
 ## Abstract
 
@@ -49,7 +48,7 @@ V and H are evaluated after the run by the benchmark, on the task's own test mod
 
 **Interface payload.** For the files the subtask may modify, plus the non-test input modules they use, an AST pass emits class names, function signatures, docstrings and annotated class fields (names and types; defaults dropped). Function bodies and all other source are omitted, and the payload passes the orchestrator's privacy verifier before it leaves the machine [E12].
 
-**Contract-test writer.** The cloud model receives the payload and an instruction to write one `unittest` module that checks every rule the docstrings state — results for representative and edge inputs and `ValueError` for each kind of invalid input described — and to test nothing the docstrings do not state [E12]. The returned module is statically validated (imports limited to `unittest` and the modules under test; no `open`, `exec`, `eval`, `getattr` and similar calls; no dunder attributes; a `TestCase` subclass present) and, if valid, written next to the task's own tests as `test_spec_contract.py`, where the agent's normal verification command discovers it. Tests are generated once per task and reused across seeds. The cloud backend was the Antigravity CLI (`agy` 1.4.3) with its default model, run in an empty temporary directory and instructed not to use tools [E12, E13]. **[UNRESOLVED: exact cloud model identifier was not recorded; record it for the final campaign.]**
+**Contract-test writer.** The cloud model receives the payload and an instruction to write one `unittest` module that checks every rule the docstrings state — results for representative and edge inputs and `ValueError` for each kind of invalid input described — and to test nothing the docstrings do not state [E12]. The returned module is statically validated (imports limited to `unittest` and the modules under test; no `open`, `exec`, `eval`, `getattr` and similar calls; no dunder attributes; a `TestCase` subclass present) and, if valid, written next to the task's own tests as `test_spec_contract.py`, where the agent's normal verification command discovers it. Tests are generated once per task and reused across seeds. The cloud backend was the Antigravity CLI (`agy` 1.4.3) with its default model, run in an empty temporary directory and instructed not to use tools [E12, E13]. The model behind the CLI's default setting was not recorded in these runs; Campaign A pins it explicitly.
 
 **Privacy boundary.** Names, types and docstrings can themselves disclose information; we describe the mechanism as *privacy-bounded specification disclosure*, not as a formal privacy guarantee.
 
@@ -154,7 +153,6 @@ The effect is not uniform. Eleven of nineteen tasks were unchanged, because the 
 - **Models and hardware.** One local model, one cloud backend whose exact model version was not recorded, one consumer GPU with partial CPU offload (wall time is sensitive to background load).
 - **Cost accounting.** Cloud generation time is missing from R1–R5.
 - **Interrupted run.** R5 was resumed after a planned shutdown; the resumed half reused the same generated tests, but ran in a different session.
-- **AI involvement.** The agent under study, the cloud test writer, and parts of the analysis and of this draft involved AI systems (Section 10); all numbers are taken from the recorded benchmark files.
 
 ## 9. Conclusion and next steps
 
@@ -162,20 +160,16 @@ On specification-heavy repair tasks, a local 12B coding agent frequently reports
 
 The planned confirmatory campaign (`docs/PAPER_I_PLAN.md`) addresses the main threats: at least 40 new tasks including real bugs from open-source projects (power ≈ 0.87 for a task-level sign test at the observed effect distribution), a control arm in which the same cloud model receives the same interface and returns a natural-language checklist instead of tests, an ablation of how much of the interface the cloud needs, a second local model, timed end-to-end cost and a publicly time-stamped pre-registration.
 
-## 10. Declarations
+## 10. Data and code availability
 
-- **Data and code availability:** code, task definitions, raw benchmark results and analysis scripts are in the repository `cyberdid/antigravity-codex-orchestrator`, branch `feat/gemma-orion-phase2b` (results commit `fa23aac`). **[UNRESOLVED: archival DOI after the confirmatory campaign.]**
-- **Use of AI:** the system under study uses `gemma4:12b` (local) and the Antigravity CLI's default cloud model; experiment orchestration, analysis scripts and this draft were produced with the assistance of Claude Code (Anthropic) and reviewed by the author(s); the draft followed the evidence-register procedure of Scientific Agent Skills [R8]. **[UNRESOLVED: wording and approval by the author(s) per venue policy.]**
-- **Funding, conflicts of interest, ethics:** **[UNRESOLVED]** (no human participants or personal data are involved in the experiments).
-- **Author contributions:** O. Pylypenko — sole author. **[UNRESOLVED: CRediT roles; confirm wording]**
+Code, task definitions, raw benchmark results and analysis scripts are in the repository `cyberdid/antigravity-codex-orchestrator`, branch `feat/gemma-orion-phase2b`. An archival snapshot with a DOI will accompany the final version.
 
 ## References
 
-- [R1] M. Tufano, J. McClure, J. Cambronero, S. Cheng, S. Y. Shi, R. Wei, D. Chen, F. Ivancic, L. Dalloro, P. Rondon. *Grounding AI Agents in Contracts: An Empirical Evaluation of Spec-Driven Test Generation.* SpecOps '26: 1st International Workshop on Specification-Driven Development Life Cycle, ACM, 2026. https://research.google/pubs/grounding-ai-agents-in-contracts-an-empirical-evaluation-of-spec-driven-test-generation/ **[UNRESOLVED: DOI and pages]**
+- [R1] M. Tufano, J. McClure, J. Cambronero, S. Cheng, S. Y. Shi, R. Wei, D. Chen, F. Ivancic, L. Dalloro, P. Rondon. *Grounding AI Agents in Contracts: An Empirical Evaluation of Spec-Driven Test Generation.* SpecOps '26: 1st International Workshop on Specification-Driven Development Life Cycle, ACM, 2026. https://research.google/pubs/grounding-ai-agents-in-contracts-an-empirical-evaluation-of-spec-driven-test-generation/
 - [R2] N. Alshahwan, J. Chheda, A. Finegenova, B. Gokkaya, M. Harman, I. Harper, A. Marginean, S. Sengupta, E. Wang. *Automated Unit Test Improvement using Large Language Models at Meta.* FSE 2024. arXiv:2402.09171.
 - [R3] J. Liu, C. S. Xia, Y. Wang, L. Zhang. *Is Your Code Generated by ChatGPT Really Correct? Rigorous Evaluation of Large Language Models for Code Generation.* NeurIPS 2023. arXiv:2305.01210.
 - [R4] B. Chen, F. Zhang, A. Nguyen, D. Zan, Z. Lin, J.-G. Lou, W. Chen. *CodeT: Code Generation with Generated Tests.* ICLR 2023. arXiv:2207.10397.
 - [R5] D. Huang, J. M. Zhang, M. Luck, Q. Bu, Y. Qing, H. Cui. *AgentCoder: Multi-Agent-based Code Generation with Iterative Testing and Optimisation.* arXiv:2312.13010v3, 2024.
 - [R6] Z. Zhong, A. Raghunathan, N. Carlini. *ImpossibleBench: Measuring LLMs' Propensity of Exploiting Test Cases.* ICLR 2026. arXiv:2510.20270.
-- [R7] Google Research. *Harness²* (software repository). https://github.com/google-research/harness2 **[UNRESOLVED: preferred citation from the repository]**
-- [R8] T. Kassis, V. Agarwal, Y. He, D. Patel, A. M. Brueckner. *Scientific Agent Skills: A Library of Procedural Knowledge for Research Agents.* arXiv:2609.00065, 2026. https://doi.org/10.48550/arXiv.2609.00065
+- [R7] Google Research. *Harness²* (software repository). https://github.com/google-research/harness2

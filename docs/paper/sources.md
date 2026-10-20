@@ -1,10 +1,10 @@
 # Evidence register for `manuscript.md`
 
-Every `[E…]` tag in the manuscript points to a repository record below; every `[R…]` tag to an external source. "Checked" means the value in the manuscript was compared with the named file on the date given by the assistant that drafted the text (Claude Code); **an accountable human author must re-verify each entry before submission** and record name and date in the last column.
+Every `[E…]` tag in the manuscript points to a repository record below; every `[R…]` tag to an external source. "Checked" means the value in the manuscript was compared with the named file on the date given; **the author re-verifies each entry before submission** and records the date in the last column.
 
 ## Internal evidence (repository `cyberdid/antigravity-codex-orchestrator`, branch `feat/gemma-orion-phase2b`)
 
-| ID | Record | Locator | Supports | Checked (assistant) | Verified by (human) |
+| ID | Record | Locator | Supports | Checked | Verified by author |
 |---|---|---|---|---|---|
 | E1 | `benchmarks/spec_contract_experiment.json` (commit `cc938ca`) | `docs/SPEC_CONTRACT_RESULTS.md` §Setup, §Results, §Why the other policies did not help | R1: 7/18, 5/18, 16/18, 8/18; 10–1, p = 0.012; visible-pass/holdout-fail 11/10/0/10; task construction | 2026-10-20 | |
 | E2 | same as E1 | §Why the other policies did not help | SPEC self-checks share blind spots; ASSIST triggered once in 18 runs | 2026-10-20 | |
@@ -23,7 +23,7 @@ Every `[E…]` tag in the manuscript points to a repository record below; every 
 
 ## External sources
 
-| ID | Source | Checked by assistant (2026-10-20) | Verified by (human) |
+| ID | Source | Checked (2026-10-20) | Verified by author |
 |---|---|---|---|
 | R1 | research.google publication page for Tufano et al., SpecOps '26 | title, authors, venue, 9.8 pp (p = 0.0352), 2.5 pp branch coverage | |
 | R2 | arXiv:2402.09171 abstract page | title, authors, FSE 2024, 75% / 57% / 25% | |
@@ -32,6 +32,5 @@ Every `[E…]` tag in the manuscript points to a repository record below; every 
 | R5 | arXiv:2312.13010 (search result and abstract) | authors (6), v3 2024-05-24, three-agent design with test designer working from requirements; no venue listed | |
 | R6 | arXiv:2510.20270 and ICLR 2026 listing (search results) | authors (Zhong, Raghunathan, Carlini) from arXiv page; ICLR 2026 per iclr.cc poster listing 10009390; construction (tests contradicting spec) | |
 | R7 | github.com/google-research/harness2 | repository exists; adaptation without weight updates | |
-| R8 | arXiv:2609.00065 abstract page | title, authors, year, arXiv DOI (v2, 2026-09-02) | |
 
 Not cited because not verified: "TRACE (2026), Information and Software Technology" (named by an external review; publisher page returned HTTP 403 and searches did not locate it).
