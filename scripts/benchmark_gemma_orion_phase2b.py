@@ -2008,6 +2008,8 @@ def main() -> None:
     )
     parser.add_argument("--attempts", type=int, default=1,
                         help="Attempts per task through SelfCorrectionLoop (1 = single worker attempt)")
+    parser.add_argument("--cloud-model", default=None,
+                        help="Pin the cloud model (e.g. gemini-4-argon-medium for agy); recorded in the results")
     parser.add_argument("--cloud-backend", choices=["agy", "haiku", "luna"], default="agy",
                         help="Real cloud backend for *_ASSIST policies (owner-approved for this benchmark)")
     parser.add_argument("--resume-from", default=None,
@@ -2022,7 +2024,7 @@ def main() -> None:
             parser.error("cloud-assist policies need --attempts 2 or more")
         from antigravity_hybrid_orchestrator.architect.client import CloudArchitectClient
 
-        cloud_client = CloudArchitectClient(backend=args.cloud_backend)
+        cloud_client = CloudArchitectClient(backend=args.cloud_backend, model=args.cloud_model)
     seeds = [int(s.strip()) for s in args.seeds.split(",") if s.strip()]
     task_prefixes = [t.strip().upper() for t in args.tasks.split(",") if t.strip()]
     active_tasks = [
@@ -2062,6 +2064,7 @@ def main() -> None:
         "task_deadline_s": TASK_DEADLINE_S,
         "attempts": args.attempts,
         "cloud_backend": args.cloud_backend if cloud_client is not None else None,
+        "cloud_model": (cloud_client.model or "backend default") if cloud_client is not None else None,
         "counterbalanced_seed_order": True,
         "policies": {},
     }
