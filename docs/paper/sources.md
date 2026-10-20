@@ -23,6 +23,8 @@ Every `[E…]` tag in the manuscript points to a repository record below; every 
 | E15 | `docs/paper/PREREGISTRATION_CAMPAIGN_A.md` (commit `5c9ac2f`, pushed 2026-10-20 12:52 +03:00, before any Campaign A run) | — | Campaign A design, arms, settings, hypotheses | 2026-10-20 | |
 | E16 | `docs/paper/PREREGISTRATION_CAMPAIGN_B.md` (commit `214f0a8`, pushed 2026-10-20 19:57 +03:00, before generation) | — | Campaign B construction and design | 2026-10-20 | |
 | E17 | `scripts/paper_tasks/` (framework, tasks, `manifest.json`, commit `24ea7a0`), `tests/test_paper_tasks.py` | — | task set P1–P25, seeded visible-rule choice, invariants | 2026-10-20 | |
+| E18 | `benchmarks/campaign_a.json`, `benchmarks/campaign_a_analysis.txt` (analysis `scripts/analysis/campaign_a.py`, commit `60ba294`) | — | Campaign A results, Table 3, H1–H3, categories, cost | 2026-10-21 | |
+| E19 | `benchmarks/campaign_a_test_grading.json` (`scripts/analysis/grade_campaign_tests.py`) | — | 4 tests failing on reference fixes; adjudication | 2026-10-21 | |
 
 ## External sources
 

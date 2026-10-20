@@ -143,6 +143,34 @@ Contract tests make runs longer: in R4 the summed wall time was 929 s versus 4,0
 \item \textbf{Escalation of generation limit, thinking on retry and cloud assistance} in a two-attempt ladder: on H6–H8 the differences came from one task and were attributed to run-to-run variation [E9].
 \item \textbf{One-step harness adaptation} in the style of Harness$^{2}$: on held-out tasks the default harness verified 7/12 runs and the adapted harnesses 6/12, with longer total wall time (829 s versus 601 s); the standard and verifier-gated promotion rules made the same choices on every task, so the experiment does not distinguish them [E10].
 \end{itemize}
+\subsection*{6.8 Campaign A: 25 new tasks with seeded rule visibility (pre-registered)}
+All 225 primary runs were completed (3 arms $\times$ 25 tasks $\times$ 3 seeds) [E18]. The campaign was paused twice at the author's request and resumed from saved results with the same generated tests and checklists; nothing else changed. Each of the 25 test modules and 25 checklists was generated once with Gemini 4 Argon and reused across seeds.
+
+\textbf{Table 3. Campaign A, all runs [E18].}
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{LRRRRR}
+\toprule
+Arm & Verified & Silent false successes & Run wall time (sum) & One-time generation & Cloud tokens \\
+\midrule
+Baseline & 58/75 & 9/75 & 6,675 s & — & 0 \\
+Contract tests & 71/75 & 1/75 & 9,630 s & 626 s & 627,787 \\
+Checklist (control) & 71/75 & 1/75 & 6,983 s & 477 s & 550,901 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\textbf{Primary hypothesis (H1) not confirmed.} At task level, contract tests improved 6 tasks and worsened 1 (18 unchanged): sign test p = 0.125, sign-flip permutation p = 0.0625, mean gain in verified rate +0.17 (cluster-bootstrap 95\% CI 0.04–0.33) [E18]. The direction matches the earlier runs, but the registered test does not reach α = 0.05. The fall in silent false successes (H2) was 3 tasks lower and none higher (p = 0.25).
+
+\textbf{Contract tests did no better than the checklist (H3).} The checklist control — the same cloud model reading the same interface, returning a list of rules instead of tests — produced the same totals (71/75 verified, 1/75 silent) and the same task-level picture (contract tests vs checklist: 2 better, 2 worse, 21 equal; p = 1.0). In this campaign the benefit came from a stronger model reading the specification, not from making it executable.
+
+\textbf{Where the effect sits.} All changes are in the 10 multi-file tasks (6 better, 1 worse; mean +0.43). On the 8 single-module and 7 under-specified tasks the baseline was already verified in every run, so there was nothing to gain; no task without hidden failing rules was harmed.
+
+\textbf{Failures of the two cloud arms (forensics).} P14 with contract tests failed 3/3 by running out of attempts while the (correct) contract tests still failed; P7 with the checklist failed 3/3 the same way after the checklist spelled out the quoting rules of CSV; both are explicit failures. For P18 both generated test modules were rejected by the static validator (they used \code{\_\allowbreak{}\_\allowbreak{}dict\_\allowbreak{}\_\allowbreak{}}), so the contract-test arm ran without tests on that task, as registered.
+
+\textbf{Quality of the generated tests.} Run against the reference fixes, 4 tests in 3 of the 24 installed modules failed [E19]: three are over-constrained — on the under-specified P20 they require \code{ValueError} for an empty list and a float result, and on P12 a test requires the delegation to \code{statcore.\allowbreak{}mean} to be visible to monkey-patching, which depends on the import style rather than behaviour; the fourth (P10) expects \code{0.\allowbreak{}0} as a float where the docstring says 0.0 and the reference returns the integer 0. None of these tests caused a failed run (P12 and P20 were verified in all contract-test runs).
+
+\textbf{Cost.} Contract tests lengthened runs by 44\% (9,630 s vs 6,675 s) plus 25 s of generation per task; the checklist by 5\% plus 19 s per task. With the cloud model pinned, the end-to-end overhead is far below the 1.7–4.3$\times$ measured in R4–R5 with the CLI's default model.
+
 \section*{7. Discussion}
 The results support a specific reading: on these tasks the local agent's binding constraint was \emph{coverage of the specification by its stopping criterion}, not its ability to write the code. Executable checks derived from the docstring changed what ``done'' meant for the agent, and most silent failures became either verified completions or explicit failures. That the same model checking itself did not help, while a different model writing tests from the interface did, is consistent with the self-checks sharing the agent's blind spots (Section 6.7).
 
