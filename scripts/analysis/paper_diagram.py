@@ -55,7 +55,7 @@ def main():
     # Flows (orange = the only traffic across the boundary).
     arrow(ax, (24, 36), (33, 36), "reads", label_xy=(28.5, 37))
     arrow(ax, (55, 36), (93, 36), "interface only", color=ACCENT, lw=1.6, label_xy=(74, 37.2))
-    arrow(ax, (100, 24), (83, 15), "test module", color=ACCENT, lw=1.6, label_xy=(92.5, 19.5), ha="left")
+    arrow(ax, (100, 24), (83, 15), "test module", color=ACCENT, lw=1.6, label_xy=(97, 16.5), ha="left")
     arrow(ax, (63, 14), (55, 14), "installs", label_xy=(59, 15))
     arrow(ax, (40, 22), (17, 28), "edits", rad=0.0, label_xy=(26.5, 25.6))
     arrow(ax, (33, 11), (24, 11), "run ends", label_xy=(28.5, 12))

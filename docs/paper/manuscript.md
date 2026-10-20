@@ -146,7 +146,7 @@ The effect is not uniform. Eleven of nineteen tasks were unchanged, because the 
 
 ## 8. Threats to validity
 
-- **Task selection.** All 19 tasks are small Python repair tasks written by the authors; the six fresh tasks were written *after* the failure mode had been identified, so they over-represent tasks where the method helps. The effect size on naturally occurring bugs is unknown.
+- **Task selection.** All 19 tasks are small Python repair tasks written by the author; the six fresh tasks were written *after* the failure mode had been identified, so they over-represent tasks where the method helps. The effect size on naturally occurring bugs is unknown.
 - **Development reuse.** Tasks H1–H13 were used while developing the mechanism; R4 is the only run on unseen tasks.
 - **Statistical unit.** Seeds of one task are not independent; run-level p-values overstate generalisation to new tasks. Task-level tests (Table 2) are post hoc and, for the fresh tasks alone, not significant.
 - **Pre-registration.** R4's registration lives in a local ledger outside version control and is not independently time-stamped.
