@@ -212,3 +212,22 @@ def test_independent_checks_ignore_generated_tests_and_survive_hangs(tmp_path):
     visible, held, output = _independent_checks(tmp_path, ["test_mod"], holdout, timeout=5.0)
     assert visible is True
     assert held is False and "timed out" in output
+
+
+def test_resume_prefills_completed_runs_and_contract_tests(tmp_path):
+    import json as _json
+    import benchmark_gemma_orion_phase2b as bench
+
+    partial = tmp_path / "x.partial.json"
+    partial.write_text(_json.dumps({"complete": False, "git_commit": "abc", "runs": [
+        {"policy_id": "P1_STAGE_ADAPTIVE", "seed": 303, "task_id": "H1_fdr_step_up_fix", "metadata": {}},
+        {"policy_id": "P1_STAGE_ADAPTIVE_SPECTESTS", "seed": 303, "task_id": "H2_pareto_judge_fix",
+         "metadata": {"spec_tests_source": "SRC", "spec_tests_tokens": 7, "spec_tests_events": []}},
+        {"policy_id": "OTHER", "seed": 303, "task_id": "H1_fdr_step_up_fix", "metadata": {}},
+    ]}))
+    bench.SPEC_TEST_CACHE.clear()
+    done, prefill = bench._load_resume(partial, ["P1_STAGE_ADAPTIVE", "P1_STAGE_ADAPTIVE_SPECTESTS"], [303, 404])
+    assert done == {("P1_STAGE_ADAPTIVE", 303, "H1_fdr_step_up_fix"),
+                    ("P1_STAGE_ADAPTIVE_SPECTESTS", 303, "H2_pareto_judge_fix")}
+    assert len(prefill["P1_STAGE_ADAPTIVE"][303]) == 1 and prefill["P1_STAGE_ADAPTIVE"][404] == []
+    assert bench.SPEC_TEST_CACHE["H2_pareto_judge_fix"]["source"] == "SRC"

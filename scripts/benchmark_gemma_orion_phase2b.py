@@ -1701,6 +1701,28 @@ def _aggregate_attempts(attempts: List[Dict[str, Any]]) -> Dict[str, Any]:
     return merged
 
 
+def _load_resume(path: Path, policies: List[str], seeds: List[int]):
+    """Completed runs from a .partial.json: (done keys, per-policy/seed prefill).
+
+    Also restores the cached contract tests so a resumed run uses the same tests.
+    """
+    data = json.loads(Path(path).read_text(encoding="utf-8"))
+    prefill: Dict[str, Dict[int, List[Dict[str, Any]]]] = {p: {s: [] for s in seeds} for p in policies}
+    done = set()
+    for run in data.get("runs", []):
+        pol, seed, task_id = run.get("policy_id"), run.get("seed"), run.get("task_id")
+        if pol not in prefill or seed not in prefill[pol]:
+            continue
+        prefill[pol][seed].append(run)
+        done.add((pol, seed, task_id))
+        meta = run.get("metadata", {}) or {}
+        if meta.get("spec_tests_source") and task_id not in SPEC_TEST_CACHE:
+            SPEC_TEST_CACHE[task_id] = {"source": meta["spec_tests_source"],
+                                        "tokens": meta.get("spec_tests_tokens", 0),
+                                        "events": meta.get("spec_tests_events", [])}
+    return done, prefill
+
+
 def _independent_checks(ws: Path, visible_modules: List[str], holdout_fn, timeout: float = 20.0):
     """Run the task's own visible tests and the hidden holdout; a hang counts as a failure.
 
@@ -1906,6 +1928,8 @@ def main() -> None:
                         help="Attempts per task through SelfCorrectionLoop (1 = single worker attempt)")
     parser.add_argument("--cloud-backend", choices=["agy", "haiku", "luna"], default="agy",
                         help="Real cloud backend for *_ASSIST policies (owner-approved for this benchmark)")
+    parser.add_argument("--resume-from", default=None,
+                        help="A .partial.json from an interrupted run: skip its completed runs and reuse its contract tests")
     args = parser.parse_args()
 
     selected_policies = [p.strip().upper() for p in args.policies.split(",") if p.strip()]
@@ -1963,6 +1987,16 @@ def main() -> None:
     per_policy_seed_tasks: Dict[str, Dict[int, List[Dict[str, Any]]]] = {
         pol_id: {s: [] for s in seeds} for pol_id in selected_policies
     }
+    resumed_done: set = set()
+    if args.resume_from:
+        resumed_done, per_policy_seed_tasks = _load_resume(Path(args.resume_from), selected_policies, seeds)
+        active_ids = {tid for tid, _, _ in active_tasks}
+        per_policy_seed_tasks = {pol: {sd: [r for r in runs if r.get("task_id") in active_ids]
+                                       for sd, runs in by_seed.items()}
+                                 for pol, by_seed in per_policy_seed_tasks.items()}
+        resumed_done = {key for key in resumed_done if key[2] in active_ids}
+        results["resumed_from"] = {"path": args.resume_from, "completed_runs": len(resumed_done)}
+        print(f"Resuming: {len(resumed_done)} completed runs loaded from {args.resume_from}", flush=True)
 
     for seed_idx, seed in enumerate(seeds):
         os.environ["OLLAMA_SEED"] = str(seed)
@@ -1979,6 +2013,8 @@ def main() -> None:
 
             print(f"\n=== Running Seed {seed} | Policy {pol_id} ===", flush=True)
             for tid, setup_fn, holdout_fn in active_tasks:
+                if (pol_id, seed, tid) in resumed_done:
+                    continue
                 print(f"  -> Task {tid} ...", end="", flush=True)
                 tr = run_single_task(pol_id, seed, tid, setup_fn, holdout_fn,
                                      attempts=args.attempts, cloud_client=cloud_client)
