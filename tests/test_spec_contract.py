@@ -328,3 +328,35 @@ def test_install_spec_tests_caches_per_disclosure_level(tmp_path):
         meta = bench._install_spec_tests("H6_x", setup_h6_workspace, ws, setup_h6_workspace(ws), Cloud(), level)
         assert meta["spec_tests_disclosure"] == level and meta["spec_tests_wall_s"] is not None
     assert len(calls) == 2
+
+
+def test_cloud_failure_aborts_instead_of_running_without_tests(tmp_path):
+    import benchmark_gemma_orion_phase2b as bench
+
+    class Down:
+        def complete(self, prompt):
+            raise RuntimeError("quota exhausted")
+
+    bench.SPEC_TEST_CACHE.clear()
+    bench.SPEC_CHECKLIST_CACHE.clear()
+    ws = tmp_path / "ws"
+    ws.mkdir()
+    with pytest.raises(bench.CloudGenerationError):
+        bench._install_spec_tests("H6_x", setup_h6_workspace, ws, setup_h6_workspace(ws), Down())
+    with pytest.raises(bench.CloudGenerationError):
+        bench._install_spec_checklist("H6_x", setup_h6_workspace, setup_h6_workspace(ws), Down())
+    assert not bench.SPEC_TEST_CACHE and not bench.SPEC_CHECKLIST_CACHE
+
+
+def test_rejected_reply_is_a_legitimate_outcome(tmp_path):
+    import benchmark_gemma_orion_phase2b as bench
+
+    class Unsafe:
+        def complete(self, prompt):
+            return "```python\nimport os\n" + GOOD_TESTS + "```", 1, 1
+
+    bench.SPEC_TEST_CACHE.clear()
+    ws = tmp_path / "ws"
+    ws.mkdir()
+    meta = bench._install_spec_tests("H6_y", setup_h6_workspace, ws, setup_h6_workspace(ws), Unsafe())
+    assert meta["spec_tests_installed"] is False

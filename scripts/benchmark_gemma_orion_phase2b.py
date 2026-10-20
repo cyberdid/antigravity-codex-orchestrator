@@ -1792,6 +1792,17 @@ def _independent_checks(ws: Path, visible_modules: List[str], holdout_fn, timeou
     return visible, held, output
 
 
+class CloudGenerationError(RuntimeError):
+    """The cloud call failed (quota, network); the run must stop instead of running the arm without its input."""
+
+
+def _abort_on_cloud_failure(events: List[Dict[str, Any]], task_id: str) -> None:
+    # A rejected reply (static validation) is a legitimate outcome of the arm; a failed call is not.
+    failed = [e for e in events if e.get("event", "").endswith("_failed")]
+    if failed:
+        raise CloudGenerationError(f"{task_id}: cloud generation failed: {failed[-1].get('error', '')[:300]}")
+
+
 SPEC_TEST_CACHE: Dict[Tuple[str, str], Dict[str, Any]] = {}
 SPEC_CHECKLIST_CACHE: Dict[str, Dict[str, Any]] = {}
 
@@ -1812,6 +1823,7 @@ def _install_spec_tests(task_id: str, setup_fn, ws: Path, subtask: SubTask, clou
             source = writer.generate(fresh, setup_fn(fresh))
         finally:
             shutil.rmtree(fresh, ignore_errors=True)
+        _abort_on_cloud_failure(events, task_id)
         # One-time cost per task, outside the per-run wall clock; reported separately.
         SPEC_TEST_CACHE[key] = {"source": source, "tokens": writer.tokens_used, "events": events,
                                 "wall_s": round(time.monotonic() - started, 3)}
@@ -1843,6 +1855,7 @@ def _install_spec_checklist(task_id: str, setup_fn, subtask: SubTask, cloud_clie
             source = writer.generate(fresh, setup_fn(fresh))
         finally:
             shutil.rmtree(fresh, ignore_errors=True)
+        _abort_on_cloud_failure(events, task_id)
         SPEC_CHECKLIST_CACHE[task_id] = {"source": source, "tokens": writer.tokens_used, "events": events,
                                          "wall_s": round(time.monotonic() - started, 3)}
     cached = SPEC_CHECKLIST_CACHE[task_id]

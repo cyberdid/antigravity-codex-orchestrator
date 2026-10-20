@@ -20,7 +20,7 @@ In Campaign A and the earlier study the buggy code was written by the author, wh
 
 ## 3. Runs
 
-Identical to Campaign A (`PREREGISTRATION_CAMPAIGN_A.md` §1): same agent, settings, cloud model pinned to `gemini-4-argon-medium`, seeds 303/404/505, arms baseline (`P1_STAGE_ADAPTIVE`), contract tests (`P1_STAGE_ADAPTIVE_SPECTESTS`) and checklist control (`P1_STAGE_ADAPTIVE_CHECKLIST`). No ablation arms.
+Identical to Campaign A (`PREREGISTRATION_CAMPAIGN_A.md` §1): same agent and settings, cloud model pinned to `gemini-3.8-flash-medium` (see Amendment 1), seeds 303/404/505, arms baseline (`P1_STAGE_ADAPTIVE`), contract tests (`P1_STAGE_ADAPTIVE_SPECTESTS`) and checklist control (`P1_STAGE_ADAPTIVE_CHECKLIST`). No ablation arms.
 
 ## 4. Outcomes, hypotheses, analysis
 
@@ -29,3 +29,7 @@ As in Campaign A §3–4, on the Campaign B tasks: **H1 (primary)** contract tes
 ## 5. Run rules
 
 As in Campaign A §5. Interruptions are resumed from saved partial results and reported.
+
+## Amendment 1 (2026-10-20, before any Campaign B generation or run)
+
+The cloud model for Campaign B is changed from `gemini-4-argon-medium` to `gemini-3.8-flash-medium`. Reasons: (1) the Gemini 4 Argon quota on the account is small, and Campaign A had already used about 1.2 million tokens for 50 generations (about 22–25 thousand tokens per call, most of it the CLI's fixed context), so Campaign B could exhaust it mid-run; (2) Gemini 3.8 Flash is the architect model in Google's announcement of the architect–builder pattern that this study evaluates. All three Campaign B arms use the same cloud model, so the within-campaign comparisons are unaffected; comparisons between Campaigns A and B confound the bug source with the cloud model and are reported as descriptive only. In addition, a failed cloud call now stops the run instead of letting the arm run without its tests or checklist; a reply rejected by static validation remains a legitimate outcome of the arm, as registered.

@@ -26,7 +26,7 @@ case "${1:-}" in
       echo "[$(date +%T)] campaign B at $(git log --oneline -1); tasks $TASKS ${RESUME[*]}" >> "$LOG"
       [ -f "$OUT" ] || .venv/bin/python3 scripts/benchmark_gemma_orion_phase2b.py \
         --policies P1_STAGE_ADAPTIVE,P1_STAGE_ADAPTIVE_SPECTESTS,P1_STAGE_ADAPTIVE_CHECKLIST --seeds 303,404,505 \
-        --tasks "$TASKS" --attempts 2 --cloud-backend agy --cloud-model gemini-4-argon-medium \
+        --tasks "$TASKS" --attempts 2 --cloud-backend agy --cloud-model gemini-3.8-flash-medium \
         "${RESUME[@]}" --output "$OUT" >> "$LOG" 2>&1
       echo "[$(date +%T)] run exited rc=$?" >> "$LOG"
     fi
