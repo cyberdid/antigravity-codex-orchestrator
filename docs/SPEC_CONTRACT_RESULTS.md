@@ -1,6 +1,6 @@
 # Specification Coverage for a Local 12B Coding Worker — Results (2026-10-19/20)
 
-> **Abstract.** On specification-heavy repair tasks, `gemma4:12b` passes the visible tests and silently violates rules written only in the docstring. Contract tests written by a cloud model from signatures, docstrings and data-type fields alone (no implementation) raise verified completion on such tasks from 2/12 to 10/12 (paired 8–0, p = 0.0078; replicates a first run at 16/18 vs 7/18, p = 0.012) and eliminate silent false successes (10/39 → 0/39). They must see the full interface: without data-type fields they produced impossible tests that hurt already-solved tasks (p = 0.031). Self-checks by the same 12B model and guidance after failure did not help. Across all 13 tasks the gain is 29/39 → 33/39 (not significant), at ~1.8× wall time. Details: final section "Final run" and "Summary of findings".
+> **Abstract.** On specification-heavy repair tasks, `gemma4:12b` passes the visible tests and silently violates rules written only in the docstring. Contract tests written by a cloud model from signatures, docstrings and data-type fields alone (no implementation) raise verified completion on such tasks from 2/12 to 10/12 (paired 8–0, p = 0.0078; replicates a first run at 16/18 vs 7/18, p = 0.012) and eliminate silent false successes (10/39 → 0/39). They must see the full interface: without data-type fields they produced impossible tests that hurt already-solved tasks (p = 0.031). Self-checks by the same 12B model and guidance after failure did not help. A pre-registered confirmatory run on six fresh tasks reproduced the effect (4/18 → 11/18, p = 0.039). With corrected measurement over all 19 tasks, verified completion is 32/57 → 48/57 (18 wins, 2 losses, p = 0.0004), silent false successes fall from 25/57 to 3/57, on the nine earlier tasks the baseline solves 26 of 27 SPECTESTS runs stay verified (one H6 loss), and none of the 19 generated test modules contains a wrong test; cost is 1.7–4.3× wall time. Details: sections "Confirmatory run" and "Secondary run".
 
 ## Question
 
@@ -145,3 +145,34 @@ Data: `benchmarks/spec_contract_confirm_fresh.json`.
 - **H17 (all 3 silent failures under SPECTESTS):** reconstructing the final code from the recorded diffs shows the only violated holdout rules are empty pairs (`"a=1;;b=2"`, `"a=1;"` must raise). That reading of the docstring ("a pair without '='") is arguably ambiguous — a task-design weakness. **Sensitivity analysis** grading H17 without those two cases: baseline 7/18, SPECTESTS 14/18, same 8 wins / 1 loss, p = 0.039. The conclusion does not depend on the ambiguous cases.
 - **Remaining SPECTESTS failures** (H16 ×2, H18 ×2): the worker ran out of attempts/time (325–600 s) while the stricter contract tests still failed — explicit failures, not silent ones.
 - **Cost:** 4.3× wall time and 4.6× worker tokens on these tasks (the baseline is fast because it stops as soon as the weak visible tests pass), plus ~15k cloud tokens per task.
+
+## Secondary run: baseline vs SPECTESTS v2 on H1–H13 with the corrected checks
+
+Purpose: repeat the "Final run" comparison on all 13 earlier tasks with the corrected independent checks and the stall-continuation change, so that every reported number uses the same measurement. The pre-registration (previous section) declared this comparison on all 19 tasks as the secondary endpoint before either run started.
+
+Data: `benchmarks/spec_contract_confirm_all.json`. 2 policies × 13 tasks × seeds 303/404/505 = 78 runs, `--attempts 2`. The run was interrupted by a planned shutdown after 36 runs (code `7a369ac`; the `-dirty` flag came from uncommitted docs only) and resumed from its saved partial results with `--resume-from` (`2c59e38`, which adds only the resume logic); the resumed half reused the same generated contract tests. Analysis: `scripts/analysis/analyze_spec.py`, test grading: `scripts/analysis/grade_contract_tests.py`.
+
+| Policy | Verified | 95% CI | Silent false successes | Wall (sum) | Worker tokens | Cloud tokens |
+|---|---:|---|---:|---:|---:|---:|
+| baseline | 28/39 | 0.56–0.83 | 11/39 | 3,092 s | 614,904 | 0 |
+| **SPECTESTS v2** | **37/39** | 0.83–0.99 | **0/39** | 5,273 s | 1,378,211 | ~264k (13 tasks) |
+
+**Paired: 10 wins, 1 loss, 28 ties — p = 0.012.** Unlike the earlier "Final run" (29/39 → 33/39, p = 0.39), the all-task difference is now significant.
+
+| Task | baseline | SPECTESTS |
+|---|---|---|
+| H1–H5, H7, H8, H11 | 24/24 | 24/24 |
+| H6 duration | 3/3 | 2/3 |
+| H9 semver | 1/3 (visible only ×2) | **3/3** |
+| H10 IPv4 | 0/3 (visible only ×3) | **3/3** |
+| H12 hex color | 0/3 (visible only ×3) | **3/3** |
+| H13 range | 0/3 (visible only ×3) | 2/3 |
+
+- **Little harm on solved tasks:** on the nine tasks the baseline solves 3/3, SPECTESTS keeps 26 of 27 runs verified; the one loss is H6 seed 303 (the v1 control without data types lost 6 of 21 runs on such tasks).
+- **Contract tests correct:** all 13 generated modules pass 100% on reference implementations (5–23 tests each) and fail on the buggy originals; 0 wrong tests.
+- **The two SPECTESTS failures are explicit:** H6 seed 303 (neither check passes after both attempts) and H13 seed 303 (visible tests pass, the contract tests did not, so the worker did not claim success). Every one of the 11 baseline failures is a silent one: the worker reported success.
+- **Cost:** 1.7× wall time and 2.2× worker tokens, plus ~20k cloud tokens per task (one generation call per task, reused across seeds).
+
+### All runs with the corrected checks (19 tasks)
+
+Pooling the confirmatory run (H14–H19) and this run (H1–H13), both with identical engine code and checks: baseline **32/57**, SPECTESTS **48/57**; 18 wins, 2 losses (p = 0.0004; secondary endpoint, pre-registered); silent false successes **25/57 → 3/57** (the 3 are the ambiguous H17 cases).

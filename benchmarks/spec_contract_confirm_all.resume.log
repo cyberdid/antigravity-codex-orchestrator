@@ -1,0 +1,62 @@
+[10:25:10] paused archive-index timers
+[10:25:10] resume at 2c59e38 feat(bench): resume an interrupted run from its partial results
+Resuming: 36 completed runs loaded from benchmarks/spec_contract_confirm_all.partial.backup.json
+
+=== Running Seed 303 | Policy P1_STAGE_ADAPTIVE ===
+
+=== Running Seed 303 | Policy P1_STAGE_ADAPTIVE_SPECTESTS ===
+
+=== Running Seed 404 | Policy P1_STAGE_ADAPTIVE_SPECTESTS ===
+  -> Task H11_parse_bool_multi_defect_fix ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=53.0063s
+  -> Task H12_parse_hex_color_multi_defect_fix ... verified=True native=True turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=51.264s
+  -> Task H13_parse_range_multi_defect_fix ... verified=True native=True turns=12 tools=11 trunc=0 rec_attempts=0 stage_hints=11 wall=86.4681s
+
+=== Running Seed 404 | Policy P1_STAGE_ADAPTIVE ===
+  -> Task H1_fdr_step_up_fix ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=46.9971s
+  -> Task H2_pareto_judge_fix ... verified=True native=True turns=13 tools=12 trunc=0 rec_attempts=0 stage_hints=12 wall=76.4401s
+  -> Task H3_group_kfold_leakage_fix ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=59.326s
+  -> Task H4_weighted_mean_two_module_fix ... verified=True native=True turns=11 tools=9 trunc=1 rec_attempts=1 stage_hints=9 wall=154.1548s
+  -> Task H5_merge_intervals_multi_defect_fix ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=36.9851s
+  -> Task H6_parse_duration_multi_defect_fix ... verified=True native=False turns=12 tools=10 trunc=1 rec_attempts=0 stage_hints=10 wall=300.1232s
+  -> Task H7_rolling_mean_multi_defect_fix ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=30.7446s
+  -> Task H8_slugify_multi_defect_fix ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=28.6605s
+  -> Task H9_parse_semver_multi_defect_fix ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=52.8706s
+  -> Task H10_parse_ipv4_multi_defect_fix ... verified=False native=False turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=39.9615s
+  -> Task H11_parse_bool_multi_defect_fix ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=25.9361s
+  -> Task H12_parse_hex_color_multi_defect_fix ... verified=False native=False turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=30.8592s
+  -> Task H13_parse_range_multi_defect_fix ... verified=False native=False turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=34.426s
+
+=== Running Seed 505 | Policy P1_STAGE_ADAPTIVE ===
+  -> Task H1_fdr_step_up_fix ... verified=True native=True turns=9 tools=7 trunc=1 rec_attempts=1 stage_hints=7 wall=180.8931s
+  -> Task H2_pareto_judge_fix ... verified=True native=True turns=14 tools=13 trunc=0 rec_attempts=0 stage_hints=13 wall=80.828s
+  -> Task H3_group_kfold_leakage_fix ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=62.7583s
+  -> Task H4_weighted_mean_two_module_fix ... verified=True native=True turns=10 tools=9 trunc=0 rec_attempts=0 stage_hints=9 wall=40.0269s
+  -> Task H5_merge_intervals_multi_defect_fix ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=38.8131s
+  -> Task H6_parse_duration_multi_defect_fix ... verified=True native=True turns=13 tools=11 trunc=2 rec_attempts=0 stage_hints=11 wall=598.9881s
+  -> Task H7_rolling_mean_multi_defect_fix ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=31.4251s
+  -> Task H8_slugify_multi_defect_fix ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=29.2268s
+  -> Task H9_parse_semver_multi_defect_fix ... verified=False native=False turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=100.758s
+  -> Task H10_parse_ipv4_multi_defect_fix ... verified=False native=False turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=42.653s
+  -> Task H11_parse_bool_multi_defect_fix ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=27.0581s
+  -> Task H12_parse_hex_color_multi_defect_fix ... verified=False native=False turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=31.1107s
+  -> Task H13_parse_range_multi_defect_fix ... verified=False native=False turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=36.1118s
+
+=== Running Seed 505 | Policy P1_STAGE_ADAPTIVE_SPECTESTS ===
+  -> Task H1_fdr_step_up_fix ... verified=True native=True turns=24 tools=21 trunc=1 rec_attempts=0 stage_hints=21 wall=398.5764s
+  -> Task H2_pareto_judge_fix ... verified=True native=True turns=11 tools=10 trunc=0 rec_attempts=0 stage_hints=10 wall=69.6709s
+  -> Task H3_group_kfold_leakage_fix ... verified=True native=True turns=10 tools=9 trunc=0 rec_attempts=0 stage_hints=9 wall=72.3742s
+  -> Task H4_weighted_mean_two_module_fix ... verified=True native=True turns=14 tools=13 trunc=0 rec_attempts=0 stage_hints=13 wall=71.6891s
+  -> Task H5_merge_intervals_multi_defect_fix ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=48.913s
+  -> Task H6_parse_duration_multi_defect_fix ... verified=True native=True turns=16 tools=13 trunc=2 rec_attempts=0 stage_hints=12 wall=535.0942s
+  -> Task H7_rolling_mean_multi_defect_fix ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=42.8012s
+  -> Task H8_slugify_multi_defect_fix ... verified=True native=True turns=9 tools=8 trunc=0 rec_attempts=0 stage_hints=8 wall=63.4405s
+  -> Task H9_parse_semver_multi_defect_fix ... verified=True native=True turns=9 tools=8 trunc=0 rec_attempts=0 stage_hints=8 wall=105.2478s
+  -> Task H10_parse_ipv4_multi_defect_fix ... verified=True native=True turns=12 tools=11 trunc=0 rec_attempts=0 stage_hints=11 wall=92.7301s
+  -> Task H11_parse_bool_multi_defect_fix ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=38.0706s
+  -> Task H12_parse_hex_color_multi_defect_fix ... verified=True native=True turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=52.3614s
+  -> Task H13_parse_range_multi_defect_fix ... verified=True native=True turns=32 tools=31 trunc=0 rec_attempts=0 stage_hints=30 wall=305.289s
+
+Saved Phase 2B benchmark results to benchmarks/spec_contract_confirm_all.json
+[11:37:13] exited rc=0
+[11:37:13] restored archive-index timers
+[11:37:13] DONE
