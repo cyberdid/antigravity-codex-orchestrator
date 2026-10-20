@@ -1,0 +1,7102 @@
+{
+ "over_constraint": {
+  "H1": [
+   {
+    "impl": "ce4ce79506",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_control.json:55aac7e368",
+    "passes": false,
+    "failing": [
+     "test_all_hypotheses_rejected (test_spec_contract.TestBenjaminiHochberg.test_all_hypotheses_rejected)",
+     "test_all_one_p_values (test_spec_contract.TestBenjaminiHochberg.test_all_one_p_values)",
+     "test_all_zero_p_values (test_spec_contract.TestBenjaminiHochberg.test_all_zero_p_values)",
+     "test_empty_p_values_list (test_spec_contract.TestBenjaminiHochberg.test_empty_p_values_list)",
+     "test_empty_p_values_tuple (test_spec_contract.TestBenjaminiHochberg.test_empty_p_values_tuple)",
+     "test_exact_equality_multiple_hypotheses (test_spec_contract.TestBenjaminiHochberg.test_exact_equality_multiple_hypotheses)",
+     "test_extreme_p_values_zero_and_one (test_spec_contract.TestBenjaminiHochberg.test_extreme_p_values_zero_and_one)",
+     "test_no_k_satisfies_inequality (test_spec_contract.TestBenjaminiHochberg.test_no_k_satisfies_inequality)",
+     "test_reverse_sorted_input_preserves_order (test_spec_contract.TestBenjaminiHochberg.test_reverse_sorted_input_preserves_order)",
+     "test_single_p_value_exact_threshold_boundary (test_spec_contract.TestBenjaminiHochberg.test_single_p_value_exact_threshold_boundary)",
+     "test_single_p_value_not_rejected (test_spec_contract.TestBenjaminiHochberg.test_single_p_value_not_rejected)",
+     "test_single_p_value_rejected (test_spec_contract.TestBenjaminiHochberg.test_single_p_value_rejected)",
+     "test_some_hypotheses_rejected_sorted (test_spec_contract.TestBenjaminiHochberg.test_some_hypotheses_rejected_sorted)",
+     "test_step_up_rejects_earlier_hypotheses_exceeding_threshold (test_spec_contract.TestBenjaminiHochberg.test_step_up_rejects_earlier_hypotheses_exceeding_threshold)",
+     "test_step_up_with_intermediate_violation_and_scrambled_order (test_spec_contract.TestBenjaminiHochberg.test_step_up_with_intermediate_violation_and_scrambled_order)",
+     "test_tied_p_values_all_rejected (test_spec_contract.TestBenjaminiHochberg.test_tied_p_values_all_rejected)",
+     "test_tied_p_values_none_rejected (test_spec_contract.TestBenjaminiHochberg.test_tied_p_values_none_rejected)",
+     "test_tuple_input_sequence (test_spec_contract.TestBenjaminiHochberg.test_tuple_input_sequence)",
+     "test_unsorted_input_preserves_hypothesis_order (test_spec_contract.TestBenjaminiHochberg.test_unsorted_input_preserves_hypothesis_order)"
+    ]
+   },
+   {
+    "impl": "ce4ce79506",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_v2.json:4cde9ea8db",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "ce4ce79506",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_confirm_all.json:0fc77d106c",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "6ae6bcd819",
+    "from": "spec_contract_confirm_all.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_control.json:55aac7e368",
+    "passes": false,
+    "failing": [
+     "test_all_hypotheses_rejected (test_spec_contract.TestBenjaminiHochberg.test_all_hypotheses_rejected)",
+     "test_all_one_p_values (test_spec_contract.TestBenjaminiHochberg.test_all_one_p_values)",
+     "test_all_zero_p_values (test_spec_contract.TestBenjaminiHochberg.test_all_zero_p_values)",
+     "test_empty_p_values_list (test_spec_contract.TestBenjaminiHochberg.test_empty_p_values_list)",
+     "test_empty_p_values_tuple (test_spec_contract.TestBenjaminiHochberg.test_empty_p_values_tuple)",
+     "test_exact_equality_multiple_hypotheses (test_spec_contract.TestBenjaminiHochberg.test_exact_equality_multiple_hypotheses)",
+     "test_extreme_p_values_zero_and_one (test_spec_contract.TestBenjaminiHochberg.test_extreme_p_values_zero_and_one)",
+     "test_no_k_satisfies_inequality (test_spec_contract.TestBenjaminiHochberg.test_no_k_satisfies_inequality)",
+     "test_reverse_sorted_input_preserves_order (test_spec_contract.TestBenjaminiHochberg.test_reverse_sorted_input_preserves_order)",
+     "test_single_p_value_exact_threshold_boundary (test_spec_contract.TestBenjaminiHochberg.test_single_p_value_exact_threshold_boundary)",
+     "test_single_p_value_not_rejected (test_spec_contract.TestBenjaminiHochberg.test_single_p_value_not_rejected)",
+     "test_single_p_value_rejected (test_spec_contract.TestBenjaminiHochberg.test_single_p_value_rejected)",
+     "test_some_hypotheses_rejected_sorted (test_spec_contract.TestBenjaminiHochberg.test_some_hypotheses_rejected_sorted)",
+     "test_step_up_rejects_earlier_hypotheses_exceeding_threshold (test_spec_contract.TestBenjaminiHochberg.test_step_up_rejects_earlier_hypotheses_exceeding_threshold)",
+     "test_step_up_with_intermediate_violation_and_scrambled_order (test_spec_contract.TestBenjaminiHochberg.test_step_up_with_intermediate_violation_and_scrambled_order)",
+     "test_tied_p_values_all_rejected (test_spec_contract.TestBenjaminiHochberg.test_tied_p_values_all_rejected)",
+     "test_tied_p_values_none_rejected (test_spec_contract.TestBenjaminiHochberg.test_tied_p_values_none_rejected)",
+     "test_tuple_input_sequence (test_spec_contract.TestBenjaminiHochberg.test_tuple_input_sequence)",
+     "test_unsorted_input_preserves_hypothesis_order (test_spec_contract.TestBenjaminiHochberg.test_unsorted_input_preserves_hypothesis_order)"
+    ]
+   },
+   {
+    "impl": "6ae6bcd819",
+    "from": "spec_contract_confirm_all.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_v2.json:4cde9ea8db",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "6ae6bcd819",
+    "from": "spec_contract_confirm_all.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_confirm_all.json:0fc77d106c",
+    "passes": true,
+    "failing": []
+   }
+  ],
+  "H2": [
+   {
+    "impl": "b7acd96487",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_control.json:9c66185c0a",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "b7acd96487",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_v2.json:15a3b702c2",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "b7acd96487",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_confirm_all.json:038c189149",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "18d264110a",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_control.json:9c66185c0a",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "18d264110a",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_v2.json:15a3b702c2",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "18d264110a",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_confirm_all.json:038c189149",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "def82ce246",
+    "from": "spec_contract_v2.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_control.json:9c66185c0a",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "def82ce246",
+    "from": "spec_contract_v2.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_v2.json:15a3b702c2",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "def82ce246",
+    "from": "spec_contract_v2.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_confirm_all.json:038c189149",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "f9b55a36ea",
+    "from": "spec_contract_confirm_all.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_control.json:9c66185c0a",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "f9b55a36ea",
+    "from": "spec_contract_confirm_all.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_v2.json:15a3b702c2",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "f9b55a36ea",
+    "from": "spec_contract_confirm_all.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_confirm_all.json:038c189149",
+    "passes": true,
+    "failing": []
+   }
+  ],
+  "H3": [
+   {
+    "impl": "0886bafffe",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_control.json:a8bf8e4a6b",
+    "passes": false,
+    "failing": [
+     "test_accepts_sequence_of_records_with_integer_group_ids (test_spec_contract.TestGroupKFoldSplits.test_accepts_sequence_of_records_with_integer_group_ids)",
+     "test_minimal_valid_two_splits_two_groups (test_spec_contract.TestGroupKFoldSplits.test_minimal_valid_two_splits_two_groups)",
+     "test_multiple_groups_interleaved_and_order_preservation (test_spec_contract.TestGroupKFoldSplits.test_multiple_groups_interleaved_and_order_preservation)",
+     "test_order_of_first_appearance_and_modulo_assignment (test_spec_contract.TestGroupKFoldSplits.test_order_of_first_appearance_and_modulo_assignment)",
+     "test_return_structure_and_types (test_spec_contract.TestGroupKFoldSplits.test_return_structure_and_types)",
+     "test_unique_groups_equal_to_n_splits (test_spec_contract.TestGroupKFoldSplits.test_unique_groups_equal_to_n_splits)",
+     "test_value_error_when_fewer_unique_groups_than_n_splits (test_spec_contract.TestGroupKFoldSplits.test_value_error_when_fewer_unique_groups_than_n_splits)",
+     "test_value_error_when_n_splits_is_negative (test_spec_contract.TestGroupKFoldSplits.test_value_error_when_n_splits_is_negative)",
+     "test_value_error_when_n_splits_is_one (test_spec_contract.TestGroupKFoldSplits.test_value_error_when_n_splits_is_one)",
+     "test_value_error_when_n_splits_is_zero (test_spec_contract.TestGroupKFoldSplits.test_value_error_when_n_splits_is_zero)",
+     "test_value_error_when_single_group_with_n_splits_two (test_spec_contract.TestGroupKFoldSplits.test_value_error_when_single_group_with_n_splits_two)"
+    ]
+   },
+   {
+    "impl": "0886bafffe",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_v2.json:3ca6367859",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "0886bafffe",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_confirm_all.json:5c4fde411c",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "ce8a7ab253",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_control.json:a8bf8e4a6b",
+    "passes": false,
+    "failing": [
+     "test_accepts_sequence_of_records_with_integer_group_ids (test_spec_contract.TestGroupKFoldSplits.test_accepts_sequence_of_records_with_integer_group_ids)",
+     "test_minimal_valid_two_splits_two_groups (test_spec_contract.TestGroupKFoldSplits.test_minimal_valid_two_splits_two_groups)",
+     "test_multiple_groups_interleaved_and_order_preservation (test_spec_contract.TestGroupKFoldSplits.test_multiple_groups_interleaved_and_order_preservation)",
+     "test_order_of_first_appearance_and_modulo_assignment (test_spec_contract.TestGroupKFoldSplits.test_order_of_first_appearance_and_modulo_assignment)",
+     "test_return_structure_and_types (test_spec_contract.TestGroupKFoldSplits.test_return_structure_and_types)",
+     "test_unique_groups_equal_to_n_splits (test_spec_contract.TestGroupKFoldSplits.test_unique_groups_equal_to_n_splits)",
+     "test_value_error_when_fewer_unique_groups_than_n_splits (test_spec_contract.TestGroupKFoldSplits.test_value_error_when_fewer_unique_groups_than_n_splits)",
+     "test_value_error_when_n_splits_is_negative (test_spec_contract.TestGroupKFoldSplits.test_value_error_when_n_splits_is_negative)",
+     "test_value_error_when_n_splits_is_one (test_spec_contract.TestGroupKFoldSplits.test_value_error_when_n_splits_is_one)",
+     "test_value_error_when_n_splits_is_zero (test_spec_contract.TestGroupKFoldSplits.test_value_error_when_n_splits_is_zero)",
+     "test_value_error_when_single_group_with_n_splits_two (test_spec_contract.TestGroupKFoldSplits.test_value_error_when_single_group_with_n_splits_two)"
+    ]
+   },
+   {
+    "impl": "ce8a7ab253",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_v2.json:3ca6367859",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "ce8a7ab253",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_confirm_all.json:5c4fde411c",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "2fa9cfd7b9",
+    "from": "spec_contract_v2.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_control.json:a8bf8e4a6b",
+    "passes": false,
+    "failing": [
+     "test_accepts_sequence_of_records_with_integer_group_ids (test_spec_contract.TestGroupKFoldSplits.test_accepts_sequence_of_records_with_integer_group_ids)",
+     "test_minimal_valid_two_splits_two_groups (test_spec_contract.TestGroupKFoldSplits.test_minimal_valid_two_splits_two_groups)",
+     "test_multiple_groups_interleaved_and_order_preservation (test_spec_contract.TestGroupKFoldSplits.test_multiple_groups_interleaved_and_order_preservation)",
+     "test_order_of_first_appearance_and_modulo_assignment (test_spec_contract.TestGroupKFoldSplits.test_order_of_first_appearance_and_modulo_assignment)",
+     "test_return_structure_and_types (test_spec_contract.TestGroupKFoldSplits.test_return_structure_and_types)",
+     "test_unique_groups_equal_to_n_splits (test_spec_contract.TestGroupKFoldSplits.test_unique_groups_equal_to_n_splits)",
+     "test_value_error_when_fewer_unique_groups_than_n_splits (test_spec_contract.TestGroupKFoldSplits.test_value_error_when_fewer_unique_groups_than_n_splits)",
+     "test_value_error_when_n_splits_is_negative (test_spec_contract.TestGroupKFoldSplits.test_value_error_when_n_splits_is_negative)",
+     "test_value_error_when_n_splits_is_one (test_spec_contract.TestGroupKFoldSplits.test_value_error_when_n_splits_is_one)",
+     "test_value_error_when_n_splits_is_zero (test_spec_contract.TestGroupKFoldSplits.test_value_error_when_n_splits_is_zero)",
+     "test_value_error_when_single_group_with_n_splits_two (test_spec_contract.TestGroupKFoldSplits.test_value_error_when_single_group_with_n_splits_two)"
+    ]
+   },
+   {
+    "impl": "2fa9cfd7b9",
+    "from": "spec_contract_v2.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_v2.json:3ca6367859",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "2fa9cfd7b9",
+    "from": "spec_contract_v2.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_confirm_all.json:5c4fde411c",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "ff6249da65",
+    "from": "spec_contract_confirm_all.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_control.json:a8bf8e4a6b",
+    "passes": false,
+    "failing": [
+     "test_accepts_sequence_of_records_with_integer_group_ids (test_spec_contract.TestGroupKFoldSplits.test_accepts_sequence_of_records_with_integer_group_ids)",
+     "test_minimal_valid_two_splits_two_groups (test_spec_contract.TestGroupKFoldSplits.test_minimal_valid_two_splits_two_groups)",
+     "test_multiple_groups_interleaved_and_order_preservation (test_spec_contract.TestGroupKFoldSplits.test_multiple_groups_interleaved_and_order_preservation)",
+     "test_order_of_first_appearance_and_modulo_assignment (test_spec_contract.TestGroupKFoldSplits.test_order_of_first_appearance_and_modulo_assignment)",
+     "test_return_structure_and_types (test_spec_contract.TestGroupKFoldSplits.test_return_structure_and_types)",
+     "test_unique_groups_equal_to_n_splits (test_spec_contract.TestGroupKFoldSplits.test_unique_groups_equal_to_n_splits)",
+     "test_value_error_when_fewer_unique_groups_than_n_splits (test_spec_contract.TestGroupKFoldSplits.test_value_error_when_fewer_unique_groups_than_n_splits)",
+     "test_value_error_when_n_splits_is_negative (test_spec_contract.TestGroupKFoldSplits.test_value_error_when_n_splits_is_negative)",
+     "test_value_error_when_n_splits_is_one (test_spec_contract.TestGroupKFoldSplits.test_value_error_when_n_splits_is_one)",
+     "test_value_error_when_n_splits_is_zero (test_spec_contract.TestGroupKFoldSplits.test_value_error_when_n_splits_is_zero)",
+     "test_value_error_when_single_group_with_n_splits_two (test_spec_contract.TestGroupKFoldSplits.test_value_error_when_single_group_with_n_splits_two)"
+    ]
+   },
+   {
+    "impl": "ff6249da65",
+    "from": "spec_contract_confirm_all.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_v2.json:3ca6367859",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "ff6249da65",
+    "from": "spec_contract_confirm_all.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_confirm_all.json:5c4fde411c",
+    "passes": true,
+    "failing": []
+   }
+  ],
+  "H4": [
+   {
+    "impl": "ce7f5b31e6",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_control.json:a28bba6b29",
+    "passes": false,
+    "failing": [
+     "test_normalize_negative_weight_raises_value_error (test_spec_contract.TestWeightsAndSummary.test_normalize_negative_weight_raises_value_error)"
+    ]
+   },
+   {
+    "impl": "ce7f5b31e6",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_v2.json:678222db81",
+    "passes": false,
+    "failing": [
+     "test_normalize_negative_weight_raises (test_spec_contract.TestWeightsAndSummary.test_normalize_negative_weight_raises)"
+    ]
+   },
+   {
+    "impl": "ce7f5b31e6",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_confirm_all.json:6c84ffe09c",
+    "passes": false,
+    "failing": [
+     "test_normalize_contains_negative_weight_raises_value_error (test_spec_contract.TestWeightsAndSummary.test_normalize_contains_negative_weight_raises_value_error)",
+     "test_normalize_single_negative_weight_raises_value_error (test_spec_contract.TestWeightsAndSummary.test_normalize_single_negative_weight_raises_value_error)"
+    ]
+   }
+  ],
+  "H5": [
+   {
+    "impl": "9f92de5e97",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_control.json:2ce1d5a062",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "9f92de5e97",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_v2.json:be3ed64764",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "9f92de5e97",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_confirm_all.json:b65d6eb231",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "ec9642a8c0",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_control.json:2ce1d5a062",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "ec9642a8c0",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_v2.json:be3ed64764",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "ec9642a8c0",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_confirm_all.json:b65d6eb231",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "70856d6752",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_control.json:2ce1d5a062",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "70856d6752",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_v2.json:be3ed64764",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "70856d6752",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_confirm_all.json:b65d6eb231",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "a033c2c069",
+    "from": "spec_contract_v2.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_control.json:2ce1d5a062",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "a033c2c069",
+    "from": "spec_contract_v2.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_v2.json:be3ed64764",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "a033c2c069",
+    "from": "spec_contract_v2.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_confirm_all.json:b65d6eb231",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "d848b75234",
+    "from": "spec_contract_v2.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_control.json:2ce1d5a062",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "d848b75234",
+    "from": "spec_contract_v2.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_v2.json:be3ed64764",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "d848b75234",
+    "from": "spec_contract_v2.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_confirm_all.json:b65d6eb231",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "a1fee28d38",
+    "from": "spec_contract_v2.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_control.json:2ce1d5a062",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "a1fee28d38",
+    "from": "spec_contract_v2.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_v2.json:be3ed64764",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "a1fee28d38",
+    "from": "spec_contract_v2.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_confirm_all.json:b65d6eb231",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "18cb90c591",
+    "from": "spec_contract_confirm_all.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_control.json:2ce1d5a062",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "18cb90c591",
+    "from": "spec_contract_confirm_all.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_v2.json:be3ed64764",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "18cb90c591",
+    "from": "spec_contract_confirm_all.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_confirm_all.json:b65d6eb231",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "bb9ebc9350",
+    "from": "spec_contract_confirm_all.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_control.json:2ce1d5a062",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "bb9ebc9350",
+    "from": "spec_contract_confirm_all.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_v2.json:be3ed64764",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "bb9ebc9350",
+    "from": "spec_contract_confirm_all.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_confirm_all.json:b65d6eb231",
+    "passes": true,
+    "failing": []
+   }
+  ],
+  "H6": [
+   {
+    "impl": "b55ad3134a",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_experiment.json:8d6d2dc29c",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "b55ad3134a",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_v2.json:298936a244",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "b55ad3134a",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_confirm_all.json:5a9b0be2c9",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "6a1aba9982",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_experiment.json:8d6d2dc29c",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "6a1aba9982",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_v2.json:298936a244",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "6a1aba9982",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_confirm_all.json:5a9b0be2c9",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "fe378df6a9",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE_SPEC:505",
+    "contract": "spec_contract_experiment.json:8d6d2dc29c",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "fe378df6a9",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE_SPEC:505",
+    "contract": "spec_contract_v2.json:298936a244",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "fe378df6a9",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE_SPEC:505",
+    "contract": "spec_contract_confirm_all.json:5a9b0be2c9",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "97db74fbaf",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE_ASSIST:303",
+    "contract": "spec_contract_experiment.json:8d6d2dc29c",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "97db74fbaf",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE_ASSIST:303",
+    "contract": "spec_contract_v2.json:298936a244",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "97db74fbaf",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE_ASSIST:303",
+    "contract": "spec_contract_confirm_all.json:5a9b0be2c9",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "7e2bb50619",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE_ASSIST:404",
+    "contract": "spec_contract_experiment.json:8d6d2dc29c",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "7e2bb50619",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE_ASSIST:404",
+    "contract": "spec_contract_v2.json:298936a244",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "7e2bb50619",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE_ASSIST:404",
+    "contract": "spec_contract_confirm_all.json:5a9b0be2c9",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "dff24b7ba8",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE_ASSIST:505",
+    "contract": "spec_contract_experiment.json:8d6d2dc29c",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "dff24b7ba8",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE_ASSIST:505",
+    "contract": "spec_contract_v2.json:298936a244",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "dff24b7ba8",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE_ASSIST:505",
+    "contract": "spec_contract_confirm_all.json:5a9b0be2c9",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "b7a8ab7723",
+    "from": "spec_contract_v2.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_experiment.json:8d6d2dc29c",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "b7a8ab7723",
+    "from": "spec_contract_v2.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_v2.json:298936a244",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "b7a8ab7723",
+    "from": "spec_contract_v2.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_confirm_all.json:5a9b0be2c9",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "9dc6187b53",
+    "from": "spec_contract_v2.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_experiment.json:8d6d2dc29c",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "9dc6187b53",
+    "from": "spec_contract_v2.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_v2.json:298936a244",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "9dc6187b53",
+    "from": "spec_contract_v2.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_confirm_all.json:5a9b0be2c9",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "51c17df187",
+    "from": "spec_contract_v2.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_experiment.json:8d6d2dc29c",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "51c17df187",
+    "from": "spec_contract_v2.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_v2.json:298936a244",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "51c17df187",
+    "from": "spec_contract_v2.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_confirm_all.json:5a9b0be2c9",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "ee2b17c5bb",
+    "from": "spec_contract_confirm_all.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_experiment.json:8d6d2dc29c",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "ee2b17c5bb",
+    "from": "spec_contract_confirm_all.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_v2.json:298936a244",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "ee2b17c5bb",
+    "from": "spec_contract_confirm_all.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_confirm_all.json:5a9b0be2c9",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "46df6dfad3",
+    "from": "spec_contract_confirm_all.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_experiment.json:8d6d2dc29c",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "46df6dfad3",
+    "from": "spec_contract_confirm_all.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_v2.json:298936a244",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "46df6dfad3",
+    "from": "spec_contract_confirm_all.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_confirm_all.json:5a9b0be2c9",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "0cae2f6f88",
+    "from": "spec_contract_confirm_all.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_experiment.json:8d6d2dc29c",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "0cae2f6f88",
+    "from": "spec_contract_confirm_all.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_v2.json:298936a244",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "0cae2f6f88",
+    "from": "spec_contract_confirm_all.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_confirm_all.json:5a9b0be2c9",
+    "passes": true,
+    "failing": []
+   }
+  ],
+  "H7": [
+   {
+    "impl": "ff7a761c7f",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_control.json:2a088d428b",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "ff7a761c7f",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_v2.json:45fb03da2d",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "ff7a761c7f",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_confirm_all.json:2e2c832145",
+    "passes": true,
+    "failing": []
+   }
+  ],
+  "H8": [
+   {
+    "impl": "54855c6f77",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_control.json:710e1c154b",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "54855c6f77",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_v2.json:4834804a66",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "54855c6f77",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_confirm_all.json:1b043de046",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "a664727ae9",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_control.json:710e1c154b",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "a664727ae9",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_v2.json:4834804a66",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "a664727ae9",
+    "from": "spec_contract_control.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_confirm_all.json:1b043de046",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "5e620ad204",
+    "from": "spec_contract_confirm_all.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_control.json:710e1c154b",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "5e620ad204",
+    "from": "spec_contract_confirm_all.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_v2.json:4834804a66",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "5e620ad204",
+    "from": "spec_contract_confirm_all.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_confirm_all.json:1b043de046",
+    "passes": true,
+    "failing": []
+   }
+  ],
+  "H9": [
+   {
+    "impl": "7a01e2dc42",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_experiment.json:03fec809bd",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "7a01e2dc42",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_v2.json:6a78b829c5",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "7a01e2dc42",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_confirm_all.json:21833621f5",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "d01a321fc5",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE_SPEC:303",
+    "contract": "spec_contract_experiment.json:03fec809bd",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "d01a321fc5",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE_SPEC:303",
+    "contract": "spec_contract_v2.json:6a78b829c5",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "d01a321fc5",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE_SPEC:303",
+    "contract": "spec_contract_confirm_all.json:21833621f5",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "429e226cbe",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE_ASSIST:303",
+    "contract": "spec_contract_experiment.json:03fec809bd",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "429e226cbe",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE_ASSIST:303",
+    "contract": "spec_contract_v2.json:6a78b829c5",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "429e226cbe",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE_ASSIST:303",
+    "contract": "spec_contract_confirm_all.json:21833621f5",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "486256153f",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE_ASSIST:404",
+    "contract": "spec_contract_experiment.json:03fec809bd",
+    "passes": false,
+    "failing": [
+     "  test_invalid_negative_numbers_and_signs (test_spec_contract.TestParseSemver.test_invalid_negative_numbers_and_signs) (case='+1.0.0')",
+     "  test_invalid_negative_numbers_and_signs (test_spec_contract.TestParseSemver.test_invalid_negative_numbers_and_signs) (case='1.+2.0')",
+     "  test_invalid_negative_numbers_and_signs (test_spec_contract.TestParseSemver.test_invalid_negative_numbers_and_signs) (case='1.0.+3')"
+    ]
+   },
+   {
+    "impl": "486256153f",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE_ASSIST:404",
+    "contract": "spec_contract_v2.json:6a78b829c5",
+    "passes": false,
+    "failing": [
+     "test_invalid_non_decimal_major_minor_patch (test_spec_contract.TestParseSemver.test_invalid_non_decimal_major_minor_patch)"
+    ]
+   },
+   {
+    "impl": "486256153f",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE_ASSIST:404",
+    "contract": "spec_contract_confirm_all.json:21833621f5",
+    "passes": false,
+    "failing": [
+     "test_invalid_plus_signed_numbers (test_spec_contract.TestSemver.test_invalid_plus_signed_numbers)"
+    ]
+   },
+   {
+    "impl": "7bde55c360",
+    "from": "spec_contract_v2.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_experiment.json:03fec809bd",
+    "passes": false,
+    "failing": [
+     "  test_invalid_negative_numbers_and_signs (test_spec_contract.TestParseSemver.test_invalid_negative_numbers_and_signs) (case='+1.0.0')",
+     "  test_invalid_negative_numbers_and_signs (test_spec_contract.TestParseSemver.test_invalid_negative_numbers_and_signs) (case='1.+2.0')",
+     "  test_invalid_negative_numbers_and_signs (test_spec_contract.TestParseSemver.test_invalid_negative_numbers_and_signs) (case='1.0.+3')"
+    ]
+   },
+   {
+    "impl": "7bde55c360",
+    "from": "spec_contract_v2.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_v2.json:6a78b829c5",
+    "passes": false,
+    "failing": [
+     "test_invalid_non_decimal_major_minor_patch (test_spec_contract.TestParseSemver.test_invalid_non_decimal_major_minor_patch)"
+    ]
+   },
+   {
+    "impl": "7bde55c360",
+    "from": "spec_contract_v2.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_confirm_all.json:21833621f5",
+    "passes": false,
+    "failing": [
+     "test_invalid_plus_signed_numbers (test_spec_contract.TestSemver.test_invalid_plus_signed_numbers)",
+     "test_invalid_prerelease_characters (test_spec_contract.TestSemver.test_invalid_prerelease_characters)"
+    ]
+   },
+   {
+    "impl": "06dd056e8a",
+    "from": "spec_contract_confirm_all.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_experiment.json:03fec809bd",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "06dd056e8a",
+    "from": "spec_contract_confirm_all.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_v2.json:6a78b829c5",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "06dd056e8a",
+    "from": "spec_contract_confirm_all.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_confirm_all.json:21833621f5",
+    "passes": true,
+    "failing": []
+   }
+  ],
+  "H10": [],
+  "H11": [
+   {
+    "impl": "783fd444dc",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_experiment.json:8cf651d8a4",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "783fd444dc",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_v2.json:5dad62f4d5",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "783fd444dc",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_confirm_all.json:73452a3b3c",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "032d35241c",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_experiment.json:8cf651d8a4",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "032d35241c",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_v2.json:5dad62f4d5",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "032d35241c",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_confirm_all.json:73452a3b3c",
+    "passes": true,
+    "failing": []
+   }
+  ],
+  "H12": [
+   {
+    "impl": "2cdf8de8f0",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_experiment.json:14dd39d0d7",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "2cdf8de8f0",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_v2.json:cd8873b7d2",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "2cdf8de8f0",
+    "from": "spec_contract_experiment.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_confirm_all.json:dd92c75864",
+    "passes": true,
+    "failing": []
+   }
+  ],
+  "H13": [],
+  "H14": [],
+  "H15": [],
+  "H16": [],
+  "H17": [],
+  "H18": [
+   {
+    "impl": "f1a3e94caf",
+    "from": "spec_contract_confirm_fresh.json:P1_STAGE_ADAPTIVE:505",
+    "contract": "spec_contract_confirm_fresh.json:b770439d68",
+    "passes": true,
+    "failing": []
+   }
+  ],
+  "H19": [
+   {
+    "impl": "7842173494",
+    "from": "spec_contract_confirm_fresh.json:P1_STAGE_ADAPTIVE:303",
+    "contract": "spec_contract_confirm_fresh.json:88333d1560",
+    "passes": true,
+    "failing": []
+   },
+   {
+    "impl": "73ac3fb434",
+    "from": "spec_contract_confirm_fresh.json:P1_STAGE_ADAPTIVE:404",
+    "contract": "spec_contract_confirm_fresh.json:88333d1560",
+    "passes": true,
+    "failing": []
+   }
+  ]
+ },
+ "mutation": {
+  "H1": {
+   "total": 21,
+   "holdout_killed": 17,
+   "visible_of_holdout": 12,
+   "contract_of_holdout": {
+    "spec_contract_control.json:55aac7e368": 17,
+    "spec_contract_v2.json:4cde9ea8db": 17,
+    "spec_contract_confirm_all.json:0fc77d106c": 17
+   },
+   "contract_only_not_holdout": {
+    "spec_contract_control.json:55aac7e368": 4,
+    "spec_contract_v2.json:4cde9ea8db": 1,
+    "spec_contract_confirm_all.json:0fc77d106c": 1
+   },
+   "mutants": [
+    {
+     "file": "fdr_control.py",
+     "mutant": "negate@6",
+     "changed": [
+      "def benjamini_hochberg(p_values: Sequence[float], alpha: float=0.05) -> FdrDecision:"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:55aac7e368": true,
+      "spec_contract_v2.json:4cde9ea8db": true,
+      "spec_contract_confirm_all.json:0fc77d106c": true
+     }
+    },
+    {
+     "file": "fdr_control.py",
+     "mutant": "cmp@6",
+     "changed": [
+      "def benjamini_hochberg(p_values: Sequence[float], alpha: float=0.05) -> FdrDecision:"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:55aac7e368": true,
+      "spec_contract_v2.json:4cde9ea8db": true,
+      "spec_contract_confirm_all.json:0fc77d106c": true
+     }
+    },
+    {
+     "file": "fdr_control.py",
+     "mutant": "inc@9",
+     "changed": [
+      "def benjamini_hochberg(p_values: Sequence[float], alpha: float=0.05) -> FdrDecision:"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:55aac7e368": true,
+      "spec_contract_v2.json:4cde9ea8db": true,
+      "spec_contract_confirm_all.json:0fc77d106c": true
+     }
+    },
+    {
+     "file": "fdr_control.py",
+     "mutant": "dec@9",
+     "changed": [
+      "def benjamini_hochberg(p_values: Sequence[float], alpha: float=0.05) -> FdrDecision:"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:55aac7e368": true,
+      "spec_contract_v2.json:4cde9ea8db": true,
+      "spec_contract_confirm_all.json:0fc77d106c": true
+     }
+    },
+    {
+     "file": "fdr_control.py",
+     "mutant": "negate@11",
+     "changed": [
+      "def benjamini_hochberg(p_values: Sequence[float], alpha: float=0.05) -> FdrDecision:"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:55aac7e368": true,
+      "spec_contract_v2.json:4cde9ea8db": true,
+      "spec_contract_confirm_all.json:0fc77d106c": true
+     }
+    },
+    {
+     "file": "fdr_control.py",
+     "mutant": "op@13",
+     "changed": [
+      "def benjamini_hochberg(p_values: Sequence[float], alpha: float=0.05) -> FdrDecision:"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:55aac7e368": true,
+      "spec_contract_v2.json:4cde9ea8db": true,
+      "spec_contract_confirm_all.json:0fc77d106c": true
+     }
+    },
+    {
+     "file": "fdr_control.py",
+     "mutant": "negate@15",
+     "changed": [
+      "def benjamini_hochberg(p_values: Sequence[float], alpha: float=0.05) -> FdrDecision:"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:55aac7e368": true,
+      "spec_contract_v2.json:4cde9ea8db": true,
+      "spec_contract_confirm_all.json:0fc77d106c": true
+     }
+    },
+    {
+     "file": "fdr_control.py",
+     "mutant": "inc@6",
+     "changed": [
+      "def benjamini_hochberg(p_values: Sequence[float], alpha: float=0.05) -> FdrDecision:"
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:55aac7e368": true,
+      "spec_contract_v2.json:4cde9ea8db": true,
+      "spec_contract_confirm_all.json:0fc77d106c": true
+     }
+    },
+    {
+     "file": "fdr_control.py",
+     "mutant": "dec@6",
+     "changed": [
+      "def benjamini_hochberg(p_values: Sequence[float], alpha: float=0.05) -> FdrDecision:"
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:55aac7e368": true,
+      "spec_contract_v2.json:4cde9ea8db": false,
+      "spec_contract_confirm_all.json:0fc77d106c": false
+     }
+    },
+    {
+     "file": "fdr_control.py",
+     "mutant": "cmp@11",
+     "changed": [
+      "def benjamini_hochberg(p_values: Sequence[float], alpha: float=0.05) -> FdrDecision:"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:55aac7e368": true,
+      "spec_contract_v2.json:4cde9ea8db": true,
+      "spec_contract_confirm_all.json:0fc77d106c": true
+     }
+    },
+    {
+     "file": "fdr_control.py",
+     "mutant": "cmp@15",
+     "changed": [
+      "def benjamini_hochberg(p_values: Sequence[float], alpha: float=0.05) -> FdrDecision:"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:55aac7e368": true,
+      "spec_contract_v2.json:4cde9ea8db": true,
+      "spec_contract_confirm_all.json:0fc77d106c": true
+     }
+    },
+    {
+     "file": "fdr_control.py",
+     "mutant": "op@17",
+     "changed": [
+      "def benjamini_hochberg(p_values: Sequence[float], alpha: float=0.05) -> FdrDecision:"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:55aac7e368": true,
+      "spec_contract_v2.json:4cde9ea8db": true,
+      "spec_contract_confirm_all.json:0fc77d106c": true
+     }
+    },
+    {
+     "file": "fdr_control.py",
+     "mutant": "inc@10",
+     "changed": [
+      "def benjamini_hochberg(p_values: Sequence[float], alpha: float=0.05) -> FdrDecision:"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:55aac7e368": true,
+      "spec_contract_v2.json:4cde9ea8db": true,
+      "spec_contract_confirm_all.json:0fc77d106c": true
+     }
+    },
+    {
+     "file": "fdr_control.py",
+     "mutant": "dec@10",
+     "changed": [
+      "def benjamini_hochberg(p_values: Sequence[float], alpha: float=0.05) -> FdrDecision:"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:55aac7e368": true,
+      "spec_contract_v2.json:4cde9ea8db": true,
+      "spec_contract_confirm_all.json:0fc77d106c": true
+     }
+    },
+    {
+     "file": "fdr_control.py",
+     "mutant": "op@11",
+     "changed": [
+      "def benjamini_hochberg(p_values: Sequence[float], alpha: float=0.05) -> FdrDecision:"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:55aac7e368": true,
+      "spec_contract_v2.json:4cde9ea8db": true,
+      "spec_contract_confirm_all.json:0fc77d106c": true
+     }
+    },
+    {
+     "file": "fdr_control.py",
+     "mutant": "inc@14",
+     "changed": [
+      "def benjamini_hochberg(p_values: Sequence[float], alpha: float=0.05) -> FdrDecision:"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:55aac7e368": true,
+      "spec_contract_v2.json:4cde9ea8db": true,
+      "spec_contract_confirm_all.json:0fc77d106c": true
+     }
+    },
+    {
+     "file": "fdr_control.py",
+     "mutant": "dec@14",
+     "changed": [
+      "def benjamini_hochberg(p_values: Sequence[float], alpha: float=0.05) -> FdrDecision:"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:55aac7e368": true,
+      "spec_contract_v2.json:4cde9ea8db": true,
+      "spec_contract_confirm_all.json:0fc77d106c": true
+     }
+    },
+    {
+     "file": "fdr_control.py",
+     "mutant": "inc@7",
+     "changed": [
+      "def benjamini_hochberg(p_values: Sequence[float], alpha: float=0.05) -> FdrDecision:"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:55aac7e368": true,
+      "spec_contract_v2.json:4cde9ea8db": true,
+      "spec_contract_confirm_all.json:0fc77d106c": true
+     }
+    },
+    {
+     "file": "fdr_control.py",
+     "mutant": "dec@7",
+     "changed": [
+      "def benjamini_hochberg(p_values: Sequence[float], alpha: float=0.05) -> FdrDecision:"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:55aac7e368": true,
+      "spec_contract_v2.json:4cde9ea8db": true,
+      "spec_contract_confirm_all.json:0fc77d106c": true
+     }
+    },
+    {
+     "file": "fdr_control.py",
+     "mutant": "inc@18",
+     "changed": [
+      "def benjamini_hochberg(p_values: Sequence[float], alpha: float=0.05) -> FdrDecision:"
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:55aac7e368": true,
+      "spec_contract_v2.json:4cde9ea8db": false,
+      "spec_contract_confirm_all.json:0fc77d106c": false
+     }
+    },
+    {
+     "file": "fdr_control.py",
+     "mutant": "dec@18",
+     "changed": [
+      "def benjamini_hochberg(p_values: Sequence[float], alpha: float=0.05) -> FdrDecision:"
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:55aac7e368": true,
+      "spec_contract_v2.json:4cde9ea8db": false,
+      "spec_contract_confirm_all.json:0fc77d106c": false
+     }
+    }
+   ]
+  },
+  "H2": {
+   "total": 4,
+   "holdout_killed": 4,
+   "visible_of_holdout": 3,
+   "contract_of_holdout": {
+    "spec_contract_control.json:9c66185c0a": 4,
+    "spec_contract_v2.json:15a3b702c2": 4,
+    "spec_contract_confirm_all.json:038c189149": 4
+   },
+   "contract_only_not_holdout": {
+    "spec_contract_control.json:9c66185c0a": 0,
+    "spec_contract_v2.json:15a3b702c2": 0,
+    "spec_contract_confirm_all.json:038c189149": 0
+   },
+   "mutants": [
+    {
+     "file": "pareto_judge.py",
+     "mutant": "op@7",
+     "changed": [
+      "    return all((x <= y for x, y in zip(ka, kb))) or any((x < y for x, y in zip(ka, kb)))"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:9c66185c0a": true,
+      "spec_contract_v2.json:15a3b702c2": true,
+      "spec_contract_confirm_all.json:038c189149": true
+     }
+    },
+    {
+     "file": "pareto_judge.py",
+     "mutant": "cmp@7",
+     "changed": [
+      "    return all((x < y for x, y in zip(ka, kb))) and any((x < y for x, y in zip(ka, kb)))"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:9c66185c0a": true,
+      "spec_contract_v2.json:15a3b702c2": true,
+      "spec_contract_confirm_all.json:038c189149": true
+     }
+    },
+    {
+     "file": "pareto_judge.py",
+     "mutant": "cmp@7",
+     "changed": [
+      "    return all((x <= y for x, y in zip(ka, kb))) and any((x <= y for x, y in zip(ka, kb)))"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:9c66185c0a": true,
+      "spec_contract_v2.json:15a3b702c2": true,
+      "spec_contract_confirm_all.json:038c189149": true
+     }
+    },
+    {
+     "file": "pareto_judge.py",
+     "mutant": "cmp@11",
+     "changed": [
+      "    return all((x <= y for x, y in zip(ka, kb))) and any((x < y for x, y in zip(ka, kb)))"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:9c66185c0a": true,
+      "spec_contract_v2.json:15a3b702c2": true,
+      "spec_contract_confirm_all.json:038c189149": true
+     }
+    }
+   ]
+  },
+  "H3": {
+   "total": 12,
+   "holdout_killed": 6,
+   "visible_of_holdout": 4,
+   "contract_of_holdout": {
+    "spec_contract_control.json:a8bf8e4a6b": 6,
+    "spec_contract_v2.json:3ca6367859": 6,
+    "spec_contract_confirm_all.json:5c4fde411c": 6
+   },
+   "contract_only_not_holdout": {
+    "spec_contract_control.json:a8bf8e4a6b": 6,
+    "spec_contract_v2.json:3ca6367859": 4,
+    "spec_contract_confirm_all.json:5c4fde411c": 4
+   },
+   "mutants": [
+    {
+     "file": "group_splitter.py",
+     "mutant": "negate@5",
+     "changed": [
+      "def group_kfold_splits(records: Sequence[SampleRecord], n_splits: int=3) -> List[Tuple[List[int], List[int]]]:"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:a8bf8e4a6b": true,
+      "spec_contract_v2.json:3ca6367859": true,
+      "spec_contract_confirm_all.json:5c4fde411c": true
+     }
+    },
+    {
+     "file": "group_splitter.py",
+     "mutant": "negate@8",
+     "changed": [
+      "def group_kfold_splits(records: Sequence[SampleRecord], n_splits: int=3) -> List[Tuple[List[int], List[int]]]:"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:a8bf8e4a6b": true,
+      "spec_contract_v2.json:3ca6367859": true,
+      "spec_contract_confirm_all.json:5c4fde411c": true
+     }
+    },
+    {
+     "file": "group_splitter.py",
+     "mutant": "inc@4",
+     "changed": [
+      "def group_kfold_splits(records: Sequence[SampleRecord], n_splits: int=4) -> List[Tuple[List[int], List[int]]]:"
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:a8bf8e4a6b": true,
+      "spec_contract_v2.json:3ca6367859": false,
+      "spec_contract_confirm_all.json:5c4fde411c": false
+     }
+    },
+    {
+     "file": "group_splitter.py",
+     "mutant": "dec@4",
+     "changed": [
+      "def group_kfold_splits(records: Sequence[SampleRecord], n_splits: int=2) -> List[Tuple[List[int], List[int]]]:"
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:a8bf8e4a6b": true,
+      "spec_contract_v2.json:3ca6367859": false,
+      "spec_contract_confirm_all.json:5c4fde411c": false
+     }
+    },
+    {
+     "file": "group_splitter.py",
+     "mutant": "cmp@5",
+     "changed": [
+      "def group_kfold_splits(records: Sequence[SampleRecord], n_splits: int=3) -> List[Tuple[List[int], List[int]]]:"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:a8bf8e4a6b": true,
+      "spec_contract_v2.json:3ca6367859": true,
+      "spec_contract_confirm_all.json:5c4fde411c": true
+     }
+    },
+    {
+     "file": "group_splitter.py",
+     "mutant": "noraise@6",
+     "changed": [
+      "def group_kfold_splits(records: Sequence[SampleRecord], n_splits: int=3) -> List[Tuple[List[int], List[int]]]:"
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:a8bf8e4a6b": true,
+      "spec_contract_v2.json:3ca6367859": true,
+      "spec_contract_confirm_all.json:5c4fde411c": true
+     }
+    },
+    {
+     "file": "group_splitter.py",
+     "mutant": "cmp@8",
+     "changed": [
+      "def group_kfold_splits(records: Sequence[SampleRecord], n_splits: int=3) -> List[Tuple[List[int], List[int]]]:"
+     ],
+     "holdout": false,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:a8bf8e4a6b": true,
+      "spec_contract_v2.json:3ca6367859": true,
+      "spec_contract_confirm_all.json:5c4fde411c": true
+     }
+    },
+    {
+     "file": "group_splitter.py",
+     "mutant": "noraise@9",
+     "changed": [
+      "def group_kfold_splits(records: Sequence[SampleRecord], n_splits: int=3) -> List[Tuple[List[int], List[int]]]:"
+     ],
+     "holdout": false,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:a8bf8e4a6b": true,
+      "spec_contract_v2.json:3ca6367859": true,
+      "spec_contract_confirm_all.json:5c4fde411c": true
+     }
+    },
+    {
+     "file": "group_splitter.py",
+     "mutant": "inc@5",
+     "changed": [
+      "def group_kfold_splits(records: Sequence[SampleRecord], n_splits: int=3) -> List[Tuple[List[int], List[int]]]:"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:a8bf8e4a6b": true,
+      "spec_contract_v2.json:3ca6367859": true,
+      "spec_contract_confirm_all.json:5c4fde411c": true
+     }
+    },
+    {
+     "file": "group_splitter.py",
+     "mutant": "dec@5",
+     "changed": [
+      "def group_kfold_splits(records: Sequence[SampleRecord], n_splits: int=3) -> List[Tuple[List[int], List[int]]]:"
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:a8bf8e4a6b": true,
+      "spec_contract_v2.json:3ca6367859": true,
+      "spec_contract_confirm_all.json:5c4fde411c": true
+     }
+    },
+    {
+     "file": "group_splitter.py",
+     "mutant": "cmp@13",
+     "changed": [
+      "def group_kfold_splits(records: Sequence[SampleRecord], n_splits: int=3) -> List[Tuple[List[int], List[int]]]:"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:a8bf8e4a6b": true,
+      "spec_contract_v2.json:3ca6367859": true,
+      "spec_contract_confirm_all.json:5c4fde411c": true
+     }
+    },
+    {
+     "file": "group_splitter.py",
+     "mutant": "cmp@14",
+     "changed": [
+      "def group_kfold_splits(records: Sequence[SampleRecord], n_splits: int=3) -> List[Tuple[List[int], List[int]]]:"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:a8bf8e4a6b": true,
+      "spec_contract_v2.json:3ca6367859": true,
+      "spec_contract_confirm_all.json:5c4fde411c": true
+     }
+    }
+   ]
+  },
+  "H4": {
+   "total": 15,
+   "holdout_killed": 10,
+   "visible_of_holdout": 7,
+   "contract_of_holdout": {
+    "spec_contract_control.json:a28bba6b29": 10,
+    "spec_contract_v2.json:678222db81": 10,
+    "spec_contract_confirm_all.json:6c84ffe09c": 10
+   },
+   "contract_only_not_holdout": {
+    "spec_contract_control.json:a28bba6b29": 5,
+    "spec_contract_v2.json:678222db81": 5,
+    "spec_contract_confirm_all.json:6c84ffe09c": 5
+   },
+   "mutants": [
+    {
+     "file": "weights.py",
+     "mutant": "negate@4",
+     "changed": [
+      "    if not (not weights or any((w < 0 for w in weights))):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:a28bba6b29": true,
+      "spec_contract_v2.json:678222db81": true,
+      "spec_contract_confirm_all.json:6c84ffe09c": true
+     }
+    },
+    {
+     "file": "weights.py",
+     "mutant": "negate@7",
+     "changed": [
+      "    if not weights or any((w < 0 for w in weights)):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:a28bba6b29": true,
+      "spec_contract_v2.json:678222db81": true,
+      "spec_contract_confirm_all.json:6c84ffe09c": true
+     }
+    },
+    {
+     "file": "weights.py",
+     "mutant": "op@4",
+     "changed": [
+      "    if not weights and any((w < 0 for w in weights)):"
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:a28bba6b29": true,
+      "spec_contract_v2.json:678222db81": true,
+      "spec_contract_confirm_all.json:6c84ffe09c": true
+     }
+    },
+    {
+     "file": "weights.py",
+     "mutant": "noraise@5",
+     "changed": [
+      "    if not weights or any((w < 0 for w in weights)):"
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:a28bba6b29": true,
+      "spec_contract_v2.json:678222db81": true,
+      "spec_contract_confirm_all.json:6c84ffe09c": true
+     }
+    },
+    {
+     "file": "weights.py",
+     "mutant": "cmp@7",
+     "changed": [
+      "    if not weights or any((w < 0 for w in weights)):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:a28bba6b29": true,
+      "spec_contract_v2.json:678222db81": true,
+      "spec_contract_confirm_all.json:6c84ffe09c": true
+     }
+    },
+    {
+     "file": "weights.py",
+     "mutant": "noraise@8",
+     "changed": [
+      "    if not weights or any((w < 0 for w in weights)):"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:a28bba6b29": true,
+      "spec_contract_v2.json:678222db81": true,
+      "spec_contract_confirm_all.json:6c84ffe09c": true
+     }
+    },
+    {
+     "file": "weights.py",
+     "mutant": "inc@7",
+     "changed": [
+      "    if not weights or any((w < 0 for w in weights)):"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:a28bba6b29": true,
+      "spec_contract_v2.json:678222db81": true,
+      "spec_contract_confirm_all.json:6c84ffe09c": true
+     }
+    },
+    {
+     "file": "weights.py",
+     "mutant": "dec@7",
+     "changed": [
+      "    if not weights or any((w < 0 for w in weights)):"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:a28bba6b29": true,
+      "spec_contract_v2.json:678222db81": true,
+      "spec_contract_confirm_all.json:6c84ffe09c": true
+     }
+    },
+    {
+     "file": "weights.py",
+     "mutant": "cmp@4",
+     "changed": [
+      "    if not weights or any((w <= 0 for w in weights)):"
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:a28bba6b29": true,
+      "spec_contract_v2.json:678222db81": true,
+      "spec_contract_confirm_all.json:6c84ffe09c": true
+     }
+    },
+    {
+     "file": "weights.py",
+     "mutant": "inc@4",
+     "changed": [
+      "    if not weights or any((w < 1 for w in weights)):"
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:a28bba6b29": true,
+      "spec_contract_v2.json:678222db81": true,
+      "spec_contract_confirm_all.json:6c84ffe09c": true
+     }
+    },
+    {
+     "file": "weights.py",
+     "mutant": "dec@4",
+     "changed": [
+      "    if not weights or any((w < -1 for w in weights)):"
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:a28bba6b29": true,
+      "spec_contract_v2.json:678222db81": true,
+      "spec_contract_confirm_all.json:6c84ffe09c": true
+     }
+    },
+    {
+     "file": "summary.py",
+     "mutant": "negate@5",
+     "changed": [
+      "    if not len(values) != len(weights):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:a28bba6b29": true,
+      "spec_contract_v2.json:678222db81": true,
+      "spec_contract_confirm_all.json:6c84ffe09c": true
+     }
+    },
+    {
+     "file": "summary.py",
+     "mutant": "cmp@5",
+     "changed": [
+      "    if len(values) == len(weights):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:a28bba6b29": true,
+      "spec_contract_v2.json:678222db81": true,
+      "spec_contract_confirm_all.json:6c84ffe09c": true
+     }
+    },
+    {
+     "file": "summary.py",
+     "mutant": "noraise@6",
+     "changed": [
+      "        pass"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:a28bba6b29": true,
+      "spec_contract_v2.json:678222db81": true,
+      "spec_contract_confirm_all.json:6c84ffe09c": true
+     }
+    },
+    {
+     "file": "summary.py",
+     "mutant": "op@8",
+     "changed": [
+      "        raise ValueError('length mismatch')"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:a28bba6b29": true,
+      "spec_contract_v2.json:678222db81": true,
+      "spec_contract_confirm_all.json:6c84ffe09c": true
+     }
+    }
+   ]
+  },
+  "H5": {
+   "total": 20,
+   "holdout_killed": 15,
+   "visible_of_holdout": 14,
+   "contract_of_holdout": {
+    "spec_contract_control.json:2ce1d5a062": 15,
+    "spec_contract_v2.json:be3ed64764": 15,
+    "spec_contract_confirm_all.json:b65d6eb231": 15
+   },
+   "contract_only_not_holdout": {
+    "spec_contract_control.json:2ce1d5a062": 1,
+    "spec_contract_v2.json:be3ed64764": 1,
+    "spec_contract_confirm_all.json:b65d6eb231": 4
+   },
+   "mutants": [
+    {
+     "file": "intervals.py",
+     "mutant": "negate@4",
+     "changed": [
+      "    if not any((s > e for s, e in intervals)):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:2ce1d5a062": true,
+      "spec_contract_v2.json:be3ed64764": true,
+      "spec_contract_confirm_all.json:b65d6eb231": true
+     }
+    },
+    {
+     "file": "intervals.py",
+     "mutant": "noraise@5",
+     "changed": [
+      "    if any((s > e for s, e in intervals)):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:2ce1d5a062": true,
+      "spec_contract_v2.json:be3ed64764": true,
+      "spec_contract_confirm_all.json:b65d6eb231": true
+     }
+    },
+    {
+     "file": "intervals.py",
+     "mutant": "negate@8",
+     "changed": [
+      "    if any((s > e for s, e in intervals)):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:2ce1d5a062": true,
+      "spec_contract_v2.json:be3ed64764": true,
+      "spec_contract_confirm_all.json:b65d6eb231": true
+     }
+    },
+    {
+     "file": "intervals.py",
+     "mutant": "op@8",
+     "changed": [
+      "    if any((s > e for s, e in intervals)):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:2ce1d5a062": true,
+      "spec_contract_v2.json:be3ed64764": true,
+      "spec_contract_confirm_all.json:b65d6eb231": true
+     }
+    },
+    {
+     "file": "intervals.py",
+     "mutant": "cmp@4",
+     "changed": [
+      "    if any((s >= e for s, e in intervals)):"
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:2ce1d5a062": true,
+      "spec_contract_v2.json:be3ed64764": true,
+      "spec_contract_confirm_all.json:b65d6eb231": true
+     }
+    },
+    {
+     "file": "intervals.py",
+     "mutant": "cmp@8",
+     "changed": [
+      "    if any((s > e for s, e in intervals)):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:2ce1d5a062": true,
+      "spec_contract_v2.json:be3ed64764": true,
+      "spec_contract_confirm_all.json:b65d6eb231": true
+     }
+    },
+    {
+     "file": "intervals.py",
+     "mutant": "inc@8",
+     "changed": [
+      "    if any((s > e for s, e in intervals)):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:2ce1d5a062": true,
+      "spec_contract_v2.json:be3ed64764": true,
+      "spec_contract_confirm_all.json:b65d6eb231": true
+     }
+    },
+    {
+     "file": "intervals.py",
+     "mutant": "dec@8",
+     "changed": [
+      "    if any((s > e for s, e in intervals)):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:2ce1d5a062": true,
+      "spec_contract_v2.json:be3ed64764": true,
+      "spec_contract_confirm_all.json:b65d6eb231": true
+     }
+    },
+    {
+     "file": "intervals.py",
+     "mutant": "inc@9",
+     "changed": [
+      "    if any((s > e for s, e in intervals)):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:2ce1d5a062": true,
+      "spec_contract_v2.json:be3ed64764": true,
+      "spec_contract_confirm_all.json:b65d6eb231": true
+     }
+    },
+    {
+     "file": "intervals.py",
+     "mutant": "dec@9",
+     "changed": [
+      "    if any((s > e for s, e in intervals)):"
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:2ce1d5a062": false,
+      "spec_contract_v2.json:be3ed64764": false,
+      "spec_contract_confirm_all.json:b65d6eb231": true
+     }
+    },
+    {
+     "file": "intervals.py",
+     "mutant": "inc@9",
+     "changed": [
+      "    if any((s > e for s, e in intervals)):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:2ce1d5a062": true,
+      "spec_contract_v2.json:be3ed64764": true,
+      "spec_contract_confirm_all.json:b65d6eb231": true
+     }
+    },
+    {
+     "file": "intervals.py",
+     "mutant": "dec@9",
+     "changed": [
+      "    if any((s > e for s, e in intervals)):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:2ce1d5a062": true,
+      "spec_contract_v2.json:be3ed64764": true,
+      "spec_contract_confirm_all.json:b65d6eb231": true
+     }
+    },
+    {
+     "file": "intervals.py",
+     "mutant": "inc@9",
+     "changed": [
+      "    if any((s > e for s, e in intervals)):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:2ce1d5a062": true,
+      "spec_contract_v2.json:be3ed64764": true,
+      "spec_contract_confirm_all.json:b65d6eb231": true
+     }
+    },
+    {
+     "file": "intervals.py",
+     "mutant": "dec@9",
+     "changed": [
+      "    if any((s > e for s, e in intervals)):"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:2ce1d5a062": true,
+      "spec_contract_v2.json:be3ed64764": true,
+      "spec_contract_confirm_all.json:b65d6eb231": true
+     }
+    },
+    {
+     "file": "intervals.py",
+     "mutant": "inc@8",
+     "changed": [
+      "    if any((s > e for s, e in intervals)):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:2ce1d5a062": true,
+      "spec_contract_v2.json:be3ed64764": true,
+      "spec_contract_confirm_all.json:b65d6eb231": true
+     }
+    },
+    {
+     "file": "intervals.py",
+     "mutant": "dec@8",
+     "changed": [
+      "    if any((s > e for s, e in intervals)):"
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:2ce1d5a062": false,
+      "spec_contract_v2.json:be3ed64764": false,
+      "spec_contract_confirm_all.json:b65d6eb231": true
+     }
+    },
+    {
+     "file": "intervals.py",
+     "mutant": "inc@9",
+     "changed": [
+      "    if any((s > e for s, e in intervals)):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:2ce1d5a062": true,
+      "spec_contract_v2.json:be3ed64764": true,
+      "spec_contract_confirm_all.json:b65d6eb231": true
+     }
+    },
+    {
+     "file": "intervals.py",
+     "mutant": "dec@9",
+     "changed": [
+      "    if any((s > e for s, e in intervals)):"
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:2ce1d5a062": false,
+      "spec_contract_v2.json:be3ed64764": false,
+      "spec_contract_confirm_all.json:b65d6eb231": true
+     }
+    },
+    {
+     "file": "intervals.py",
+     "mutant": "inc@9",
+     "changed": [
+      "    if any((s > e for s, e in intervals)):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:2ce1d5a062": true,
+      "spec_contract_v2.json:be3ed64764": true,
+      "spec_contract_confirm_all.json:b65d6eb231": true
+     }
+    },
+    {
+     "file": "intervals.py",
+     "mutant": "dec@9",
+     "changed": [
+      "    if any((s > e for s, e in intervals)):"
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:2ce1d5a062": false,
+      "spec_contract_v2.json:be3ed64764": false,
+      "spec_contract_confirm_all.json:b65d6eb231": false
+     }
+    }
+   ]
+  },
+  "H6": {
+   "total": 19,
+   "holdout_killed": 13,
+   "visible_of_holdout": 13,
+   "contract_of_holdout": {
+    "spec_contract_experiment.json:8d6d2dc29c": 13,
+    "spec_contract_v2.json:298936a244": 13,
+    "spec_contract_confirm_all.json:5a9b0be2c9": 13
+   },
+   "contract_only_not_holdout": {
+    "spec_contract_experiment.json:8d6d2dc29c": 0,
+    "spec_contract_v2.json:298936a244": 0,
+    "spec_contract_confirm_all.json:5a9b0be2c9": 0
+   },
+   "mutants": [
+    {
+     "file": "durations.py",
+     "mutant": "negate@7",
+     "changed": [
+      "UNITS = {'h': 3600, 'm': 60, 's': 1}"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:8d6d2dc29c": true,
+      "spec_contract_v2.json:298936a244": true,
+      "spec_contract_confirm_all.json:5a9b0be2c9": true
+     }
+    },
+    {
+     "file": "durations.py",
+     "mutant": "inc@3",
+     "changed": [
+      "UNITS = {'h': 3601, 'm': 60, 's': 1}"
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_experiment.json:8d6d2dc29c": false,
+      "spec_contract_v2.json:298936a244": false,
+      "spec_contract_confirm_all.json:5a9b0be2c9": false
+     }
+    },
+    {
+     "file": "durations.py",
+     "mutant": "dec@3",
+     "changed": [
+      "UNITS = {'h': 3599, 'm': 60, 's': 1}"
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_experiment.json:8d6d2dc29c": false,
+      "spec_contract_v2.json:298936a244": false,
+      "spec_contract_confirm_all.json:5a9b0be2c9": false
+     }
+    },
+    {
+     "file": "durations.py",
+     "mutant": "inc@3",
+     "changed": [
+      "UNITS = {'h': 3600, 'm': 61, 's': 1}"
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_experiment.json:8d6d2dc29c": false,
+      "spec_contract_v2.json:298936a244": false,
+      "spec_contract_confirm_all.json:5a9b0be2c9": false
+     }
+    },
+    {
+     "file": "durations.py",
+     "mutant": "dec@3",
+     "changed": [
+      "UNITS = {'h': 3600, 'm': 59, 's': 1}"
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_experiment.json:8d6d2dc29c": false,
+      "spec_contract_v2.json:298936a244": false,
+      "spec_contract_confirm_all.json:5a9b0be2c9": false
+     }
+    },
+    {
+     "file": "durations.py",
+     "mutant": "inc@3",
+     "changed": [
+      "UNITS = {'h': 3600, 'm': 60, 's': 2}"
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_experiment.json:8d6d2dc29c": false,
+      "spec_contract_v2.json:298936a244": false,
+      "spec_contract_confirm_all.json:5a9b0be2c9": false
+     }
+    },
+    {
+     "file": "durations.py",
+     "mutant": "dec@3",
+     "changed": [
+      "UNITS = {'h': 3600, 'm': 60, 's': 0}"
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_experiment.json:8d6d2dc29c": false,
+      "spec_contract_v2.json:298936a244": false,
+      "spec_contract_confirm_all.json:5a9b0be2c9": false
+     }
+    },
+    {
+     "file": "durations.py",
+     "mutant": "op@7",
+     "changed": [
+      "UNITS = {'h': 3600, 'm': 60, 's': 1}"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:8d6d2dc29c": true,
+      "spec_contract_v2.json:298936a244": true,
+      "spec_contract_confirm_all.json:5a9b0be2c9": true
+     }
+    },
+    {
+     "file": "durations.py",
+     "mutant": "noraise@8",
+     "changed": [
+      "UNITS = {'h': 3600, 'm': 60, 's': 1}"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:8d6d2dc29c": true,
+      "spec_contract_v2.json:298936a244": true,
+      "spec_contract_confirm_all.json:5a9b0be2c9": true
+     }
+    },
+    {
+     "file": "durations.py",
+     "mutant": "op@10",
+     "changed": [
+      "UNITS = {'h': 3600, 'm': 60, 's': 1}"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:8d6d2dc29c": true,
+      "spec_contract_v2.json:298936a244": true,
+      "spec_contract_confirm_all.json:5a9b0be2c9": true
+     }
+    },
+    {
+     "file": "durations.py",
+     "mutant": "op@10",
+     "changed": [
+      "UNITS = {'h': 3600, 'm': 60, 's': 1}"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:8d6d2dc29c": true,
+      "spec_contract_v2.json:298936a244": true,
+      "spec_contract_confirm_all.json:5a9b0be2c9": true
+     }
+    },
+    {
+     "file": "durations.py",
+     "mutant": "inc@9",
+     "changed": [
+      "UNITS = {'h': 3600, 'm': 60, 's': 1}"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:8d6d2dc29c": true,
+      "spec_contract_v2.json:298936a244": true,
+      "spec_contract_confirm_all.json:5a9b0be2c9": true
+     }
+    },
+    {
+     "file": "durations.py",
+     "mutant": "dec@9",
+     "changed": [
+      "UNITS = {'h': 3600, 'm': 60, 's': 1}"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:8d6d2dc29c": true,
+      "spec_contract_v2.json:298936a244": true,
+      "spec_contract_confirm_all.json:5a9b0be2c9": true
+     }
+    },
+    {
+     "file": "durations.py",
+     "mutant": "op@10",
+     "changed": [
+      "UNITS = {'h': 3600, 'm': 60, 's': 1}"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:8d6d2dc29c": true,
+      "spec_contract_v2.json:298936a244": true,
+      "spec_contract_confirm_all.json:5a9b0be2c9": true
+     }
+    },
+    {
+     "file": "durations.py",
+     "mutant": "op@10",
+     "changed": [
+      "UNITS = {'h': 3600, 'm': 60, 's': 1}"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:8d6d2dc29c": true,
+      "spec_contract_v2.json:298936a244": true,
+      "spec_contract_confirm_all.json:5a9b0be2c9": true
+     }
+    },
+    {
+     "file": "durations.py",
+     "mutant": "inc@10",
+     "changed": [
+      "UNITS = {'h': 3600, 'm': 60, 's': 1}"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:8d6d2dc29c": true,
+      "spec_contract_v2.json:298936a244": true,
+      "spec_contract_confirm_all.json:5a9b0be2c9": true
+     }
+    },
+    {
+     "file": "durations.py",
+     "mutant": "dec@10",
+     "changed": [
+      "UNITS = {'h': 3600, 'm': 60, 's': 1}"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:8d6d2dc29c": true,
+      "spec_contract_v2.json:298936a244": true,
+      "spec_contract_confirm_all.json:5a9b0be2c9": true
+     }
+    },
+    {
+     "file": "durations.py",
+     "mutant": "inc@10",
+     "changed": [
+      "UNITS = {'h': 3600, 'm': 60, 's': 1}"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:8d6d2dc29c": true,
+      "spec_contract_v2.json:298936a244": true,
+      "spec_contract_confirm_all.json:5a9b0be2c9": true
+     }
+    },
+    {
+     "file": "durations.py",
+     "mutant": "dec@10",
+     "changed": [
+      "UNITS = {'h': 3600, 'm': 60, 's': 1}"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:8d6d2dc29c": true,
+      "spec_contract_v2.json:298936a244": true,
+      "spec_contract_confirm_all.json:5a9b0be2c9": true
+     }
+    }
+   ]
+  },
+  "H7": {
+   "total": 11,
+   "holdout_killed": 10,
+   "visible_of_holdout": 7,
+   "contract_of_holdout": {
+    "spec_contract_control.json:2a088d428b": 10,
+    "spec_contract_v2.json:45fb03da2d": 10,
+    "spec_contract_confirm_all.json:2e2c832145": 10
+   },
+   "contract_only_not_holdout": {
+    "spec_contract_control.json:2a088d428b": 1,
+    "spec_contract_v2.json:45fb03da2d": 1,
+    "spec_contract_confirm_all.json:2e2c832145": 1
+   },
+   "mutants": [
+    {
+     "file": "rolling.py",
+     "mutant": "negate@4",
+     "changed": [
+      "    if not (isinstance(window, bool) or not isinstance(window, int) or window < 1):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:2a088d428b": true,
+      "spec_contract_v2.json:45fb03da2d": true,
+      "spec_contract_confirm_all.json:2e2c832145": true
+     }
+    },
+    {
+     "file": "rolling.py",
+     "mutant": "op@4",
+     "changed": [
+      "    if isinstance(window, bool) and (not isinstance(window, int)) and (window < 1):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:2a088d428b": true,
+      "spec_contract_v2.json:45fb03da2d": true,
+      "spec_contract_confirm_all.json:2e2c832145": true
+     }
+    },
+    {
+     "file": "rolling.py",
+     "mutant": "noraise@5",
+     "changed": [
+      "        pass"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:2a088d428b": true,
+      "spec_contract_v2.json:45fb03da2d": true,
+      "spec_contract_confirm_all.json:2e2c832145": true
+     }
+    },
+    {
+     "file": "rolling.py",
+     "mutant": "cmp@4",
+     "changed": [
+      "    if isinstance(window, bool) or not isinstance(window, int) or window <= 1:"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:2a088d428b": true,
+      "spec_contract_v2.json:45fb03da2d": true,
+      "spec_contract_confirm_all.json:2e2c832145": true
+     }
+    },
+    {
+     "file": "rolling.py",
+     "mutant": "inc@4",
+     "changed": [
+      "    if isinstance(window, bool) or not isinstance(window, int) or window < 2:"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:2a088d428b": true,
+      "spec_contract_v2.json:45fb03da2d": true,
+      "spec_contract_confirm_all.json:2e2c832145": true
+     }
+    },
+    {
+     "file": "rolling.py",
+     "mutant": "dec@4",
+     "changed": [
+      "    if isinstance(window, bool) or not isinstance(window, int) or window < 0:"
+     ],
+     "holdout": false,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:2a088d428b": true,
+      "spec_contract_v2.json:45fb03da2d": true,
+      "spec_contract_confirm_all.json:2e2c832145": true
+     }
+    },
+    {
+     "file": "rolling.py",
+     "mutant": "op@6",
+     "changed": [
+      "    return [sum(values[i:i + window]) / window for i in range(len(values) - window - 1)]"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:2a088d428b": true,
+      "spec_contract_v2.json:45fb03da2d": true,
+      "spec_contract_confirm_all.json:2e2c832145": true
+     }
+    },
+    {
+     "file": "rolling.py",
+     "mutant": "op@6",
+     "changed": [
+      "    return [sum(values[i:i + window]) / window for i in range(len(values) + window + 1)]"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:2a088d428b": true,
+      "spec_contract_v2.json:45fb03da2d": true,
+      "spec_contract_confirm_all.json:2e2c832145": true
+     }
+    },
+    {
+     "file": "rolling.py",
+     "mutant": "inc@6",
+     "changed": [
+      "    return [sum(values[i:i + window]) / window for i in range(len(values) - window + 2)]"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:2a088d428b": true,
+      "spec_contract_v2.json:45fb03da2d": true,
+      "spec_contract_confirm_all.json:2e2c832145": true
+     }
+    },
+    {
+     "file": "rolling.py",
+     "mutant": "dec@6",
+     "changed": [
+      "    return [sum(values[i:i + window]) / window for i in range(len(values) - window + 0)]"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:2a088d428b": true,
+      "spec_contract_v2.json:45fb03da2d": true,
+      "spec_contract_confirm_all.json:2e2c832145": true
+     }
+    },
+    {
+     "file": "rolling.py",
+     "mutant": "op@6",
+     "changed": [
+      "    return [sum(values[i:i - window]) / window for i in range(len(values) - window + 1)]"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_control.json:2a088d428b": true,
+      "spec_contract_v2.json:45fb03da2d": true,
+      "spec_contract_confirm_all.json:2e2c832145": true
+     }
+    }
+   ]
+  },
+  "H8": {
+   "total": 2,
+   "holdout_killed": 2,
+   "visible_of_holdout": 2,
+   "contract_of_holdout": {
+    "spec_contract_control.json:710e1c154b": 2,
+    "spec_contract_v2.json:4834804a66": 2,
+    "spec_contract_confirm_all.json:1b043de046": 2
+   },
+   "contract_only_not_holdout": {
+    "spec_contract_control.json:710e1c154b": 0,
+    "spec_contract_v2.json:4834804a66": 0,
+    "spec_contract_confirm_all.json:1b043de046": 0
+   },
+   "mutants": [
+    {
+     "file": "slugs.py",
+     "mutant": "negate@5",
+     "changed": [
+      "    slug = re.sub('[^A-Za-z0-9]+', '-', title).strip('-').lower()"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:710e1c154b": true,
+      "spec_contract_v2.json:4834804a66": true,
+      "spec_contract_confirm_all.json:1b043de046": true
+     }
+    },
+    {
+     "file": "slugs.py",
+     "mutant": "noraise@6",
+     "changed": [
+      "    slug = re.sub('[^A-Za-z0-9]+', '-', title).strip('-').lower()"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_control.json:710e1c154b": true,
+      "spec_contract_v2.json:4834804a66": true,
+      "spec_contract_confirm_all.json:1b043de046": true
+     }
+    }
+   ]
+  },
+  "H9": {
+   "total": 10,
+   "holdout_killed": 10,
+   "visible_of_holdout": 10,
+   "contract_of_holdout": {
+    "spec_contract_experiment.json:03fec809bd": 10,
+    "spec_contract_v2.json:6a78b829c5": 10,
+    "spec_contract_confirm_all.json:21833621f5": 10
+   },
+   "contract_only_not_holdout": {
+    "spec_contract_experiment.json:03fec809bd": 0,
+    "spec_contract_v2.json:6a78b829c5": 0,
+    "spec_contract_confirm_all.json:21833621f5": 0
+   },
+   "mutants": [
+    {
+     "file": "semver.py",
+     "mutant": "negate@5",
+     "changed": [
+      "    m = re.fullmatch('(0|[1-9][0-9]*)\\\\.(0|[1-9][0-9]*)\\\\.(0|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\\\\.[0-9A-Za-z-]+)*))?', text)"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:03fec809bd": true,
+      "spec_contract_v2.json:6a78b829c5": true,
+      "spec_contract_confirm_all.json:21833621f5": true
+     }
+    },
+    {
+     "file": "semver.py",
+     "mutant": "noraise@6",
+     "changed": [
+      "    m = re.fullmatch('(0|[1-9][0-9]*)\\\\.(0|[1-9][0-9]*)\\\\.(0|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\\\\.[0-9A-Za-z-]+)*))?', text)"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:03fec809bd": true,
+      "spec_contract_v2.json:6a78b829c5": true,
+      "spec_contract_confirm_all.json:21833621f5": true
+     }
+    },
+    {
+     "file": "semver.py",
+     "mutant": "inc@7",
+     "changed": [
+      "    m = re.fullmatch('(0|[1-9][0-9]*)\\\\.(0|[1-9][0-9]*)\\\\.(0|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\\\\.[0-9A-Za-z-]+)*))?', text)"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:03fec809bd": true,
+      "spec_contract_v2.json:6a78b829c5": true,
+      "spec_contract_confirm_all.json:21833621f5": true
+     }
+    },
+    {
+     "file": "semver.py",
+     "mutant": "dec@7",
+     "changed": [
+      "    m = re.fullmatch('(0|[1-9][0-9]*)\\\\.(0|[1-9][0-9]*)\\\\.(0|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\\\\.[0-9A-Za-z-]+)*))?', text)"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:03fec809bd": true,
+      "spec_contract_v2.json:6a78b829c5": true,
+      "spec_contract_confirm_all.json:21833621f5": true
+     }
+    },
+    {
+     "file": "semver.py",
+     "mutant": "inc@7",
+     "changed": [
+      "    m = re.fullmatch('(0|[1-9][0-9]*)\\\\.(0|[1-9][0-9]*)\\\\.(0|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\\\\.[0-9A-Za-z-]+)*))?', text)"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:03fec809bd": true,
+      "spec_contract_v2.json:6a78b829c5": true,
+      "spec_contract_confirm_all.json:21833621f5": true
+     }
+    },
+    {
+     "file": "semver.py",
+     "mutant": "dec@7",
+     "changed": [
+      "    m = re.fullmatch('(0|[1-9][0-9]*)\\\\.(0|[1-9][0-9]*)\\\\.(0|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\\\\.[0-9A-Za-z-]+)*))?', text)"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:03fec809bd": true,
+      "spec_contract_v2.json:6a78b829c5": true,
+      "spec_contract_confirm_all.json:21833621f5": true
+     }
+    },
+    {
+     "file": "semver.py",
+     "mutant": "inc@7",
+     "changed": [
+      "    m = re.fullmatch('(0|[1-9][0-9]*)\\\\.(0|[1-9][0-9]*)\\\\.(0|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\\\\.[0-9A-Za-z-]+)*))?', text)"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:03fec809bd": true,
+      "spec_contract_v2.json:6a78b829c5": true,
+      "spec_contract_confirm_all.json:21833621f5": true
+     }
+    },
+    {
+     "file": "semver.py",
+     "mutant": "dec@7",
+     "changed": [
+      "    m = re.fullmatch('(0|[1-9][0-9]*)\\\\.(0|[1-9][0-9]*)\\\\.(0|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\\\\.[0-9A-Za-z-]+)*))?', text)"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:03fec809bd": true,
+      "spec_contract_v2.json:6a78b829c5": true,
+      "spec_contract_confirm_all.json:21833621f5": true
+     }
+    },
+    {
+     "file": "semver.py",
+     "mutant": "inc@7",
+     "changed": [
+      "    m = re.fullmatch('(0|[1-9][0-9]*)\\\\.(0|[1-9][0-9]*)\\\\.(0|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\\\\.[0-9A-Za-z-]+)*))?', text)"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:03fec809bd": true,
+      "spec_contract_v2.json:6a78b829c5": true,
+      "spec_contract_confirm_all.json:21833621f5": true
+     }
+    },
+    {
+     "file": "semver.py",
+     "mutant": "dec@7",
+     "changed": [
+      "    m = re.fullmatch('(0|[1-9][0-9]*)\\\\.(0|[1-9][0-9]*)\\\\.(0|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\\\\.[0-9A-Za-z-]+)*))?', text)"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:03fec809bd": true,
+      "spec_contract_v2.json:6a78b829c5": true,
+      "spec_contract_confirm_all.json:21833621f5": true
+     }
+    }
+   ]
+  },
+  "H10": {
+   "total": 11,
+   "holdout_killed": 10,
+   "visible_of_holdout": 6,
+   "contract_of_holdout": {
+    "spec_contract_experiment.json:1ca8241adc": 10,
+    "spec_contract_v2.json:35232ec42d": 10,
+    "spec_contract_confirm_all.json:fd6a905961": 10
+   },
+   "contract_only_not_holdout": {
+    "spec_contract_experiment.json:1ca8241adc": 1,
+    "spec_contract_v2.json:35232ec42d": 1,
+    "spec_contract_confirm_all.json:fd6a905961": 1
+   },
+   "mutants": [
+    {
+     "file": "ipv4.py",
+     "mutant": "negate@5",
+     "changed": [
+      "    if not len(parts) != 4:"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:1ca8241adc": true,
+      "spec_contract_v2.json:35232ec42d": true,
+      "spec_contract_confirm_all.json:fd6a905961": true
+     }
+    },
+    {
+     "file": "ipv4.py",
+     "mutant": "cmp@5",
+     "changed": [
+      "    if len(parts) == 4:"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:1ca8241adc": true,
+      "spec_contract_v2.json:35232ec42d": true,
+      "spec_contract_confirm_all.json:fd6a905961": true
+     }
+    },
+    {
+     "file": "ipv4.py",
+     "mutant": "noraise@6",
+     "changed": [
+      "        pass"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:1ca8241adc": true,
+      "spec_contract_v2.json:35232ec42d": true,
+      "spec_contract_confirm_all.json:fd6a905961": true
+     }
+    },
+    {
+     "file": "ipv4.py",
+     "mutant": "negate@9",
+     "changed": [
+      "        if not (not re.fullmatch('0|[1-9][0-9]{0,2}', p) or int(p) > 255):"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_experiment.json:1ca8241adc": true,
+      "spec_contract_v2.json:35232ec42d": true,
+      "spec_contract_confirm_all.json:fd6a905961": true
+     }
+    },
+    {
+     "file": "ipv4.py",
+     "mutant": "inc@5",
+     "changed": [
+      "    if len(parts) != 5:"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_experiment.json:1ca8241adc": true,
+      "spec_contract_v2.json:35232ec42d": true,
+      "spec_contract_confirm_all.json:fd6a905961": true
+     }
+    },
+    {
+     "file": "ipv4.py",
+     "mutant": "dec@5",
+     "changed": [
+      "    if len(parts) != 3:"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:1ca8241adc": true,
+      "spec_contract_v2.json:35232ec42d": true,
+      "spec_contract_confirm_all.json:fd6a905961": true
+     }
+    },
+    {
+     "file": "ipv4.py",
+     "mutant": "op@9",
+     "changed": [
+      "        if not re.fullmatch('0|[1-9][0-9]{0,2}', p) and int(p) > 255:"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:1ca8241adc": true,
+      "spec_contract_v2.json:35232ec42d": true,
+      "spec_contract_confirm_all.json:fd6a905961": true
+     }
+    },
+    {
+     "file": "ipv4.py",
+     "mutant": "noraise@10",
+     "changed": [
+      "        if not re.fullmatch('0|[1-9][0-9]{0,2}', p) or int(p) > 255:"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:1ca8241adc": true,
+      "spec_contract_v2.json:35232ec42d": true,
+      "spec_contract_confirm_all.json:fd6a905961": true
+     }
+    },
+    {
+     "file": "ipv4.py",
+     "mutant": "cmp@9",
+     "changed": [
+      "        if not re.fullmatch('0|[1-9][0-9]{0,2}', p) or int(p) >= 255:"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_experiment.json:1ca8241adc": true,
+      "spec_contract_v2.json:35232ec42d": true,
+      "spec_contract_confirm_all.json:fd6a905961": true
+     }
+    },
+    {
+     "file": "ipv4.py",
+     "mutant": "inc@9",
+     "changed": [
+      "        if not re.fullmatch('0|[1-9][0-9]{0,2}', p) or int(p) > 256:"
+     ],
+     "holdout": false,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:1ca8241adc": true,
+      "spec_contract_v2.json:35232ec42d": true,
+      "spec_contract_confirm_all.json:fd6a905961": true
+     }
+    },
+    {
+     "file": "ipv4.py",
+     "mutant": "dec@9",
+     "changed": [
+      "        if not re.fullmatch('0|[1-9][0-9]{0,2}', p) or int(p) > 254:"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_experiment.json:1ca8241adc": true,
+      "spec_contract_v2.json:35232ec42d": true,
+      "spec_contract_confirm_all.json:fd6a905961": true
+     }
+    }
+   ]
+  },
+  "H11": {
+   "total": 5,
+   "holdout_killed": 5,
+   "visible_of_holdout": 5,
+   "contract_of_holdout": {
+    "spec_contract_experiment.json:8cf651d8a4": 5,
+    "spec_contract_v2.json:5dad62f4d5": 5,
+    "spec_contract_confirm_all.json:73452a3b3c": 5
+   },
+   "contract_only_not_holdout": {
+    "spec_contract_experiment.json:8cf651d8a4": 0,
+    "spec_contract_v2.json:5dad62f4d5": 0,
+    "spec_contract_confirm_all.json:73452a3b3c": 0
+   },
+   "mutants": [
+    {
+     "file": "flags.py",
+     "mutant": "negate@3",
+     "changed": [
+      "    if not t in ('true', 'yes', 'on', '1'):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:8cf651d8a4": true,
+      "spec_contract_v2.json:5dad62f4d5": true,
+      "spec_contract_confirm_all.json:73452a3b3c": true
+     }
+    },
+    {
+     "file": "flags.py",
+     "mutant": "negate@5",
+     "changed": [
+      "    if not t in ('false', 'no', 'off', '0'):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:8cf651d8a4": true,
+      "spec_contract_v2.json:5dad62f4d5": true,
+      "spec_contract_confirm_all.json:73452a3b3c": true
+     }
+    },
+    {
+     "file": "flags.py",
+     "mutant": "noraise@7",
+     "changed": [
+      "    pass"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:8cf651d8a4": true,
+      "spec_contract_v2.json:5dad62f4d5": true,
+      "spec_contract_confirm_all.json:73452a3b3c": true
+     }
+    },
+    {
+     "file": "flags.py",
+     "mutant": "cmp@3",
+     "changed": [
+      "    if t not in ('true', 'yes', 'on', '1'):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:8cf651d8a4": true,
+      "spec_contract_v2.json:5dad62f4d5": true,
+      "spec_contract_confirm_all.json:73452a3b3c": true
+     }
+    },
+    {
+     "file": "flags.py",
+     "mutant": "cmp@5",
+     "changed": [
+      "    if t not in ('false', 'no', 'off', '0'):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:8cf651d8a4": true,
+      "spec_contract_v2.json:5dad62f4d5": true,
+      "spec_contract_confirm_all.json:73452a3b3c": true
+     }
+    }
+   ]
+  },
+  "H12": {
+   "total": 22,
+   "holdout_killed": 21,
+   "visible_of_holdout": 20,
+   "contract_of_holdout": {
+    "spec_contract_experiment.json:14dd39d0d7": 21,
+    "spec_contract_v2.json:cd8873b7d2": 21,
+    "spec_contract_confirm_all.json:dd92c75864": 21
+   },
+   "contract_only_not_holdout": {
+    "spec_contract_experiment.json:14dd39d0d7": 1,
+    "spec_contract_v2.json:cd8873b7d2": 1,
+    "spec_contract_confirm_all.json:dd92c75864": 1
+   },
+   "mutants": [
+    {
+     "file": "colors.py",
+     "mutant": "negate@4",
+     "changed": [
+      "    if not not re.fullmatch('#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:14dd39d0d7": true,
+      "spec_contract_v2.json:cd8873b7d2": true,
+      "spec_contract_confirm_all.json:dd92c75864": true
+     }
+    },
+    {
+     "file": "colors.py",
+     "mutant": "negate@7",
+     "changed": [
+      "    if not re.fullmatch('#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:14dd39d0d7": true,
+      "spec_contract_v2.json:cd8873b7d2": true,
+      "spec_contract_confirm_all.json:dd92c75864": true
+     }
+    },
+    {
+     "file": "colors.py",
+     "mutant": "noraise@5",
+     "changed": [
+      "    if not re.fullmatch('#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:14dd39d0d7": true,
+      "spec_contract_v2.json:cd8873b7d2": true,
+      "spec_contract_confirm_all.json:dd92c75864": true
+     }
+    },
+    {
+     "file": "colors.py",
+     "mutant": "cmp@7",
+     "changed": [
+      "    if not re.fullmatch('#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:14dd39d0d7": true,
+      "spec_contract_v2.json:cd8873b7d2": true,
+      "spec_contract_confirm_all.json:dd92c75864": true
+     }
+    },
+    {
+     "file": "colors.py",
+     "mutant": "inc@7",
+     "changed": [
+      "    if not re.fullmatch('#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:14dd39d0d7": true,
+      "spec_contract_v2.json:cd8873b7d2": true,
+      "spec_contract_confirm_all.json:dd92c75864": true
+     }
+    },
+    {
+     "file": "colors.py",
+     "mutant": "dec@7",
+     "changed": [
+      "    if not re.fullmatch('#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:14dd39d0d7": true,
+      "spec_contract_v2.json:cd8873b7d2": true,
+      "spec_contract_confirm_all.json:dd92c75864": true
+     }
+    },
+    {
+     "file": "colors.py",
+     "mutant": "inc@6",
+     "changed": [
+      "    if not re.fullmatch('#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:14dd39d0d7": true,
+      "spec_contract_v2.json:cd8873b7d2": true,
+      "spec_contract_confirm_all.json:dd92c75864": true
+     }
+    },
+    {
+     "file": "colors.py",
+     "mutant": "dec@6",
+     "changed": [
+      "    if not re.fullmatch('#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:14dd39d0d7": true,
+      "spec_contract_v2.json:cd8873b7d2": true,
+      "spec_contract_confirm_all.json:dd92c75864": true
+     }
+    },
+    {
+     "file": "colors.py",
+     "mutant": "op@8",
+     "changed": [
+      "    if not re.fullmatch('#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:14dd39d0d7": true,
+      "spec_contract_v2.json:cd8873b7d2": true,
+      "spec_contract_confirm_all.json:dd92c75864": true
+     }
+    },
+    {
+     "file": "colors.py",
+     "mutant": "inc@9",
+     "changed": [
+      "    if not re.fullmatch('#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:14dd39d0d7": true,
+      "spec_contract_v2.json:cd8873b7d2": true,
+      "spec_contract_confirm_all.json:dd92c75864": true
+     }
+    },
+    {
+     "file": "colors.py",
+     "mutant": "dec@9",
+     "changed": [
+      "    if not re.fullmatch('#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:14dd39d0d7": true,
+      "spec_contract_v2.json:cd8873b7d2": true,
+      "spec_contract_confirm_all.json:dd92c75864": true
+     }
+    },
+    {
+     "file": "colors.py",
+     "mutant": "inc@8",
+     "changed": [
+      "    if not re.fullmatch('#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})', text):"
+     ],
+     "holdout": false,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:14dd39d0d7": true,
+      "spec_contract_v2.json:cd8873b7d2": true,
+      "spec_contract_confirm_all.json:dd92c75864": true
+     }
+    },
+    {
+     "file": "colors.py",
+     "mutant": "dec@8",
+     "changed": [
+      "    if not re.fullmatch('#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:14dd39d0d7": true,
+      "spec_contract_v2.json:cd8873b7d2": true,
+      "spec_contract_confirm_all.json:dd92c75864": true
+     }
+    },
+    {
+     "file": "colors.py",
+     "mutant": "inc@9",
+     "changed": [
+      "    if not re.fullmatch('#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:14dd39d0d7": true,
+      "spec_contract_v2.json:cd8873b7d2": true,
+      "spec_contract_confirm_all.json:dd92c75864": true
+     }
+    },
+    {
+     "file": "colors.py",
+     "mutant": "dec@9",
+     "changed": [
+      "    if not re.fullmatch('#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:14dd39d0d7": true,
+      "spec_contract_v2.json:cd8873b7d2": true,
+      "spec_contract_confirm_all.json:dd92c75864": true
+     }
+    },
+    {
+     "file": "colors.py",
+     "mutant": "inc@9",
+     "changed": [
+      "    if not re.fullmatch('#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:14dd39d0d7": true,
+      "spec_contract_v2.json:cd8873b7d2": true,
+      "spec_contract_confirm_all.json:dd92c75864": true
+     }
+    },
+    {
+     "file": "colors.py",
+     "mutant": "dec@9",
+     "changed": [
+      "    if not re.fullmatch('#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:14dd39d0d7": true,
+      "spec_contract_v2.json:cd8873b7d2": true,
+      "spec_contract_confirm_all.json:dd92c75864": true
+     }
+    },
+    {
+     "file": "colors.py",
+     "mutant": "inc@9",
+     "changed": [
+      "    if not re.fullmatch('#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})', text):"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_experiment.json:14dd39d0d7": true,
+      "spec_contract_v2.json:cd8873b7d2": true,
+      "spec_contract_confirm_all.json:dd92c75864": true
+     }
+    },
+    {
+     "file": "colors.py",
+     "mutant": "dec@9",
+     "changed": [
+      "    if not re.fullmatch('#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:14dd39d0d7": true,
+      "spec_contract_v2.json:cd8873b7d2": true,
+      "spec_contract_confirm_all.json:dd92c75864": true
+     }
+    },
+    {
+     "file": "colors.py",
+     "mutant": "op@9",
+     "changed": [
+      "    if not re.fullmatch('#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:14dd39d0d7": true,
+      "spec_contract_v2.json:cd8873b7d2": true,
+      "spec_contract_confirm_all.json:dd92c75864": true
+     }
+    },
+    {
+     "file": "colors.py",
+     "mutant": "inc@9",
+     "changed": [
+      "    if not re.fullmatch('#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:14dd39d0d7": true,
+      "spec_contract_v2.json:cd8873b7d2": true,
+      "spec_contract_confirm_all.json:dd92c75864": true
+     }
+    },
+    {
+     "file": "colors.py",
+     "mutant": "dec@9",
+     "changed": [
+      "    if not re.fullmatch('#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:14dd39d0d7": true,
+      "spec_contract_v2.json:cd8873b7d2": true,
+      "spec_contract_confirm_all.json:dd92c75864": true
+     }
+    }
+   ]
+  },
+  "H13": {
+   "total": 14,
+   "holdout_killed": 13,
+   "visible_of_holdout": 11,
+   "contract_of_holdout": {
+    "spec_contract_experiment.json:cc5a2c55b8": 13,
+    "spec_contract_v2.json:989f7e99cd": 13,
+    "spec_contract_confirm_all.json:0f5410b7bd": 13
+   },
+   "contract_only_not_holdout": {
+    "spec_contract_experiment.json:cc5a2c55b8": 1,
+    "spec_contract_v2.json:989f7e99cd": 1,
+    "spec_contract_confirm_all.json:0f5410b7bd": 1
+   },
+   "mutants": [
+    {
+     "file": "ranges.py",
+     "mutant": "negate@5",
+     "changed": [
+      "    m = re.fullmatch('([0-9]+)(?:-([0-9]+))?', text)"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:cc5a2c55b8": true,
+      "spec_contract_v2.json:989f7e99cd": true,
+      "spec_contract_confirm_all.json:0f5410b7bd": true
+     }
+    },
+    {
+     "file": "ranges.py",
+     "mutant": "negate@9",
+     "changed": [
+      "    m = re.fullmatch('([0-9]+)(?:-([0-9]+))?', text)"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:cc5a2c55b8": true,
+      "spec_contract_v2.json:989f7e99cd": true,
+      "spec_contract_confirm_all.json:0f5410b7bd": true
+     }
+    },
+    {
+     "file": "ranges.py",
+     "mutant": "noraise@6",
+     "changed": [
+      "    m = re.fullmatch('([0-9]+)(?:-([0-9]+))?', text)"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:cc5a2c55b8": true,
+      "spec_contract_v2.json:989f7e99cd": true,
+      "spec_contract_confirm_all.json:0f5410b7bd": true
+     }
+    },
+    {
+     "file": "ranges.py",
+     "mutant": "cmp@9",
+     "changed": [
+      "    m = re.fullmatch('([0-9]+)(?:-([0-9]+))?', text)"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_experiment.json:cc5a2c55b8": true,
+      "spec_contract_v2.json:989f7e99cd": true,
+      "spec_contract_confirm_all.json:0f5410b7bd": true
+     }
+    },
+    {
+     "file": "ranges.py",
+     "mutant": "noraise@10",
+     "changed": [
+      "    m = re.fullmatch('([0-9]+)(?:-([0-9]+))?', text)"
+     ],
+     "holdout": false,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:cc5a2c55b8": true,
+      "spec_contract_v2.json:989f7e99cd": true,
+      "spec_contract_confirm_all.json:0f5410b7bd": true
+     }
+    },
+    {
+     "file": "ranges.py",
+     "mutant": "inc@7",
+     "changed": [
+      "    m = re.fullmatch('([0-9]+)(?:-([0-9]+))?', text)"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:cc5a2c55b8": true,
+      "spec_contract_v2.json:989f7e99cd": true,
+      "spec_contract_confirm_all.json:0f5410b7bd": true
+     }
+    },
+    {
+     "file": "ranges.py",
+     "mutant": "dec@7",
+     "changed": [
+      "    m = re.fullmatch('([0-9]+)(?:-([0-9]+))?', text)"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:cc5a2c55b8": true,
+      "spec_contract_v2.json:989f7e99cd": true,
+      "spec_contract_confirm_all.json:0f5410b7bd": true
+     }
+    },
+    {
+     "file": "ranges.py",
+     "mutant": "op@11",
+     "changed": [
+      "    m = re.fullmatch('([0-9]+)(?:-([0-9]+))?', text)"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:cc5a2c55b8": true,
+      "spec_contract_v2.json:989f7e99cd": true,
+      "spec_contract_confirm_all.json:0f5410b7bd": true
+     }
+    },
+    {
+     "file": "ranges.py",
+     "mutant": "inc@8",
+     "changed": [
+      "    m = re.fullmatch('([0-9]+)(?:-([0-9]+))?', text)"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:cc5a2c55b8": true,
+      "spec_contract_v2.json:989f7e99cd": true,
+      "spec_contract_confirm_all.json:0f5410b7bd": true
+     }
+    },
+    {
+     "file": "ranges.py",
+     "mutant": "dec@8",
+     "changed": [
+      "    m = re.fullmatch('([0-9]+)(?:-([0-9]+))?', text)"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_experiment.json:cc5a2c55b8": true,
+      "spec_contract_v2.json:989f7e99cd": true,
+      "spec_contract_confirm_all.json:0f5410b7bd": true
+     }
+    },
+    {
+     "file": "ranges.py",
+     "mutant": "inc@8",
+     "changed": [
+      "    m = re.fullmatch('([0-9]+)(?:-([0-9]+))?', text)"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:cc5a2c55b8": true,
+      "spec_contract_v2.json:989f7e99cd": true,
+      "spec_contract_confirm_all.json:0f5410b7bd": true
+     }
+    },
+    {
+     "file": "ranges.py",
+     "mutant": "dec@8",
+     "changed": [
+      "    m = re.fullmatch('([0-9]+)(?:-([0-9]+))?', text)"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:cc5a2c55b8": true,
+      "spec_contract_v2.json:989f7e99cd": true,
+      "spec_contract_confirm_all.json:0f5410b7bd": true
+     }
+    },
+    {
+     "file": "ranges.py",
+     "mutant": "inc@11",
+     "changed": [
+      "    m = re.fullmatch('([0-9]+)(?:-([0-9]+))?', text)"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:cc5a2c55b8": true,
+      "spec_contract_v2.json:989f7e99cd": true,
+      "spec_contract_confirm_all.json:0f5410b7bd": true
+     }
+    },
+    {
+     "file": "ranges.py",
+     "mutant": "dec@11",
+     "changed": [
+      "    m = re.fullmatch('([0-9]+)(?:-([0-9]+))?', text)"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_experiment.json:cc5a2c55b8": true,
+      "spec_contract_v2.json:989f7e99cd": true,
+      "spec_contract_confirm_all.json:0f5410b7bd": true
+     }
+    }
+   ]
+  },
+  "H14": {
+   "total": 57,
+   "holdout_killed": 48,
+   "visible_of_holdout": 10,
+   "contract_of_holdout": {
+    "spec_contract_confirm_fresh.json:ff7dc4675b": 48
+   },
+   "contract_only_not_holdout": {
+    "spec_contract_confirm_fresh.json:ff7dc4675b": 4
+   },
+   "mutants": [
+    {
+     "file": "clock.py",
+     "mutant": "negate@10",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "negate@13",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "negate@21",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "negate@23",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "negate@25",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "cmp@10",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "noraise@11",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "noraise@14",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": false
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "noraise@15",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": false
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "noraise@22",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "noraise@24",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "noraise@26",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "op@28",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "cmp@19",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "inc@19",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "dec@19",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "cmp@21",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "cmp@21",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "cmp@23",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "cmp@23",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "cmp@25",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "cmp@25",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "op@28",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "inc@10",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "dec@10",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "inc@10",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "dec@10",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "inc@17",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "dec@17",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "inc@18",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "dec@18",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "inc@19",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "dec@19",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "inc@21",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "dec@21",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": false
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "inc@21",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "dec@21",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "inc@23",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "dec@23",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": false
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "inc@23",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "dec@23",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "inc@25",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "dec@25",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": false
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "inc@25",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "dec@25",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "op@28",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "op@28",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "op@13",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "inc@19",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "dec@19",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "inc@28",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "dec@28",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "inc@28",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "dec@28",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "cmp@13",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "inc@13",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    },
+    {
+     "file": "clock.py",
+     "mutant": "dec@13",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ff7dc4675b": true
+     }
+    }
+   ]
+  },
+  "H15": {
+   "total": 37,
+   "holdout_killed": 23,
+   "visible_of_holdout": 11,
+   "contract_of_holdout": {
+    "spec_contract_confirm_fresh.json:c035ab91c3": 23
+   },
+   "contract_only_not_holdout": {
+    "spec_contract_confirm_fresh.json:c035ab91c3": 5
+   },
+   "mutants": [
+    {
+     "file": "sizes.py",
+     "mutant": "negate@20",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": true
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "negate@25",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": true
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "negate@35",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": true
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "negate@38",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": true
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "negate@49",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": true
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "negate@16",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": true
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "noraise@21",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": true
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "noraise@26",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": false
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "noraise@36",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": true
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "cmp@38",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": true
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "noraise@39",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": false
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "cmp@49",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": true
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "noraise@50",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": false
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "inc@11",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": true
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "dec@11",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": true
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "inc@11",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": true
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "dec@11",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": true
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "inc@38",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": false
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "dec@38",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": true
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "noraise@47",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": false
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "inc@49",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": true
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "dec@49",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": false
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "op@52",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": true
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "inc@11",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": true
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "dec@11",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": true
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "inc@11",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": true
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "dec@11",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": true
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "inc@11",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": true
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "dec@11",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": true
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "inc@11",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": true
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "dec@11",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": true
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "op@35",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": true
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "op@35",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": true
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "cmp@35",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": true
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "cmp@35",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": false
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "inc@35",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": false
+     }
+    },
+    {
+     "file": "sizes.py",
+     "mutant": "dec@35",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:c035ab91c3": false
+     }
+    }
+   ]
+  },
+  "H16": {
+   "total": 145,
+   "holdout_killed": 89,
+   "visible_of_holdout": 43,
+   "contract_of_holdout": {
+    "spec_contract_confirm_fresh.json:ae627d1922": 89
+   },
+   "contract_only_not_holdout": {
+    "spec_contract_confirm_fresh.json:ae627d1922": 56
+   },
+   "mutants": [
+    {
+     "file": "roman.py",
+     "mutant": "negate@10",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "noraise@11",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "negate@17",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "negate@28",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "negate@30",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "negate@39",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "negate@60",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "negate@62",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@87",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@87",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@88",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@88",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "cmp@89",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "negate@93",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@13",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@13",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@13",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@13",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@13",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@13",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@13",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@13",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@13",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@13",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@13",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@13",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@13",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@13",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "cmp@17",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "noraise@18",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "op@28",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "noraise@29",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "op@30",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "op@39",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "op@60",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "noraise@61",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "op@62",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "negate@72",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "op@93",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "negate@101",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "negate@116",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "cmp@28",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "cmp@28",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "cmp@28",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "cmp@30",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "cmp@30",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "cmp@30",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "cmp@30",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "cmp@30",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "cmp@39",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "cmp@39",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "cmp@39",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "cmp@39",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "cmp@60",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "cmp@60",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "cmp@60",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "cmp@62",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "cmp@62",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "cmp@62",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "cmp@62",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "cmp@72",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "negate@77",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "cmp@93",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "cmp@93",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "cmp@101",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "noraise@102",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "op@116",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "noraise@117",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "op@119",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@120",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@120",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@123",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@123",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@28",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@28",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@30",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@30",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@39",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@39",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@60",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@60",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@62",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@62",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "cmp@77",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "cmp@77",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "cmp@77",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "noraise@78",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "op@93",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "op@95",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "cmp@116",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "cmp@116",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "op@28",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "op@30",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "op@30",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "op@30",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "op@39",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "op@39",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "op@39",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "op@60",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "op@62",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "op@62",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "op@62",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@93",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@93",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@95",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@95",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@116",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@116",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@28",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@28",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@30",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@30",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@30",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@30",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@30",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@30",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@39",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@39",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@39",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@39",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@39",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@39",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@60",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@60",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@62",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@62",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@62",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@62",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@62",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@62",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "op@77",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "op@77",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "op@77",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "op@93",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "op@116",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@77",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@77",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@77",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@77",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@77",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@77",
+     "changed": [
+      ""
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@93",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@93",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "inc@116",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    },
+    {
+     "file": "roman.py",
+     "mutant": "dec@116",
+     "changed": [
+      ""
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:ae627d1922": true
+     }
+    }
+   ]
+  },
+  "H17": {
+   "total": 10,
+   "holdout_killed": 9,
+   "visible_of_holdout": 8,
+   "contract_of_holdout": {
+    "spec_contract_confirm_fresh.json:f6a6951ab0": 9
+   },
+   "contract_only_not_holdout": {
+    "spec_contract_confirm_fresh.json:f6a6951ab0": 0
+   },
+   "mutants": [
+    {
+     "file": "kvpairs.py",
+     "mutant": "negate@5",
+     "changed": [
+      "def parse_kv(text: str) -> dict:"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:f6a6951ab0": true
+     }
+    },
+    {
+     "file": "kvpairs.py",
+     "mutant": "negate@9",
+     "changed": [
+      "def parse_kv(text: str) -> dict:"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:f6a6951ab0": true
+     }
+    },
+    {
+     "file": "kvpairs.py",
+     "mutant": "negate@13",
+     "changed": [
+      "def parse_kv(text: str) -> dict:"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:f6a6951ab0": true
+     }
+    },
+    {
+     "file": "kvpairs.py",
+     "mutant": "cmp@9",
+     "changed": [
+      "def parse_kv(text: str) -> dict:"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:f6a6951ab0": true
+     }
+    },
+    {
+     "file": "kvpairs.py",
+     "mutant": "noraise@10",
+     "changed": [
+      "def parse_kv(text: str) -> dict:"
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:f6a6951ab0": false
+     }
+    },
+    {
+     "file": "kvpairs.py",
+     "mutant": "op@13",
+     "changed": [
+      "def parse_kv(text: str) -> dict:"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:f6a6951ab0": true
+     }
+    },
+    {
+     "file": "kvpairs.py",
+     "mutant": "noraise@14",
+     "changed": [
+      "def parse_kv(text: str) -> dict:"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:f6a6951ab0": true
+     }
+    },
+    {
+     "file": "kvpairs.py",
+     "mutant": "inc@11",
+     "changed": [
+      "def parse_kv(text: str) -> dict:"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:f6a6951ab0": true
+     }
+    },
+    {
+     "file": "kvpairs.py",
+     "mutant": "dec@11",
+     "changed": [
+      "def parse_kv(text: str) -> dict:"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:f6a6951ab0": true
+     }
+    },
+    {
+     "file": "kvpairs.py",
+     "mutant": "cmp@13",
+     "changed": [
+      "def parse_kv(text: str) -> dict:"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:f6a6951ab0": true
+     }
+    }
+   ]
+  },
+  "H18": {
+   "total": 16,
+   "holdout_killed": 14,
+   "visible_of_holdout": 6,
+   "contract_of_holdout": {
+    "spec_contract_confirm_fresh.json:b770439d68": 14
+   },
+   "contract_only_not_holdout": {
+    "spec_contract_confirm_fresh.json:b770439d68": 1
+   },
+   "mutants": [
+    {
+     "file": "percent.py",
+     "mutant": "negate@12",
+     "changed": [
+      "    if not not text.endswith('%'):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:b770439d68": true
+     }
+    },
+    {
+     "file": "percent.py",
+     "mutant": "negate@21",
+     "changed": [
+      "    num_part = text[:-1]"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:b770439d68": true
+     }
+    },
+    {
+     "file": "percent.py",
+     "mutant": "negate@25",
+     "changed": [
+      "    num_part = text[:-1]"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:b770439d68": true
+     }
+    },
+    {
+     "file": "percent.py",
+     "mutant": "noraise@13",
+     "changed": [
+      "        pass"
+     ],
+     "holdout": false,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:b770439d68": true
+     }
+    },
+    {
+     "file": "percent.py",
+     "mutant": "noraise@22",
+     "changed": [
+      "    num_part = text[:-1]"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:b770439d68": true
+     }
+    },
+    {
+     "file": "percent.py",
+     "mutant": "noraise@26",
+     "changed": [
+      "    num_part = text[:-1]"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:b770439d68": true
+     }
+    },
+    {
+     "file": "percent.py",
+     "mutant": "cmp@25",
+     "changed": [
+      "    num_part = text[:-1]"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:b770439d68": true
+     }
+    },
+    {
+     "file": "percent.py",
+     "mutant": "cmp@25",
+     "changed": [
+      "    num_part = text[:-1]"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:b770439d68": true
+     }
+    },
+    {
+     "file": "percent.py",
+     "mutant": "inc@28",
+     "changed": [
+      "    num_part = text[:-1]"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:b770439d68": true
+     }
+    },
+    {
+     "file": "percent.py",
+     "mutant": "dec@28",
+     "changed": [
+      "    num_part = text[:-1]"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:b770439d68": true
+     }
+    },
+    {
+     "file": "percent.py",
+     "mutant": "inc@25",
+     "changed": [
+      "    num_part = text[:-1]"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:b770439d68": true
+     }
+    },
+    {
+     "file": "percent.py",
+     "mutant": "dec@25",
+     "changed": [
+      "    num_part = text[:-1]"
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:b770439d68": false
+     }
+    },
+    {
+     "file": "percent.py",
+     "mutant": "inc@25",
+     "changed": [
+      "    num_part = text[:-1]"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:b770439d68": true
+     }
+    },
+    {
+     "file": "percent.py",
+     "mutant": "dec@25",
+     "changed": [
+      "    num_part = text[:-1]"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:b770439d68": true
+     }
+    },
+    {
+     "file": "percent.py",
+     "mutant": "inc@16",
+     "changed": [
+      "    num_part = text[:-2]"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:b770439d68": true
+     }
+    },
+    {
+     "file": "percent.py",
+     "mutant": "dec@16",
+     "changed": [
+      "    num_part = text[:-0]"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:b770439d68": true
+     }
+    }
+   ]
+  },
+  "H19": {
+   "total": 17,
+   "holdout_killed": 14,
+   "visible_of_holdout": 13,
+   "contract_of_holdout": {
+    "spec_contract_confirm_fresh.json:88333d1560": 14
+   },
+   "contract_only_not_holdout": {
+    "spec_contract_confirm_fresh.json:88333d1560": 0
+   },
+   "mutants": [
+    {
+     "file": "cells.py",
+     "mutant": "negate@12",
+     "changed": [
+      "    if not not re.fullmatch('[A-Z]{1,2}[1-9]\\\\d*', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:88333d1560": true
+     }
+    },
+    {
+     "file": "cells.py",
+     "mutant": "negate@23",
+     "changed": [
+      "    if not re.fullmatch('[A-Z]{1,2}[1-9]\\\\d*', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:88333d1560": true
+     }
+    },
+    {
+     "file": "cells.py",
+     "mutant": "noraise@13",
+     "changed": [
+      "    if not re.fullmatch('[A-Z]{1,2}[1-9]\\\\d*', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:88333d1560": true
+     }
+    },
+    {
+     "file": "cells.py",
+     "mutant": "inc@18",
+     "changed": [
+      "    if not re.fullmatch('[A-Z]{1,2}[1-9]\\\\d*', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:88333d1560": true
+     }
+    },
+    {
+     "file": "cells.py",
+     "mutant": "dec@18",
+     "changed": [
+      "    if not re.fullmatch('[A-Z]{1,2}[1-9]\\\\d*', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:88333d1560": true
+     }
+    },
+    {
+     "file": "cells.py",
+     "mutant": "cmp@23",
+     "changed": [
+      "    if not re.fullmatch('[A-Z]{1,2}[1-9]\\\\d*', text):"
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:88333d1560": false
+     }
+    },
+    {
+     "file": "cells.py",
+     "mutant": "noraise@24",
+     "changed": [
+      "    if not re.fullmatch('[A-Z]{1,2}[1-9]\\\\d*', text):"
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:88333d1560": false
+     }
+    },
+    {
+     "file": "cells.py",
+     "mutant": "op@20",
+     "changed": [
+      "    if not re.fullmatch('[A-Z]{1,2}[1-9]\\\\d*', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:88333d1560": true
+     }
+    },
+    {
+     "file": "cells.py",
+     "mutant": "inc@23",
+     "changed": [
+      "    if not re.fullmatch('[A-Z]{1,2}[1-9]\\\\d*', text):"
+     ],
+     "holdout": true,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:88333d1560": true
+     }
+    },
+    {
+     "file": "cells.py",
+     "mutant": "dec@23",
+     "changed": [
+      "    if not re.fullmatch('[A-Z]{1,2}[1-9]\\\\d*', text):"
+     ],
+     "holdout": false,
+     "visible": false,
+     "contract": {
+      "spec_contract_confirm_fresh.json:88333d1560": false
+     }
+    },
+    {
+     "file": "cells.py",
+     "mutant": "op@20",
+     "changed": [
+      "    if not re.fullmatch('[A-Z]{1,2}[1-9]\\\\d*', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:88333d1560": true
+     }
+    },
+    {
+     "file": "cells.py",
+     "mutant": "op@20",
+     "changed": [
+      "    if not re.fullmatch('[A-Z]{1,2}[1-9]\\\\d*', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:88333d1560": true
+     }
+    },
+    {
+     "file": "cells.py",
+     "mutant": "inc@20",
+     "changed": [
+      "    if not re.fullmatch('[A-Z]{1,2}[1-9]\\\\d*', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:88333d1560": true
+     }
+    },
+    {
+     "file": "cells.py",
+     "mutant": "dec@20",
+     "changed": [
+      "    if not re.fullmatch('[A-Z]{1,2}[1-9]\\\\d*', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:88333d1560": true
+     }
+    },
+    {
+     "file": "cells.py",
+     "mutant": "op@20",
+     "changed": [
+      "    if not re.fullmatch('[A-Z]{1,2}[1-9]\\\\d*', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:88333d1560": true
+     }
+    },
+    {
+     "file": "cells.py",
+     "mutant": "inc@20",
+     "changed": [
+      "    if not re.fullmatch('[A-Z]{1,2}[1-9]\\\\d*', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:88333d1560": true
+     }
+    },
+    {
+     "file": "cells.py",
+     "mutant": "dec@20",
+     "changed": [
+      "    if not re.fullmatch('[A-Z]{1,2}[1-9]\\\\d*', text):"
+     ],
+     "holdout": true,
+     "visible": true,
+     "contract": {
+      "spec_contract_confirm_fresh.json:88333d1560": true
+     }
+    }
+   ]
+  }
+ }
+}
