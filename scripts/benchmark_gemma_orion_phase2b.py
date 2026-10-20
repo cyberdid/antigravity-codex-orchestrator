@@ -1701,6 +1701,25 @@ def _aggregate_attempts(attempts: List[Dict[str, Any]]) -> Dict[str, Any]:
     return merged
 
 
+def _independent_checks(ws: Path, visible_modules: List[str], holdout_fn, timeout: float = 20.0):
+    """Run the task's own visible tests and the hidden holdout; a hang counts as a failure.
+
+    Returns (visible_passed, holdout_passed, visible_output). Both checks always run.
+    """
+    try:
+        proc = subprocess.run([sys.executable, "-m", "unittest", "-q", *visible_modules], cwd=str(ws),
+                              capture_output=True, text=True, timeout=timeout)
+        visible, output = proc.returncode == 0, proc.stderr + "\n" + proc.stdout
+    except subprocess.TimeoutExpired:
+        visible, output = False, f"visible tests timed out after {timeout}s"
+    try:
+        held = bool(holdout_fn(ws))
+    except subprocess.TimeoutExpired:
+        held = False
+        output += "\nholdout timed out"
+    return visible, held, output
+
+
 SPEC_TEST_CACHE: Dict[str, Dict[str, Any]] = {}
 
 
@@ -1743,6 +1762,8 @@ def run_single_task(
     ws = Path(tempfile.mkdtemp(prefix=f"gemma_p2b_{policy_id}_s{seed}_{task_id}_"))
     try:
         subtask = setup_fn(ws)
+        # The task's own visible test modules, fixed before any generated tests are installed.
+        visible_modules = [Path(f).stem for f in subtask.input_files if Path(f).name.startswith("test_")]
         spec_meta: Dict[str, Any] = {}
         if POLICIES[policy_id].get("spec_tests"):
             spec_meta = _install_spec_tests(task_id, setup_fn, ws, subtask, cloud_client)
@@ -1793,19 +1814,8 @@ def run_single_task(
         final_sha = _hash_snapshot(after_snap)
         diff_text = _diff_snapshots(before_snap, after_snap)
 
-        # Independent verification: both visible unittest and hidden holdout check
-        # Only the task's own visible test modules: generated contract tests
-        # (SPEC_TESTS policies) must not change what "visible" means.
-        visible_modules = [Path(f).stem for f in subtask.input_files if Path(f).name.startswith("test_")]
-        vis_proc = subprocess.run(
-            [sys.executable, "-m", "unittest", "-q", *visible_modules],
-            cwd=str(ws),
-            capture_output=True,
-            text=True,
-            timeout=20.0,
-        )
-        visible_passed = vis_proc.returncode == 0
-        holdout_passed = holdout_fn(ws) if visible_passed else False
+        # Independent verification: the task's own visible tests and the hidden holdout.
+        visible_passed, holdout_passed, visible_output = _independent_checks(ws, visible_modules, holdout_fn)
         independently_verified = bool(visible_passed and holdout_passed)
         solved_with_cloud_assist = bool(independently_verified and res.metadata.get("solved_with_cloud_assist"))
         llm_native = bool(
@@ -1835,7 +1845,7 @@ def run_single_task(
             "final_workspace_sha256": final_sha,
             "workspace_modified": initial_sha != final_sha,
             "workspace_diff": diff_text,
-            "visible_test_output": (vis_proc.stderr + "\n" + vis_proc.stdout)[-2000:],
+            "visible_test_output": visible_output[-2000:],
             **spec_meta,
             "attempts_used": len(attempt_records) or 1,
             "solved_with_cloud_assist": solved_with_cloud_assist,
@@ -1973,6 +1983,12 @@ def main() -> None:
                 tr = run_single_task(pol_id, seed, tid, setup_fn, holdout_fn,
                                      attempts=args.attempts, cloud_client=cloud_client)
                 per_policy_seed_tasks[pol_id][seed].append(tr)
+                partial = Path(args.output).with_suffix(".partial.json")
+                partial.parent.mkdir(parents=True, exist_ok=True)
+                partial.write_text(json.dumps({
+                    "complete": False, "git_commit": results["git_commit"],
+                    "runs": [t for pol in per_policy_seed_tasks.values() for seed_runs in pol.values() for t in seed_runs],
+                }, indent=1), encoding="utf-8")
                 print(
                     f" verified={tr['pipeline_verified']} native={tr['llm_native_completion']} "
                     f"turns={tr['turns']} tools={tr['tool_calls_count']} "

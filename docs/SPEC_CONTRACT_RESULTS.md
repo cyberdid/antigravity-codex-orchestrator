@@ -113,3 +113,7 @@ Five of the six losses are on H1 (2) and H3 (3); the sixth (H4, seed 505) happen
 6. **Remaining failure mode:** stalls and deadlines while the worker fights stricter tests (H4, H6). Letting a stalled attempt continue into the next attempt (instead of stopping without a replanner) is the next thing to measure — on a fresh task set, to avoid tuning on these tasks.
 
 **Limits:** 13 single-function or two-module Python repair tasks of one style, 3 seeds, one local and one cloud model; the subset effect is large and replicated across two runs, but the all-task difference is not significant.
+
+## Measurement note (found 2026-10-20 06:15, fixed in the next commit)
+
+In all three runs above, the benchmark's independent "visible" check for the **SPECTESTS arm** also ran the generated `test_spec_contract.py` (the list of test modules was read after the contract tests were installed), and the holdout was evaluated only when that check passed. SPECTESTS runs were therefore scored against a stricter criterion (original visible tests **and** contract tests **and** holdout) than baseline runs. This can only have **lowered** the SPECTESTS scores; the reported gains are conservative. It may also have inflated the v1 control harm (H1/H3), where the contract tests themselves were wrong. The checks now use only the task's own test modules, always run the holdout, treat a hang as a failure (a hang on a generated test crashed one run) and save results after every run. The confirmatory run below uses the corrected checks.

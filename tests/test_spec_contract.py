@@ -190,3 +190,25 @@ def test_writer_contract_covers_input_type_modules(tmp_path):
     assert writer.generate(tmp_path, subtask) == source
     assert "rejected_mask: List[bool]" in prompts[0]
     assert "test_fdr_control" not in prompts[0]
+
+
+# --- benchmark independent checks ------------------------------------------------
+
+def test_independent_checks_ignore_generated_tests_and_survive_hangs(tmp_path):
+    from benchmark_gemma_orion_phase2b import _independent_checks
+
+    (tmp_path / "mod.py").write_text("def f(x):\n    if x == 'hang':\n        while True:\n            pass\n    return x\n")
+    (tmp_path / "test_mod.py").write_text(
+        "import unittest\nfrom mod import f\n\nclass T(unittest.TestCase):\n    def test_ok(self):\n"
+        "        self.assertEqual(f(1), 1)\n")
+    (tmp_path / "test_spec_contract.py").write_text(
+        "import unittest\nfrom mod import f\n\nclass C(unittest.TestCase):\n    def test_hang(self):\n"
+        "        f('hang')\n")
+
+    def holdout(ws):
+        import subprocess, sys
+        return subprocess.run([sys.executable, "-c", "from mod import f; f('hang')"], cwd=ws, timeout=1).returncode == 0
+
+    visible, held, output = _independent_checks(tmp_path, ["test_mod"], holdout, timeout=5.0)
+    assert visible is True
+    assert held is False and "timed out" in output
