@@ -117,3 +117,31 @@ Five of the six losses are on H1 (2) and H3 (3); the sixth (H4, seed 505) happen
 ## Measurement note (found 2026-10-20 06:15, fixed in the next commit)
 
 In all three runs above, the benchmark's independent "visible" check for the **SPECTESTS arm** also ran the generated `test_spec_contract.py` (the list of test modules was read after the contract tests were installed), and the holdout was evaluated only when that check passed. SPECTESTS runs were therefore scored against a stricter criterion (original visible tests **and** contract tests **and** holdout) than baseline runs. This can only have **lowered** the SPECTESTS scores; the reported gains are conservative. It may also have inflated the v1 control harm (H1/H3), where the contract tests themselves were wrong. The checks now use only the task's own test modules, always run the holdout, treat a hang as a failure (a hang on a generated test crashed one run) and save results after every run. The confirmatory run below uses the corrected checks.
+
+## Confirmatory run on fresh tasks (pre-registered, `7a369ac`)
+
+**Pre-registration** (written in the run ledger before any run on these tasks): primary endpoint = verified (task's own visible tests + hidden holdout) on six **fresh** tasks never used before — H14 `parse_clock`, H15 `parse_size`, H16 `roman_to_int`, H17 `parse_kv`, H18 `percent_to_fraction`, H19 `parse_cell` — baseline vs SPECTESTS (contract v2), seeds 303/404/505, `--attempts 2`, paired by (task, seed), exact two-sided sign test. Code includes the stall-continuation change (a single in-attempt stall gets a fresh attempt) for **both** arms and the corrected independent checks. A first attempt of this run crashed at 36/36 on a hang and used the old visible check; it was discarded and rerun unchanged except for the measurement fix (documented in the ledger).
+
+Data: `benchmarks/spec_contract_confirm_fresh.json`.
+
+| Policy | Verified | 95% CI | Silent false successes | Wall (sum) | Worker tokens | Cloud tokens |
+|---|---:|---|---:|---:|---:|---:|
+| baseline | 4/18 | 0.09–0.45 | 14/18 | 929 s | 256,017 | 0 |
+| **SPECTESTS v2** | **11/18** | 0.39–0.80 | **3/18** | 4,014 s | 1,171,194 | 91,958 (6 calls) |
+
+**Primary result: 8 wins, 1 loss, 9 ties — p = 0.039. The hypothesis is confirmed on unseen tasks.**
+
+| Task | baseline | SPECTESTS |
+|---|---|---|
+| H14 clock | 0/3 (visible only ×3) | **3/3** |
+| H15 size | 0/3 (visible only ×3) | **3/3** |
+| H16 roman | 0/3 (visible only ×3) | 1/3 |
+| H17 key-value | 0/3 (visible only ×3) | 0/3 (visible only ×3) |
+| H18 percent | 1/3 | 1/3 |
+| H19 cell | 3/3 | 3/3 |
+
+- **Contract tests were correct again:** all 6 generated modules pass 100% on independent reference implementations (7–17 tests each) and fail on the buggy originals.
+- **The baseline silently fails** on 14 of 18 runs: it passes the visible tests and reports success while hidden rules are violated. With SPECTESTS this drops to 3/18.
+- **H17 (all 3 silent failures under SPECTESTS):** reconstructing the final code from the recorded diffs shows the only violated holdout rules are empty pairs (`"a=1;;b=2"`, `"a=1;"` must raise). That reading of the docstring ("a pair without '='") is arguably ambiguous — a task-design weakness. **Sensitivity analysis** grading H17 without those two cases: baseline 7/18, SPECTESTS 14/18, same 8 wins / 1 loss, p = 0.039. The conclusion does not depend on the ambiguous cases.
+- **Remaining SPECTESTS failures** (H16 ×2, H18 ×2): the worker ran out of attempts/time (325–600 s) while the stricter contract tests still failed — explicit failures, not silent ones.
+- **Cost:** 4.3× wall time and 4.6× worker tokens on these tasks (the baseline is fast because it stops as soon as the weak visible tests pass), plus ~15k cloud tokens per task.
