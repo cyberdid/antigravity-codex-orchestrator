@@ -107,3 +107,52 @@ kept 6 natural tasks; 19 specifications implemented correctly on every seed
 [04:21:25] generate exited rc=0
 [04:21:25] restored archive-index timers
 [04:21:25] DONE generate
+[04:23:03] paused archive-index timers
+[04:23:03] campaign B at d2f2807 data(paper): freeze Campaign B tasks before any run (6 natural-bug tasks); tasks N1,N7,N8,N9,N13,N18 
+
+=== Running Seed 303 | Policy P1_STAGE_ADAPTIVE ===
+  -> Task N1_split_amount ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=31.2961s
+  -> Task N7_parse_csv_line ... verified=False native=False turns=3 tools=3 trunc=0 rec_attempts=0 stage_hints=3 wall=1207.109s
+  -> Task N8_compare_versions ... verified=True native=True turns=12 tools=11 trunc=0 rec_attempts=0 stage_hints=11 wall=54.3485s
+  -> Task N9_order_total ... verified=True native=True turns=25 tools=24 trunc=0 rec_attempts=0 stage_hints=24 wall=160.3902s
+  -> Task N13_load_settings ... verified=False native=False turns=105 tools=104 trunc=0 rec_attempts=0 stage_hints=104 wall=600.0967s
+  -> Task N18_format_money ... verified=False native=False turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=31.7251s
+
+=== Running Seed 303 | Policy P1_STAGE_ADAPTIVE_SPECTESTS ===
+  -> Task N1_split_amount ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=37.427s
+  -> Task N7_parse_csv_line ... verified=False native=False turns=4 tools=4 trunc=0 rec_attempts=0 stage_hints=4 wall=1210.8587s
+  -> Task N8_compare_versions ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=62.9787s
+  -> Task N9_order_total ... verified=True native=True turns=34 tools=33 trunc=0 rec_attempts=0 stage_hints=32 wall=208.1093s
+  -> Task N13_load_settings ... verified=False native=False turns=109 tools=107 trunc=0 rec_attempts=0 stage_hints=107 wall=600.1357s
+  -> Task N18_format_money ... verified=True native=True turns=12 tools=11 trunc=0 rec_attempts=0 stage_hints=11 wall=71.7253s
+
+=== Running Seed 303 | Policy P1_STAGE_ADAPTIVE_CHECKLIST ===
+  -> Task N1_split_amount ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=23.3449s
+  -> Task N7_parse_csv_line ... verified=False native=False turns=3 tools=3 trunc=0 rec_attempts=0 stage_hints=3 wall=1208.013s
+  -> Task N8_compare_versions ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=64.7155s
+  -> Task N9_order_total ... verified=True native=True turns=13 tools=12 trunc=0 rec_attempts=0 stage_hints=12 wall=69.9903s
+  -> Task N13_load_settings ... verified=True native=True turns=39 tools=38 trunc=0 rec_attempts=0 stage_hints=38 wall=220.5755s
+  -> Task N18_format_money ... verified=True native=True turns=50 tools=48 trunc=1 rec_attempts=1 stage_hints=47 wall=526.609s
+
+=== Running Seed 404 | Policy P1_STAGE_ADAPTIVE_CHECKLIST ===
+  -> Task N1_split_amount ... verified=True native=True turns=6 tools=5 trunc=0 rec_attempts=0 stage_hints=5 wall=22.9732s
+  -> Task N7_parse_csv_line ... verified=False native=False turns=3 tools=3 trunc=0 rec_attempts=0 stage_hints=3 wall=1207.483s
+  -> Task N8_compare_versions ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=59.0112s
+  -> Task N9_order_total ... verified=True native=True turns=13 tools=12 trunc=0 rec_attempts=0 stage_hints=12 wall=67.303s
+  -> Task N13_load_settings ... verified=False native=False turns=84 tools=83 trunc=0 rec_attempts=0 stage_hints=82 wall=525.6697s
+  -> Task N18_format_money ... verified=False native=False turns=17 tools=17 trunc=0 rec_attempts=0 stage_hints=16 wall=192.9768s
+
+=== Running Seed 404 | Policy P1_STAGE_ADAPTIVE_SPECTESTS ===
+  -> Task N1_split_amount ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=32.612s
+  -> Task N7_parse_csv_line ... verified=False native=False turns=4 tools=4 trunc=0 rec_attempts=0 stage_hints=4 wall=1210.4445s
+  -> Task N8_compare_versions ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=61.4681s
+  -> Task N9_order_total ... verified=True native=True turns=19 tools=18 trunc=0 rec_attempts=0 stage_hints=18 wall=78.8953s
+  -> Task N13_load_settings ... verified=False native=False turns=107 tools=105 trunc=0 rec_attempts=0 stage_hints=105 wall=600.1017s
+  -> Task N18_format_money ... verified=True native=True turns=13 tools=12 trunc=0 rec_attempts=0 stage_hints=12 wall=108.969s
+
+=== Running Seed 404 | Policy P1_STAGE_ADAPTIVE ===
+  -> Task N1_split_amount ... verified=True native=True turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=31.2047s
+  -> Task N7_parse_csv_line ... verified=False native=False turns=3 tools=3 trunc=0 rec_attempts=0 stage_hints=3 wall=1207.7122s
+  -> Task N8_compare_versions ... verified=True native=True turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=54.911s
+  -> Task N9_order_total ... verified=True native=True turns=21 tools=20 trunc=0 rec_attempts=0 stage_hints=20 wall=94.1131s
+  -> Task N13_load_settings ...[08:02:48] STOPPED by owner request (moving); timers restored; resume: bash scripts/run_campaign_b.sh run
