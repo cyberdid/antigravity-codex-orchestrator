@@ -1,0 +1,958 @@
+{
+ "model": "gemma4:12b",
+ "generation_seeds": [
+  1,
+  2,
+  3,
+  4,
+  5
+ ],
+ "records": [
+  {
+   "spec": "P1_split_amount",
+   "target": "money.py",
+   "attempts": [
+    {
+     "seed": 1,
+     "wall_s": 41.3,
+     "done_reason": "stop",
+     "eval_count": 379,
+     "failing_rules": []
+    },
+    {
+     "seed": 2,
+     "wall_s": 239.7,
+     "done_reason": "length",
+     "eval_count": 4096,
+     "rejected": "unparsable or incomplete"
+    },
+    {
+     "seed": 3,
+     "wall_s": 19.0,
+     "done_reason": "stop",
+     "eval_count": 349,
+     "failing_rules": [
+      "non_int_rejected"
+     ]
+    }
+   ],
+   "task_id": "N1_split_amount",
+   "generation_seed": 3,
+   "buggy_source": "\"\"\"Money helpers.\"\"\"\n\ndef split_amount(total_cents: int, parts: int) -> list:\n    \"\"\"Split `total_cents` into `parts` integer shares.\n\nRules:\n1. The shares sum to total_cents and differ from each other by at most 1 cent.\n2. Larger shares come first.\n3. Raise ValueError if parts < 1 or total_cents < 0.\n4. Both arguments must be int; bool is not accepted (raise ValueError).\"\"\"\n    if isinstance(total_cents, bool) or isinstance(parts, bool):\n        raise ValueError('Both arguments must be integers, not booleans.')\n    if not isinstance(total_cents, int) or not isinstance(parts, int):\n        raise TypeError('Both arguments must be integers.')\n    if parts < 1:\n        raise ValueError('Number of parts must be at least 1.')\n    if total_cents < 0:\n        raise ValueError('Total cents cannot be negative.')\n    quotient = total_cents // parts\n    remainder = total_cents % parts\n    result = []\n    for i in range(parts):\n        if i < remainder:\n            result.append(quotient + 1)\n        else:\n            result.append(quotient)\n    return result\n",
+   "visible_rules": [
+    "at_most_one_cent_apart",
+    "invalid_parts",
+    "negative_total",
+    "non_int_rejected"
+   ]
+  },
+  {
+   "spec": "P2_wrap_words",
+   "target": "textwrap2.py",
+   "attempts": [
+    {
+     "seed": 1,
+     "wall_s": 33.0,
+     "done_reason": "stop",
+     "eval_count": 607,
+     "failing_rules": []
+    },
+    {
+     "seed": 2,
+     "wall_s": 29.3,
+     "done_reason": "stop",
+     "eval_count": 535,
+     "failing_rules": []
+    },
+    {
+     "seed": 3,
+     "wall_s": 40.1,
+     "done_reason": "stop",
+     "eval_count": 722,
+     "failing_rules": []
+    },
+    {
+     "seed": 4,
+     "wall_s": 35.9,
+     "done_reason": "stop",
+     "eval_count": 644,
+     "failing_rules": []
+    },
+    {
+     "seed": 5,
+     "wall_s": 34.0,
+     "done_reason": "stop",
+     "eval_count": 606,
+     "failing_rules": []
+    }
+   ]
+  },
+  {
+   "spec": "P3_days_in_month",
+   "target": "calendar2.py",
+   "attempts": [
+    {
+     "seed": 1,
+     "wall_s": 22.8,
+     "done_reason": "stop",
+     "eval_count": 408,
+     "failing_rules": []
+    },
+    {
+     "seed": 2,
+     "wall_s": 19.1,
+     "done_reason": "stop",
+     "eval_count": 345,
+     "failing_rules": []
+    },
+    {
+     "seed": 3,
+     "wall_s": 19.0,
+     "done_reason": "stop",
+     "eval_count": 346,
+     "failing_rules": []
+    },
+    {
+     "seed": 4,
+     "wall_s": 23.2,
+     "done_reason": "stop",
+     "eval_count": 418,
+     "failing_rules": []
+    },
+    {
+     "seed": 5,
+     "wall_s": 25.8,
+     "done_reason": "stop",
+     "eval_count": 443,
+     "failing_rules": []
+    }
+   ]
+  },
+  {
+   "spec": "P4_letter_grade",
+   "target": "grades.py",
+   "attempts": [
+    {
+     "seed": 1,
+     "wall_s": 16.9,
+     "done_reason": "stop",
+     "eval_count": 281,
+     "failing_rules": []
+    },
+    {
+     "seed": 2,
+     "wall_s": 16.1,
+     "done_reason": "stop",
+     "eval_count": 277,
+     "failing_rules": []
+    },
+    {
+     "seed": 3,
+     "wall_s": 16.2,
+     "done_reason": "stop",
+     "eval_count": 278,
+     "failing_rules": []
+    },
+    {
+     "seed": 4,
+     "wall_s": 16.5,
+     "done_reason": "stop",
+     "eval_count": 282,
+     "failing_rules": []
+    },
+    {
+     "seed": 5,
+     "wall_s": 16.4,
+     "done_reason": "stop",
+     "eval_count": 282,
+     "failing_rules": []
+    }
+   ]
+  },
+  {
+   "spec": "P5_convert_temperature",
+   "target": "temps.py",
+   "attempts": [
+    {
+     "seed": 1,
+     "wall_s": 29.7,
+     "done_reason": "stop",
+     "eval_count": 497,
+     "failing_rules": []
+    },
+    {
+     "seed": 2,
+     "wall_s": 27.1,
+     "done_reason": "stop",
+     "eval_count": 473,
+     "failing_rules": []
+    },
+    {
+     "seed": 3,
+     "wall_s": 29.2,
+     "done_reason": "stop",
+     "eval_count": 496,
+     "failing_rules": []
+    },
+    {
+     "seed": 4,
+     "wall_s": 30.6,
+     "done_reason": "stop",
+     "eval_count": 514,
+     "failing_rules": []
+    },
+    {
+     "seed": 5,
+     "wall_s": 28.1,
+     "done_reason": "stop",
+     "eval_count": 474,
+     "failing_rules": []
+    }
+   ]
+  },
+  {
+   "spec": "P6_chunk_indices",
+   "target": "chunks.py",
+   "attempts": [
+    {
+     "seed": 1,
+     "wall_s": 12.4,
+     "done_reason": "stop",
+     "eval_count": 210,
+     "failing_rules": []
+    },
+    {
+     "seed": 2,
+     "wall_s": 11.5,
+     "done_reason": "stop",
+     "eval_count": 205,
+     "failing_rules": []
+    },
+    {
+     "seed": 3,
+     "wall_s": 11.6,
+     "done_reason": "stop",
+     "eval_count": 207,
+     "failing_rules": []
+    },
+    {
+     "seed": 4,
+     "wall_s": 11.9,
+     "done_reason": "stop",
+     "eval_count": 210,
+     "failing_rules": []
+    },
+    {
+     "seed": 5,
+     "wall_s": 11.9,
+     "done_reason": "stop",
+     "eval_count": 210,
+     "failing_rules": []
+    }
+   ]
+  },
+  {
+   "spec": "P7_parse_csv_line",
+   "target": "csvline.py",
+   "attempts": [
+    {
+     "seed": 1,
+     "wall_s": 118.5,
+     "done_reason": "stop",
+     "eval_count": 1997,
+     "failing_rules": [
+      "plain_fields",
+      "whitespace_kept",
+      "quoted_comma",
+      "escaped_quote",
+      "junk_after_quote"
+     ]
+    }
+   ],
+   "task_id": "N7_parse_csv_line",
+   "generation_seed": 1,
+   "buggy_source": "\"\"\"Minimal CSV field splitting.\"\"\"\n\ndef parse_csv_line(line: str) -> list:\n    \"\"\"Split one CSV line into fields.\n\nRules:\n1. Fields are separated by commas; whitespace is kept as is; an empty line is one empty field.\n2. A field may be wrapped in double quotes; inside it commas are literal and \"\" stands for one \".\n3. Raise ValueError for an unterminated quoted field or for any character other than a comma\n   right after a closing quote.\"\"\"\n    if not line:\n        return ['']\n    fields = []\n    current_field = []\n    in_quotes = False\n    i = 0\n    n = len(line)\n    while i < n:\n        char = line[i]\n        if char == '\"':\n            if in_quotes and i + 1 < n and (line[i + 1] == '\"'):\n                current_field.append('\"')\n                i += 2\n                continue\n            else:\n                in_quotes = not in_quotes\n                i += 1\n                continue\n        elif char == ',':\n            if in_quotes:\n                current_field.append(',')\n            else:\n                fields.append(''.join(current_field))\n                current_field = []\n            i += 1\n        else:\n            current_field.append(char)\n            i += 1\n    if in_quotes:\n        raise ValueError('Unterminated quoted field')\n    j = 0\n    while j < n:\n        if line[j] == '\"':\n            if j + 1 < n and line[j + 1] == '\"':\n                j += 2\n            else:\n                pass\n        j += 1\n    fields = []\n    current_field = []\n    in_quotes = False\n    i = 0\n    while i < len(line):\n        char = line[i]\n        if char == '\"':\n            if in_quotes and i + 1 < len(line) and (line[i + 1] == '\"'):\n                current_field.append('\"')\n                i += 2\n            else:\n                in_quotes = not in_quotes\n                i += 1\n                if not in_quotes:\n                    if i < len(line) and line[i] != ',':\n                        if i < len(line) and line[i] != ',':\n                            pass\n    fields = []\n    current_field = []\n    in_quotes = False\n    i = 0\n    while i < len(line):\n        char = line[i]\n        if char == '\"':\n            if in_quotes and i + 1 < len(line) and (line[i + 1] == '\"'):\n                current_field.append('\"')\n                i += 2\n            else:\n                in_quotes = not in_quotes\n                i += 1\n                if not in_quotes:\n                    if i < len(line) and line[i] != ',':\n                        raise ValueError('Character after closing quote must be a comma')\n        elif char == ',':\n            if in_quotes:\n                current_field.append(',')\n            else:\n                fields.append(''.join(current_field))\n                current_field = []\n            i += 1\n        else:\n            current_field.append(char)\n            i += 1\n    if in_quotes:\n        raise ValueError('Unterminated quoted field')\n    fields.append(''.join(current_field))\n    return fields\n",
+   "visible_rules": [
+    "plain_fields",
+    "empty_line",
+    "escaped_quote",
+    "unterminated"
+   ]
+  },
+  {
+   "spec": "P8_compare_versions",
+   "target": "versions.py",
+   "attempts": [
+    {
+     "seed": 1,
+     "wall_s": 24.4,
+     "done_reason": "stop",
+     "eval_count": 434,
+     "failing_rules": [
+      "empty_component"
+     ]
+    }
+   ],
+   "task_id": "N8_compare_versions",
+   "generation_seed": 1,
+   "buggy_source": "\"\"\"Dotted version comparison.\"\"\"\nimport re\n\ndef _parts(text: str) -> list:\n    if not text:\n        return []\n    if not re.fullmatch('[0-9]+(\\\\.[0-9]+)*', text):\n        raise ValueError(f'Invalid version format: {text}')\n    return [int(x) for x in text.split('.')]\n\ndef compare_versions(a: str, b: str) -> int:\n    \"\"\"Compare dotted versions such as \"1.10.2\"; return -1, 0 or 1.\n\nRules:\n1. Components are compared numerically, left to right (\"1.10\" > \"1.9\").\n2. Missing trailing components count as 0 (\"1.0\" == \"1\"); leading zeros are ignored (\"1.01\" == \"1.1\").\n3. Every component is a non-empty run of ASCII digits; raise ValueError otherwise\n   (including an empty string).\"\"\"\n    parts_a = _parts(a)\n    parts_b = _parts(b)\n    max_len = max(len(parts_a), len(parts_b))\n    for i in range(max_len):\n        val_a = parts_a[i] if i < len(parts_a) else 0\n        val_b = parts_b[i] if i < len(parts_b) else 0\n        if val_a > val_b:\n            return 1\n        if val_a < val_b:\n            return -1\n    return 0\n",
+   "visible_rules": [
+    "numeric_order",
+    "missing_components",
+    "leading_zeros",
+    "empty_component"
+   ]
+  },
+  {
+   "spec": "P9_order_total",
+   "target": "pricing.py",
+   "attempts": [
+    {
+     "seed": 1,
+     "wall_s": 20.7,
+     "done_reason": "stop",
+     "eval_count": 350,
+     "failing_rules": [
+      "discount_range"
+     ]
+    }
+   ],
+   "task_id": "N9_order_total",
+   "generation_seed": 1,
+   "buggy_source": "\"\"\"Order pricing.\"\"\"\nfrom models import Item\n\ndef order_total(items: list, discount_percent: int=0) -> int:\n    \"\"\"Total of `items` in cents after a percentage discount.\n\nRules:\n1. The subtotal is the sum of qty * unit_price_cents; an empty order totals 0.\n2. The discount is discount_percent of the subtotal, rounded down to whole cents, and is\n   subtracted from the subtotal.\n3. discount_percent is an int from 0 to 100; raise ValueError otherwise.\n4. Raise ValueError if any item has qty < 1 or unit_price_cents < 0, or if two items share a sku.\"\"\"\n    if not 0 <= discount_percent <= 100:\n        raise ValueError('discount_percent must be between 0 and 100.')\n    skus = set()\n    subtotal = 0\n    for item in items:\n        if item.qty < 1:\n            raise ValueError('qty must be at least 1.')\n        if item.unit_price_cents < 0:\n            raise ValueError('unit_price_cents cannot be negative.')\n        if item.sku in skus:\n            raise ValueError(f'Duplicate sku found: {item.sku}')\n        skus.add(item.sku)\n        subtotal += item.qty * item.unit_price_cents\n    discount = subtotal * discount_percent // 100\n    return subtotal - discount\n",
+   "visible_rules": [
+    "subtotal",
+    "discount_floored",
+    "discount_range"
+   ]
+  },
+  {
+   "spec": "P10_total_distance",
+   "target": "conversions.py",
+   "attempts": [
+    {
+     "seed": 1,
+     "wall_s": 12.4,
+     "done_reason": "stop",
+     "eval_count": 212,
+     "failing_rules": []
+    },
+    {
+     "seed": 2,
+     "wall_s": 11.5,
+     "done_reason": "stop",
+     "eval_count": 210,
+     "failing_rules": []
+    },
+    {
+     "seed": 3,
+     "wall_s": 11.4,
+     "done_reason": "stop",
+     "eval_count": 210,
+     "failing_rules": []
+    },
+    {
+     "seed": 4,
+     "wall_s": 11.6,
+     "done_reason": "stop",
+     "eval_count": 210,
+     "failing_rules": []
+    },
+    {
+     "seed": 5,
+     "wall_s": 11.9,
+     "done_reason": "stop",
+     "eval_count": 212,
+     "failing_rules": []
+    }
+   ]
+  },
+  {
+   "spec": "P11_can_book",
+   "target": "timeslots.py",
+   "attempts": [
+    {
+     "seed": 1,
+     "wall_s": 17.6,
+     "done_reason": "stop",
+     "eval_count": 301,
+     "failing_rules": []
+    },
+    {
+     "seed": 2,
+     "wall_s": 17.3,
+     "done_reason": "stop",
+     "eval_count": 290,
+     "failing_rules": []
+    },
+    {
+     "seed": 3,
+     "wall_s": 18.3,
+     "done_reason": "stop",
+     "eval_count": 328,
+     "failing_rules": []
+    },
+    {
+     "seed": 4,
+     "wall_s": 16.6,
+     "done_reason": "stop",
+     "eval_count": 294,
+     "failing_rules": []
+    },
+    {
+     "seed": 5,
+     "wall_s": 17.8,
+     "done_reason": "stop",
+     "eval_count": 314,
+     "failing_rules": []
+    }
+   ]
+  },
+  {
+   "spec": "P12_trimmed_mean",
+   "target": "statcore.py",
+   "attempts": [
+    {
+     "seed": 1,
+     "wall_s": 4.1,
+     "done_reason": "stop",
+     "eval_count": 63,
+     "failing_rules": []
+    },
+    {
+     "seed": 2,
+     "wall_s": 3.6,
+     "done_reason": "stop",
+     "eval_count": 63,
+     "failing_rules": []
+    },
+    {
+     "seed": 3,
+     "wall_s": 3.9,
+     "done_reason": "stop",
+     "eval_count": 65,
+     "failing_rules": []
+    },
+    {
+     "seed": 4,
+     "wall_s": 3.8,
+     "done_reason": "stop",
+     "eval_count": 65,
+     "failing_rules": []
+    },
+    {
+     "seed": 5,
+     "wall_s": 3.9,
+     "done_reason": "stop",
+     "eval_count": 65,
+     "failing_rules": []
+    }
+   ]
+  },
+  {
+   "spec": "P13_load_settings",
+   "target": "loader.py",
+   "attempts": [
+    {
+     "seed": 1,
+     "wall_s": 18.4,
+     "done_reason": "stop",
+     "eval_count": 324,
+     "failing_rules": [
+      "type_checked"
+     ]
+    }
+   ],
+   "task_id": "N13_load_settings",
+   "generation_seed": 1,
+   "buggy_source": "\"\"\"Settings loading.\"\"\"\nfrom settings import DEFAULTS\n\ndef load_settings(overrides: dict) -> dict:\n    \"\"\"DEFAULTS updated with `overrides`, returned as a new dict.\n\nRules:\n1. DEFAULTS itself is never modified.\n2. Raise ValueError for a key not in DEFAULTS.\n3. Each value must have the same type as its default (bool is not accepted for an int\n   setting); raise ValueError otherwise.\n4. \"port\" must be from 1 to 65535 and \"workers\" at least 1; raise ValueError otherwise.\"\"\"\n    settings = DEFAULTS.copy()\n    for key, value in overrides.items():\n        if key not in DEFAULTS:\n            raise ValueError(f\"Key '{key}' not found in defaults.\")\n        default_value = DEFAULTS[key]\n        if not isinstance(value, type(default_value)):\n            raise ValueError(f\"Value for '{key}' must be of type {type(default_value).__name__}.\")\n        if key == 'port' and (not 1 <= value <= 65535):\n            raise ValueError(f'Port must be between 1 and 65535.')\n        if key == 'workers' and value < 1:\n            raise ValueError('Workers must be at least 1.')\n        settings[key] = value\n    return settings\n",
+   "visible_rules": [
+    "type_checked"
+   ]
+  },
+  {
+   "spec": "P14_matmul",
+   "target": "shapes.py",
+   "attempts": [
+    {
+     "seed": 1,
+     "wall_s": 12.0,
+     "done_reason": "stop",
+     "eval_count": 209,
+     "failing_rules": []
+    },
+    {
+     "seed": 2,
+     "wall_s": 11.9,
+     "done_reason": "stop",
+     "eval_count": 217,
+     "failing_rules": []
+    },
+    {
+     "seed": 3,
+     "wall_s": 11.6,
+     "done_reason": "stop",
+     "eval_count": 209,
+     "failing_rules": []
+    },
+    {
+     "seed": 4,
+     "wall_s": 14.0,
+     "done_reason": "stop",
+     "eval_count": 248,
+     "failing_rules": []
+    },
+    {
+     "seed": 5,
+     "wall_s": 12.6,
+     "done_reason": "stop",
+     "eval_count": 230,
+     "failing_rules": []
+    }
+   ]
+  },
+  {
+   "spec": "P15_next_task",
+   "target": "scheduler.py",
+   "attempts": [
+    {
+     "seed": 1,
+     "wall_s": 12.7,
+     "done_reason": "stop",
+     "eval_count": 226,
+     "failing_rules": []
+    },
+    {
+     "seed": 2,
+     "wall_s": 14.1,
+     "done_reason": "stop",
+     "eval_count": 260,
+     "failing_rules": []
+    },
+    {
+     "seed": 3,
+     "wall_s": 11.8,
+     "done_reason": "stop",
+     "eval_count": 207,
+     "failing_rules": []
+    },
+    {
+     "seed": 4,
+     "wall_s": 42.4,
+     "done_reason": "stop",
+     "eval_count": 772,
+     "failing_rules": []
+    },
+    {
+     "seed": 5,
+     "wall_s": 12.0,
+     "done_reason": "stop",
+     "eval_count": 212,
+     "failing_rules": []
+    }
+   ]
+  },
+  {
+   "spec": "P16_make_slug",
+   "target": "translit.py",
+   "attempts": [
+    {
+     "seed": 1,
+     "wall_s": 6.3,
+     "done_reason": "stop",
+     "eval_count": 103,
+     "failing_rules": []
+    },
+    {
+     "seed": 2,
+     "wall_s": 5.8,
+     "done_reason": "stop",
+     "eval_count": 103,
+     "failing_rules": []
+    },
+    {
+     "seed": 3,
+     "wall_s": 5.8,
+     "done_reason": "stop",
+     "eval_count": 103,
+     "failing_rules": []
+    },
+    {
+     "seed": 4,
+     "wall_s": 5.7,
+     "done_reason": "stop",
+     "eval_count": 103,
+     "failing_rules": []
+    },
+    {
+     "seed": 5,
+     "wall_s": 5.8,
+     "done_reason": "stop",
+     "eval_count": 103,
+     "failing_rules": []
+    }
+   ]
+  },
+  {
+   "spec": "P17_rate_limiter",
+   "target": "limiter.py",
+   "attempts": [
+    {
+     "seed": 1,
+     "wall_s": 15.7,
+     "done_reason": "stop",
+     "eval_count": 274,
+     "failing_rules": []
+    },
+    {
+     "seed": 2,
+     "wall_s": 15.5,
+     "done_reason": "stop",
+     "eval_count": 282,
+     "failing_rules": []
+    },
+    {
+     "seed": 3,
+     "wall_s": 15.5,
+     "done_reason": "stop",
+     "eval_count": 273,
+     "failing_rules": []
+    },
+    {
+     "seed": 4,
+     "wall_s": 15.2,
+     "done_reason": "stop",
+     "eval_count": 270,
+     "failing_rules": []
+    },
+    {
+     "seed": 5,
+     "wall_s": 15.5,
+     "done_reason": "stop",
+     "eval_count": 273,
+     "failing_rules": []
+    }
+   ]
+  },
+  {
+   "spec": "P18_format_money",
+   "target": "fmt.py",
+   "attempts": [
+    {
+     "seed": 1,
+     "wall_s": 22.8,
+     "done_reason": "stop",
+     "eval_count": 396,
+     "failing_rules": []
+    },
+    {
+     "seed": 2,
+     "wall_s": 26.7,
+     "done_reason": "stop",
+     "eval_count": 454,
+     "failing_rules": [
+      "two_decimals",
+      "zero_decimals",
+      "three_decimals",
+      "grouping",
+      "negative"
+     ]
+    }
+   ],
+   "task_id": "N18_format_money",
+   "generation_seed": 2,
+   "buggy_source": "\"\"\"Money formatting.\"\"\"\nfrom currency import CURRENCIES\n\ndef format_money(minor_units: int, code: str) -> str:\n    \"\"\"Format an amount given in minor units (e.g. cents) of currency `code`.\n\nRules:\n1. Use the symbol and number of decimal places from currency.CURRENCIES.\n2. Group the whole part in thousands with \",\"; no decimal point when there are 0 decimals.\n3. Negative amounts start with \"-\" before the symbol, e.g. \"-$1,234.50\".\n4. Raise ValueError for an unknown currency code.\"\"\"\n    if code not in CURRENCIES:\n        raise ValueError(f'Unknown currency code: {code}')\n    symbol, decimals = CURRENCIES[code]\n    abs_amount = abs(minor_units)\n    divisor = 10 ** decimals\n    major_part = abs_amount // divisor\n    minor_part = abs_amount % divisor\n    formatted_major = f'{major_part:,}'\n    if decimals == 0:\n        result = f'{formatted_major}{symbol}'\n    else:\n        formatted_minor = f'{minor_part:0{decimals}d}'\n        result = f'{formatted_major}.{formatted_minor}{symbol}'\n    if minor_units < 0:\n        return f'-{result}'\n    return result\n",
+   "visible_rules": [
+    "three_decimals",
+    "grouping"
+   ]
+  },
+  {
+   "spec": "P19_dedupe",
+   "target": "seqs.py",
+   "attempts": [
+    {
+     "seed": 1,
+     "wall_s": 5.4,
+     "done_reason": "stop",
+     "eval_count": 86,
+     "failing_rules": []
+    },
+    {
+     "seed": 2,
+     "wall_s": 5.0,
+     "done_reason": "stop",
+     "eval_count": 86,
+     "failing_rules": []
+    },
+    {
+     "seed": 3,
+     "wall_s": 5.0,
+     "done_reason": "stop",
+     "eval_count": 86,
+     "failing_rules": []
+    },
+    {
+     "seed": 4,
+     "wall_s": 5.0,
+     "done_reason": "stop",
+     "eval_count": 86,
+     "failing_rules": []
+    },
+    {
+     "seed": 5,
+     "wall_s": 5.0,
+     "done_reason": "stop",
+     "eval_count": 86,
+     "failing_rules": []
+    }
+   ]
+  },
+  {
+   "spec": "P20_median",
+   "target": "middle.py",
+   "attempts": [
+    {
+     "seed": 1,
+     "wall_s": 3.6,
+     "done_reason": "stop",
+     "eval_count": 56,
+     "failing_rules": []
+    },
+    {
+     "seed": 2,
+     "wall_s": 7.0,
+     "done_reason": "stop",
+     "eval_count": 123,
+     "failing_rules": []
+    },
+    {
+     "seed": 3,
+     "wall_s": 7.0,
+     "done_reason": "stop",
+     "eval_count": 123,
+     "failing_rules": []
+    },
+    {
+     "seed": 4,
+     "wall_s": 3.3,
+     "done_reason": "stop",
+     "eval_count": 56,
+     "failing_rules": []
+    },
+    {
+     "seed": 5,
+     "wall_s": 3.3,
+     "done_reason": "stop",
+     "eval_count": 56,
+     "failing_rules": []
+    }
+   ]
+  },
+  {
+   "spec": "P21_capitalize_words",
+   "target": "words.py",
+   "attempts": [
+    {
+     "seed": 1,
+     "wall_s": 6.9,
+     "done_reason": "stop",
+     "eval_count": 115,
+     "failing_rules": []
+    },
+    {
+     "seed": 2,
+     "wall_s": 6.7,
+     "done_reason": "stop",
+     "eval_count": 115,
+     "failing_rules": []
+    },
+    {
+     "seed": 3,
+     "wall_s": 6.4,
+     "done_reason": "stop",
+     "eval_count": 108,
+     "failing_rules": []
+    },
+    {
+     "seed": 4,
+     "wall_s": 6.7,
+     "done_reason": "stop",
+     "eval_count": 115,
+     "failing_rules": []
+    },
+    {
+     "seed": 5,
+     "wall_s": 6.3,
+     "done_reason": "stop",
+     "eval_count": 108,
+     "failing_rules": []
+    }
+   ]
+  },
+  {
+   "spec": "P22_clamp",
+   "target": "bounds.py",
+   "attempts": [
+    {
+     "seed": 1,
+     "wall_s": 3.5,
+     "done_reason": "stop",
+     "eval_count": 56,
+     "failing_rules": []
+    },
+    {
+     "seed": 2,
+     "wall_s": 4.0,
+     "done_reason": "stop",
+     "eval_count": 69,
+     "failing_rules": []
+    },
+    {
+     "seed": 3,
+     "wall_s": 3.3,
+     "done_reason": "stop",
+     "eval_count": 56,
+     "failing_rules": []
+    },
+    {
+     "seed": 4,
+     "wall_s": 3.2,
+     "done_reason": "stop",
+     "eval_count": 56,
+     "failing_rules": []
+    },
+    {
+     "seed": 5,
+     "wall_s": 3.3,
+     "done_reason": "stop",
+     "eval_count": 56,
+     "failing_rules": []
+    }
+   ]
+  },
+  {
+   "spec": "P23_flatten_once",
+   "target": "nesting.py",
+   "attempts": [
+    {
+     "seed": 1,
+     "wall_s": 5.3,
+     "done_reason": "stop",
+     "eval_count": 89,
+     "failing_rules": []
+    },
+    {
+     "seed": 2,
+     "wall_s": 5.1,
+     "done_reason": "stop",
+     "eval_count": 89,
+     "failing_rules": []
+    },
+    {
+     "seed": 3,
+     "wall_s": 5.0,
+     "done_reason": "stop",
+     "eval_count": 89,
+     "failing_rules": []
+    },
+    {
+     "seed": 4,
+     "wall_s": 5.1,
+     "done_reason": "stop",
+     "eval_count": 89,
+     "failing_rules": []
+    },
+    {
+     "seed": 5,
+     "wall_s": 5.1,
+     "done_reason": "stop",
+     "eval_count": 89,
+     "failing_rules": []
+    }
+   ]
+  },
+  {
+   "spec": "P24_word_count",
+   "target": "counting.py",
+   "attempts": [
+    {
+     "seed": 1,
+     "wall_s": 3.1,
+     "done_reason": "stop",
+     "eval_count": 49,
+     "failing_rules": []
+    },
+    {
+     "seed": 2,
+     "wall_s": 2.9,
+     "done_reason": "stop",
+     "eval_count": 49,
+     "failing_rules": []
+    },
+    {
+     "seed": 3,
+     "wall_s": 2.9,
+     "done_reason": "stop",
+     "eval_count": 49,
+     "failing_rules": []
+    },
+    {
+     "seed": 4,
+     "wall_s": 2.9,
+     "done_reason": "stop",
+     "eval_count": 49,
+     "failing_rules": []
+    },
+    {
+     "seed": 5,
+     "wall_s": 2.8,
+     "done_reason": "stop",
+     "eval_count": 49,
+     "failing_rules": []
+    }
+   ]
+  },
+  {
+   "spec": "P25_safe_div",
+   "target": "arith.py",
+   "attempts": [
+    {
+     "seed": 1,
+     "wall_s": 3.9,
+     "done_reason": "stop",
+     "eval_count": 62,
+     "failing_rules": []
+    },
+    {
+     "seed": 2,
+     "wall_s": 3.7,
+     "done_reason": "stop",
+     "eval_count": 62,
+     "failing_rules": []
+    },
+    {
+     "seed": 3,
+     "wall_s": 3.5,
+     "done_reason": "stop",
+     "eval_count": 62,
+     "failing_rules": []
+    },
+    {
+     "seed": 4,
+     "wall_s": 3.6,
+     "done_reason": "stop",
+     "eval_count": 62,
+     "failing_rules": []
+    },
+    {
+     "seed": 5,
+     "wall_s": 3.6,
+     "done_reason": "stop",
+     "eval_count": 62,
+     "failing_rules": []
+    }
+   ]
+  }
+ ]
+}
