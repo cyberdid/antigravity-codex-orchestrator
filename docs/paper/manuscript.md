@@ -15,7 +15,7 @@ A passing test suite is the usual stopping criterion for an autonomous coding ag
 
 We met this failure while building a hybrid orchestrator in which a cloud "architect" plans and a local model does the editing, so that source code stays on the machine. This is the arrangement Google introduced for local models in the Antigravity SDK: a cloud Gemini model plans from file names and descriptions alone, while local Gemma instances do the work on the device [R8]. With a 12B local worker, the dominant failure on specification-heavy repair tasks was not inability to edit code or to follow a plan: the worker made the visible tests pass and silently missed rules stated only in the docstring [E1, E2]. Generation-limit escalation, thinking on retry, cloud guidance after a failed attempt and one-step harness adaptation did not change that [E9, E10].
 
-This paper asks a narrow question: **can tests written by a cloud model from the specification alone reduce silent failures of a local coding agent, without sending the implementation to the cloud, and at what cost?** Our contributions are:
+This paper asks a narrow question: **can a cloud model that reads only the specification — writing contract tests or a checklist of rules — reduce silent failures of a local coding agent, without the implementation leaving the machine, and at what cost?** Our contributions are:
 
 1. A measurement of silent false successes of a local coding agent on specification-heavy repair tasks, with an independent hidden evaluation as ground truth.
 2. A privacy-bounded mechanism in which the cloud sees signatures, docstrings and data-type fields only, with evidence that interface completeness decides whether contract tests help or harm.
