@@ -42,3 +42,8 @@ Per task (baseline / SPECTESTS / CHECKLIST verified rate; hidden failing rules):
   P23_flatten_once           1.00 / 1.00 / 1.00   hidden_failing=0 [underspecified]
   P24_word_count             1.00 / 1.00 / 1.00   hidden_failing=0 [underspecified]
   P25_safe_div               1.00 / 1.00 / 1.00   hidden_failing=1 [underspecified]
+
+Ablation (exploratory, seed 303): verified by disclosure level
+  P1_STAGE_ADAPTIVE_SPECTESTS_SIG: 19/25, silent 2
+  P1_STAGE_ADAPTIVE_SPECTESTS_DOC: 25/25, silent 0
+  P1_STAGE_ADAPTIVE_SPECTESTS: 23/25, silent 1
