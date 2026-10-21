@@ -1,0 +1,91 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHONDONTWRITEBYTECODE: "1"
+  MPLBACKEND: Agg
+
+jobs:
+  offline-tests:
+    name: Offline tests and installation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          version: "0.12.1"
+          python-version: "3.12"
+          enable-cache: true
+      - run: uv lock --check
+      - run: uv sync --locked --extra research
+      - name: New command and compatibility aliases
+        run: |
+          uv run --locked --extra research cloud-edge-ai --help > /tmp/help-current
+          uv run --locked --extra research antigravity-codex-orchestrator --help > /tmp/help-legacy
+          uv run --locked --extra research codex-orchestrator --help > /tmp/help-short
+          cmp /tmp/help-current /tmp/help-legacy
+          cmp /tmp/help-current /tmp/help-short
+      - name: Existing tests, no model calls
+        run: uv run --locked --extra research pytest -q tests temp/project_orion/tests
+
+  docker-acceptance:
+    name: Docker execution boundary
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          version: "0.12.1"
+          python-version: "3.12"
+          enable-cache: true
+      - run: uv sync --locked --extra research
+      - run: docker build -f Dockerfile.orion -t antigravity-orion:local .
+      - run: uv run --locked --extra research pytest -q tests/test_sandbox.py
+        env:
+          RUN_DOCKER_TESTS: "1"
+
+  paper-reproduction:
+    name: Saved-data analysis and bilingual PDFs
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          version: "0.12.1"
+          python-version: "3.12"
+          enable-cache: true
+      - run: uv sync --locked --extra paper
+      - name: Install pinned Tectonic
+        run: |
+          bash scripts/paper/install_tectonic.sh "$RUNNER_TEMP/tectonic-bin"
+          echo "$RUNNER_TEMP/tectonic-bin" >> "$GITHUB_PATH"
+      - name: Verify distributed artifacts before rebuilding
+        run: sha256sum -c docs/paper/SHA256SUMS
+      - name: Recompute from saved results, no model calls
+        run: uv run --locked --extra paper bash scripts/paper/reproduce.sh
+      - name: Numerical summaries and tables must match
+        run: |
+          git diff --exit-code -- benchmarks/campaign_a_analysis.txt benchmarks/campaign_b_analysis.txt benchmarks/pooled_analysis.txt benchmarks/publication_analysis.json docs/paper/tex/tables
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: paper-pdfs-${{ github.sha }}
+          path: |
+            docs/paper/article-en.pdf
+            docs/paper/article-uk.pdf
+            docs/paper/manuscript.pdf
+          if-no-files-found: error

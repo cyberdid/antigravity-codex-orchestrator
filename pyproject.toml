@@ -1,13 +1,14 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=77.0.3"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "antigravity-codex-orchestrator"
+name = "cloud-edge-ai-orchestrator"
 version = "0.1.0"
-description = "Codex fork of the Hybrid Cloud-Edge AI Orchestrator: Codex CLI Cloud Architect + On-Device Gemma Workforce"
+description = "Cloud-Edge AI orchestration framework for autonomous development, research and independent verification"
 readme = "README.md"
 requires-python = ">=3.12"
+license = "Apache-2.0"
 dependencies = [
     "rich>=14.0.0",
     "pytest>=8.0.0",
@@ -15,8 +16,30 @@ dependencies = [
 ]
 
 [project.scripts]
+cloud-edge-ai = "antigravity_hybrid_orchestrator.cli:main"
 antigravity-codex-orchestrator = "antigravity_hybrid_orchestrator.cli:main"
 codex-orchestrator = "antigravity_hybrid_orchestrator.cli:main"
+
+[project.optional-dependencies]
+research = [
+    "numpy==2.5.4",
+    "scipy==1.18.1",
+    "scikit-learn==1.9.1",
+    "psutil==7.2.2",
+]
+paper = ["matplotlib==3.11.1"]
+
+[project.urls]
+Homepage = "https://github.com/cyberdid/cloud-edge-ai-orchestrator"
+Repository = "https://github.com/cyberdid/cloud-edge-ai-orchestrator"
+Documentation = "https://github.com/cyberdid/cloud-edge-ai-orchestrator/blob/main/README.md"
+Issues = "https://github.com/cyberdid/cloud-edge-ai-orchestrator/issues"
+
+[tool.setuptools.packages.find]
+include = ["antigravity_hybrid_orchestrator*"]
+
+[tool.setuptools.package-data]
+"antigravity_hybrid_orchestrator.runtime" = ["requirements.in", "requirements.lock"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

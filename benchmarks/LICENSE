@@ -1,0 +1,10 @@
+Experimental records and summaries: Creative Commons Attribution 4.0 International (CC BY 4.0).
+Copyright 2026 Oleksandr Pylypenko.
+
+Full legal text: ../docs/paper/LICENSE
+Official text: https://creativecommons.org/licenses/by/4.0/legalcode
+
+Scope: .json, .jsonl, .log and .txt research records in this directory.
+Standalone .py/.sh source remains Apache-2.0 under ../LICENSE.
+Third-party dependencies, publications and model weights retain their own terms.
+See ../docs/LICENSING.md for attribution and exceptions.

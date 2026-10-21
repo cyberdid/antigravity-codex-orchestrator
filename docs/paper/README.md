@@ -1,6 +1,6 @@
 # Beyond Passing Tests: publication and reproduction package
 
-**Preprint revision: 2026-10-21.** Author: Oleksandr Pylypenko, ORCID
+**Preprint revision 2: 2026-10-21.** Author: Oleksandr Pylypenko, ORCID
 [0009-0004-9610-9242](https://orcid.org/0009-0004-9610-9242).
 
 Independent Researcher in Artificial Intelligence and Machine Learning; PhD Student,
@@ -23,21 +23,21 @@ typesetting. Numerical table bodies are generated from saved benchmark JSON file
 ## Fixed versions
 
 The completed experimental-data snapshot, before this editorial revision, is
-[`9cd894f717a4235c7cb7bdc36563275ba36bdb0f`](https://github.com/cyberdid/antigravity-codex-orchestrator/tree/9cd894f717a4235c7cb7bdc36563275ba36bdb0f).
+[`9cd894f717a4235c7cb7bdc36563275ba36bdb0f`](https://github.com/cyberdid/cloud-edge-ai-orchestrator/tree/9cd894f717a4235c7cb7bdc36563275ba36bdb0f).
 The publication sources, added sensitivity analysis and revised PDFs are in `main`,
-with publication tag `paper-i-preprint-2026-10-21`. For a fixed checkout use:
+with publication tag `paper-i-preprint-2026-10-21-rev2`. For a fixed checkout use:
 
 ```bash
-git clone https://github.com/cyberdid/antigravity-codex-orchestrator.git
-cd antigravity-codex-orchestrator
-git checkout paper-i-preprint-2026-10-21
+git clone https://github.com/cyberdid/cloud-edge-ai-orchestrator.git
+cd cloud-edge-ai-orchestrator
+git checkout paper-i-preprint-2026-10-21-rev2
 git rev-parse HEAD
 sha256sum -c docs/paper/SHA256SUMS
 ```
 
 `SHA256SUMS` records the input datasets, relevant analysis and publication sources,
 figures and PDFs. It excludes itself, this README and compiler intermediates.
-The tag's commit SHA identifies the full revision. No Zenodo deposit, DOI,
+The tag's commit SHA identifies the full revision. The original tag `paper-i-preprint-2026-10-21` remains unchanged on `8e9ba05ebbbcaf7953a8f31287d935f01fa2d6be`; revision 2 adds licensing and repository/installation metadata without changing experimental observations. No Zenodo deposit, DOI,
 ResearchGate upload, Google Scholar indexing or formal peer review is claimed here.
 
 ## Reproduce the published analysis and PDFs
@@ -120,3 +120,13 @@ The PDFs, sources, checksum manifest and `CITATION.cff` form the versioned prepr
 package. A future archive should preserve this tag/commit and record its assigned
 DOI in a later metadata update. The current package does not invent an archive
 identifier or imply acceptance by a journal or conference.
+
+## Licenses and archive metadata
+
+Paper text, figures and experimental records are CC BY 4.0; executable source is Apache-2.0. See [licensing scope](../LICENSING.md) and [full paper license](LICENSE). The owner confirmed the right to apply these licenses.
+
+The project is now named **CloudEdge AI Orchestrator**. The original tag remains a historical snapshot under its original files and checksum manifest. Current links use the new repository; historical raw logs are preserved.
+
+The root `.zenodo.json` describes a software archive; `zenodo-preprint.json` describes a separate article deposit. These are upload metadata only, not evidence that a record or DOI has been created.
+
+For a locked Python environment, `uv sync --locked --extra paper` and `uv run --locked --extra paper bash scripts/paper/reproduce.sh` use `uv.lock`. The pip requirements below are an alternative for rendering; Tectonic remains a separate tool. On Linux x86_64, `bash scripts/paper/install_tectonic.sh` downloads Tectonic 0.15.0 from its official release and checks the pinned SHA-256.

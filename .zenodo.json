@@ -1,0 +1,23 @@
+{
+  "creators": [
+    {
+      "name": "Pylypenko, Oleksandr",
+      "orcid": "0009-0004-9610-9242",
+      "affiliation": "State University of Trade and Economics, Kyiv, Ukraine"
+    }
+  ],
+  "publication_date": "2026-10-21",
+  "version": "paper-i-preprint-2026-10-21-rev2",
+  "access_right": "open",
+  "keywords": [
+    "coding agents",
+    "specification review",
+    "Gemma",
+    "cloud-edge orchestration",
+    "reproducibility"
+  ],
+  "title": "CloudEdge AI Orchestrator: Beyond Passing Tests research artifacts",
+  "upload_type": "software",
+  "license": "apache-2.0",
+  "description": "Cloud-edge orchestration framework and the reproducible Paper I artifact package. Executable source is Apache-2.0; article text, figures and experimental records are CC BY 4.0 under docs/LICENSING.md. Original publication tag is preserved. No new model experiments in revision 2. Repository: https://github.com/cyberdid/cloud-edge-ai-orchestrator"
+}

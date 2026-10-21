@@ -1,0 +1,24 @@
+{
+  "creators": [
+    {
+      "name": "Pylypenko, Oleksandr",
+      "orcid": "0009-0004-9610-9242",
+      "affiliation": "State University of Trade and Economics, Kyiv, Ukraine"
+    }
+  ],
+  "publication_date": "2026-10-21",
+  "version": "paper-i-preprint-2026-10-21-rev2",
+  "access_right": "open",
+  "keywords": [
+    "coding agents",
+    "specification review",
+    "Gemma",
+    "cloud-edge orchestration",
+    "reproducibility"
+  ],
+  "title": "Beyond Passing Tests: An Interface-Only Specification Review Cuts Silent Failures of a Local Gemma Coding Agent",
+  "upload_type": "publication",
+  "publication_type": "preprint",
+  "license": "cc-by-4.0",
+  "description": "Independent empirical study of interface-only specification review for a local Gemma coding agent. Revision 2 aligns public repository identity, licensing and reproduction metadata; experimental outcomes are unchanged. Includes post-hoc pooled and shared-specification sensitivity analyses; Campaign A primary task-level hypothesis was not confirmed. Code and evidence: https://github.com/cyberdid/cloud-edge-ai-orchestrator/tree/paper-i-preprint-2026-10-21-rev2"
+}

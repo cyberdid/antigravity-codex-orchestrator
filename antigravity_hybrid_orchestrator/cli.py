@@ -1,4 +1,4 @@
-"""Command-line interface for Antigravity Hybrid Orchestrator."""
+"""Command-line interface for CloudEdge AI Orchestrator (historical module path)."""
 
 import argparse
 import os
@@ -16,14 +16,14 @@ from antigravity_hybrid_orchestrator.hud.replay import replay_run
 def build_parser() -> argparse.ArgumentParser:
     """Builds and returns the CLI argument parser."""
     parser = argparse.ArgumentParser(
-        prog="antigravity-hybrid-orchestrator",
-        description="Antigravity Hybrid Orchestrator: Cloud Architect + On-Device Workforce",
+        prog="cloud-edge-ai",
+        description="CloudEdge AI Orchestrator: cloud planning, local execution and independent verification",
     )
     parser.add_argument(
         "--mode",
         choices=["live", "mock"],
         default="live",
-        help="Execution mode: 'live' (Codex CLI planner + local Ollama workforce) or 'mock' (deterministic fixtures)",
+        help="Execution mode: 'live' (selected cloud CLI planner + local Ollama workforce) or 'mock' (deterministic fixtures)",
     )
     parser.add_argument(
         "--target",
@@ -156,7 +156,7 @@ def run_interactive(
     """
     console = console or Console()
     read_input = input_fn or console.input
-    console.print("[bold cyan]ANTIGRAVITY · INTERACTIVE R&D SESSION[/]")
+    console.print("[bold cyan]CLOUDEDGE AI · INTERACTIVE R&D SESSION[/]")
     console.print("Enter a task to start a run. Use [bold magenta]/help[/] or [bold magenta]/quit[/].")
     last_status = 0
 

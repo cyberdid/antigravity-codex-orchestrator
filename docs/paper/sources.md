@@ -2,7 +2,7 @@
 
 Every `[E…]` tag in the manuscript points to a repository record below; every `[R…]` tag to an external source. "Checked" means the value in the manuscript was compared with the named file on the date given; **the author re-verifies each entry before submission** and records the date in the last column.
 
-## Internal evidence (repository `cyberdid/antigravity-codex-orchestrator`, branch `main`; frozen experimental data at `9cd894f717a4235c7cb7bdc36563275ba36bdb0f`)
+## Internal evidence (repository `cyberdid/cloud-edge-ai-orchestrator`, branch `main`; frozen experimental data at `9cd894f717a4235c7cb7bdc36563275ba36bdb0f`)
 
 | ID | Record | Locator | Supports | Checked | Verified by author |
 |---|---|---|---|---|---|

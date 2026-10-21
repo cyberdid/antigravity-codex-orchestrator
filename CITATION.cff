@@ -1,16 +1,17 @@
 cff-version: 1.2.0
 message: "For the Beyond Passing Tests preprint and its experimental artifacts, cite this versioned publication package."
 type: software
-title: "Antigravity Codex Orchestrator: Beyond Passing Tests publication artifacts"
+title: "CloudEdge AI Orchestrator: Beyond Passing Tests publication artifacts"
 authors:
   - family-names: Pylypenko
     given-names: Oleksandr
     orcid: "https://orcid.org/0009-0004-9610-9242"
     affiliation: "State University of Trade and Economics, Kyiv, Ukraine"
-version: "paper-i-preprint-2026-10-21"
+version: "paper-i-preprint-2026-10-21-rev2"
 date-released: 2026-10-21
-url: "https://github.com/cyberdid/antigravity-codex-orchestrator/tree/paper-i-preprint-2026-10-21/docs/paper"
-repository-code: "https://github.com/cyberdid/antigravity-codex-orchestrator"
+url: "https://github.com/cyberdid/cloud-edge-ai-orchestrator/tree/paper-i-preprint-2026-10-21-rev2/docs/paper"
+license: Apache-2.0
+repository-code: "https://github.com/cyberdid/cloud-edge-ai-orchestrator"
 preferred-citation:
   type: article
   title: "Beyond Passing Tests: An Interface-Only Specification Review Cuts Silent Failures of a Local Gemma Coding Agent"
@@ -20,7 +21,7 @@ preferred-citation:
       orcid: "https://orcid.org/0009-0004-9610-9242"
       affiliation: "State University of Trade and Economics, Kyiv, Ukraine"
   year: 2026
-  url: "https://github.com/cyberdid/antigravity-codex-orchestrator/tree/paper-i-preprint-2026-10-21/docs/paper"
+  url: "https://github.com/cyberdid/cloud-edge-ai-orchestrator/tree/paper-i-preprint-2026-10-21-rev2/docs/paper"
 keywords:
   - coding agents
   - specification review

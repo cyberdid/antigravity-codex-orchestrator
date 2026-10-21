@@ -24,3 +24,7 @@ campaign. All reported agent trajectories and primary outcome data are preserved
 No additional GPU or cloud campaign was run. No PhD degree is claimed: the author
 status is **PhD Student**, not PhD holder. No DOI, formal acceptance or external
 publication is asserted by this Git revision.
+
+## Repository/publication revision 2
+
+The owner accepted the GitHub readiness audit and confirmed licensing rights on 2026-10-21. Public platform name: CloudEdge AI Orchestrator; root distribution/CLI metadata, lockfile, installation and CI are aligned. Python imports and old CLI aliases are retained. Paper/data are CC BY 4.0; source is Apache-2.0. Active links use the renamed repository and `paper-i-preprint-2026-10-21-rev2`. The original tag remains on `8e9ba05ebbbcaf7953a8f31287d935f01fa2d6be`. Raw observations, outcomes, preregistrations and historical logs are unchanged. No new model campaign or DOI deposit is claimed.

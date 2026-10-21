@@ -1,0 +1,11 @@
+CloudEdge AI Orchestrator
+Copyright 2026 Oleksandr Pylypenko
+
+Former project name: Antigravity Codex Orchestrator.
+The Python import namespace antigravity_hybrid_orchestrator is retained for compatibility.
+
+Software source is licensed under Apache-2.0. The article and experimental
+records have separate CC BY 4.0 terms; see docs/LICENSING.md for scope.
+Third-party dependencies and referenced publications retain their own licenses.
+Google Antigravity, Gemma, Gemini, Claude, Ollama and OpenAI Codex are identified
+as tools/backends, not as project authors, sponsors or endorsers.

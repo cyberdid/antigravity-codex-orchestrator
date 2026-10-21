@@ -1,4 +1,4 @@
-"""Antigravity Hybrid Orchestrator package."""
+"""CloudEdge AI Orchestrator; historical import namespace retained."""
 
 from antigravity_hybrid_orchestrator.coordinator import HybridCoordinator
 
