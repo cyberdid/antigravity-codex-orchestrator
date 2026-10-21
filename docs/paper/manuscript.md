@@ -1,4 +1,4 @@
-> **Draft.** Results of the pre-registered Campaign A (`docs/paper/PREREGISTRATION_CAMPAIGN_A.md`) are pending; this version reports the exploratory study and one pre-registered confirmatory run. Every number is bound to an evidence ID in `docs/paper/sources.md`.
+> **Draft.** Campaign A is complete; the run of Campaign B (descriptive, Section 6.9) is still in progress. Every number is bound to an evidence ID in `docs/paper/sources.md`.
 
 # Beyond Passing Tests: An Interface-Only Specification Review Cuts Silent Failures of a Local Gemma Coding Agent
 
