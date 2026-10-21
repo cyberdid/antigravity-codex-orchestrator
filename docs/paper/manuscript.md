@@ -168,6 +168,10 @@ All 225 primary runs were completed (3 arms × 25 tasks × 3 seeds) [E18]. The c
 
 **Cost.** Contract tests lengthened runs by 44% (9,630 s vs 6,675 s) plus 25 s of generation per task; the checklist by 5% plus 19 s per task. With the cloud model pinned, the end-to-end overhead is far below the 1.7–4.3× measured in R4–R5 with the CLI's default model.
 
+### 6.9 Campaign B: bugs written by the local model (pre-registered; descriptive)
+
+**Construction.** Asked to implement each of the 25 Campaign A specifications from its docstring skeleton, `gemma4:12b` produced a correct module on all five generation seeds for 19 specifications (104 generations; one rejected as incomplete) [E20]. Only six specifications yielded a natural bug (N1, N7, N8, N9, N13, N18), fewer than the registered threshold of ten, so Campaign B is reported descriptively, as registered. In four of the six the coin flip made every broken rule visible; only N7 and N18 have rules broken in hidden-only form. With numbered rules in the docstring, the local model rarely leaves a stated rule unimplemented when it writes the code from scratch; the silent failures of the earlier tasks arose when it repaired code against incomplete tests.
+
 ## 7. Discussion
 
 The results support a specific reading: on these tasks the local agent's binding constraint was *coverage of the specification by its stopping criterion*, not its ability to write the code. Executable checks derived from the docstring changed what "done" meant for the agent, and most silent failures became either verified completions or explicit failures. That the same model checking itself did not help, while a different model writing tests from the interface did, is consistent with the self-checks sharing the agent's blind spots (Section 6.7).

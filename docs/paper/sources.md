@@ -25,6 +25,7 @@ Every `[E…]` tag in the manuscript points to a repository record below; every 
 | E17 | `scripts/paper_tasks/` (framework, tasks, `manifest.json`, commit `24ea7a0`), `tests/test_paper_tasks.py` | — | task set P1–P25, seeded visible-rule choice, invariants | 2026-10-20 | |
 | E18 | `benchmarks/campaign_a.json`, `benchmarks/campaign_a_analysis.txt` (analysis `scripts/analysis/campaign_a.py`, commit `60ba294`) | — | Campaign A results, Table 3, H1–H3, categories, cost | 2026-10-21 | |
 | E19 | `benchmarks/campaign_a_test_grading.json` (`scripts/analysis/grade_campaign_tests.py`) | — | 4 tests failing on reference fixes; adjudication | 2026-10-21 | |
+| E20 | `scripts/paper_tasks/natural_tasks.json` (frozen, commit `d2f2807`), `benchmarks/campaign_b.log` | — | Campaign B construction: 104 generations, 19/25 specifications correct on all seeds, 6 tasks kept | 2026-10-21 | |
 
 ## External sources
 
