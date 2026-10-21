@@ -11,3 +11,4 @@ temp/project_orion/*-run/
 dist/
 build/
 .env
+.paper-venv/

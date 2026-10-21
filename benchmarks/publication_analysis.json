@@ -1,0 +1,86 @@
+{
+  "analysis_status": "post hoc, added during revision on 2026-10-21",
+  "campaign_a_contract_installation": {
+    "attempted_task_modules": 25,
+    "installed_task_modules": 24,
+    "note": "P18 rejected on both generation attempts; frequency is per task, not per reply. A rejected reply is retained as an intention-to-treat outcome.",
+    "task_rejection_fraction": 0.04,
+    "tasks_without_installed_module": 1
+  },
+  "campaign_a_cost": {
+    "P1_STAGE_ADAPTIVE": {
+      "campaign_overhead_pct": 0.0,
+      "campaign_total_s": 6674.8489,
+      "generation_reused_across_seeds": true,
+      "one_time_generation_s": 0,
+      "run_wall_s": 6674.8489,
+      "runs": 75
+    },
+    "P1_STAGE_ADAPTIVE_CHECKLIST": {
+      "campaign_overhead_pct": 11.762150900524503,
+      "campaign_total_s": 7459.9547,
+      "generation_reused_across_seeds": true,
+      "one_time_generation_s": 476.885,
+      "run_wall_s": 6983.0697,
+      "runs": 75
+    },
+    "P1_STAGE_ADAPTIVE_SPECTESTS": {
+      "campaign_overhead_pct": 53.65081297945187,
+      "campaign_total_s": 10255.9596,
+      "generation_reused_across_seeds": true,
+      "one_time_generation_s": 626.369,
+      "run_wall_s": 9629.5906,
+      "runs": 75
+    }
+  },
+  "campaign_b_cost": {
+    "P1_STAGE_ADAPTIVE": {
+      "campaign_overhead_pct": 0.0,
+      "campaign_total_s": 5970.6044,
+      "generation_reused_across_seeds": true,
+      "one_time_generation_s": 0,
+      "run_wall_s": 5970.6044,
+      "runs": 18
+    },
+    "P1_STAGE_ADAPTIVE_CHECKLIST": {
+      "campaign_overhead_pct": 4.477019110494074,
+      "campaign_total_s": 6237.9095,
+      "generation_reused_across_seeds": true,
+      "one_time_generation_s": 125.82900000000001,
+      "run_wall_s": 6112.0805,
+      "runs": 18
+    },
+    "P1_STAGE_ADAPTIVE_SPECTESTS": {
+      "campaign_overhead_pct": 16.682547247645484,
+      "campaign_total_s": 6966.6533,
+      "generation_reused_across_seeds": true,
+      "one_time_generation_s": 494.315,
+      "run_wall_s": 6472.3383,
+      "runs": 18
+    }
+  },
+  "inputs_sha256": {
+    "campaign_a.json": "af5b72d94240042ec3d64deb56eff3c73459ee040cff4dbbcb9fc756e68a4809",
+    "campaign_b.json": "eb965416f96b1cb9804e29a9c8814c508cb07b6b22fd369f87516da8dd86d9d3",
+    "spec_contract_confirm_all.json": "aaaebef76bf6c4bde4e685e77a18fb2b64986138c56937376d1d93c6305be4ef",
+    "spec_contract_confirm_fresh.json": "a32e8b9ef55c53c18aed8115e50a402ee0496243f3b826f2ade02d3a0910ab47"
+  },
+  "originating_specification_sensitivity": {
+    "interpretation": "Exploratory sensitivity, not a pre-registered test or a guarantee of group independence.",
+    "method": "Equal weight per originating specification; within-group rate pools all its runs. A Pk and B Nk share a group. H tasks retain separate groups. Exact two-sided sign test.",
+    "originating_specification_groups": 44,
+    "silent": {
+      "improved": 12,
+      "tied": 32,
+      "two_sided_sign_p": 0.00048828125,
+      "worsened": 0
+    },
+    "task_instances": 50,
+    "verified": {
+      "improved": 13,
+      "tied": 29,
+      "two_sided_sign_p": 0.00738525390625,
+      "worsened": 2
+    }
+  }
+}

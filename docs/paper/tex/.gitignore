@@ -1,0 +1,9 @@
+# Intermediate compiler products; final deliverables live one directory above.
+en/*.pdf
+uk/*.pdf
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.xdv

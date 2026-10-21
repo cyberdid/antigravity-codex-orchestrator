@@ -1,6 +1,7 @@
 """Build docs/paper/manuscript.pdf (and the .tex source) from docs/paper/manuscript.md.
 
-The Markdown stays the single source; this converter covers the subset the
+The Markdown is a review mirror; the publication articles have their canonical
+English/Ukrainian sources in docs/paper/tex/. This compatibility converter covers the subset the
 manuscript uses (headings, paragraphs, bold/italic/code, links, lists, pipe
 tables, figures with a following "**Figure N.**" caption, the draft banner).
 Usage: python3 scripts/paper/build_pdf.py   (needs `tectonic` on PATH)
@@ -14,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[2]
 PAPER = ROOT / "docs/paper"
 BUILD = PAPER / "build"
 
-SYMBOLS = {"∈": r"$\in$", "∧": r"$\wedge$", "∨": r"$\vee$", "≥": r"$\geq$", "≈": r"$\approx$",
+SYMBOLS = {"∈": r"$\in$", "∧": r"$\wedge$", "∨": r"$\vee$", "≥": r"$\geq$", "≈": r"$\approx$", "α": r"$\alpha$",
            "→": r"$\rightarrow$", "×": r"$\times$", "²": r"$^{2}$", "…": r"\ldots{}"}
 SPECIAL = {"\\": r"\textbackslash{}", "&": r"\&", "%": r"\%", "$": r"\$", "#": r"\#", "_": r"\_",
            "{": r"\{", "}": r"\}", "~": r"\textasciitilde{}", "^": r"\textasciicircum{}"}
@@ -27,6 +28,7 @@ PREAMBLE = r"""\documentclass[11pt]{article}
 \usepackage{xurl}
 \setlist{itemsep=2pt,topsep=4pt}
 \setlength{\parskip}{4pt}\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
 \renewcommand{\tabularxcolumn}[1]{m{#1}}
 \newcolumntype{R}{>{\raggedleft\arraybackslash}X}
 \newcolumntype{L}{>{\raggedright\arraybackslash}X}

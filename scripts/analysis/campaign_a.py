@@ -66,10 +66,21 @@ def main(path, ablation=None):
     sys.path.insert(0, str(ROOT / "scripts" / "paper_tasks"))
     runs = load(path)
     if any(task.startswith("N") for _, task in runs):
-        # Campaign B: natural-bug tasks, summarised the same way as the frozen Campaign A manifest.
-        import framework as F
-        from natural import load_tasks
-        manifest = {t.id: F.summary(t) for t in load_tasks()}
+        # Read the frozen construction record instead of re-executing buggy modules
+        # (N7 can hang). This analysis needs category and hidden-failing-rule counts,
+        # all of which were recorded before the repair campaign.
+        specs = json.loads((ROOT / "scripts/paper_tasks/manifest.json").read_text())
+        construction = json.loads((ROOT / "scripts/paper_tasks/natural_tasks.json").read_text())
+        manifest = {}
+        for record in construction["records"]:
+            if "task_id" not in record:
+                continue
+            chosen = next(a for a in record["attempts"] if a["seed"] == record["generation_seed"])
+            failing = set(chosen["failing_rules"])
+            manifest[record["task_id"]] = {
+                "category": specs[record["spec"]]["category"],
+                "hidden_failing": len(failing - set(record["visible_rules"])),
+            }
     else:
         manifest = json.loads((ROOT / "scripts/paper_tasks/manifest.json").read_text())
     tasks = sorted(manifest, key=lambda t: int(t.split("_")[0][1:]))

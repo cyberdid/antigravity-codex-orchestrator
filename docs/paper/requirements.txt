@@ -1,0 +1,2 @@
+# Analysis and figures only; no model runtime is needed for saved-data reproduction.
+matplotlib==3.11.1

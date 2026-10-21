@@ -2,7 +2,7 @@
 
 Every `[E…]` tag in the manuscript points to a repository record below; every `[R…]` tag to an external source. "Checked" means the value in the manuscript was compared with the named file on the date given; **the author re-verifies each entry before submission** and records the date in the last column.
 
-## Internal evidence (repository `cyberdid/antigravity-codex-orchestrator`, branch `feat/gemma-orion-phase2b`)
+## Internal evidence (repository `cyberdid/antigravity-codex-orchestrator`, branch `main`; frozen experimental data at `9cd894f717a4235c7cb7bdc36563275ba36bdb0f`)
 
 | ID | Record | Locator | Supports | Checked | Verified by author |
 |---|---|---|---|---|---|
@@ -29,6 +29,8 @@ Every `[E…]` tag in the manuscript points to a repository record below; every 
 | E21 | `scripts/analysis/pooled.py` → `benchmarks/pooled_analysis.txt` (on E5, E6, E18, E22) | — | pooled run and task-level effects (50 tasks); Campaign A run-level paired counts | 2026-10-21 | |
 | E22 | `benchmarks/campaign_b.json`, `benchmarks/campaign_b_analysis.txt`, `benchmarks/campaign_b_test_grading.json` | — | Campaign B results, per task, test grading | 2026-10-21 | |
 
+| E23 | `scripts/analysis/publication.py` → `benchmarks/publication_analysis.json` | editorial revision, post hoc | full campaign costs (generation once per task, reused across seeds); A installation 24/25; 44 originating-specification groups, verified 13/2 p=0.007385, silent 12/0 p=0.000488 | 2026-10-21 | |
+
 ## External sources
 
 | ID | Source | Checked (2026-10-20) | Verified by author |
@@ -41,5 +43,17 @@ Every `[E…]` tag in the manuscript points to a repository record below; every 
 | R6 | arXiv:2510.20270 and ICLR 2026 listing (search results) | authors (Zhong, Raghunathan, Carlini) from arXiv page; ICLR 2026 per iclr.cc poster listing 10009390; construction (tests contradicting spec) | |
 | R7 | github.com/google-research/harness2 | repository exists; adaptation without weight updates | |
 | R8 | developers.googleblog.com post (fetched 2026-10-20) | title, authors, date; architect–builder setup (Gemini 3.8 Flash plans from file names and descriptions, local Gemma 4 works on-device); Gemma 4 26B A4B via LiteRT; Ollama support | |
+
+Additional primary sources checked during revision on **2026-10-21** (these checks are AI-assisted source verification, not an author sign-off or formal peer review):
+
+| ID | Primary source | Checked claim / bibliographic fields |
+|---|---|---|
+| R9 | [Barr et al., UCL author repository](https://discovery.ucl.ac.uk/id/eprint/1471263/) | authors, 2015, IEEE TSE 41(5), 507–525, DOI 10.1109/TSE.2014.2372785; oracle problem and specification/contract approaches |
+| R10 | [Madaan et al., arXiv:2303.17651v2](https://arxiv.org/abs/2303.17651) | title, 16 authors, 2023; iterative feedback from the same model; reported improvements in its own settings |
+| R11 | [Huang et al., arXiv:2310.01798v2](https://arxiv.org/abs/2310.01798) | title, 7 authors, ICLR 2024; limitations of intrinsic reasoning self-correction without external feedback |
+| R12 | [Jimenez et al., arXiv:2310.06770](https://arxiv.org/abs/2310.06770) | title, 7 authors, ICLR 2024; real repository issue/patch tasks; no claim we evaluated SWE-bench |
+| R13 | [Jain et al., arXiv:2403.07974v2](https://arxiv.org/abs/2403.07974) | title, 10 authors, 2024; newly collected tasks and contamination-aware evaluation; no claim of contamination-free results here |
+
+Existing R1–R8 were re-opened during revision: [R1](https://research.google/pubs/grounding-ai-agents-in-contracts-an-empirical-evaluation-of-spec-driven-test-generation/), [R2](https://arxiv.org/abs/2402.09171), [R3](https://arxiv.org/abs/2305.01210), [R4](https://arxiv.org/abs/2207.10397), [R5](https://arxiv.org/abs/2312.13010), [R6](https://arxiv.org/abs/2510.20270), [R7](https://github.com/google-research/harness2), [R8](https://developers.googleblog.com/introducing-support-for-local-ai-models-in-the-antigravity-sdk/). The [official ICLR 2026 proceedings](https://proceedings.iclr.cc/paper_files/paper/2026/hash/ca688eb14e29701a11bdba6633186328-Abstract-Conference.html) independently support R6's venue. Abstract-level checks do not constitute a full methodological audit of those papers.
 
 Not cited because not verified: "TRACE (2026), Information and Software Technology" (named by an external review; publisher page returned HTTP 403 and searches did not locate it).
