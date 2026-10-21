@@ -164,6 +164,8 @@ All 225 primary runs were completed (3 arms × 25 tasks × 3 seeds) [E18]. The c
 
 **Quality of the generated tests.** Run against the reference fixes, 4 tests in 3 of the 24 installed modules failed [E19]: three are over-constrained — on the under-specified P20 they require `ValueError` for an empty list and a float result, and on P12 a test requires the delegation to `statcore.mean` to be visible to monkey-patching, which depends on the import style rather than behaviour; the fourth (P10) expects `0.0` as a float where the docstring says 0.0 and the reference returns the integer 0. None of these tests caused a failed run (P12 and P20 were verified in all contract-test runs).
 
+**How much interface the cloud needs (exploratory ablation, seed 303 only).** With signatures alone, contract tests left verified completion at the baseline level (19/25, 2 silent; baseline 20/25 on this seed); adding docstrings gave 25/25 (0 silent); the full interface with type fields gave 23/25 (1 silent) [E18]. On these tasks the value lies in the docstrings; type fields added nothing here, whereas on the earlier tasks H1 and H3, whose data types live in separate modules, their absence produced impossible tests (Section 6.2). One seed per level, so differences of one or two runs are within run-to-run variation.
+
 **Cost.** Contract tests lengthened runs by 44% (9,630 s vs 6,675 s) plus 25 s of generation per task; the checklist by 5% plus 19 s per task. With the cloud model pinned, the end-to-end overhead is far below the 1.7–4.3× measured in R4–R5 with the CLI's default model.
 
 ## 7. Discussion
