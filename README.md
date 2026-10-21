@@ -175,7 +175,7 @@ RUN_DOCKER_TESTS=1 uv run --locked --extra research pytest -q tests/test_sandbox
 
 Актуальну кількість і результат повідомляє pytest/CI; статичне число тестів у README
 не підтримується. [GitHub Actions](.github/workflows/ci.yml) запускає наявний офлайн-набір,
-Docker acceptance та відтворення наукових підсумків/PDF без моделей.
+Docker acceptance та відтворення наукових підсумків/PDF без моделей. Поточний GitHub-hosted запуск заблокований обмеженням акаунта ще до кроків jobs; локальні перевірки виконані. [Статус першого запуску](https://github.com/cyberdid/cloud-edge-ai-orchestrator/actions/runs/39614615645).
 
 ## Структура
 

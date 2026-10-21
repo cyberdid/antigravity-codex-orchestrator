@@ -50,8 +50,7 @@ The existing local checkout directory may retain its old filesystem name.
   pattern matches. Nine files contain historical home-directory paths. These are
   retained provenance. This scan does not prove absence of every confidential value.
 
-GitHub-hosted CI results are recorded on the repository's Actions/release pages;
-the configuration alone is not evidence that a remote run passed.
+GitHub-hosted run [39614615645](https://github.com/cyberdid/cloud-edge-ai-orchestrator/actions/runs/39614615645) was refused before any job steps by a provider account restriction. No hosted test pass is claimed. Local verification above completed; the owner must resolve the account restriction and rerun the workflow. The workflow is retained rather than disabling or hiding the failed provider status.
 
 ## Archive status
 

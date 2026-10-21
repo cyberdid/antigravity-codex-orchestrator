@@ -21,6 +21,10 @@ existing offline tests and saved-data/PDF reproduction.
 - No new model runs. Zenodo metadata/archive preparation is separate from a DOI deposit.
 - Install verification uses `/tmp/cloudedge-install-20261021`, not the existing `.venv`.
 
+## Execution note
+
+Local verification completed (995 offline tests, 12 skips; 24 real Docker checks). GitHub-hosted jobs were refused before execution by a provider account restriction. Do not treat that as a failing code test or silently disable CI; rerun only after the owner resolves the restriction. The immutable release/tag and current remote are the source of truth for the final publication step.
+
 ## Tasks
 
 - [ ] Add official license texts and scoped notices in `LICENSE`, `NOTICE`,

@@ -49,4 +49,4 @@ because of creation timestamps; numerical summaries and tables are compared sepa
 Local verification: **995 passed, 12 skipped** in the existing offline suite and
 **24 passed** in real Docker acceptance. GitHub-hosted results are visible in
 [Actions](https://github.com/cyberdid/cloud-edge-ai-orchestrator/actions/workflows/ci.yml).
-No independent GPU replication, formal peer review or Zenodo DOI deposit is claimed.
+The initial GitHub-hosted run was blocked by an account restriction before any steps started; hosted CI is therefore unverified, not reported as passing. Resolve the account restriction and rerun the configured workflow. No independent GPU replication, formal peer review or Zenodo DOI deposit is claimed.
