@@ -115,9 +115,44 @@ def fig3(r4, r5):
     save(fig, "fig3_silent")
 
 
+def fig5():
+    """Campaign A: per-task verified rate for baseline, contract tests and checklist."""
+    data = json.loads((ROOT / "benchmarks/campaign_a.json").read_text())
+    manifest = json.loads((ROOT / "scripts/paper_tasks/manifest.json").read_text())
+    tasks = sorted(manifest, key=lambda t: int(t.split("_")[0][1:]))
+    arms = [("P1_STAGE_ADAPTIVE", "baseline", BASE, "o", "white"), ("P1_STAGE_ADAPTIVE_SPECTESTS", "contract tests", SPEC, "s", SPEC),
+            ("P1_STAGE_ADAPTIVE_CHECKLIST", "checklist", "#1baf7a", "D", "#1baf7a")]
+    rates = {}
+    for pol, *_ in arms:
+        for sr in data["policies"][pol]["seed_runs"]:
+            for t in sr["tasks"]:
+                rates.setdefault((pol, t["task_id"]), []).append(t["pipeline_verified"])
+    fig, ax = plt.subplots(figsize=(3.6, 5.0))
+    for y, task in enumerate(reversed(tasks)):
+        for k, (pol, label, color, marker, face) in enumerate(arms):
+            v = rates[(pol, task)]
+            ax.scatter(sum(v) / len(v), y + (k - 1) * 0.22, s=24, marker=marker, facecolor=face, edgecolor=color, lw=1.3, zorder=3)
+    for cut, name in ((7.5, "under-specified"), (17.5, "multi-file")):
+        ax.axhline(cut, color=MUTED, lw=0.7, ls=(0, (3, 2)))
+    ax.text(1.05, 3.5, "under-\nspecified", fontsize=7, color=MUTED, va="center", clip_on=False)
+    ax.text(1.05, 12.5, "multi-\nfile", fontsize=7, color=MUTED, va="center", clip_on=False)
+    ax.text(1.05, 21.5, "single\nmodule", fontsize=7, color=MUTED, va="center", clip_on=False)
+    ax.set_yticks(range(len(tasks)), [t.split("_")[0] for t in reversed(tasks)], fontsize=7)
+    ax.set_xticks([0, 1 / 3, 2 / 3, 1], ["0", "1/3", "2/3", "1"])
+    ax.set_xlim(-0.08, 1.08)
+    ax.set_xlabel("verified completion (3 seeds per task)")
+    ax.grid(axis="x", color=GRID, lw=0.8)
+    ax.set_axisbelow(True)
+    for pol, label, color, marker, face in arms:
+        ax.scatter([], [], s=24, marker=marker, facecolor=face, edgecolor=color, lw=1.3, label=label)
+    ax.legend(loc="lower center", bbox_to_anchor=(0.5, 1.0), ncol=3, frameon=False, fontsize=7, handletextpad=0.2, columnspacing=0.8)
+    save(fig, "fig5_campaign_a")
+
+
 if __name__ == "__main__":
     r4, r5 = cells("spec_contract_confirm_fresh.json"), cells("spec_contract_confirm_all.json")
     fig1(r4, r5)
     fig2()
     fig3(r4, r5)
+    fig5()
     print("written:", sorted(p.name for p in OUT.iterdir()))

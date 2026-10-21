@@ -154,6 +154,10 @@ All 225 primary runs were completed (3 arms × 25 tasks × 3 seeds) [E18]. The c
 | Contract tests | 71/75 | 1/75 | 9,630 s | 626 s | 627,787 |
 | Checklist (control) | 71/75 | 1/75 | 6,983 s | 477 s | 550,901 |
 
+![Figure 5](figures/fig5_campaign_a.png)
+
+**Figure 5.** Campaign A: verified completion per task (three seeds) for the baseline (open circles), contract tests (squares) and the checklist control (diamonds). Dashed lines separate single-module, multi-file and under-specified tasks. Data: E18 [E14].
+
 **Primary hypothesis (H1) not confirmed.** At task level, contract tests improved 6 tasks and worsened 1 (18 unchanged): sign test p = 0.125, sign-flip permutation p = 0.0625, mean gain in verified rate +0.17 (cluster-bootstrap 95% CI 0.04–0.33) [E18]. The direction matches the earlier runs, but the registered test does not reach α = 0.05. The fall in silent false successes (H2) was 3 tasks lower and none higher (p = 0.25).
 
 **Contract tests did no better than the checklist (H3).** The checklist control — the same cloud model reading the same interface, returning a list of rules instead of tests — produced the same totals (71/75 verified, 1/75 silent) and the same task-level picture (contract tests vs checklist: 2 better, 2 worse, 21 equal; p = 1.0). In this campaign the benefit came from a stronger model reading the specification, not from making it executable.
