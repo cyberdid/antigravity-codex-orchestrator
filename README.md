@@ -17,7 +17,7 @@ CLI. Для Paper I локальним виконавцем була `gemma4:12b
 **Paper I — Beyond Passing Tests: An Interface-Only Specification Review Cuts
 Silent Failures of a Local Gemma Coding Agent.** Oleksandr Pylypenko, 2026.
 
-- [English PDF](docs/paper/article-en.pdf) · [Український PDF](docs/paper/article-uk.pdf).
+- [English PDF](docs/paper/Beyond_Passing_Tests_Pylypenko_2026_EN.pdf) · [Український PDF](docs/paper/article-uk.pdf).
 - [Стаття, дані, ліцензії та відтворення](docs/paper/README.md).
 - [Оригінальний snapshot](https://github.com/cyberdid/cloud-edge-ai-orchestrator/tree/paper-i-preprint-2026-10-21) — commit `8e9ba05ebbbcaf7953a8f31287d935f01fa2d6be`, без змін.
 - [Редакція 2](https://github.com/cyberdid/cloud-edge-ai-orchestrator/tree/paper-i-preprint-2026-10-21-rev2) — узгоджені назва, ліцензії, встановлення та CI.

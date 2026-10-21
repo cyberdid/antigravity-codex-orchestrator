@@ -85,7 +85,7 @@ jobs:
         with:
           name: paper-pdfs-${{ github.sha }}
           path: |
-            docs/paper/article-en.pdf
+            docs/paper/Beyond_Passing_Tests_Pylypenko_2026_EN.pdf
             docs/paper/article-uk.pdf
             docs/paper/manuscript.pdf
           if-no-files-found: error

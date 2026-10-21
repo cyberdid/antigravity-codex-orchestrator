@@ -10,7 +10,7 @@ confirmed by the author. Experiments used the author's equipment and accounts.
 
 ## Read the paper
 
-- [English publication PDF](article-en.pdf); source: [tex/en/main.tex](tex/en/main.tex).
+- [English publication PDF](Beyond_Passing_Tests_Pylypenko_2026_EN.pdf); source: [tex/en/main.tex](tex/en/main.tex).
 - [Ukrainian publication PDF](article-uk.pdf); source: [tex/uk/main.tex](tex/uk/main.tex).
 - [Markdown review mirror](manuscript.md) and its compatibility [PDF](manuscript.pdf).
 - [Evidence register and source checks](sources.md).
