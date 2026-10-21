@@ -2,7 +2,8 @@
 
 # Beyond Passing Tests: An Interface-Only Specification Review Cuts Silent Failures of a Local Gemma Coding Agent
 
-**Oleksandr Pylypenko** (Researcher) — ORCID [0009-0004-9610-9242](https://orcid.org/0009-0004-9610-9242)
+**Oleksandr Pylypenko** — independent researcher in AI and machine learning, in cooperation with the Department of Software Engineering and Cybersecurity, State University of Trade and Economics, Kyiv, Ukraine  
+O.Pylypenko@knute.edu.ua · ORCID [0009-0004-9610-9242](https://orcid.org/0009-0004-9610-9242)
 
 ## Abstract
 
