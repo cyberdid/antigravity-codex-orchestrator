@@ -1,0 +1,50 @@
+[
+ {
+  "policy": "P1_STAGE_ADAPTIVE_SPECTESTS",
+  "task": "N1_split_amount",
+  "reference_ok": 15,
+  "reference_failing": [],
+  "buggy_ok": 13,
+  "buggy_failing": 2
+ },
+ {
+  "policy": "P1_STAGE_ADAPTIVE_SPECTESTS",
+  "task": "N7_parse_csv_line",
+  "reference_ok": 11,
+  "reference_failing": [],
+  "buggy_ok": 0,
+  "buggy_failing": 1
+ },
+ {
+  "policy": "P1_STAGE_ADAPTIVE_SPECTESTS",
+  "task": "N8_compare_versions",
+  "reference_ok": 9,
+  "reference_failing": [],
+  "buggy_ok": 8,
+  "buggy_failing": 1
+ },
+ {
+  "policy": "P1_STAGE_ADAPTIVE_SPECTESTS",
+  "task": "N9_order_total",
+  "reference_ok": 15,
+  "reference_failing": [],
+  "buggy_ok": 15,
+  "buggy_failing": 0
+ },
+ {
+  "policy": "P1_STAGE_ADAPTIVE_SPECTESTS",
+  "task": "N13_load_settings",
+  "reference_ok": 14,
+  "reference_failing": [],
+  "buggy_ok": 13,
+  "buggy_failing": 1
+ },
+ {
+  "policy": "P1_STAGE_ADAPTIVE_SPECTESTS",
+  "task": "N18_format_money",
+  "reference_ok": 15,
+  "reference_failing": [],
+  "buggy_ok": 3,
+  "buggy_failing": 12
+ }
+]

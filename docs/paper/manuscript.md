@@ -1,4 +1,4 @@
-> **Draft.** Campaign A is complete; the run of Campaign B (descriptive, Section 6.9) is still in progress. Every number is bound to an evidence ID in `docs/paper/sources.md`.
+> **Draft for author review.** Every number is bound to an evidence ID in `docs/paper/sources.md`.
 
 # Beyond Passing Tests: An Interface-Only Specification Review Cuts Silent Failures of a Local Gemma Coding Agent
 
@@ -7,7 +7,7 @@ O.Pylypenko@knute.edu.ua · ORCID [0009-0004-9610-9242](https://orcid.org/0009-0
 
 ## Abstract
 
-Coding agents usually stop when the available tests pass. We study the architect–builder arrangement that Google introduced for local models in the Antigravity SDK — a cloud Gemini model plans, a local Gemma model edits [R8] — with `gemma4:12b` as the builder on a consumer laptop GPU, repairing Python modules whose docstrings state more rules than the visible tests check. Left alone, the agent often passes the visible tests, reports success and violates a stated rule: a *silent false success*. We add an independent specification review: a cloud model that sees only the interface — signatures, docstrings and data-type fields, never function bodies — writes either contract tests the agent must pass or a checklist of the stated rules, and acceptance is decided by a hidden evaluation that neither model sees. Across 44 tasks and 132 paired runs with corrected measurement, the review cut silent false successes from 34 to 4 runs (−88%) and raised verified completion from 68% to 90%; at task level, silent failures fell on 11 tasks and rose on none (p = 0.001, post hoc) [E21]. In a pre-registered campaign on 25 new tasks whose visible rules were chosen by a seeded coin flip, both forms of the review reduced silent failures from 9/75 to 1/75 runs and raised verified completion from 58/75 to 71/75, and a plain checklist was as effective as executable tests at 5% instead of 44% extra run time [E18]. The gains concentrate in multi-file tasks; because the baseline already solved most tasks, the registered task-level test (6 tasks better, 1 worse) did not reach significance. The value lies in the docstrings; the generated tests killed every mutant the hidden evaluation killed (visible tests: 62%), and over-constrained tests appeared only on under-specified docstrings, without causing a failure [E8, E19].
+Coding agents usually stop when the available tests pass. We study the architect–builder arrangement that Google introduced for local models in the Antigravity SDK — a cloud Gemini model plans, a local Gemma model edits [R8] — with `gemma4:12b` as the builder on a consumer laptop GPU, repairing Python modules whose docstrings state more rules than the visible tests check. Left alone, the agent often passes the visible tests, reports success and violates a stated rule: a *silent false success*. We add an independent specification review: a cloud model that sees only the interface — signatures, docstrings and data-type fields, never function bodies — writes either contract tests the agent must pass or a checklist of the stated rules, and acceptance is decided by a hidden evaluation that neither model sees. Across 50 tasks and 150 paired runs with corrected measurement, the review cut silent false successes from 37 to 4 runs (−89%) and raised verified completion from 66% to 87%; at task level, silent failures fell on 12 tasks and rose on none (p = 0.0005, post hoc) [E21]. In a pre-registered campaign on 25 new tasks whose visible rules were chosen by a seeded coin flip, both forms of the review reduced silent failures from 9/75 to 1/75 runs and raised verified completion from 58/75 to 71/75, and a plain checklist was as effective as executable tests at 5% instead of 44% extra run time [E18]. The gains concentrate in multi-file tasks; because the baseline already solved most tasks, the registered task-level test (6 tasks better, 1 worse) did not reach significance. The value lies in the docstrings; the generated tests killed every mutant the hidden evaluation killed (visible tests: 62%), and over-constrained tests appeared only on under-specified docstrings, without causing a failure [E8, E19].
 
 ## 1. Introduction
 
@@ -180,16 +180,18 @@ All 225 primary runs were completed (3 arms × 25 tasks × 3 seeds) [E18]. The c
 
 ### 6.10 Pooled evidence (post hoc)
 
-Pooling every run made with the corrected measurement — R4, R5 and Campaign A, 44 tasks, contract tests against the baseline on the same task and seed — gives the overall size of the effect [E21]. This analysis was decided after the runs and is reported as descriptive support, not as a registered test.
+Pooling every run made with the corrected measurement — R4, R5 and Campaigns A and B, 50 tasks, contract tests against the baseline on the same task and seed — gives the overall size of the effect [E21]. This analysis was decided after the runs and is reported as descriptive support, not as a registered test.
 
-**Table 4. Pooled runs with corrected measurement (44 tasks × 3 seeds) [E21].**
+**Table 4. Pooled runs with corrected measurement (50 tasks × 3 seeds) [E21].**
 
 | Outcome | Baseline | Contract tests | Task level: improved / worsened (sign test) |
 |---|---:|---:|---|
-| Silent false successes | 34/132 | **4/132** | 11 / 0 (p = 0.001) |
-| Verified completion | 90/132 (68%) | **119/132 (90%)** | 13 / 2 (p = 0.007) |
+| Silent false successes | 37/150 | **4/150** | 12 / 0 (p = 0.0005) |
+| Verified completion | 99/150 (66%) | **131/150 (87%)** | 14 / 2 (p = 0.004) |
 
 At run level within Campaign A, contract tests fixed 15 runs the baseline failed and broke 2 (p = 0.002), and the checklist fixed 17 and broke 4 (p = 0.007); both removed 9 of the 10 discordant silent false successes (p = 0.02) [E21]. Runs with different seeds of one task are not independent, so the run-level values overstate the evidence for new tasks; the task-level values above are the more conservative summary.
+
+**Results (descriptive).** All 54 runs were completed with Gemini 3.8 Flash as the cloud model (the campaign was paused once at the author's request and resumed from saved results) [E22]. Verified completion was 9/18 for the baseline, 12/18 with contract tests and 12/18 with the checklist; silent false successes were 3/18, 0/18 and 2/18. On N18, one of the two tasks with rules broken in hidden-only form, contract tests were verified in 3 of 3 runs, the checklist in 1 of 3 and the baseline in none; on N13 only the checklist helped (2 of 3); N7, whose generated parser loops on some inputs, was not solved by any arm. All six generated test modules passed on the reference fixes [E22]. With six tasks these results are descriptive; they point the same way as Campaign A, with the contract tests the only arm without a silent false success.
 
 ## 7. Discussion
 
@@ -201,7 +203,7 @@ At run level within Campaign A, contract tests fixed 15 runs the baseline failed
 
 **Where it helps.** The effect is not uniform. On single-module tasks with numbered rules the baseline was already verified in every Campaign A run, and when asked to write those modules from scratch the local model implemented the stated rules correctly for 19 of 25 specifications (Section 6.9). The gains are concentrated in tasks whose rules span modules or are stated only in docstrings the visible tests do not exercise. A practical system would request a specification review only there, and the checklist is the cheaper form.
 
-**Strength of the evidence.** The effect points the same way in every experiment, and pooled over all corrected runs it is large: silent false successes fell on 11 tasks and rose on none, and failures fell on 13 tasks and rose on 2 (Table 4). The registered task-level test of Campaign A alone did not reach significance (6 better, 1 worse, p = 0.125), because the baseline already solved 15 of the 25 tasks and only seven were discordant. We therefore present the size and consistency of the effect as the main result and the registered test as a limit on how far it has been confirmed on new tasks.
+**Strength of the evidence.** The effect points the same way in every experiment, and pooled over all corrected runs it is large: silent false successes fell on 12 tasks and rose on none, and failures fell on 14 tasks and rose on 2 (Table 4). The registered task-level test of Campaign A alone did not reach significance (6 better, 1 worse, p = 0.125), because the baseline already solved 15 of the 25 tasks and only seven were discordant. We therefore present the size and consistency of the effect as the main result and the registered test as a limit on how far it has been confirmed on new tasks.
 
 ## 8. Threats to validity
 
@@ -217,7 +219,7 @@ At run level within Campaign A, contract tests fixed 15 runs the baseline failed
 
 ## 9. Conclusion
 
-A local 12B coding agent working as the builder in a cloud-architect / local-builder arrangement often reports success after passing incomplete visible tests. An independent specification review — a stronger cloud model that sees only the interface, never the code — makes such silent failures rare: 34 of 132 paired runs had one without the review and 4 with it, and verified completion rose from 68% to 90%. In a pre-registered campaign a plain checklist of the stated rules matched executable contract tests at a fraction of their cost, and the gains came from tasks whose rules span modules. Where the baseline already succeeds the review costs little and does no harm; where rules span modules it changes what "done" means for the agent. The registered task-level test of that campaign did not reach significance, so confirmation on harder and real-world tasks remains open.
+A local 12B coding agent working as the builder in a cloud-architect / local-builder arrangement often reports success after passing incomplete visible tests. An independent specification review — a stronger cloud model that sees only the interface, never the code — makes such silent failures rare: 37 of 150 paired runs had one without the review and 4 with it, and verified completion rose from 66% to 87%. In a pre-registered campaign a plain checklist of the stated rules matched executable contract tests at a fraction of their cost, and the gains came from tasks whose rules span modules. Where the baseline already succeeds the review costs little and does no harm; where rules span modules it changes what "done" means for the agent. The registered task-level test of that campaign did not reach significance, so confirmation on harder and real-world tasks remains open.
 
 ## 10. Data and code availability
 

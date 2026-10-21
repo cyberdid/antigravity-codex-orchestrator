@@ -1,0 +1,24 @@
+tasks 6; arms ['P1_STAGE_ADAPTIVE', 'P1_STAGE_ADAPTIVE_CHECKLIST', 'P1_STAGE_ADAPTIVE_SPECTESTS']
+
+Arm | verified runs | silent false successes | wall s (runs) | generation wall s (one-time) | cloud tokens
+P1_STAGE_ADAPTIVE | 9/18 | 3/18 | 5971 | 0 | 0
+P1_STAGE_ADAPTIVE_SPECTESTS | 12/18 | 0/18 | 6472 | 494 | 168740
+P1_STAGE_ADAPTIVE_CHECKLIST | 12/18 | 2/18 | 6112 | 126 | 105621
+
+PRIMARY (H1): SPECTESTS vs baseline, task level
+  verified: tasks better/worse/equal 1/0/5; sign test p = 1.0000; permutation p = 1.0000; mean diff +0.167 [+0.000, +0.500]
+Secondary:
+  H3 SPECTESTS vs CHECKLIST: tasks better/worse/equal 1/1/4; sign test p = 1.0000; permutation p = 1.0000; mean diff +0.000 [-0.333, +0.333]
+  CHECKLIST vs baseline: tasks better/worse/equal 2/0/4; sign test p = 0.5000; permutation p = 0.5000; mean diff +0.167 [+0.000, +0.389]
+  H2 silent false successes, tasks lower/higher with SPECTESTS 1/0; sign test p = 1.0000
+  category single (3 tasks): tasks better/worse/equal 0/0/3; sign test p = 1.0000; permutation p = 1.0000; mean diff +0.000 [+0.000, +0.000]
+  category multi-file (3 tasks): tasks better/worse/equal 1/0/2; sign test p = 1.0000; permutation p = 1.0000; mean diff +0.333 [+0.000, +1.000]
+  harm on tasks without hidden failing rules: none
+
+Per task (baseline / SPECTESTS / CHECKLIST verified rate; hidden failing rules):
+  N1_split_amount            1.00 / 1.00 / 1.00   hidden_failing=0 [single]
+  N7_parse_csv_line          0.00 / 0.00 / 0.00   hidden_failing=3 [single]
+  N8_compare_versions        1.00 / 1.00 / 1.00   hidden_failing=0 [single]
+  N9_order_total             1.00 / 1.00 / 1.00   hidden_failing=0 [multi-file]
+  N13_load_settings          0.00 / 0.00 / 0.67   hidden_failing=0 [multi-file]
+  N18_format_money           0.00 / 1.00 / 0.33   hidden_failing=3 [multi-file]

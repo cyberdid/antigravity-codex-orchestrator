@@ -1,6 +1,6 @@
 Campaign A, run level (pairs, runs the arm fixes, runs it breaks, sign-test p):
   S silent false successes (75, 9, 1, 0.021484375); failures (75, 15, 2, 0.002349853515625)
   C silent false successes (75, 9, 1, 0.021484375); failures (75, 17, 4, 0.007197380065917969)
-Pooled earlier + Campaign A, contract tests vs baseline (post hoc):
-  runs: silent (34, 132) -> (4, 132); verified (90, 132) -> (119, 132)
-  task level (tasks, improved, worsened, p): silent (44, 11, 0, 0.0009765625); failures (44, 13, 2, 0.00738525390625)
+Pooled earlier + Campaign A + Campaign B, contract tests vs baseline (post hoc):
+  runs: silent (37, 150) -> (4, 150); verified (99, 150) -> (131, 150)
+  task level (tasks, improved, worsened, p): silent (50, 12, 0, 0.00048828125); failures (50, 14, 2, 0.004180908203125)

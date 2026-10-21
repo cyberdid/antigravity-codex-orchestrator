@@ -156,3 +156,49 @@ kept 6 natural tasks; 19 specifications implemented correctly on every seed
   -> Task N8_compare_versions ... verified=True native=True turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=54.911s
   -> Task N9_order_total ... verified=True native=True turns=21 tools=20 trunc=0 rec_attempts=0 stage_hints=20 wall=94.1131s
   -> Task N13_load_settings ...[08:02:48] STOPPED by owner request (moving); timers restored; resume: bash scripts/run_campaign_b.sh run
+[13:30:52] paused archive-index timers
+[13:30:52] campaign B at a5e0d27 chore(bench): Campaign B paused at 34/54 runs (owner moving); tasks N1,N7,N8,N9,N13,N18 --resume-from benchmarks/campaign_b.partial.backup.json
+Resuming: 34 completed runs loaded from benchmarks/campaign_b.partial.backup.json
+
+=== Running Seed 303 | Policy P1_STAGE_ADAPTIVE ===
+
+=== Running Seed 303 | Policy P1_STAGE_ADAPTIVE_SPECTESTS ===
+
+=== Running Seed 303 | Policy P1_STAGE_ADAPTIVE_CHECKLIST ===
+
+=== Running Seed 404 | Policy P1_STAGE_ADAPTIVE_CHECKLIST ===
+
+=== Running Seed 404 | Policy P1_STAGE_ADAPTIVE_SPECTESTS ===
+
+=== Running Seed 404 | Policy P1_STAGE_ADAPTIVE ===
+  -> Task N13_load_settings ... verified=False native=False turns=106 tools=105 trunc=0 rec_attempts=0 stage_hints=104 wall=530.0079s
+  -> Task N18_format_money ... verified=False native=False turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=26.91s
+
+=== Running Seed 505 | Policy P1_STAGE_ADAPTIVE ===
+  -> Task N1_split_amount ... verified=True native=True turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=29.259s
+  -> Task N7_parse_csv_line ... verified=False native=False turns=3 tools=3 trunc=0 rec_attempts=0 stage_hints=3 wall=1206.835s
+  -> Task N8_compare_versions ... verified=True native=True turns=9 tools=8 trunc=0 rec_attempts=0 stage_hints=8 wall=37.4642s
+  -> Task N9_order_total ... verified=True native=True turns=30 tools=29 trunc=0 rec_attempts=0 stage_hints=29 wall=138.2959s
+  -> Task N13_load_settings ... verified=False native=False turns=89 tools=88 trunc=0 rec_attempts=0 stage_hints=87 wall=500.8113s
+  -> Task N18_format_money ... verified=False native=False turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=28.1145s
+
+=== Running Seed 505 | Policy P1_STAGE_ADAPTIVE_SPECTESTS ===
+  -> Task N1_split_amount ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=34.1857s
+  -> Task N7_parse_csv_line ... verified=False native=False turns=4 tools=4 trunc=0 rec_attempts=0 stage_hints=4 wall=1209.7606s
+  -> Task N8_compare_versions ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=62.954s
+  -> Task N9_order_total ... verified=True native=True turns=19 tools=18 trunc=0 rec_attempts=0 stage_hints=18 wall=77.2396s
+  -> Task N13_load_settings ... verified=False native=False turns=113 tools=111 trunc=0 rec_attempts=0 stage_hints=111 wall=600.0823s
+  -> Task N18_format_money ... verified=True native=True turns=30 tools=29 trunc=0 rec_attempts=0 stage_hints=28 wall=204.3908s
+
+=== Running Seed 505 | Policy P1_STAGE_ADAPTIVE_CHECKLIST ===
+  -> Task N1_split_amount ... verified=True native=True turns=7 tools=6 trunc=0 rec_attempts=0 stage_hints=6 wall=24.7971s
+  -> Task N7_parse_csv_line ... verified=False native=False turns=3 tools=3 trunc=0 rec_attempts=0 stage_hints=3 wall=1207.0556s
+  -> Task N8_compare_versions ... verified=True native=True turns=8 tools=7 trunc=0 rec_attempts=0 stage_hints=7 wall=64.8198s
+  -> Task N9_order_total ... verified=True native=True turns=22 tools=21 trunc=0 rec_attempts=0 stage_hints=21 wall=128.9823s
+  -> Task N13_load_settings ... verified=True native=True turns=39 tools=38 trunc=0 rec_attempts=0 stage_hints=38 wall=247.0337s
+  -> Task N18_format_money ... verified=False native=False turns=19 tools=18 trunc=0 rec_attempts=0 stage_hints=17 wall=250.7269s
+
+Saved Phase 2B benchmark results to benchmarks/campaign_b.json
+[15:22:59] run exited rc=0
+[15:22:59] restored archive-index timers
+[15:22:59] DONE run

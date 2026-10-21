@@ -26,7 +26,8 @@ Every `[E…]` tag in the manuscript points to a repository record below; every 
 | E18 | `benchmarks/campaign_a.json`, `benchmarks/campaign_a_analysis.txt` (analysis `scripts/analysis/campaign_a.py`, commit `60ba294`) | — | Campaign A results, Table 3, H1–H3, categories, cost | 2026-10-21 | |
 | E19 | `benchmarks/campaign_a_test_grading.json` (`scripts/analysis/grade_campaign_tests.py`) | — | 4 tests failing on reference fixes; adjudication | 2026-10-21 | |
 | E20 | `scripts/paper_tasks/natural_tasks.json` (frozen, commit `d2f2807`), `benchmarks/campaign_b.log` | — | Campaign B construction: 104 generations, 19/25 specifications correct on all seeds, 6 tasks kept | 2026-10-21 | |
-| E21 | `scripts/analysis/pooled.py` → `benchmarks/pooled_analysis.txt` (on E5, E6, E18) | — | pooled run and task-level effects; Campaign A run-level paired counts | 2026-10-21 | |
+| E21 | `scripts/analysis/pooled.py` → `benchmarks/pooled_analysis.txt` (on E5, E6, E18, E22) | — | pooled run and task-level effects (50 tasks); Campaign A run-level paired counts | 2026-10-21 | |
+| E22 | `benchmarks/campaign_b.json`, `benchmarks/campaign_b_analysis.txt`, `benchmarks/campaign_b_test_grading.json` | — | Campaign B results, per task, test grading | 2026-10-21 | |
 
 ## External sources
 

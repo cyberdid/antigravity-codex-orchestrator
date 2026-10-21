@@ -95,7 +95,8 @@ def main(path, ablation=None):
     print(f"  H2 silent false successes, tasks lower/higher with SPECTESTS {w}/{l}; sign test p = {sign_p(w, l):.4f}")
     for cat in ("single", "multi-file", "underspecified"):
         sub = [t for t in tasks if manifest[t]["category"] == cat]
-        compare(runs, sub, BASE, TESTS, f"  category {cat} ({len(sub)} tasks)")
+        if sub:  # Campaign B has no under-specified tasks
+            compare(runs, sub, BASE, TESTS, f"  category {cat} ({len(sub)} tasks)")
     harm = [t for t in tasks if manifest[t]["hidden_failing"] == 0 and rate(runs, TESTS, t) < rate(runs, BASE, t)]
     print(f"  harm on tasks without hidden failing rules: {harm or 'none'}")
     print("\nPer task (baseline / SPECTESTS / CHECKLIST verified rate; hidden failing rules):")

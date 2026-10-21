@@ -1,6 +1,7 @@
 """Pooled evidence across all runs with the corrected measurement (post hoc; Paper I §6.10).
 
-Earlier tasks (R4 fresh H14-H19, R5 H1-H13) and Campaign A (P1-P25), baseline vs the cloud arm(s):
+Earlier tasks (R4 fresh H14-H19, R5 H1-H13), Campaign A (P1-P25) and Campaign B (natural bugs),
+baseline vs the cloud arm(s):
 run-level paired counts and task-level sign tests for silent false successes and failures.
 Usage: python scripts/analysis/pooled.py
 """
@@ -62,8 +63,9 @@ def main():
     print("Campaign A, run level (pairs, runs the arm fixes, runs it breaks, sign-test p):")
     for arm in ("S", "C"):
         print(f"  {arm} silent false successes {run_level(campaign_a, arm, silent)}; failures {run_level(campaign_a, arm, failed)}")
-    pooled = {k: v for k, v in campaign_a.items() if k[0] in ("B", "S")} | earlier
-    print("Pooled earlier + Campaign A, contract tests vs baseline (post hoc):")
+    campaign_b = cells("campaign_b.json", a_arms, "N")
+    pooled = {k: v for k, v in (campaign_a | campaign_b).items() if k[0] in ("B", "S")} | earlier
+    print("Pooled earlier + Campaign A + Campaign B, contract tests vs baseline (post hoc):")
     print(f"  runs: silent {totals(pooled, 'B', silent)} -> {totals(pooled, 'S', silent)}; "
           f"verified {totals(pooled, 'B', lambda t: t['pipeline_verified'])} -> {totals(pooled, 'S', lambda t: t['pipeline_verified'])}")
     print(f"  task level (tasks, improved, worsened, p): silent {task_level(pooled, 'S', silent)}; failures {task_level(pooled, 'S', failed)}")
