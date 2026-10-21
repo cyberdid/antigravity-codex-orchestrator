@@ -1,6 +1,6 @@
 > **Draft.** Results of the pre-registered Campaign A (`docs/paper/PREREGISTRATION_CAMPAIGN_A.md`) are pending; this version reports the exploratory study and one pre-registered confirmatory run. Every number is bound to an evidence ID in `docs/paper/sources.md`.
 
-# Beyond Passing Tests: Specification-Only Contract Tests Against Silent Failures of a Local Gemma Coding Agent
+# Beyond Passing Tests: Interface-Only Specification Checks Against Silent Failures of a Local Gemma Coding Agent
 
 **Oleksandr Pylypenko** (Researcher) — ORCID [0009-0004-9610-9242](https://orcid.org/0009-0004-9610-9242)
 
@@ -17,8 +17,9 @@ We met this failure while building a hybrid orchestrator in which a cloud "archi
 This paper asks a narrow question: **can tests written by a cloud model from the specification alone reduce silent failures of a local coding agent, without sending the implementation to the cloud, and at what cost?** Our contributions are:
 
 1. A measurement of silent false successes of a local coding agent on specification-heavy repair tasks, with an independent hidden evaluation as ground truth.
-2. A privacy-bounded contract-test mechanism — the cloud sees signatures, docstrings and data-type fields only — and evidence that interface completeness decides whether it helps or harms.
-3. An evaluation that separates run-level from task-level inference, reports negative results for four alternative interventions, and checks the generated tests for over-constraint and mutation coverage without involving the agent.
+2. A privacy-bounded mechanism in which the cloud sees signatures, docstrings and data-type fields only, with evidence that interface completeness decides whether contract tests help or harm.
+3. A pre-registered campaign with a checklist control, showing that the improvement comes from an independent reading of the specification rather than from making it executable, and a procedure (seeded rule visibility; bugs written by the local model) that keeps the author from choosing where the method can help.
+4. An evaluation that separates run-level from task-level inference, reports negative results for five alternative interventions, and checks the generated tests for over-constraint and mutation coverage without involving the agent.
 
 We do not claim that generating tests with language models is new (Section 2), nor that the effect generalises beyond the task family studied here (Section 8).
 
@@ -178,29 +179,31 @@ All 225 primary runs were completed (3 arms × 25 tasks × 3 seeds) [E18]. The c
 
 ## 7. Discussion
 
-The results support a specific reading: on these tasks the local agent's binding constraint was *coverage of the specification by its stopping criterion*, not its ability to write the code. Executable checks derived from the docstring changed what "done" meant for the agent, and most silent failures became either verified completions or explicit failures. That the same model checking itself did not help, while a different model writing tests from the interface did, is consistent with the self-checks sharing the agent's blind spots (Section 6.7).
+**What the agent lacked.** On these tasks the local agent's binding constraint was the coverage of its stopping criterion, not its ability to write code: it stopped when the visible tests passed and left rules stated only in the docstring unimplemented. Every intervention that helped changed what "done" meant for the agent; every intervention that did not — more generation budget, thinking on retry, guidance after a failed attempt, a self-check by the same model, a one-step harness edit — left the stopping criterion as it was (Section 6.7).
 
-The failure of v1 is as instructive as the success of v2: a plausible but wrong test is worse than no test, because the agent cannot satisfy it and runs out of time. Interface completeness — here, data-type fields — was the difference between harm and benefit, which suggests that the useful question for privacy-bounded designs is not only *what may leave the machine* but *what the remote test writer must see to avoid writing impossible tests*.
+**What closed the gap.** The exploratory runs attributed the improvement to contract tests. The pre-registered Campaign A, with a checklist control, revises that attribution: a numbered list of the stated rules, written by the same cloud model from the same interface and simply appended to the task, produced the same verified completion (71/75) and the same fall in silent false successes (9/75 to 1/75) as executable tests, at a fraction of the cost (5% against 44% more run time). The active ingredient is an independent reading of the specification by a stronger model, which turns rules that are implicit for the agent into explicit items; making those items executable added nothing measurable here. Independence and strength both matter: the same local model checking itself did not help (Section 6.7). Tests keep two properties a checklist lacks — they can be audited (here they killed every mutant the hidden evaluation killed) and they enforce the rules without relying on the agent to read them — but in Campaign A neither showed up in the outcomes.
 
-The effect is not uniform. Eleven of nineteen tasks were unchanged, because the baseline either already solved them or neither arm did; the gain sits in tasks whose rules live only in docstrings. A practical deployment would therefore request contract tests selectively — when the specification states rules that the visible tests do not cover — which is also the cheaper policy given the 1.7–4.3× minimum overhead.
+**What the cloud must see.** The value lies in the docstrings: with signatures alone the cloud did not help (Section 6.8). When the data types a function uses live in other modules, the cloud must see their fields too, or it writes tests that cannot pass and turns solved tasks into failures (Section 6.2). Under-specified docstrings invite tests of unstated behaviour; in our runs these over-constrained tests did no harm, but they are a risk wherever the unstated behaviour matters.
+
+**Where it helps.** The effect is not uniform. On single-module tasks with numbered rules the baseline was already verified in every Campaign A run, and when asked to write those modules from scratch the local model implemented the stated rules correctly for 19 of 25 specifications (Section 6.9). The gains are concentrated in tasks whose rules span modules or are stated only in docstrings the visible tests do not exercise. A practical system would request a specification review only there, and the checklist is the cheaper form.
+
+**Strength of the evidence.** The direction of the effect is the same in every run, but the registered task-level test of Campaign A did not reach significance (6 tasks better, 1 worse, p = 0.125): with most tasks already solved by the baseline, only seven tasks were discordant. The pooled evidence across the earlier tasks and Campaign A is suggestive rather than confirmatory, and the claims of this paper are limited accordingly.
 
 ## 8. Threats to validity
 
-- **Task selection.** All 19 tasks are small Python repair tasks written by the author; the six fresh tasks were written *after* the failure mode had been identified, so they over-represent tasks where the method helps. The effect size on naturally occurring bugs is unknown.
-- **Development reuse.** Tasks H1–H13 were used while developing the mechanism; R4 is the only run on unseen tasks.
-- **Statistical unit.** Seeds of one task are not independent; run-level p-values overstate generalisation to new tasks. Task-level tests (Table 2) are post hoc and, for the fresh tasks alone, not significant.
-- **Pre-registration.** R4's registration lives in a local ledger outside version control and is not independently time-stamped.
+- **Task selection.** All tasks are small Python repair tasks written by the author. The 19 earlier tasks were partly written *after* the failure mode had been identified and over-represent tasks where the method helps. Campaign A reduces this bias (which rules are visible is decided by a seeded coin flip) and Campaign B takes the bugs from the local model, but the specifications themselves are still the author's, with rules stated explicitly and numbered, which makes them easier than typical real-world docstrings. The effect size on naturally occurring bugs is unknown.
+- **Development reuse.** Tasks H1–H13 were used while developing the mechanism; R4 and Campaigns A and B are the runs on unseen tasks.
+- **Statistical unit and power.** Seeds of one task are not independent; run-level p-values overstate generalisation to new tasks. Task-level tests for R4–R5 (Table 2) are post hoc; in Campaign A the registered task-level test was not significant, largely because the baseline already solved most tasks.
+- **Pre-registration.** R4's registration lives in a local ledger outside version control and is not independently time-stamped; Campaigns A and B were registered by public commits before they ran, with one documented amendment to Campaign B (cloud model).
 - **Ground truth.** Hidden evaluations are weaker than the docstrings (Section 6.5); verified rates are upper bounds for both arms.
 - **Scope: one model stack.** This is a study of one stack — Gemma as the local builder, a cloud model behind the Antigravity CLI as the test writer. Google's announcement pairs Gemma 4 26B A4B with Gemini 3.8 Flash [R8]; we use the smaller `gemma4:12b`, and in Campaigns A and B Gemini 4 Argon. In R1–R5 the CLI's default model was used and not recorded, so those runs are not claimed to use Gemini. No claim is made for other model families.
-- **Models and hardware.** One local model, one cloud backend whose exact model version was not recorded, one consumer GPU with partial CPU offload (wall time is sensitive to background load).
+- **Models and hardware.** One local model; the cloud model was unrecorded in R1–R5 and differs between Campaign A (Gemini 4 Argon) and Campaign B (Gemini 3.8 Flash), so comparisons across those campaigns are descriptive; one consumer GPU with partial CPU offload (wall time is sensitive to background load).
 - **Cost accounting.** Cloud generation time is missing from R1–R5.
-- **Interrupted run.** R5 was resumed after a planned shutdown; the resumed half reused the same generated tests, but ran in a different session.
+- **Interrupted runs.** R5 and Campaigns A and B were paused at the author's request and resumed from saved results with the same generated tests and checklists, in different sessions.
 
-## 9. Conclusion and next steps
+## 9. Conclusion
 
-On specification-heavy repair tasks, a local 12B coding agent frequently reports success after passing incomplete visible tests. Contract tests written by a cloud model from the interface alone — without function bodies — reduced such silent failures from 25 of 57 runs to 3 of 57 and raised verified completion from 32 to 48 of 57, provided the interface included data-type fields; the improvement is concentrated in about a third of the tasks and costs at least 1.7–4.3× in wall time.
-
-Campaigns A and B (Section 5) test these findings on 25 further tasks whose visible rules were chosen by a seeded procedure, with bugs written by the author (A) and by the local model itself (B), against a checklist control that gives the same cloud model the same interface. Their results will be added to this report as registered. Bugs from real open-source projects and other local models remain outside the scope of this study.
+A local 12B coding agent working as the builder in a cloud-architect / local-builder arrangement often reports success after passing incomplete visible tests. Giving it an independent reading of the specification — produced by a stronger cloud model that sees only the interface, never the code — reduced such silent failures in every experiment we ran: from 25 of 57 to 3 of 57 runs on the earlier tasks, and from 9 of 75 to 1 of 75 in the pre-registered Campaign A. In Campaign A a plain checklist of the stated rules was as effective as executable contract tests and far cheaper, the gains came from multi-file tasks, and the registered task-level test did not reach significance. The safest reading is that the stopping criterion of a small local agent should include an independent specification review where rules span modules, and that this review need not take the form of tests.
 
 ## 10. Data and code availability
 
